@@ -30,8 +30,10 @@
                     <f:viewParam name="persistentId" value="#{DatasetPage.persistentId}"/>
                     <f:viewParam name="fileSortField" value="#{DatasetPage.fileSortField}"/>
                     <f:viewParam name="fileSortOrder" value="#{DatasetPage.fileSortOrder}"/>
-                    <f:viewAction action="#{DatasetPage.init}" />
+                    <f:viewAction action="#{DatasetPage.init}" rendered="true"/>
                     <f:viewAction action="#{dataverseHeaderFragment.initBreadcrumbs(DatasetPage.dataset)}"/>
+                    <f:viewAction action="#{EditDatafilesPage.initCreateMode(DatasetPage.editMode, DatasetPage.workingVersion, DatasetPage.newFiles, DatasetPage.selectedFiles)}"/>
+                    
                 </f:metadata>
                 <h:form id="datasetForm">
                     <!-- Header / Button Panel -->
@@ -48,10 +50,9 @@
                                 </button>
                                 <ul class="dropdown-menu pull-right text-left" role="menu">
                                     <li>
-                                        <p:commandLink id="editFiles" actionListener="#{DatasetPage.edit('FILE')}" update="@form,:messagePanel" oncomplete="javascript:post_edit_files()">
-                                            <f:setPropertyActionListener target="#{DatasetPage.selectedTabIndex}" value="0" />
-                                            <h:outputText value="#{bundle['dataset.editBtn.itemLabel.upload']}" />
-                                        </p:commandLink>
+                                        <h:outputLink value="/editdatafiles.xhtml?datasetId=#{DatasetPage.dataset.id}&#38;mode=UPLOAD">
+                                            <h:outputText value="#{bundle['dataset.editBtn.itemLabel.upload']}"/>
+                                        </h:outputLink>
                                     </li>
                                     <li>
                                         <p:commandLink id="editMetadata" actionListener="#{DatasetPage.edit('METADATA')}" update="@form,:datasetForm,:messagePanel" oncomplete="javascript:post_edit_metadata()">
@@ -281,20 +282,21 @@
                             <div id="title-block" class="row" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.title.value}">
                                 <span id="title">#{DatasetPage.datasetVersionUI.title.value}</span>
                                 <h:outputText value="#{bundle['dataset.versionUI.draft']}" styleClass="label label-primary" rendered="#{DatasetPage.workingVersion.draft}"/>
+                                <h:outputText value="#{bundle['dataset.versionUI.inReview']}" styleClass="label label-success" rendered="#{DatasetPage.workingVersion.inReview}"/>
                                 <h:outputText value="#{bundle['dataset.versionUI.unpublished']}" styleClass="label label-warning" rendered="#{!DatasetPage.dataset.released}"/>
                                 <h:outputText value="#{bundle['dataset.versionUI.deaccessioned']}" styleClass="label label-danger" rendered="#{DatasetPage.workingVersion.deaccessioned}"/>
                             </div>
                             <div id="citation-block" class="row" jsf:rendered="#{!empty DatasetPage.displayCitation}">
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <div class="row #{DatasetPage.workingVersion.deaccessioned ? 'bg-danger' : 'bg-citation'}">
-                                        <div id="citation" class="#{DatasetPage.workingVersion.deaccessioned ? 'col-md-12' : 'col-md-9'}"
+                                        <div id="citation" class="#{DatasetPage.workingVersion.deaccessioned ? 'col-xs-12' : 'col-xs-8 col-md-9'}"
                                              onclick="if (event.target) { selectText(event.target); } else{ selectText(this); }">
                                             <h:outputText value="#{DatasetPage.displayCitation}" escape="false"/>
                                             <span class="glyphicon glyphicon-question-sign text-primary" jsf:rendered="#{!DatasetPage.dataset.released}" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-original-title="#{bundle['dataset.cite.title.released']}"/>
                                             <span class="glyphicon glyphicon-question-sign text-primary" jsf:rendered="#{DatasetPage.dataset.released and DatasetPage.workingVersion.draft}" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-original-title="#{bundle['dataset.cite.title.draft']}"/>
                                             <span class="glyphicon glyphicon-question-sign text-primary" jsf:rendered="#{DatasetPage.workingVersion.deaccessioned}" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-original-title="#{bundle['dataset.cite.title.deassessioned']}"/>
                                         </div>
-                                        <div id="citation-download" class="col-md-3 text-right" jsf:rendered="#{!DatasetPage.workingVersion.deaccessioned}">
+                                        <div id="citation-download" class="col-sm-4 col-md-3 text-right" jsf:rendered="#{!DatasetPage.workingVersion.deaccessioned}">
                                             <div class="dropdown">
                                                 <button type="button" id="downloadCitation" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                     <span class="glyphicon glyphicon-list"/> #{bundle['dataset.cite.downloadBtn']} <span class="caret"></span>
@@ -315,7 +317,7 @@
                                         </div>
                                     </div>
                                     <div class="row bg-muted" jsf:rendered="#{!DatasetPage.workingVersion.deaccessioned}">
-                                        <div id="citation-standards" class="col-md-12 text-muted small"><h:outputText value="#{bundle['dataset.cite.standards.tip']}" escape="false"/></div>
+                                        <div id="citation-standards" class="col-xs-12 text-muted small"><h:outputText value="#{bundle['dataset.cite.standards.tip']}" escape="false"/></div>
                                     </div>
                                 </div>
                             </div>
@@ -333,30 +335,30 @@
                                                  or !empty DatasetPage.datasetVersionUI.subject.value 
                                                  or !empty DatasetPage.datasetVersionUI.relPublicationCitation
                                                  or !empty DatasetPage.datasetVersionUI.notes.value)}">
-                                <div class="panel-body">
+                                <div class="panel-body metadata-panel-body">
                                     <div id="description" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.descriptionDisplay}">
                                         <label class="col-sm-3 control-label">
                                             <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.description.datasetFieldType.description}">#{bundle['dataset.descriptionDisplay.title']}</span>
                                         </label>
-                                        <div class="col-sm-9 no-padding-left-right"><h:outputText value="#{DatasetPage.datasetVersionUI.descriptionDisplay}" escape="false"/></div>
+                                        <div class="col-sm-9"><h:outputText value="#{DatasetPage.datasetVersionUI.descriptionDisplay}" escape="false"/></div>
                                     </div>
                                     <div id="subject" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.subject.value}">
                                         <label class="col-sm-3 control-label">
                                             <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.subject.datasetFieldType.description}">#{DatasetPage.datasetVersionUI.subject.datasetFieldType.title}</span>
                                         </label>
-                                        <div class="col-sm-9 no-padding-left-right">#{DatasetPage.datasetVersionUI.subject.displayValue}</div>
+                                        <div class="col-sm-9">#{DatasetPage.datasetVersionUI.subject.displayValue}</div>
                                     </div>
                                     <div id="keywords" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.keywordDisplay}">
                                         <label class="col-sm-3 control-label">
                                             <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.keyword.datasetFieldType.description}">#{bundle['dataset.keywordDisplay.title']}</span>
                                         </label>
-                                        <div class="col-sm-9 no-padding-left-right">#{DatasetPage.datasetVersionUI.keywordDisplay}</div>
+                                        <div class="col-sm-9">#{DatasetPage.datasetVersionUI.keywordDisplay}</div>
                                     </div>
                                     <div id="publication" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.relPublicationCitation}">
                                         <label class="col-sm-3 control-label">
                                             <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.datasetRelPublications.get(0).description}">#{DatasetPage.datasetVersionUI.datasetRelPublications.get(0).title}</span>
                                         </label>
-                                        <div class="col-sm-9 no-padding-left-right">
+                                        <div class="col-sm-9">
                                             <h:outputText value="#{DatasetPage.datasetVersionUI.relPublicationCitation}" escape="false"/>
                                             <a href="#{DatasetPage.datasetVersionUI.relPublicationUrl}" title="#{DatasetPage.datasetVersionUI.relPublicationUrl}" target="_blank">#{DatasetPage.datasetVersionUI.relPublicationId}</a>
                                         </div>
@@ -365,7 +367,7 @@
                                         <label class="col-sm-3 control-label">
                                             <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.notes.datasetFieldType.description}">#{DatasetPage.datasetVersionUI.notes.datasetFieldType.title}</span>
                                         </label>
-                                        <div class="col-sm-9 no-padding-left-right">
+                                        <div class="col-sm-9">
                                             <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
                                             <h:outputText value="#{MarkupChecker:sanitizeBasicHTML(DatasetPage.datasetVersionUI.notes.value)}" escape="false"/>
                                         </div>
@@ -456,9 +458,21 @@
                                 <p:ajax event="message" update="@all" />
                             </p:socket>
                         </ui:fragment>
-                        <p:tabView id="tabView" widgetVar="content" activeIndex="#{DatasetPage.selectedTabIndex}">
+                        
+                        <ui:fragment id="uploadFilesOnCreateTab" rendered="#{!DatasetPage.workingVersion.deaccessioned and
+                                                              (DatasetPage.editMode == 'CREATE')}">
+                            <ui:include src="editFilesFragment.xhtml">
+                                <ui:param name="datasetPage" value="true"/>
+                                <ui:param name="dataverse" value="#{DatasetPage.dataset.owner}"/>
+                                <ui:param name="dataset" value="#{DatasetPage.dataset}"/>
+                                <ui:param name="version" value="#{DatasetPage.workingVersion}"/>
+                            </ui:include>
+
+                        </ui:fragment>
+                        
+                        <p:tabView id="tabView" widgetVar="content" activeIndex="#{DatasetPage.selectedTabIndex}" rendered="#{empty DatasetPage.editMode or (DatasetPage.editMode == 'METADATA' or DatasetPage.editMode == 'LICENSE')}">
                             <p:tab id="dataFilesTab" title="#{bundle.files}" rendered="#{!DatasetPage.workingVersion.deaccessioned and
-                                                              (empty DatasetPage.editMode or DatasetPage.editMode == 'FILE' or DatasetPage.editMode == 'CREATE')}" >
+                                                              (empty DatasetPage.editMode)}">
                                 <ui:include src="filesFragment.xhtml"/>
                             </p:tab>
 
@@ -485,7 +499,7 @@
                             <p:tab id="termsTab" title="#{bundle['file.dataFilesTab.terms.header']}"
                                    rendered="#{!DatasetPage.workingVersion.deaccessioned and (empty DatasetPage.editMode or DatasetPage.editMode == 'LICENSE')}">
                                 <ui:include src="dataset-license-terms.xhtml">
-                                    <ui:param name="editMode" value="#{!empty DatasetPage.editMode ? DatasetPage.editMode : ''}"/>
+                                    <ui:param name="editMode" value="#{!empty DatasetPage.editMode ? 'LICENSE': ''}"/>
                                     <ui:param name="termsOfUseAndAccess" value="#{DatasetPage.workingVersion.termsOfUseAndAccess}"/>
                                     <ui:param name="datasetPage" value="true"/>
                                 </ui:include>
@@ -541,6 +555,17 @@
                             <p:commandButton value="#{bundle.continue}" onclick="deleteFileConfirmation.hide()" oncomplete="window.scrollTo(0, 0);"
                                              update=":#{p:component('filesTable')},:messagePanel" action="#{DatasetPage.deleteFiles()}" />
                             <p:commandButton value="#{bundle.cancel}" onclick="deleteFileConfirmation.hide()" type="button" />
+                        </div>
+                    </p:dialog>
+                    <p:dialog styleClass="smallPopUp" header="#{bundle['file.deleteFileDialog.header']}" widgetVar="deleteSelectedFileConfirmation" modal="true">
+                        <p class="text-danger"><span class="glyphicon glyphicon-warning-sign"/> #{bundle['file.deleteFileDialog.multiple.immediate']}</p>
+                        <ui:fragment rendered="#{DatasetPage.dataset.released}">
+                            <p class="text-danger"><span class="glyphicon glyphicon-warning-sign"/> #{bundle['file.deleteFileDialog.failed.tip']}</p>
+                        </ui:fragment>
+                        <div class="button-block">
+                            <p:commandButton value="#{bundle['file.delete']}" onclick="deleteSelectedFileConfirmation.hide()" 
+                                             action="#{DatasetPage.deleteFilesAndSave()}" />
+                            <p:commandButton value="#{bundle.cancel}" onclick="deleteSelectedFileConfirmation.hide()" type="button" />
                         </div>
                     </p:dialog>
                     <p:dialog id="deaccessionBlock" header="#{bundle['dataset.editBtn.itemLabel.deaccession']}" widgetVar="deaccessionBlock" modal="true">
@@ -710,264 +735,60 @@
                             <p:commandButton value="#{bundle.done}" onclick="detailsBlocks.hide()" type="button" />
                         </div>
                     </p:dialog>
-
-                    <p:dialog id="fileAdvancedOptions" styleClass="dialog-submenu smallPopUp" header="#{bundle['file.advancedIngestOptions']}" widgetVar="fileAdvancedOptions" modal="true">
-                        <div class="form-horizontal">
-                            <!-- select text encoding, for SPSS-SAV (and, and possibly, other) (this option is only available during ingest) data files; not implemented yet -->
-                            <div class="form-group" jsf:rendered="#{!(empty DatasetPage.fileMetadataSelectedForIngestOptionsPopup) and (empty DatasetPage.fileMetadataSelectedForIngestOptionsPopup.id) and dataFileServiceBean.isSpssSavFile(DatasetPage.fileMetadataSelectedForIngestOptionsPopup.dataFile)}">
-                                <label for="spssSavEncodingLanguage" class="col-sm-4 control-label">
-                                    #{bundle['file.spss-savEncoding']}
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="help-block"><span class="glyphicon glyphicon-info-sign"/> #{bundle['file.spss-savEncoding.title']}</p>
-                                    <p class="form-control-static"><h:outputText id="selectedEncoding" value="#{bundle['file.spss-savEncoding.current']} #{DatasetPage.ingestLanguageEncoding}"/></p>
-                                    <p:tieredMenu id="spssSavEncodingLanguage" styleClass="form-control">
-                                        <p:submenu label="Select Language Encoding...">
-                                            <p:submenu label="West European">
-                                                <p:menuitem value="Western (ISO-8859-1)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-1')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Western (ISO-8859-15)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-15')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Western (Windows-1252)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('windows-1252')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Western (MacRoman)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('macintosh')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Western (IBM-850)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('ibm850')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Celtic (ISO-8859-14)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-14')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Greek (ISO-8859-7)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-7')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Greek (Windows-1253)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('windows-1253')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Greek (MacGreek)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-greek')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Icelandic (MacIcelandic)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-icelandic')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Nordic (ISO-8859-10)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-10')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="South European (ISO-8859-3)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-3')}">
-                                                </p:menuitem>
-                                            </p:submenu>
-                                            <p:submenu label="East European">
-                                                <p:menuitem value="Baltic (ISO-8859-4)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-4')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Baltic (ISO-8859-13)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-13')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Baltic (Windows-1257)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('windows-1257')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic (ISO-8859-5)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-5')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic (ISO-IR-111)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-ir-111')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic (Windows-1251)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('windows-1251')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic (MacCyrillic)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-cyrillic')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic/Ukrainian (MacUkrainian)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-ukrainian')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic (KOI8-R)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('koi8-r')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic/Ukrainian (KOI8-U)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('koi8-u')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Croatian (MacCroatian)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-croatian')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Romanian (MacRomanian)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-romanian')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Romanian (ISO-8859-16)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-16')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Central European (ISO-8859-2)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-8859-2')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Central European (Windows-1250)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('windows-1250')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Central European (MacCE)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-mac-ce')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Cyrillic (IBM-855)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('ibm855')}">
-                                                </p:menuitem>
-                                            </p:submenu>
-                                            <p:submenu label="East Asian">
-                                                <p:menuitem value="Japanese (ISO-2022-JP)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-2022-jp')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Japanese (Shift_JIS)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('shift_jis')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Japanese (EUC-JP)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('euc-jp')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Traditional (Big5)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('big5')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Traditional (Big5-HKSCS)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('big5-hkscs')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Traditional (EUC-TW)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-euc-tw')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Simplified (GB2312)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('gb2312')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Simplified (HZ)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('hz-gb-2312')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Simplified (GBK)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('gbk')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Chinese Simplified (ISO-2022-CN)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-2022-cn')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Korean (EUC-KR)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('euc-kr')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Korean (JOHAB)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('x-johab')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Korean (ISO-2022-KR)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('iso-2022-kr')}">
-                                                </p:menuitem>
-                                            </p:submenu>
-                                            <p:submenu label="Unicode">
-                                                <p:menuitem value="Unicode (UTF-8)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('utf-8')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Unicode (UTF-16LE)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('utf-16le')}">
-                                                </p:menuitem>
-                                                <p:menuitem value="Unicode (UTF-16BE)" update="selectedEncoding"
-                                                            actionListener="#{DatasetPage.setIngestEncoding('utf-16be')}">
-                                                </p:menuitem>
-                                            </p:submenu>
-                                            <p:separator />
-                                            <p:menuitem value="US-ASCII" update="selectedEncoding"
-                                                        actionListener="#{DatasetPage.setIngestEncoding('US-ASCII')}">
-                                            </p:menuitem>
-                                        </p:submenu>
-                                    </p:tieredMenu>
-                                    <p:message for="spssSavEncodingLanguage" display="text" />
-                                    <!-- REPLACE THESE WITH YOUR DYNAMIC FORM COMPONENTS AND ERROR MSG AND PUT THEM INTO THE PANELGRID ABOVE
-                                        <p:inputText id="spssSavEncodingLanguage" styleClass="form-control"/>
-                                        <p:message for="spssSavEncodingLanguage" display="text" /> -->
-                                </div>
-                            </div>
-
-                            <!-- ODUM-style extra variable labels for SPSS-POR files (this option is only available during ingest) -->
-                            <div class="form-group" jsf:rendered="#{!(empty DatasetPage.fileMetadataSelectedForIngestOptionsPopup) and (empty DatasetPage.fileMetadataSelectedForIngestOptionsPopup.id) and dataFileServiceBean.isSpssPorFile(DatasetPage.fileMetadataSelectedForIngestOptionsPopup.dataFile)}">
-                                <label for="labelsFileUpload" class="col-sm-4 control-label">
-                                    #{bundle['file.spss-porExtraLabels']}
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="help-block"><span class="glyphicon glyphicon-info-sign"/> #{bundle['file.spss-porExtraLabels.title']}</p>
-                                    <p:growl id="messageForLabelsFileUpload" showDetail="true" />
-                                    <p:fileUpload id="labelsFileUpload" label="#{bundle['file.spss-porExtraLabels.selectToAddBtn']}" update="messageForLabelsFileUpload" mode="advanced" auto="true" fileUploadListener="#{DatasetPage.handleLabelsFileUpload}"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="button-block">
-                            <p:commandButton id="fileAdvancedOptionsSaveButton" value="#{bundle.saveChanges}" oncomplete="fileAdvancedOptions.hide()" update=":datasetForm:tabView:filesTable,:messagePanel" actionListener="#{DatasetPage.saveAdvancedOptions()}"/>
-                            <p:commandButton id="fileAdvancedOptionsCancelButton" value="#{bundle.cancel}" onclick="fileAdvancedOptions.hide()" actionListener="#{DatasetPage.clearFileMetadataSelectedForIngestOptionsPopup()}"/>
-                        </div>
-                    </p:dialog>
-
-                    <p:dialog id="fileSetThumbnail" styleClass="smallPopUp" header="#{bundle['file.setThumbnail.header']}" widgetVar="fileSetThumbnail" modal="true">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label for="datasetThumbnailImage" class="col-sm-4 control-label">
-                                    #{bundle['file.datasetThumbnail']}
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="help-block">#{bundle['file.datasetThumbnail.tip']}</p>
-                                    <p:selectBooleanCheckbox id="datasetThumbnailImage"
-                                                             itemLabel="#{bundle['file.useThisIamge']}" value="#{DatasetPage.useAsDatasetThumbnail}"/>
-                                    <p:message for="datasetThumbnailImage" display="text" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="button-block">
-                            <p:commandButton id="fileSetThumbnailSaveBtn" value="#{bundle.saveChanges}" oncomplete="fileSetThumbnail.hide()" update=":datasetForm:tabView:filesTable,:messagePanel" actionListener="#{DatasetPage.saveAsDesignatedThumbnail()}"/>
-                            <p:commandButton id="fileSetThumbnailCancelBtn" value="#{bundle.cancel}" onclick="fileSetThumbnail.hide()" actionListener="#{DatasetPage.clearFileMetadataSelectedForThumbnailPopup()}"/>
-                        </div>
-                    </p:dialog>
-
+                    
                     <p:dialog id="fileTagsPopup" styleClass="smallPopUp" header="#{bundle['file.editTags']}" widgetVar="fileTagsPopup" modal="true">
                         <p class="help-block"><span class="glyphicon glyphicon-info-sign"/> #{bundle['file.editTagsDialog.tip']}</p>
-                        <div class="form-horizontal" jsf:rendered="#{!(empty DatasetPage.fileMetadataSelectedForTagsPopup)}">
+                        <div class="form-horizontal" jsf:rendered="#{!(empty DatasetPage.selectedFiles)}">
                             <div class="form-group">
-                                <label for="fileTagsMenu" class="col-sm-3 control-label">
+                                <label for="fileTagsMenuDS" class="col-sm-3 control-label">
                                     #{bundle['file.editTagsDialog.select']}
                                 </label>
                                 <div class="col-sm-8">
-                                    <p:selectCheckboxMenu id="fileTagsMenu" styleClass="form-control"
-                                                          value="#{DatasetPage.fileMetadataSelectedForTagsPopup.categoriesByName}" label="#{bundle.select}">
-                                        <f:selectItems value="#{DatasetPage.fileMetadataSelectedForTagsPopup.datasetVersion.dataset.categoriesByName}"/>
+                                    <p:selectCheckboxMenu id="fileTagsMenuDS" styleClass="form-control"
+                                                          value="#{DatasetPage.selectedTags}" label="#{bundle.select}">
+                                        <f:selectItems value="#{DatasetPage.dataset.categoriesByName}"/>
                                     </p:selectCheckboxMenu>
-                                    <p:message for="fileTagsMenu" display="text" />
+                                    <p:message for="fileTagsMenuDS" display="text" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="fileTagAddNew" class="col-sm-3 control-label">
+                                <label for="fileTagAddNewDS" class="col-sm-3 control-label">
                                     #{bundle['file.editTagsDialog.add']}
                                 </label>
                                 <div class="col-sm-8">
-                                    <p:inputText id="fileTagAddNew" styleClass="form-control"
+                                    <p:inputText id="fileTagAddNewDS" styleClass="form-control"
                                                  type="text" value="#{DatasetPage.newCategoryName}"
                                                  placeholder="#{bundle['file.editTagsDialog.newName']}"
                                                  onkeypress="if (event.keyCode == 13) {
                                                              return false;
                                                          }" />
-                                    <p:message for="fileTagAddNew" display="text" />
+                                    <p:message for="fileTagAddNewDS" display="text" />
                                 </div>
                             </div>
-                            <div class="form-group" jsf:rendered="#{DatasetPage.fileMetadataSelectedForTagsPopup.dataFile.tabularData}">
-                                <label for="tabularDataTags" class="col-sm-3 control-label">
-                                    <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{bundle['file.tabularDataTags.title']}">
-                                        #{bundle['file.tabularDataTags']}
-                                    </span>
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="help-block">#{bundle['file.tabularDataTags.tip']}</p>
-                                    <p:selectCheckboxMenu id="tabularDataTags" styleClass="form-control"
-                                                          value="#{DatasetPage.selectedTags}" label="#{bundle.select}"
-                                                          filter="false">
-                                        <f:selectItems value="#{DatasetPage.tabFileTags}" />
-                                    </p:selectCheckboxMenu>
-                                    <p:message for="tabularDataTags" display="text" />
-                                </div>
+
+                        </div>
+                        <div class="form-group" jsf:rendered="#{DatasetPage.tabularDataSelected}">
+                            <label for="tabularDataTagsDsPAge" class="col-sm-3 control-label">
+                                <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{bundle['file.tabularDataTags.title']}">
+                        #{bundle['file.tabularDataTags']}
+                                </span>
+                            </label>
+                            <div class="col-sm-8">
+                                <p class="help-block">#{bundle['file.tabularDataTags.tip']}</p>
+                                <p:selectCheckboxMenu id="tabularDataTagsDSPage" styleClass="form-control"
+                                                      value="#{DatasetPage.selectedTabFileTags}" label="#{bundle.select}"
+                                                      filter="false">
+                                    <f:selectItems value="#{DatasetPage.tabFileTags}" />
+                                </p:selectCheckboxMenu>
+                                <p:message for="tabularDataTagsDSPage" display="text" />
                             </div>
                         </div>
                         <div class="button-block">
-                            <p:commandButton id="fileTagsPopupSaveButton" value="#{bundle.saveChanges}" oncomplete="fileTagsPopup.hide()" update=":datasetForm:tabView:filesTable" actionListener="#{DatasetPage.saveFileTagsAndCategories()}"/>
+                            <p:commandButton id="fileTagsPopupSaveButton" value="#{bundle.saveChanges}" oncomplete="fileTagsPopup.hide()" update=":datasetForm:tabView:filesTable, :datasetForm" action="#{DatasetPage.saveFileTagsAndCategories()}"/>
                             <p:commandButton id="fileTagsPopupCancelButton" value="#{bundle.cancel}" onclick="fileTagsPopup.hide()" actionListener="#{DatasetPage.clearFileMetadataSelectedForTagsPopup()}"/>
                         </div>
                     </p:dialog>
+
 
                     <!-- Request Access Sign Up/Log In Button -->
                     <p:dialog header="#{bundle['file.requestAccess']}" widgetVar="accessSignUpLogIn_popup" modal="true">
@@ -1208,9 +1029,8 @@
                         </div>
                     </p:dialog>
 
-                    <p:dialog id="accessPopup" header="File Restrictions" widgetVar="accessPopup"
-                              rendered="#{DatasetPage.editMode == 'FILE' or DatasetPage.editMode == 'CREATE'}" modal="true">
-                        <ui:fragment>
+                   <p:dialog id="accessPopup" header="File Restrictions" widgetVar="accessPopup" modal="true">
+                       <ui:fragment rendered="#{DatasetPage.editMode == 'CREATE' or empty DatasetPage.editMode }">
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label for="metadata_TermsAccess" class="col-sm-3 control-label">
@@ -1235,7 +1055,7 @@
                                 </div>
                             </div>
                             <div class="button-block">
-                                <p:commandButton value="#{bundle.continue}" onclick="accessPopup.hide()" update=":datasetForm,:messagePanel" action="#{DatasetPage.save()}" />
+                                <p:commandButton value="#{bundle.continue}" onclick="accessPopup.hide()" update=":datasetForm,:messagePanel" action="#{DatasetPage.restrictSelectedFiles(true)}" />
                                 <p:commandButton value="#{bundle.cancel}" onclick="accessPopup.hide()" type="button" />
                             </div>
                         </ui:fragment>

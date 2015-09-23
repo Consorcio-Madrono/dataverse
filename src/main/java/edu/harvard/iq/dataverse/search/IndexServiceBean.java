@@ -96,6 +96,7 @@ public class IndexServiceBean {
     private static final String PUBLISHED_STRING = "Published";
     private static final String UNPUBLISHED_STRING = "Unpublished";
     private static final String DRAFT_STRING = "Draft";
+    private static final String IN_REVIEW_STRING = "In Review";
     private static final String DEACCESSIONED_STRING = "Deaccessioned";
     private Dataverse rootDataverseCached;
 
@@ -123,6 +124,7 @@ public class IndexServiceBean {
         SolrInputDocument solrInputDocument = new SolrInputDocument();
         solrInputDocument.addField(SearchFields.ID, solrDocIdentifierDataverse + dataverse.getId());
         solrInputDocument.addField(SearchFields.ENTITY_ID, dataverse.getId());
+        solrInputDocument.addField(SearchFields.DATAVERSE_VERSION_INDEXED_BY, systemConfig.getVersion());
         solrInputDocument.addField(SearchFields.IDENTIFIER, dataverse.getAlias());
         solrInputDocument.addField(SearchFields.TYPE, "dataverses");
         solrInputDocument.addField(SearchFields.NAME, dataverse.getName());
@@ -293,7 +295,7 @@ public class IndexServiceBean {
                  */
                 List<String> allFilesForDataset = findFilesOfParentDataset(dataset.getId());
                 solrIdsOfFilesToDelete.addAll(allFilesForDataset);
-            } catch (SearchException ex) {
+            } catch (SearchException | NullPointerException ex) {
                 logger.info("could not run search of files to delete: " + ex);
             }
             int numFiles = 0;
@@ -595,6 +597,8 @@ public class IndexServiceBean {
         String datasetSolrDocId = indexableDataset.getSolrDocId();
         solrInputDocument.addField(SearchFields.ID, datasetSolrDocId);
         solrInputDocument.addField(SearchFields.ENTITY_ID, dataset.getId());
+        String dataverseVersion = systemConfig.getVersion();
+        solrInputDocument.addField(SearchFields.DATAVERSE_VERSION_INDEXED_BY, dataverseVersion);
         solrInputDocument.addField(SearchFields.IDENTIFIER, dataset.getGlobalId());
         solrInputDocument.addField(SearchFields.DATASET_PERSISTENT_ID, dataset.getGlobalId());
         solrInputDocument.addField(SearchFields.PERSISTENT_URL, dataset.getPersistentURL());
@@ -645,6 +649,10 @@ public class IndexServiceBean {
 
             solrInputDocument.addField(SearchFields.DATASET_VERSION_ID, datasetVersion.getId());
             solrInputDocument.addField(SearchFields.DATASET_CITATION, datasetVersion.getCitation(true));
+
+            if (datasetVersion.isInReview()) {
+                solrInputDocument.addField(SearchFields.PUBLICATION_STATUS, IN_REVIEW_STRING);
+            }
 
             for (DatasetField dsf : datasetVersion.getFlatDatasetFields()) {
 
@@ -778,6 +786,7 @@ public class IndexServiceBean {
                     SolrInputDocument datafileSolrInputDocument = new SolrInputDocument();
                     Long fileEntityId = fileMetadata.getDataFile().getId();
                     datafileSolrInputDocument.addField(SearchFields.ENTITY_ID, fileEntityId);
+                    datafileSolrInputDocument.addField(SearchFields.DATAVERSE_VERSION_INDEXED_BY, dataverseVersion);
                     datafileSolrInputDocument.addField(SearchFields.IDENTIFIER, fileEntityId);
                     datafileSolrInputDocument.addField(SearchFields.PERSISTENT_URL, dataset.getPersistentURL());
                     datafileSolrInputDocument.addField(SearchFields.TYPE, "files");
@@ -806,6 +815,7 @@ public class IndexServiceBean {
                         }
                         for (String tag : fileMetadata.getCategoriesByName()) {
                             datafileSolrInputDocument.addField(SearchFields.FILE_TAG, tag);
+                            datafileSolrInputDocument.addField(SearchFields.FILE_TAG_SEARCHABLE, tag);
                         }
                     }
                     datafileSolrInputDocument.addField(SearchFields.NAME, filenameCompleteFinal);
@@ -832,6 +842,7 @@ public class IndexServiceBean {
                                 String msg = "filePublicationTimestamp was null for fileMetadata id " + fileMetadata.getId() + " (file id " + datafile.getId() + ")";
                                 logger.info(msg);
                             }
+                            datafileSolrInputDocument.addField(SearchFields.ACCESS, datafile.isRestricted() ? SearchConstants.RESTRICTED : SearchConstants.PUBLIC);
                         } else {
                             logger.fine("indexing file with fileCreateTimestamp. " + fileMetadata.getId() + " (file id " + datafile.getId() + ")");
                             Timestamp fileCreateTimestamp = datafile.getCreateDate();
@@ -841,8 +852,8 @@ public class IndexServiceBean {
                                 String msg = "fileCreateTimestamp was null for fileMetadata id " + fileMetadata.getId() + " (file id " + datafile.getId() + ")";
                                 logger.info(msg);
                             }
+                            datafileSolrInputDocument.addField(SearchFields.ACCESS, fileMetadata.isRestricted() ? SearchConstants.RESTRICTED : SearchConstants.PUBLIC);
                         }
-                        datafileSolrInputDocument.addField(SearchFields.ACCESS, datafile.isRestricted() ? "Restricted" : "Public");
                     }
                     if (fileSortByDate == null) {
                         if (datasetSortByDate != null) {
@@ -858,6 +869,10 @@ public class IndexServiceBean {
 
                     if (majorVersionReleaseDate == null) {
                         datafileSolrInputDocument.addField(SearchFields.PUBLICATION_STATUS, UNPUBLISHED_STRING);
+                    }
+
+                    if (datasetVersion.isInReview()) {
+                        datafileSolrInputDocument.addField(SearchFields.PUBLICATION_STATUS, IN_REVIEW_STRING);
                     }
 
                     String fileSolrDocId = solrDocIdentifierFile + fileEntityId;
@@ -1015,6 +1030,10 @@ public class IndexServiceBean {
 
     public static String getDRAFT_STRING() {
         return DRAFT_STRING;
+    }
+
+    public static String getIN_REVIEW_STRING() {
+        return IN_REVIEW_STRING;
     }
 
     public static String getDEACCESSIONED_STRING() {

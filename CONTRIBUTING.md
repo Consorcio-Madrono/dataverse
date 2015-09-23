@@ -22,7 +22,7 @@ See also our [Community and Support][] page.
 [Community and Support]: http://datascience.iq.harvard.edu/dataverse/support
 [Functional Requirements Document (FRD for short)]: https://docs.google.com/document/d/1PRyAlP6zlUlUuHfgyUezzuaVQ4JnapvgtGWo0o7tLEs/edit?usp=sharing
 [Balsamiq]: https://iqssharvard.mybalsamiq.com/projects
-[Functional Requirements Document folder on Google Drive]: https://drive.google.com/drive/folders/0B3_V6vFxEcx-fl92ek92OG1nTmhQenBRX1Z4OVJBLXpURmh2d2RyX1NZRUp6YktaYUU5YTA
+[Functional Requirements Document folder on Google Drive]: https://drive.google.com/folderview?id=0B3_V6vFxEcx-fl92ek92OG1nTmhQenBRX1Z4OVJBLXpURmh2d2RyX1NZRUp6YktaYUU5YTA&usp=sharing
 
 ## Bug Reports/Issues
 
@@ -46,7 +46,6 @@ For the subject of an issue, please start it by writing the feature or functiona
   - **High**: it’s a priority to be completed for the assigned milestone
   - **Medium**: planned for that milestone, but if needed, it can be re-considered
 - **Status**:
-  - **In Design**: mockups and wireframes are being created
   - **In Dev**: being developed
   - **In QA**: testing to make sure it is behaving as wanted
 - **Type**:
@@ -59,6 +58,11 @@ For the subject of an issue, please start it by writing the feature or functiona
 You can attach an image or screenshot by dragging and dropping, selecting them, or pasting from the clipboard. This file must be a [supported image format] such as PNG, GIF or JPG; otherwise you will have to include a URL that points to the file in question.
 
 [supported image format]: https://help.github.com/articles/issue-attachments
+
+## Milestones
+  - **In Review**: milestone for issues that are being reviewed for future releases
+  - **In Design**: milestone for issues that are being designed (FRDs, mockups, technical specifications, etc happen during this milestone). This is a way to see what we are working on for future releases
+  - **Candidate** candidate for [version] means that it is only under consideration. A developer works on issues that have been tagged with a particular milestone before dipping into the corresponding "candidate for" milestone. Usually are "nice to have" features or bug fixes for a release if there is time left after the primary work is done.
 
 ## Documentation
 

@@ -221,12 +221,13 @@ public class DataFileServiceBean implements java.io.Serializable {
      without touching the rest of the DataFile object:
     */
     
-    FileMetadata mergeFileMetadata(FileMetadata fileMetadata) {
+    public FileMetadata mergeFileMetadata(FileMetadata fileMetadata) {
         return em.merge(fileMetadata);
     }
     
-    void removeFileMetadata(FileMetadata fileMetadata) {
-        em.remove(fileMetadata);
+    public void removeFileMetadata(FileMetadata fileMetadata) {
+        FileMetadata mergedFM = em.merge(fileMetadata);
+        em.remove(mergedFM);
     }
     
     /**/

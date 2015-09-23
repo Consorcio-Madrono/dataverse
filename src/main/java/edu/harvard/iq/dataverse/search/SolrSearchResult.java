@@ -78,6 +78,7 @@ public class SolrSearchResult {
     private boolean publishedState = false;
     private boolean unpublishedState = false;
     private boolean draftState = false;
+    private boolean inReviewState = false;
     private boolean deaccessionedState = false;
     private long datasetVersionId;
     private String versionNumberFriendly;
@@ -137,6 +138,9 @@ public class SolrSearchResult {
             } else if (status.equals(IndexServiceBean.getDRAFT_STRING())) {
                 this.setDraftState(true);
 
+            } else if (status.equals(IndexServiceBean.getIN_REVIEW_STRING())) {
+                this.setInReviewState(true);
+
             } else if (status.equals(IndexServiceBean.getDEACCESSIONED_STRING())) {
                 this.setDeaccessionedState(true);
             }
@@ -171,6 +175,14 @@ public class SolrSearchResult {
 
     public void setDraftState(boolean draftState) {
         this.draftState = draftState;
+    }
+
+    public boolean isInReviewState() {
+        return inReviewState;
+    }
+
+    public void setInReviewState(boolean inReviewState) {
+        this.inReviewState = inReviewState;
     }
 
     public boolean isDeaccessionedState() {
@@ -347,11 +359,12 @@ public class SolrSearchResult {
 
         myDataJson.add("publication_statuses", this.getPublicationStatusesAsJSON())
                 .add("is_draft_state", this.isDraftState())
+                .add("is_in_review_state", this.isInReviewState())
                 .add("is_unpublished_state", this.isUnpublishedState())
                 .add("is_published", this.isPublishedState())
                 .add("is_deaccesioned", this.isDeaccessionedState())
                 .add("date_to_display_on_card", this.dateToDisplayOnCard);
- 
+
         // Add is_deaccessioned attribute, even though MyData currently screens any deaccessioned info out
         //
         if ((this.isDeaccessionedState()) && (this.getPublicationStatuses().size() == 1)) {
@@ -662,6 +675,27 @@ public class SolrSearchResult {
         return parent;
     }
 
+    public Long getParentIdAsLong() {
+
+        if (this.getParent() == null) {
+            return null;
+        }
+        if (!this.getParent().containsKey("id")) {
+            return null;
+        }
+
+        String parentIdString = getParent().get("id");
+        if (parentIdString == null) {
+            return null;
+        }
+
+        try {
+            return Long.parseLong(parentIdString);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
     public void setParent(Map<String, String> parent) {
         this.parent = parent;
     }
@@ -824,7 +858,28 @@ public class SolrSearchResult {
             }
             return null;
         }
-        String parentDatasetGlobalId = parent.get(PARENT_IDENTIFIER);
+        
+        return "/file.xhtml?fileId=" + entity.getId() + "&datasetVersionId=" + datasetVersionId;
+        
+        /*
+        if (parentDatasetGlobalId != null) {
+            return "/dataset.xhtml?persistentId=" + parentDatasetGlobalId;
+        } else {
+            return "/dataset.xhtml?id=" + parent.get(SearchFields.ID) + "&versionId=" + datasetVersionId;
+        }*/
+    }
+    
+    public String getFileDatasetUrl() {
+        if (entity != null && entity instanceof DataFile && ((DataFile) entity).isHarvested()) {
+            String remoteArchiveUrl = ((DataFile) entity).getRemoteArchiveURL();
+            if (remoteArchiveUrl != null) {
+                return remoteArchiveUrl;
+            }
+            return null;
+        }
+               
+        String parentDatasetGlobalId = parent.get(PARENT_IDENTIFIER);        
+
         if (parentDatasetGlobalId != null) {
             return "/dataset.xhtml?persistentId=" + parentDatasetGlobalId;
         } else {
@@ -889,7 +944,6 @@ public class SolrSearchResult {
         }
         return jsonRoleStrings;
     }*/
-
     public List<String> getUserRole() {
         return userRole;
     }
@@ -897,5 +951,5 @@ public class SolrSearchResult {
     public void setUserRole(List<String> userRole) {
         this.userRole = userRole;
     }
-    
+
 }
