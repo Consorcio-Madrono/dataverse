@@ -163,10 +163,10 @@ fi
 
 # avoid OutOfMemoryError: PermGen per http://eugenedvorkin.com/java-lang-outofmemoryerror-permgen-space-error-during-deployment-to-glassfish/
 #./asadmin $ASADMIN_OPTS list-jvm-options
-./asadmin $ASADMIN_OPTS delete-jvm-options "-XX\:MaxPermSize=192m"
-./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:MaxPermSize=512m"
-./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:PermSize=256m"
-./asadmin $ASADMIN_OPTS delete-jvm-options -Xmx512m
+./asadmin $ASADMIN_OPTS delete-jvm-options "-XX\:MaxPermSize=112m"
+./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:MaxPermSize=256m"
+./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:PermSize=128m"
+./asadmin $ASADMIN_OPTS delete-jvm-options -Xmx256m
 ./asadmin $ASADMIN_OPTS create-jvm-options "-Xmx${MEM_HEAP_SIZE}m"
 
 ###

@@ -12,7 +12,7 @@
 
     <h:body>
         <ui:composition template="/dataverse_template.xhtml">
-            <ui:param name="pageTitle" value="#{empty DataversePage.dataverse.name ? bundle.new : DataversePage.dataverse.name} #{bundle.dataverse}"/>
+            <ui:param name="pageTitle" value="#{bundle.dataverse} #{empty DataversePage.dataverse.name ? bundle.new : DataversePage.dataverse.name}"/>
             <ui:param name="dataverse" value="#{DataversePage.dataverse}"/>
             <ui:define name="body">
                 <f:metadata>
@@ -365,7 +365,7 @@
                                                         <i class="icon-dataverse text-brand"></i>
                                                     </div>
                                                     <div class="dataverse-info-general">
-                                                        <div><h:outputText value="#{DataversePage.dataverse.name} #{bundle.dataverse}" styleClass="highlightBold"/> <h:outputText value=" (#{DataversePage.dataverse.affiliation})" styleClass="text-muted" rendered="#{!empty DataversePage.dataverse.affiliation}"/></div>
+                                                        <div><h:outputText value="#{bundle.dataverse} #{DataversePage.dataverse.name}" styleClass="highlightBold"/> <h:outputText value=" (#{DataversePage.dataverse.affiliation})" styleClass="text-muted" rendered="#{!empty DataversePage.dataverse.affiliation}"/></div>
                                                         <div class="text-muted">#{DataversePage.dataverse.alias}</div>
                                                     </div>
                                                 </div>
