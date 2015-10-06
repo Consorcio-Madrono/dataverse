@@ -15,9 +15,9 @@
  {% if sdoc.type == "dataverse" %}
     {% set card_border_color = "#cb0000" %}
  {% elif sdoc.type == "dataset" %}
-    {% set card_border_color = "#9b0000" %}
+    {% set card_border_color = "#9b6600" %}
  {% elif sdoc.type == "file" %}
-    {% set card_border_color = "#6b0000" %}
+    {% set card_border_color = "#6b3300" %}
  {% endif %}
 
     <div style="border:1px solid {{ card_border_color }};padding:4px 10px; margin:20px; width:700px;{{ card_bg_color.next() }}">
