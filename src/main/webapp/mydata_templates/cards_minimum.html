@@ -5,11 +5,11 @@
 {% for card_info in data.items -%}
     {# <!-- set border color --> #}
     {% if card_info.type == "dataverse" %}
-       {% set card_border_color = "#c55b28" %}
+       {% set card_border_color = "#cb0000" %}
     {% elif card_info.type == "dataset" %}
-       {% set card_border_color = "#428bca" %}
+       {% set card_border_color = "#9b0000" %}
     {% elif card_info.type == "file" %}
-       {% set card_border_color = "#ccc" %}
+       {% set card_border_color = "#6b0000" %}
     {% endif %}
 
     <div style="border:1px solid {{ card_border_color }};padding:4px 10px; margin-bottom:20px; overflow: hidden; font-size: 90%; {{ card_bg_color.next() }}">
