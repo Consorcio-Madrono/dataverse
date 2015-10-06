@@ -391,7 +391,7 @@ form[id$='facetType'] > div.clearfix a.facetTypeLink span {padding:4px 0px;}
 
 form[id$='facetCategoryForm'] {margin-top:1em;}
 div[id$='facetCategoryList'] ul, div[id$='facetCategoryList'] li, div[id$='facetCategoryList'] div {margin:0; padding:0; list-style: none; border:0;}
-div[id$='facetCategoryList'] > div > ul > li {border-bottom:1px solid #DDD; margin-bottom:.5em;}
+div[id$='facetCategoryList'] > div > ul > li {border-bottom:1px solid #999; margin-bottom:.5em;}
 /*div[id$='facetCategoryList'] > div > ul > li:last-child {border-bottom:0; margin-bottom:0;}*/
 div[id$='facetCategoryList'] div li div {padding:4px 0px;}
 div[id$='facetCategoryList'] div li div.ui-datalist-empty-message {padding:4px 0px; font-style:italic; color:#AAA;}
@@ -425,7 +425,7 @@ table.ui-panelgrid.facetsMoreLess td:last-child {text-align:right;}
 
 #dv-maincolumn div.emptyResults.bg-warning {background:#FCF8F2; padding:.5em 1em;}
 #resultsFacetsTopBlock {margin-bottom:.5em;}
-#resultsFacetsTopBlock a.facetLink.facetSelected {display:inline-block; margin-bottom:.5em; margin-right:1em; background-color:#E6F1F6; padding-left:.3em; padding-right:.3em;}
+#resultsFacetsTopBlock a.facetLink.facetSelected {display:inline-block; margin-bottom:.5em; margin-right:1em; background-color:#FFF; padding-left:.3em; padding-right:.3em;}
 
 #dv-maincolumn div.results-sort-pagination div.pagination {margin-left:1em;}
 #dv-maincolumn div.results-sort-pagination.results-bottom .pagination {margin-top:0; margin-bottom:0;}
@@ -440,8 +440,8 @@ div[id$='resultsTable'] > .ui-datatable-tablewrapper > table > tbody > tr > td[r
 div[id$='resultsTable'] > .ui-datatable-tablewrapper > table > tbody > tr > td[role='gridcell'] > div.card-preview-icon-block,
 div[id$='resultsTable'] > .ui-datatable-tablewrapper > table > tbody > tr > td[role='gridcell'] > div.file-tags-block {font-size:110%;}
 
-div[id$='resultsTable'] .dataverseResult {border-color:#c55b28;}
-div[id$='resultsTable'] .datasetResult {border-color:#428bca;}
+div[id$='resultsTable'] .dataverseResult {border-color:#6B0000;}
+div[id$='resultsTable'] .datasetResult {border-color:#999;}
 
 /* -------- TABLES -------- */
 div.headerless-table .ui-datatable-tablewrapper table > thead {display:none;}
@@ -500,7 +500,7 @@ div[id$='roleDisplay'] span.label, div[id$='roleDetails'] span.label {display:in
 #title {font-size:1.5em;font-weight:bold;}
 #author, #contact {display:block; margin-bottom:.5em;}
 #citation-block {margin-bottom:.5em;}
-.bg-citation {background:#ECF6FB;}
+.bg-citation {background:#FFF;}
 #citation, #citation-download, #citation-standards {padding:.5em;}
 #citation span.glyphicon-question-sign {margin-left:.5em; margin-bottom:2px; vertical-align: middle;}
 #metadata-panel label.col-sm-3 {padding-left:0;}
@@ -637,4 +637,15 @@ button.btn-default.ui-button-text-only .ui-button-text {padding:0; font-size:14p
 .ui-widget-content a.btn-default {color:#fff;}
 .ui-messages-info-detail, .ui-messages-warn-detail, .ui-messages-error-detail, .ui-messages-fatal-detail, .ui-message-info-detail, .ui-message-warn-detail, .ui-message-error-detail, .ui-message-fatal-detail {
     margin-left: 0px;
+}
+.ui-panel.ui-widget.ui-widget-content.ui-corner-all.panelLayoutBlock.panelSerchForm, .ui-panel-content.ui-widget-content, tr.ui-widget-content, .ui-datalist-content.ui-widget-content{
+background:inherit;
+}
+#search-row-panel {
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 15px 0px;
+}
+.ui-inputfield.ui-inputtext.ui-widget.ui-state-default.ui-corner-all.search-input.ui-state-focus {
+  border-color: #6B0000;
 }
