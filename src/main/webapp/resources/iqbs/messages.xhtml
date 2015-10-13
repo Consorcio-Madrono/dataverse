@@ -4,7 +4,8 @@
 	  xmlns:cc="http://java.sun.com/jsf/composite"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
           xmlns:p="http://primefaces.org/ui"
-	  xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <cc:interface>
         <cc:attribute name="collapsible" default="false" />
@@ -34,7 +35,11 @@
         </ui:fragment>      
         <ui:fragment rendered="#{facesContext.validationFailed}">
             <div class="alert alert-danger">
-                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>Validation Error</strong> – Required fields were missed or there was a validation error. Please scroll down to see details.
+                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;
+                    <h:outputFormat value="#{bundle['dataset.message.validationErrorStrong']}" escape="false"> 
+                        <f:param value="&lt;strong&gt;"/>
+                        <f:param value="&lt;/strong&gt;"/>
+                    </h:outputFormat>
             </div>
         </ui:fragment>
         <ui:repeat rendered="#{!facesContext.validationFailed}" value="#{facesContext.messageList}" var="msg">
