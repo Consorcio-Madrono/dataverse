@@ -71,7 +71,7 @@ my %CONFIG_DEFAULTS = (
     'POSTGRES_PORT',     5432,
     'POSTGRES_DATABASE', 'dvndb',
     'POSTGRES_USER',     'dvnapp',
-    'POSTGRES_PASSWORD', 'secret',
+    'POSTGRES_PASSWORD', 'server',
 
     'RSERVE_HOST',     'localhost',
     'RSERVE_PORT',     6311,
