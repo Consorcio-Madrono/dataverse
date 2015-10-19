@@ -63,15 +63,21 @@ if ($pg_only) {
 # dataverse users.
 
 my %CONFIG_DEFAULTS = (
+<<<<<<< OURS
     'HOST_DNS_ADDRESS',    '193.168.72.194',
-    'GLASSFISH_DIRECTORY', '/opt/glassfish4',
+    'GLASSFISH_DIRECTORY', '/usr/local/glassfish-4.1',
     'MAIL_SERVER',         'localhost',
+=======
+    'HOST_DNS_ADDRESS',    'localhost',
+    'GLASSFISH_DIRECTORY', '/usr/local/glassfish4',
+    'MAIL_SERVER',         'mail.hmdc.harvard.edu',
+>>>>>>> THEIRS
 
     'POSTGRES_SERVER',   'localhost',
     'POSTGRES_PORT',     5432,
     'POSTGRES_DATABASE', 'dvndb',
     'POSTGRES_USER',     'dvnapp',
-    'POSTGRES_PASSWORD', 'server',
+    'POSTGRES_PASSWORD', '06consorcio',
 
     'RSERVE_HOST',     'localhost',
     'RSERVE_PORT',     6311,
