@@ -20,7 +20,7 @@
         <ui:fragment rendered="#{not empty flash['errorMsg']}">
             <div class="alert alert-danger">
                 <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>Error</strong> – <h:outputText escape="false" value="#{flash['errorMsg']} "/>
-                Please <p:commandLink  value="contact support" onclick="feedbackForm.show()"/>.               
+                #{bundle['Please']} <p:commandLink  value="#{bundle['contact support']}" onclick="feedbackForm.show()"/>.               
             </div>  
         </ui:fragment>      
         <ui:fragment rendered="#{not empty flash['infoMsg']}">
@@ -51,7 +51,7 @@
                 </ui:fragment>
                 <span class="glyphicon glyphicon-info-sign"></span>&#160;<strong>#{msg.summary}</strong>&#160;<h:outputText value="#{msg.detail}" rendered="#{!empty msg.detail and (msg.detail != msg.summary)}"/>
                 <ui:fragment rendered="#{level eq 'FATAL'}">                 
-                    Please <p:commandLink  value="contact support" onclick="feedbackForm.show()"/>.
+                    #{bundle['Please']} <p:commandLink  value="#{bundle['contact support']}" onclick="feedbackForm.show()"/>.
                 </ui:fragment>
             </div>
             #{msg.rendered()}
