@@ -1193,3 +1193,4 @@ sub create_pg_hash {
 
     return $hash;
 }
+
