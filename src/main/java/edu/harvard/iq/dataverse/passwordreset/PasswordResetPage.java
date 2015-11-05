@@ -55,8 +55,8 @@ public class PasswordResetPage implements java.io.Serializable {
     /**
      * The email address that is entered to initiate the password reset process.
      */
-    @NotBlank(message = "{passworReset.notBlank}")
-    @ValidateEmail(message = "{passworReset.validateEmail}")    
+    @NotBlank(message = "{passwordReset.notBlank}")
+    @ValidateEmail(message = "{passwordReset.validateEmail}")    
     String emailAddress;
 
     /**

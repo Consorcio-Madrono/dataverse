@@ -35,6 +35,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +66,7 @@ public class BuiltinUserPage implements java.io.Serializable {
 
         CREATE, EDIT, CHANGE_PASSWORD, FORGOT
     };
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
 
     @Inject
     DataverseSession session;
@@ -97,10 +99,10 @@ public class BuiltinUserPage implements java.io.Serializable {
     private EditMode editMode;
     private String redirectPage = "dataverse.xhtml";    
 
-    @NotBlank(message = "Please enter a password for your account.")
+    @NotBlank(message = "{dataverseUserPage.enterPassword}")
     private String inputPassword;
 
-    @NotBlank(message = "Please enter a password for your account.")
+    @NotBlank(message = "{dataverseUserPage.enterPassword}")
     private String currentPassword;
     private Long dataverseId;
     private List<UserNotification> notificationsList;
@@ -327,7 +329,7 @@ public class BuiltinUserPage implements java.io.Serializable {
         }
         if (!userNameFound) {
             ((UIInput) toValidate).setValid(false);
-            FacesMessage message = new FacesMessage("Username or Email is incorrect.");
+            FacesMessage message = new FacesMessage(bundle.getString("userPage.usernameIncorrect"));
             context.addMessage(toValidate.getClientId(context), message);
         }
     }
@@ -337,23 +339,23 @@ public class BuiltinUserPage implements java.io.Serializable {
         String password = (String) value;
         
         if (StringUtils.isBlank(password)){
-            logger.log(Level.WARNING, "current password is blank");
+            logger.log(Level.WARNING, bundle.getString("userPage.passwordBlank"));
             
             ((UIInput) toValidate).setValid(false);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                "Password Error", "Password is blank: re-type it again.");
+                bundle.getString("userPage.passwordError"), bundle.getString("userPage.passwordBlankRetype"));
             context.addMessage(toValidate.getClientId(context), message);
             return;
             
         } else {
-            logger.log(Level.INFO, "current paswword is not blank");
+            logger.log(Level.INFO, bundle.getString("userPage.passwordNotBlank"));
         }
         
         
         
         if ( ! PasswordEncryption.getVersion(builtinUser.getPasswordEncryptionVersion()).check(password, builtinUser.getEncryptedPassword()) ) {
             ((UIInput) toValidate).setValid(false);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password Error", "Password is incorrect.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("userPage.passwordError"), bundle.getString("userPage.passwordIncorrect"));
             context.addMessage(toValidate.getClientId(context), message);
         }
     }
@@ -361,17 +363,17 @@ public class BuiltinUserPage implements java.io.Serializable {
     public void validateNewPassword(FacesContext context, UIComponent toValidate, Object value) {
         String password = (String) value;
         if (StringUtils.isBlank(password)){
-            logger.log(Level.WARNING, "new password is blank");
+            logger.log(Level.WARNING, bundle.getString("userPage.newPasswordBlank"));
             
             ((UIInput) toValidate).setValid(false);
 
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                "Password Error", "The new password is blank: re-type it again");
+                bundle.getString("userPage.passwordError"), bundle.getString("userPage.newPasswordBlankRetype"));
             context.addMessage(toValidate.getClientId(context), message);
             return;
             
         } else {
-            logger.log(Level.INFO, "new paswword is not blank");
+            logger.log(Level.INFO, bundle.getString("userPage.newPasswordNotBlank"));
         }
 
         int minPasswordLength = 6;
@@ -384,8 +386,8 @@ public class BuiltinUserPage implements java.io.Serializable {
         boolean passwordIsComplexEnough = password!= null && validator.validatePassword(password);
         if (!passwordIsComplexEnough) {
             ((UIInput) toValidate).setValid(false);
-            String messageDetail = "Password is not complex enough. The password must have at least one letter, one number and be at least " + minPasswordLength + " characters in length.";
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password Error", messageDetail);
+            String messageDetail = java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("Bundle").getString("userPage.passwordNotComplex"), new Object[] {minPasswordLength});
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("userPage.passwordError"), messageDetail);
             context.addMessage(toValidate.getClientId(context), message);
         }
     }
@@ -410,7 +412,7 @@ public class BuiltinUserPage implements java.io.Serializable {
             } else {
                 // just defensive coding: for in case when the validator is not
                 // working
-                logger.log(Level.WARNING, "inputPassword is still null");
+                logger.log(Level.WARNING, bundle.getString("userPage.passwordStillNull"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, JH.localize("user.noPasswd"), null);
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, message);
@@ -456,12 +458,12 @@ public class BuiltinUserPage implements java.io.Serializable {
         } else {
             authSvc.updateAuthenticatedUser(currentUser, builtinUser.getDisplayInfo());
             editMode = null;
-            String msg = "Your account information has been successfully updated.";
+            String msg = ResourceBundle.getBundle("Bundle").getString("userPage.informationUpdated");
             if (passwordChanged) {
-                msg = "Your account password has been successfully changed.";
+                msg = ResourceBundle.getBundle("Bundle").getString("userPage.passwordChanged");
             }
             JsfHelper.addFlashMessage(msg);
-            return null;            
+            return null;
         }
     }
 

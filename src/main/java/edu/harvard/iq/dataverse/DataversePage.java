@@ -641,6 +641,7 @@ public class DataversePage implements java.io.Serializable {
             } else {
                 message = (create) ? BundleUtil.getStringFromBundle("dataverse.create.success", Arrays.asList(systemConfig.getGuidesBaseUrl(), systemConfig.getVersion())) : BundleUtil.getStringFromBundle("dataverse.update.success");
             }
+            logger.log(Level.INFO, "*******************JUAN" + message);
             JsfHelper.addSuccessMessage(message);
             
             editMode = null;
