@@ -20,6 +20,7 @@ import edu.harvard.iq.dataverse.engine.command.impl.DeleteExplicitGroupCommand;
 import edu.harvard.iq.dataverse.engine.command.impl.UpdateExplicitGroupCommand;
 import edu.harvard.iq.dataverse.util.JsfHelper;
 import static edu.harvard.iq.dataverse.util.JsfHelper.JH;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -135,9 +136,9 @@ public class ManageGroupsPage implements java.io.Serializable {
             explicitGroups.remove(selectedGroup);
             try {
                 engineService.submit(new DeleteExplicitGroupCommand(dvRequestService.getDataverseRequest(), selectedGroup));
-                JsfHelper.addFlashMessage("The group has been deleted.");
+                JsfHelper.addFlashMessage(JH.localize("dataverse.manageGroups.deleted"));
             } catch (CommandException ex) {
-                String failMessage = "The explicit group cannot be deleted.";
+                String failMessage = JH.localize("dataverse.manageGroups.notDeleted");
                 JH.addMessage(FacesMessage.SEVERITY_FATAL, failMessage);
             }
         } else {
@@ -327,7 +328,7 @@ public class ManageGroupsPage implements java.io.Serializable {
                 }
             } catch ( GroupException ge ) {
                 JsfHelper.JH.addMessage(FacesMessage.SEVERITY_ERROR,
-                                        "Group Creation failed.",
+                                        JH.localize("dataverse.manageGroups.creationFailed"),
                                         ge.getMessage());
                 return;
             }
@@ -335,7 +336,7 @@ public class ManageGroupsPage implements java.io.Serializable {
         try {
             eg = engineService.submit( new CreateExplicitGroupCommand(dvRequestService.getDataverseRequest(), this.dataverse, eg));
             explicitGroups.add(eg);
-            JsfHelper.addSuccessMessage("Succesfully created group " + eg.getDisplayName() + ". Refresh to update your page.");
+            JsfHelper.addSuccessMessage(MessageFormat.format (JH.localize("dataverse.manageGroups.sucessfullyCreated"), eg.getDisplayName()));
 
         } catch ( CreateExplicitGroupCommand.GroupAliasExistsException gaee ) {
             explicitGroupIdentifierField.setValid( false );
@@ -343,12 +344,12 @@ public class ManageGroupsPage implements java.io.Serializable {
                            new FacesMessage( FacesMessage.SEVERITY_ERROR, gaee.getMessage(), null));
 
         } catch (CommandException ex) {
-            logger.log(Level.WARNING, "Group creation failed", ex);
+            logger.log(Level.WARNING, JH.localize("dataverse.manageGroups.creationFailed"), ex);
             JsfHelper.JH.addMessage(FacesMessage.SEVERITY_ERROR,
-                                    "Group Creation failed.",
+                                    JH.localize("dataverse.manageGroups.creationFailed"),
                                     ex.getMessage());
         } catch (Exception ex) {
-            JH.addMessage(FacesMessage.SEVERITY_FATAL, "The role was not able to be saved.");
+            JH.addMessage(FacesMessage.SEVERITY_FATAL, JH.localize("dataverse.manageGroups.roleNotSaved"));
              logger.log(Level.SEVERE, "Error saving role: " + ex.getMessage(), ex);
         }
         showAssignmentMessages();
@@ -364,7 +365,7 @@ public class ManageGroupsPage implements java.io.Serializable {
                 }
             } catch ( GroupException ge ) {
                 JsfHelper.JH.addMessage(FacesMessage.SEVERITY_ERROR,
-                                        "Group edit failed.",
+                                        JH.localize("dataverse.manageGroups.editFailed"),
                                         ge.getMessage());
                 return;
             }
@@ -372,14 +373,13 @@ public class ManageGroupsPage implements java.io.Serializable {
 
         try {
             eg = engineService.submit( new UpdateExplicitGroupCommand(dvRequestService.getDataverseRequest(), eg));
-            JsfHelper.addSuccessMessage("Succesfully saved group " + eg.getDisplayName());
-
+            JsfHelper.addSuccessMessage(MessageFormat.format (JH.localize("dataverse.manageGroups.sucessfullySaved"), eg.getDisplayName()));
         } catch (CommandException ex) {
             JsfHelper.JH.addMessage(FacesMessage.SEVERITY_ERROR,
-                                    "Group Save failed.",
+                                    JH.localize("dataverse.manageGroups.saveFailed"),
                                     ex.getMessage());
         } catch (Exception ex) {
-            JH.addMessage(FacesMessage.SEVERITY_FATAL, "The role was not able to be saved.");
+            JH.addMessage(FacesMessage.SEVERITY_FATAL, JH.localize("dataverse.manageGroups.roleNotSaved"));
              logger.log(Level.SEVERE, "Error saving role: " + ex.getMessage(), ex);
         }
         showAssignmentMessages();
