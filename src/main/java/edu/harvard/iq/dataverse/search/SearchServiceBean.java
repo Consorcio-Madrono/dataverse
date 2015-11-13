@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +58,7 @@ import org.apache.solr.common.SolrDocumentList;
 public class SearchServiceBean {
 
     private static final Logger logger = Logger.getLogger(SearchServiceBean.class.getCanonicalName());
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
 
     /**
      * We're trying to make the SearchServiceBean lean, mean, and fast, with as
@@ -552,7 +554,7 @@ public class SearchServiceBean {
                 String friendlyName = datasetField.getDisplayName();
                 if (solrFieldNameForDataset != null && facetField.getName().endsWith(datasetField.getTmpNullFieldTypeIdentifier())) {
                     // give it the non-friendly name so we remember to update the reference data script for datasets
-                    facetCategory.setName(facetField.getName());
+                    facetCategory.setName(bundle.getString(facetField.getName()));
                 } else if (solrFieldNameForDataset != null && facetField.getName().equals(solrFieldNameForDataset)) {
                     if (friendlyName != null && !friendlyName.isEmpty()) {
                         facetCategory.setFriendlyName(friendlyName);

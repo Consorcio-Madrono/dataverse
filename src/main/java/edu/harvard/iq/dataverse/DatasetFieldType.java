@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.faces.model.SelectItem;
@@ -27,6 +28,7 @@ import javax.persistence.*;
 @Entity
 @Table(indexes = {@Index(columnList="metadatablock_id"),@Index(columnList="parentdatasetfieldtype_id")})
 public class DatasetFieldType implements Serializable, Comparable<DatasetFieldType> {
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
 
     /**
      * The set of possible metatypes of the field. Used for validation and layout.
@@ -471,9 +473,9 @@ public class DatasetFieldType implements Serializable, Comparable<DatasetFieldTy
     
     public String getDisplayName() {
         if (isHasParent() && !parentDatasetFieldType.getTitle().equals(title)) {
-        return parentDatasetFieldType.getTitle() + " " + title;
+            return bundle.getString(parentDatasetFieldType.getTitle()) + bundle.getString("datasets.facetSeparator") + bundle.getString(title);
         } else {
-            return title;
+            return bundle.getString(title);
         }
     }
 
