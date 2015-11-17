@@ -31,7 +31,7 @@
                 <div class="form-inline text-left col-xs-12">
                     <p:inputText style="margin-right:1em;" size="40" id="searchFiles" styleClass="form-control" value="#{DatasetPage.fileLabelSearchTerm}" widgetVar="inputSearchTerm"
                                  onkeypress="if (event.keyCode == 13) { submitsearch(); return false; }"/>
-                    <p:watermark for="searchFiles" value="Search this dataset..."/>
+                    <p:watermark for="searchFiles" value="#{bundle['file.searchDataset']}"/>
                     <p:commandLink styleClass="btn btn-default" action="#{DatasetPage.updateFileSearch()}" process="@this @widgetVar(inputSearchTerm)" update="@form" partialSubmit="true">
                         <span class="glyphicon glyphicon-search"/> #{bundle['dataverse.search.btn.find']}
                     </p:commandLink>

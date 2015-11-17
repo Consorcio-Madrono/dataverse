@@ -89,7 +89,7 @@
                                         <li class="divider"></li>
                                         <li>
                                             <p:commandLink id="deleteDataset" onclick="PF('deleteConfirmation').show()">
-                                                <h:outputText value="#{bundle['dataset.editBtn.itemLabel.deleteDataset']}" />
+                                                <h:outputText value="C #{bundle['dataset.editBtn.itemLabel.deleteDataset']}" />
                                             </p:commandLink>
                                         </li>
                                     </ui:fragment>
@@ -346,7 +346,7 @@
                                     </div>
                                     <div id="subject" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.subject.value}">
                                         <label class="col-sm-3 control-label">
-                                            <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.subject.datasetFieldType.description}">#{DatasetPage.datasetVersionUI.subject.datasetFieldType.title}</span>
+                                            <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.subject.datasetFieldType.description}">#{bundle[DatasetPage.datasetVersionUI.subject.datasetFieldType.title]}</span>
                                         </label>
                                         <div class="col-sm-9">#{DatasetPage.datasetVersionUI.subject.displayValue}</div>
                                     </div>
@@ -358,7 +358,7 @@
                                     </div>
                                     <div id="publication" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.relPublicationCitation}">
                                         <label class="col-sm-3 control-label">
-                                            <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.datasetRelPublications.get(0).description}">#{DatasetPage.datasetVersionUI.datasetRelPublications.get(0).title}</span>
+                                            <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.datasetRelPublications.get(0).description}">#{bundle[DatasetPage.datasetVersionUI.datasetRelPublications.get(0).title]}</span>
                                         </label>
                                         <div class="col-sm-9">
                                             <h:outputText value="#{DatasetPage.datasetVersionUI.relPublicationCitation}" escape="false"/>
@@ -367,7 +367,7 @@
                                     </div>
                                     <div id="note" class="form-group" jsf:rendered="#{!empty DatasetPage.datasetVersionUI.notes.value}">
                                         <label class="col-sm-3 control-label">
-                                            <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.notes.datasetFieldType.description}">#{DatasetPage.datasetVersionUI.notes.datasetFieldType.title}</span>
+                                            <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{DatasetPage.datasetVersionUI.notes.datasetFieldType.description}">#{bundle[DatasetPage.datasetVersionUI.notes.datasetFieldType.title]}</span>
                                         </label>
                                         <div class="col-sm-9">
                                             <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
@@ -551,8 +551,8 @@
                     <p:blockUI block="datasetForm" widgetVar="blockDatasetForm"/>
 
                     <!-- Popups -->
-                    <p:dialog styleClass="smallPopUp" header="#{bundle['file.deleteDialog.header']}" widgetVar="deleteConfirmation" modal="true">
-                        <p class="text-danger"><span class="glyphicon glyphicon-warning-sign"/> #{bundle['file.deleteDialog.tip']}</p>
+                    <p:dialog styleClass="smallPopUp" header="A #{bundle['file.deleteDialog.header']}" widgetVar="deleteConfirmation" modal="true">
+                        <p class="text-danger"><span class="glyphicon glyphicon-warning-sign"/>B #{bundle['file.deleteDialog.tip']}</p>
                         <div class="button-block">
                             <p:commandButton value="#{bundle.continue}" onclick="deleteConfirmation.hide()" action="#{DatasetPage.deleteDataset()}" />
                             <p:commandButton value="#{bundle.cancel}" onclick="deleteConfirmation.hide()" type="button" />
