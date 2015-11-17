@@ -232,7 +232,7 @@ public class ManagePermissionsPage implements java.io.Serializable {
     
    public void initAccessSettings() {
        if (dvObject instanceof Dataverse) {
-            authenticatedUsersContributorRoleAlias = ""; //NOI18N
+            authenticatedUsersContributorRoleAlias = "";
 
             List<RoleAssignment> aUsersRoleAssignments = roleService.directRoleAssignments(AuthenticatedUsers.get(), dvObject);
             for (RoleAssignment roleAssignment : aUsersRoleAssignments) {
