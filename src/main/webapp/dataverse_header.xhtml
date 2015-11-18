@@ -218,7 +218,7 @@
                 <h:outputText value="#{dv.name} #{bundle.dataverse}" styleClass="#{dataverse.id == dv.id ? 'breadcrumbActive' : ''}" rendered="#{dataverse.id == dv.id and dataset == null}"/>
                 <ui:fragment rendered="#{dataverse.id != dv.id or dataset != null}" >
                     <a id="breadcrumbLnk#{status.index}" href="/dataverse/#{dv.alias}">
-                        <h:outputText value="#{dv.name} #{bundle.dataverse}"/>
+                        <h:outputText value="#{bundle.dataverse} #{dv.name}"/>
                     </a>
                 </ui:fragment>
 

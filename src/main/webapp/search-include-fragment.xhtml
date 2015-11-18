@@ -26,6 +26,7 @@
                         <span class="glyphicon glyphicon-search"/> #{bundle['dataverse.search.btn.find']}
                     </p:commandLink>
                     <p:remoteCommand name="submitsearch" action="#{SearchIncludeFragment.searchRedirect(dataverseRedirectPage)}"/>
+                    <br/>
                     <h:outputLink id="advsearchlink" value="/search/advanced.xhtml" target="#{showFacets == true ? '_self' : '_blank'}" rendered="#{showAdvancedSearchLink}">
                         <f:param name="dataverseIdentifier" value="#{SearchIncludeFragment.dataverse.alias}"/>
                         <h:outputText value="#{bundle['dataverse.search.advancedSearch']}"/>
