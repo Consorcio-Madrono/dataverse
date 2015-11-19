@@ -535,22 +535,22 @@ public class DatasetVersionDifference {
         String retString = "";
 
         if (addedFiles.size() > 0) {
-            retString = "Files (Added: " + addedFiles.size();
+            retString = java.text.MessageFormat.format(ResourceBundle.getBundle("Bundle").getString("file.dataFilesTab.filesAdded"), addedFiles.size());
         }
 
         if (removedFiles.size() > 0) {
             if (retString.isEmpty()) {
-                retString = "Files (Removed: " + removedFiles.size();
+                retString = java.text.MessageFormat.format(ResourceBundle.getBundle("Bundle").getString("file.dataFilesTab.filesRemoved"), removedFiles.size());
             } else {
-                retString += "; Removed: " + removedFiles.size();
+                retString += java.text.MessageFormat.format(ResourceBundle.getBundle("Bundle").getString("file.dataFilesTab.Removed"), removedFiles.size());
             }
         }
 
         if (changedFileMetadata.size() > 0) {
             if (retString.isEmpty()) {
-                retString = "Files (Changed File Metadata: " + changedFileMetadata.size() / 2;
+                retString = java.text.MessageFormat.format(ResourceBundle.getBundle("Bundle").getString("file.dataFilesTab.filesChanged"), changedFileMetadata.size() / 2);
             } else {
-                retString += "; Changed File Metadata: " + changedFileMetadata.size() / 2;
+                retString += java.text.MessageFormat.format(ResourceBundle.getBundle("Bundle").getString("file.dataFilesTab.files"), changedFileMetadata.size() / 2);
             }
         }
 

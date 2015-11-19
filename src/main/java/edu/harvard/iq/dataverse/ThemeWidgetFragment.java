@@ -150,7 +150,7 @@ public class ThemeWidgetFragment implements java.io.Serializable {
     public void validateTagline(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         if (!StringUtils.isEmpty((String) value) && ((String) value).length() > 140) {
-            FacesMessage msg = new FacesMessage("Tagline must be at most 140 characters.");
+            FacesMessage msg = new FacesMessage(JH.localize("dataverse.theme.taglineSize"));
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(msg);
@@ -165,8 +165,8 @@ public void validateUrl(FacesContext context, UIComponent component, Object valu
         }
     } catch(MalformedURLException e) {
         FacesMessage msg =
-              new FacesMessage(" URL validation failed.",
-              "Please provide URL.");
+              new FacesMessage(JH.localize("dataverse.theme.URLValidation"),
+              JH.localize("dataverse.theme.provideURL"));
       msg.setSeverity(FacesMessage.SEVERITY_ERROR);
     
       throw new ValidatorException(msg);
@@ -267,7 +267,7 @@ public void validateUrl(FacesContext context, UIComponent component, Object valu
             
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "error updating dataverse theme", ex);
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Dataverse Save Failed-", JH.localize("dataverse.theme.failure")));
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, JH.localize("dataverse.theme.saveFailed"), JH.localize("dataverse.theme.failure")));
         
           return null;
         } finally {

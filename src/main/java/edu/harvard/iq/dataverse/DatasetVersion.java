@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -719,7 +720,7 @@ public class DatasetVersion implements Serializable {
                 if (!StringUtil.isEmpty(str)) {
                     str += ", ";
                 }
-                str += " DRAFT VERSION ";
+                str += " " + ResourceBundle.getBundle("Bundle").getString("datasetVersion.draft") + " ";
 
             } else if (this.getVersionNumber() != null) {
                 if (!StringUtil.isEmpty(str)) {
@@ -732,7 +733,7 @@ public class DatasetVersion implements Serializable {
                 if (!StringUtil.isEmpty(str)) {
                     str += ", ";
                 }
-                str += " DEACCESSIONED VERSION ";
+                str += " " + ResourceBundle.getBundle("Bundle").getString("datasetVersion.deaccessioned") + " ";
 
             }
         }
