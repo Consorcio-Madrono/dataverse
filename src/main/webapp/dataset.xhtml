@@ -670,11 +670,17 @@
                                 &#160;
                             </div>
                             <div class="pull-left">
-                                #{bundle['file.viewDiffDialog.version']}: #{DatasetPage.datasetVersionDifference.originalVersion.semanticVersion}<br/>
+                                <c:set var="originalVersion" value="#{DatasetPage.datasetVersionDifference.originalVersion.semanticVersion}" scope="request" />
+                                #{bundle['file.viewDiffDialog.version']}: 
+                                #{(bundle[originalVersion].startsWith('???')) ? originalVersion : bundle[originalVersion]} <!-- Hack to translate values from the database -->
+                                <br/>
                                 #{bundle['file.viewDiffDialog.lastUpdated']}: #{DatasetPage.datasetVersionDifference.originalVersion.lastUpdateTime}
                             </div>
                             <div class="pull-left">
-                                #{bundle['file.viewDiffDialog.version']}: #{DatasetPage.datasetVersionDifference.newVersion.semanticVersion}<br/>
+                                <c:set var="newVersion" value="#{DatasetPage.datasetVersionDifference.newVersion.semanticVersion}" scope="request" />
+                                #{bundle['file.viewDiffDialog.version']}: 
+                                #{(bundle[newVersion].startsWith('???')) ? newVersion : bundle[newVersion]} <!-- Hack to translate values from the database -->
+                                <br/>
                                 #{bundle['file.viewDiffDialog.lastUpdated']}: #{DatasetPage.datasetVersionDifference.newVersion.lastUpdateTime}
                             </div>
                         </div>
@@ -682,11 +688,12 @@
                             <ui:repeat value="#{DatasetPage.datasetVersionDifference.detailDataByBlock}" var="block">
                                 <div class="panel panel-default">
                                     <div class="panel-heading text-info">
-                                        <h:outputText value="#{block.get(0)[0].datasetFieldType.metadataBlock.displayName}" />
+                                        <c:set var="metadataBlock" value="#{block.get(0)[0].datasetFieldType.metadataBlock.displayName}" />
+                                        <h:outputText value="#{(bundle[metadataBlock].startsWith('???')) ? metadataBlock : bundle[metadataBlock]}" /> <!-- Hack to translate values from the database -->
                                     </div>
                                     <p:dataTable id="byBlockInner" styleClass="dvnDifferanceTable" var="dsfArray" value="#{block}">
                                         <p:column styleClass="versionValue">
-                                            <h:outputText value="#{dsfArray[0].datasetFieldType.title}" />
+                                            <h:outputText value="#{(bundle [dsfArray[0].datasetFieldType.title].startsWith('???')) ? dsfArray[0].datasetFieldType.title : bundle [dsfArray[0].datasetFieldType.title]}" /> <!-- Hack to translate values from the database -->
                                         </p:column>
                                         <p:column styleClass="versionDetails">
                                             <h:outputText rendered="#{dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].displayValue}" />

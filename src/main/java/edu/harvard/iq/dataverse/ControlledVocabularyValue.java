@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.MissingResourceException;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +32,8 @@ import javax.persistence.Table;
 @Entity
 @Table(indexes = {@Index(columnList="datasetfieldtype_id"), @Index(columnList="displayorder")})
 public class ControlledVocabularyValue implements Serializable  {
+    
+    private static final ResourceBundle bundle= ResourceBundle.getBundle("Bundle");
     
     public static final Comparator<ControlledVocabularyValue> DisplayOrder = new Comparator<ControlledVocabularyValue>() {
         @Override
@@ -62,7 +66,17 @@ public class ControlledVocabularyValue implements Serializable  {
     private String strValue;
 
     public String getStrValue() {
-        return strValue;
+        // Hack to translate values from the database
+        String newValue= null;
+
+        if (strValue!= null) {
+            try {
+                newValue = bundle.getString(strValue);
+            } catch (MissingResourceException e) {
+                newValue = strValue;
+            }
+        }
+        return newValue;
     }
     public void setStrValue(String strValue) {
         this.strValue = strValue;
