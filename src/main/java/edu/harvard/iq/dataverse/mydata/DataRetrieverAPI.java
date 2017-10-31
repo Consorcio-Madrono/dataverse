@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @todo Shouldn't this be in the "edu.harvard.iq.dataverse.api" package? Is the only one that isn't.
  */
 package edu.harvard.iq.dataverse.mydata;
 
@@ -16,8 +14,10 @@ import edu.harvard.iq.dataverse.api.AbstractApiBean;
 import edu.harvard.iq.dataverse.authorization.AuthenticationServiceBean;
 import edu.harvard.iq.dataverse.authorization.DataverseRole;
 import edu.harvard.iq.dataverse.authorization.DataverseRolePermissionHelper;
-import edu.harvard.iq.dataverse.authorization.MyDataQueryHelperServiceBean;
+//import edu.harvard.iq.dataverse.authorization.MyDataQueryHelperServiceBean;
+import edu.harvard.iq.dataverse.authorization.groups.GroupServiceBean;
 import edu.harvard.iq.dataverse.authorization.users.AuthenticatedUser;
+import edu.harvard.iq.dataverse.engine.command.DataverseRequest;
 import edu.harvard.iq.dataverse.search.SearchConstants;
 import edu.harvard.iq.dataverse.search.SearchException;
 import edu.harvard.iq.dataverse.search.SearchFields;
@@ -40,6 +40,11 @@ import org.apache.commons.lang.StringUtils;
 /**
  *
  * @author rmp553
+ * 
+ *  The primary method here is this API endpoint: retrieveMyDataAsJsonString
+ *
+ *  - This method validates the current logged in user
+ * 
  */
 @Path("mydata")
 public class DataRetrieverAPI extends AbstractApiBean {
@@ -62,8 +67,10 @@ public class DataRetrieverAPI extends AbstractApiBean {
     SearchServiceBean searchService;
     @EJB
     AuthenticationServiceBean authenticationService;
-        @EJB
-    MyDataQueryHelperServiceBean myDataQueryHelperServiceBean;
+    //@EJB
+    //MyDataQueryHelperServiceBean myDataQueryHelperServiceBean;
+    @EJB
+    GroupServiceBean groupService;
     
     private List<DataverseRole> roleList;
     private DataverseRolePermissionHelper rolePermissionHelper;
@@ -157,9 +164,9 @@ public class DataRetrieverAPI extends AbstractApiBean {
         return authenticationService.getAuthenticatedUser(userIdentifier);
     }
     
-    public Map<String, Long> getTotalCountsFromSolrAsJavaMap(AuthenticatedUser searchUser, MyDataFinder myDataFinder ){
+    public Map<String, Long> getTotalCountsFromSolrAsJavaMap(DataverseRequest dataverseRequest, MyDataFinder myDataFinder ){
         //msgt("getTotalCountsFromSolrAsJavaMap: " + searchUser.getIdentifier());
-        SolrQueryResponse solrQueryResponseForCounts = getTotalCountsFromSolr(searchUser, myDataFinder);
+        SolrQueryResponse solrQueryResponseForCounts = getTotalCountsFromSolr(dataverseRequest, myDataFinder);
         if (solrQueryResponseForCounts == null){
             logger.severe("DataRetrieverAPI.getTotalCountsFromSolrAsJSON: solrQueryResponseForCounts should not be null");
             return null;
@@ -167,9 +174,9 @@ public class DataRetrieverAPI extends AbstractApiBean {
         return solrQueryResponseForCounts.getDvObjectCounts();
     }
     
-    public JsonObjectBuilder getTotalCountsFromSolrAsJSON(AuthenticatedUser searchUser, MyDataFinder myDataFinder ){
+    public JsonObjectBuilder getTotalCountsFromSolrAsJSON(DataverseRequest dataverseRequest, MyDataFinder myDataFinder ){
     
-        SolrQueryResponse solrQueryResponseForCounts = getTotalCountsFromSolr(searchUser, myDataFinder);
+        SolrQueryResponse solrQueryResponseForCounts = getTotalCountsFromSolr(dataverseRequest, myDataFinder);
         if (solrQueryResponseForCounts == null){
             logger.severe("DataRetrieverAPI.getTotalCountsFromSolrAsJSON: solrQueryResponseForCounts should not be null");
             return null;
@@ -178,20 +185,20 @@ public class DataRetrieverAPI extends AbstractApiBean {
     }
     
     
-    private SolrQueryResponse getTotalCountsFromSolr(AuthenticatedUser searchUser, MyDataFinder myDataFinder){
+    private SolrQueryResponse getTotalCountsFromSolr(DataverseRequest dataverseRequest, MyDataFinder myDataFinder){
         //msgt("getTotalCountsFromSolr: " + searchUser.getIdentifier());
 
         if (myDataFinder == null){
             throw new NullPointerException("myDataFinder cannot be null");
         }
-        if (searchUser == null){
-            throw new NullPointerException("searchUser cannot be null");
+        if (dataverseRequest == null){
+            throw new NullPointerException("dataverseRequest cannot be null");
         }
         
         // -------------------------------------------------------
         // Create new filter params that only check by the User 
         // -------------------------------------------------------
-        MyDataFilterParams filterParams = new MyDataFilterParams(searchUser.getIdentifier(), myDataFinder.getRolePermissionHelper());
+        MyDataFilterParams filterParams = new MyDataFilterParams(dataverseRequest, myDataFinder.getRolePermissionHelper());
         if (filterParams.hasError()){
             logger.severe("getTotalCountsFromSolr. filterParams error: " + filterParams.getErrorMessage());           
             return null;
@@ -224,7 +231,7 @@ public class DataRetrieverAPI extends AbstractApiBean {
         SolrQueryResponse solrQueryResponseForCounts;
         try {
             solrQueryResponseForCounts = searchService.search(
-                    searchUser, //
+                    dataverseRequest,
                     null, // subtree, default it to Dataverse for now
                     "*",  //    Get everything--always
                     filterQueries,//filterQueries,
@@ -259,7 +266,11 @@ public class DataRetrieverAPI extends AbstractApiBean {
         
     }
     
-    
+
+    /**
+     * @todo This should support the "X-Dataverse-key" header like the other
+     * APIs.
+     */
     @Path(retrieveDataPartialAPIPath)
     @GET
     @Produces({"application/json"})
@@ -268,8 +279,9 @@ public class DataRetrieverAPI extends AbstractApiBean {
             @QueryParam("selected_page") Integer selectedPage, 
             @QueryParam("mydata_search_term") String searchTerm,             
             @QueryParam("role_ids") List<Long> roleIds, 
-            @QueryParam("userIdentifier") String userIdentifier) { //String myDataParams) {
-
+            @QueryParam("userIdentifier") String userIdentifier,
+            @QueryParam("key") String apiToken) { //String myDataParams) {
+        //System.out.println("_YE_OLDE_QUERY_COUNTER_");
         //msgt("_YE_OLDE_QUERY_COUNTER_");  // for debug purposes
         boolean DEBUG_MODE = false;
         boolean OTHER_USER = false;
@@ -279,15 +291,13 @@ public class DataRetrieverAPI extends AbstractApiBean {
         // For, superusers, the searchUser may differ from the authUser
         //
         AuthenticatedUser searchUser = null;  
-        
 
         if (DEBUG_MODE==true){      // DEBUG: use userIdentifier
             authUser = getUserFromIdentifier(userIdentifier);
             if (authUser == null){
                 return this.getJSONErrorString("Requires authentication", "retrieveMyDataAsJsonString. User not found!  Shouldn't be using this anyway");              
             }
-            
-        }else if ((session.getUser() != null)&&(session.getUser().isAuthenticated())){            
+        } else if ((session.getUser() != null)&&(session.getUser().isAuthenticated())){            
              authUser = (AuthenticatedUser)session.getUser();
        
              // If person is a superuser, see if a userIdentifier has been specified 
@@ -301,7 +311,27 @@ public class DataRetrieverAPI extends AbstractApiBean {
                     return this.getJSONErrorString("No user found for: \"" + userIdentifier + "\"", null);              
                  }
              }       
-        }else{
+        } else if (apiToken != null) {      // Is this being accessed by an API Token?
+            
+            authUser = findUserByApiToken(apiToken);
+            if (authUser == null){
+                return this.getJSONErrorString("Requires authentication.  Please login.", "retrieveMyDataAsJsonString. User not found!  Shouldn't be using this anyway");              
+            }else{
+                // If person is a superuser, see if a userIdentifier has been specified 
+                // and use that instead
+                if ((authUser.isSuperuser())&&(userIdentifier != null)&&(!userIdentifier.isEmpty())){
+                    searchUser = getUserFromIdentifier(userIdentifier);
+                    if (searchUser != null){
+                        authUser = searchUser;
+                        OTHER_USER = true;
+                    }else{
+                        return this.getJSONErrorString("No user found for: \"" + userIdentifier + "\"", null);              
+                    }
+                }       
+
+            }
+                    
+        } else{
             return this.getJSONErrorString("Requires authentication.  Please login.", "retrieveMyDataAsJsonString. User not found!  Shouldn't be using this anyway");              
         }
                      
@@ -323,7 +353,10 @@ public class DataRetrieverAPI extends AbstractApiBean {
         // ---------------------------------
         // (1) Initialize filterParams and check for Errors 
         // ---------------------------------
-        MyDataFilterParams filterParams = new MyDataFilterParams(authUser.getIdentifier(), dtypes, pub_states, roleIds, searchTerm);
+        DataverseRequest dataverseRequest = createDataverseRequest(authUser);
+
+        
+        MyDataFilterParams filterParams = new MyDataFilterParams(dataverseRequest, dtypes, pub_states, roleIds, searchTerm);
         if (filterParams.hasError()){
             return this.getJSONErrorString(filterParams.getErrorMessage(), filterParams.getErrorMessage());
         }
@@ -333,7 +366,8 @@ public class DataRetrieverAPI extends AbstractApiBean {
         // ---------------------------------
         myDataFinder = new MyDataFinder(rolePermissionHelper,
                                         roleAssigneeService,
-                                        dvObjectServiceBean);
+                                        dvObjectServiceBean, 
+                                        groupService);
         this.myDataFinder.runFindDataSteps(filterParams);
         if (myDataFinder.hasError()){
             return this.getJSONErrorString(myDataFinder.getErrorMessage(), myDataFinder.getErrorMessage());
@@ -368,7 +402,7 @@ public class DataRetrieverAPI extends AbstractApiBean {
 
         try {
                 solrQueryResponse = searchService.search(
-                        searchUser, // 
+                        dataverseRequest,
                         null, // subtree, default it to Dataverse for now
                         filterParams.getSearchTerm(),  //"*", //
                         filterQueries,//filterQueries,
@@ -412,7 +446,7 @@ public class DataRetrieverAPI extends AbstractApiBean {
                                 paginationStart);
         
         RoleTagRetriever roleTagRetriever = new RoleTagRetriever(this.rolePermissionHelper, this.roleAssigneeSvc, this.dvObjectServiceBean);
-        roleTagRetriever.loadRoles(searchUser.getIdentifier(), solrQueryResponse);
+        roleTagRetriever.loadRoles(dataverseRequest, solrQueryResponse);
 
                 
         jsonData.add(DataRetrieverAPI.JSON_SUCCESS_FIELD_NAME, true)

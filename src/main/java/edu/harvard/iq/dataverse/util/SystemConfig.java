@@ -1,12 +1,15 @@
 package edu.harvard.iq.dataverse.util;
 
 import com.ocpsoft.pretty.PrettyContext;
+import edu.harvard.iq.dataverse.DataFile;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.Year;
+import java.util.Arrays;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -65,13 +68,12 @@ public class SystemConfig {
      * zip file upload.
      */
     private static final int defaultZipUploadFilesLimit = 1000; 
+    private static final int defaultMultipleUploadFilesLimit = 1000;
 
-    /**
-     * @todo Reconcile with getApplicationVersion on DataverseServiceBean.java
-     * which we'd like to move to this class.
-     */
     private static String appVersionString = null; 
     private static String buildNumberString = null; 
+    
+    private static final String JVM_TIMER_SERVER_OPTION = "dataverse.timerServer";
     
     public String getVersion() {
         return getVersion(false);
@@ -203,9 +205,28 @@ public class SystemConfig {
         String solrHostColonPort = settingsService.getValueForKey(SettingsServiceBean.Key.SolrHostColonPort, saneDefaultForSolrHostColonPort);
         return solrHostColonPort;
     }
-    
-    
-    
+
+    public int getMinutesUntilConfirmEmailTokenExpires() {
+        final int minutesInOneDay = 1440;
+        final int reasonableDefault = minutesInOneDay;
+        SettingsServiceBean.Key key = SettingsServiceBean.Key.MinutesUntilConfirmEmailTokenExpires;
+        String valueFromDatabase = settingsService.getValueForKey(key);
+        if (valueFromDatabase != null) {
+            try {
+                int intFromDatabase = Integer.parseInt(valueFromDatabase);
+                if (intFromDatabase > 0) {
+                    return intFromDatabase;
+                } else {
+                    logger.info("Returning " + reasonableDefault + " for " + key + " because value must be greater than zero, not \"" + intFromDatabase + "\".");
+                }
+            } catch (NumberFormatException ex) {
+                logger.info("Returning " + reasonableDefault + " for " + key + " because value must be an integer greater than zero, not \"" + valueFromDatabase + "\".");
+            }
+        }
+        logger.fine("Returning " + reasonableDefault + " for " + key);
+        return reasonableDefault;
+    }
+
     /**
      * The number of minutes for which a password reset token is valid. Can be
      * overridden by {@link #PASSWORD_RESET_TIMEOUT_IN_MINUTES}.
@@ -297,7 +318,7 @@ public class SystemConfig {
      */
     
     public long getZipDownloadLimit() {
-        String zipLimitOption = settingsService.getValueForKey(SettingsServiceBean.Key.ZipDonwloadLimit);   
+        String zipLimitOption = settingsService.getValueForKey(SettingsServiceBean.Key.ZipDownloadLimit);   
         
         Long zipLimit = null; 
         if (zipLimitOption != null && !zipLimitOption.equals("")) {
@@ -328,26 +349,57 @@ public class SystemConfig {
         }
         
         if (limit != null) {
-            return limit.intValue();
+            return limit;
         }
         
         return defaultZipUploadFilesLimit; 
     }
+    
+    /*
+    `   the number of files the GUI user is allowed to upload in one batch, 
+        via drag-and-drop, or through the file select dialog
+    */
+    public int getMultipleUploadFilesLimit() {
+        String limitOption = settingsService.getValueForKey(SettingsServiceBean.Key.MultipleUploadFilesLimit);
+        Integer limit = null; 
+        
+        if (limitOption != null && !limitOption.equals("")) {
+            try {
+                limit = new Integer(limitOption);
+            } catch (NumberFormatException nfe) {
+                limit = null; 
+            }
+        }
+        
+        if (limit != null) {
+            return limit;
+        }
+        
+        return defaultMultipleUploadFilesLimit; 
+    }
+    
+    
 
+    // TODO: (?)
+    // create sensible defaults for these things? -- 4.2.2
     public long getThumbnailSizeLimitImage() {
-        return getThumbnailSizeLimit("Image");
+        long limit = getThumbnailSizeLimit("Image");
+        return limit == 0 ? 5000000 : limit;
     } 
     
     public long getThumbnailSizeLimitPDF() {
-        return getThumbnailSizeLimit("PDF");
+        long limit = getThumbnailSizeLimit("PDF");
+        return limit == 0 ? 500000 : limit;
     }
     
     public long getThumbnailSizeLimit(String type) {
         String option = null; 
         if ("Image".equals(type)) {
             option = settingsService.getValueForKey(SettingsServiceBean.Key.ThumbnailSizeLimitImage);
+            option = System.getProperty("dataverse.dataAccess.thumbnail.image.limit");
         } else if ("PDF".equals(type)) {
             option = settingsService.getValueForKey(SettingsServiceBean.Key.ThumbnailSizeLimitPDF);
+            option = System.getProperty("dataverse.dataAccess.thumbnail.pdf.limit");
         }
         Long limit = null; 
         
@@ -363,26 +415,45 @@ public class SystemConfig {
             return limit.longValue();
         }
         
-        return 0; 
+        return 0l;
+    }
+    
+    public boolean isThumbnailGenerationDisabledForType(String type) {
+        return getThumbnailSizeLimit(type) == -1l;
+    }
+    
+    public boolean isThumbnailGenerationDisabledForImages() {
+        return isThumbnailGenerationDisabledForType("Image");
+    }
+    
+    public boolean isThumbnailGenerationDisabledForPDF() {
+        return isThumbnailGenerationDisabledForType("PDF");
     }
     
     public String getApplicationTermsOfUse() {
-        String saneDefaultForAppTermsOfUse = ResourceBundle.getBundle("Bundle").getString("system.NoTerms");
-
+        String saneDefaultForAppTermsOfUse = "There are no Terms of Use for this Dataverse installation.";
         String appTermsOfUse = settingsService.getValueForKey(SettingsServiceBean.Key.ApplicationTermsOfUse, saneDefaultForAppTermsOfUse);
         return appTermsOfUse;
     }
 
     public String getApiTermsOfUse() {
-        String saneDefaultForApiTermsOfUse = ResourceBundle.getBundle("Bundle").getString("system.NoAPITerms");
+        String saneDefaultForApiTermsOfUse = "There are no API Terms of Use for this Dataverse installation.";
         String apiTermsOfUse = settingsService.getValueForKey(SettingsServiceBean.Key.ApiTermsOfUse, saneDefaultForApiTermsOfUse);
         return apiTermsOfUse;
     }
 
+    // TODO: 
+    // remove this method!
+    // pages should be using settingsWrapper.get(":ApplicationPrivacyPolicyUrl") instead. -- 4.2.1
     public String getApplicationPrivacyPolicyUrl() {
         String saneDefaultForPrivacyPolicyUrl = null;
         String appPrivacyPolicyUrl = settingsService.getValueForKey(SettingsServiceBean.Key.ApplicationPrivacyPolicyUrl, saneDefaultForPrivacyPolicyUrl);
         return appPrivacyPolicyUrl;
+    }
+
+    public boolean isDdiExportEnabled() {
+        boolean safeDefaultIfKeyNotFound = false;
+        return settingsService.isTrueForKey(SettingsServiceBean.Key.DdiExportEnabled, safeDefaultIfKeyNotFound);
     }
 
     public boolean isShibEnabled() {
@@ -390,14 +461,9 @@ public class SystemConfig {
         return settingsService.isTrueForKey(SettingsServiceBean.Key.ShibEnabled, safeDefaultIfKeyNotFound);
     }
 
-    public boolean isShibUseHeaders() {
+    public boolean myDataDoesNotUsePermissionDocs() {
         boolean safeDefaultIfKeyNotFound = false;
-        return settingsService.isTrueForKey(SettingsServiceBean.Key.ShibUseHeaders, safeDefaultIfKeyNotFound);
-    }
-
-    public boolean isDebugEnabled() {
-        boolean safeDefaultIfKeyNotFound = false;
-        return settingsService.isTrueForKey(SettingsServiceBean.Key.Debug, safeDefaultIfKeyNotFound);
+        return settingsService.isTrueForKey(SettingsServiceBean.Key.MyDataDoesNotUseSolrPermissionDocs, safeDefaultIfKeyNotFound);
     }
 
     public boolean isFilesOnDatasetPageFromSolr() {
@@ -471,4 +537,40 @@ public class SystemConfig {
         return getTabularIngestSizeLimit();        
     }
 
+    public boolean isOAIServerEnabled() {
+        boolean defaultResponse = false;
+        return settingsService.isTrueForKey(SettingsServiceBean.Key.OAIServerEnabled, defaultResponse);
+    }
+    
+    public void enableOAIServer() {
+        settingsService.setValueForKey(SettingsServiceBean.Key.OAIServerEnabled, "true");
+    }
+    
+    public void disableOAIServer() {
+        settingsService.deleteValueForKey(SettingsServiceBean.Key.OAIServerEnabled);
+    }   
+    
+    public boolean isTimerServer() {
+        String optionValue = System.getProperty(JVM_TIMER_SERVER_OPTION);
+        if ("true".equalsIgnoreCase(optionValue)) {
+            return true;
+        }
+        return false;
+    }
+
+    public String getFooterCopyrightAndYear() {
+        return BundleUtil.getStringFromBundle("footer.copyright", Arrays.asList(Year.now().getValue() + ""));
+    }
+
+    public DataFile.ChecksumType getFileFixityChecksumAlgorithm() {
+        DataFile.ChecksumType saneDefault = DataFile.ChecksumType.MD5;
+        String checksumStringFromDatabase = settingsService.getValueForKey(SettingsServiceBean.Key.FileFixityChecksumAlgorithm, saneDefault.toString());
+        try {
+            DataFile.ChecksumType checksumTypeFromDatabase = DataFile.ChecksumType.fromString(checksumStringFromDatabase);
+            return checksumTypeFromDatabase;
+        } catch (IllegalArgumentException ex) {
+            logger.info("The setting " + SettingsServiceBean.Key.FileFixityChecksumAlgorithm + " is misconfigured. " + ex.getMessage() + " Returning sane default: " + saneDefault + ".");
+            return saneDefault;
+        }
+    }
 }

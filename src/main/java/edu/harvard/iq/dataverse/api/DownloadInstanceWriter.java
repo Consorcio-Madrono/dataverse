@@ -22,8 +22,13 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import edu.harvard.iq.dataverse.DataFile;
+import edu.harvard.iq.dataverse.DataverseRequestServiceBean;
 import edu.harvard.iq.dataverse.dataaccess.*;
 import edu.harvard.iq.dataverse.datavariable.DataVariable;
+import edu.harvard.iq.dataverse.engine.command.Command;
+import edu.harvard.iq.dataverse.engine.command.DataverseRequest;
+import edu.harvard.iq.dataverse.engine.command.exception.CommandException;
+import edu.harvard.iq.dataverse.engine.command.impl.CreateGuestbookResponseCommand;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -91,13 +96,7 @@ public class DownloadInstanceWriter implements MessageBodyWriter<DownloadInstanc
                         } else if (di.getConversionParam().equals("format")  && accessObject.isLocalFile()) {
                             
                             if ("original".equals(di.getConversionParamValue())) {
-                                DataFileIO storedOrigDataAccess = StoredOriginalFile.retreive(accessObject);
-                                if (storedOrigDataAccess != null) {
-                                    accessObject = storedOrigDataAccess;
-                                } else {
-                                    // Leaving this code here for backward compatibility, for now:
-                                    accessObject = StoredOriginalFile.retrieve(sf, (FileAccessIO)accessObject);
-                                }
+                                accessObject = StoredOriginalFile.retreive(accessObject);
                             } else {
                                 // Other format conversions: 
                                 String requestedMimeType = di.getServiceFormatType(di.getConversionParam(), di.getConversionParamValue()); 
@@ -251,6 +250,26 @@ public class DownloadInstanceWriter implements MessageBodyWriter<DownloadInstanc
                         outstream.write(chunkClosing.getBytes());
                     }
                     
+                    
+                    logger.fine("di conversion param: "+di.getConversionParam()+", value: "+di.getConversionParamValue());
+                    
+                    // Downloads of thumbnail images (scaled down, low-res versions of graphic image files) and 
+                    // "preprocessed metadata" records for tabular data files are NOT considered "real" downloads, 
+                    // so these should not produce guestbook entries: 
+                    
+                    if (di.getGbr() != null && !(isThumbnailDownload(di) || isPreprocessedMetadataDownload(di))) {
+                        try {
+                            logger.fine("writing guestbook response.");
+                            Command cmd = new CreateGuestbookResponseCommand(di.getDataverseRequestService().getDataverseRequest(), di.getGbr(), di.getGbr().getDataFile().getOwner());
+                            di.getCommand().submit(cmd);
+                        } catch (CommandException e) {
+                            //if an error occurs here then download won't happen no need for response recs...
+                        }
+                    } else {
+                        logger.fine("not writing guestbook response");
+                    } 
+                        
+                    
                     instream.close();
                     outstream.close(); 
                     return;
@@ -260,6 +279,24 @@ public class DownloadInstanceWriter implements MessageBodyWriter<DownloadInstanc
         
         throw new WebApplicationException(Response.Status.NOT_FOUND);
 
+    }
+    
+    private boolean isThumbnailDownload(DownloadInstance downloadInstance) {
+        if (downloadInstance == null) return false; 
+        
+        if (downloadInstance.getConversionParam() == null) return false; 
+        
+        return downloadInstance.getConversionParam().equals("imageThumb");
+    }
+    
+    private boolean isPreprocessedMetadataDownload(DownloadInstance downloadInstance) {
+        if (downloadInstance == null) return false; 
+        
+        if (downloadInstance.getConversionParam() == null) return false; 
+        
+        if (downloadInstance.getConversionParamValue() == null) return false; 
+        
+        return downloadInstance.getConversionParam().equals("format") && downloadInstance.getConversionParamValue().equals("prep");
     }
     
     private long getContentSize(DataFileIO accessObject) {

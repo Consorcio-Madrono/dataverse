@@ -33,7 +33,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
 
 @Stateless
 @Named
@@ -51,9 +50,7 @@ public class SavedSearchServiceBean {
     DataverseLinkingServiceBean dataverseLinkingService;
     @EJB
     EjbDataverseEngine commandEngine;
-    @Context
-    HttpServletRequest httpReq;
-    
+
     private final String resultString = "result";
 
     @PersistenceContext(unitName = "VDCNet-ejbPU")
@@ -119,14 +116,30 @@ public class SavedSearchServiceBean {
         List<SavedSearch> allSavedSearches = findAll();
         JsonArrayBuilder savedSearchArrayBuilder = Json.createArrayBuilder();
         for (SavedSearch savedSearch : allSavedSearches) {
-            JsonObjectBuilder perSavedSearchResponse = makeLinksForSingleSavedSearch(savedSearch, debugFlag);
+            DataverseRequest dataverseRequest = new DataverseRequest(savedSearch.getCreator(), getHttpServletRequest());
+            JsonObjectBuilder perSavedSearchResponse = makeLinksForSingleSavedSearch(dataverseRequest, savedSearch, debugFlag);
             savedSearchArrayBuilder.add(perSavedSearchResponse);
         }
         response.add("hits by saved search", savedSearchArrayBuilder);
         return response;
     }
 
-    public JsonObjectBuilder makeLinksForSingleSavedSearch(SavedSearch savedSearch, boolean debugFlag) throws SearchException, CommandException {
+    /**
+     * The "Saved Search" and highly related "Linked Dataverses and Linked
+     * Datasets" features can be thought of as periodic execution of the
+     * LinkDataverseCommand and LinkDatasetCommand. As of this writing that
+     * periodic execution can be triggered via a cron job but we'd like to put
+     * it on an EJB timer as part of
+     * https://github.com/IQSS/dataverse/issues/2543 .
+     *
+     * The commands are executed by the creator of the SavedSearch. What happens
+     * if the users loses the permission that the command requires? Should the
+     * commands continue to be executed periodically as some "system" user?
+     *
+     * @return Debug information in the form of a JSON object, which is much
+     * more structured that a simple String.
+     */
+    public JsonObjectBuilder makeLinksForSingleSavedSearch(DataverseRequest dvReq, SavedSearch savedSearch, boolean debugFlag) throws SearchException, CommandException {
         JsonObjectBuilder response = Json.createObjectBuilder();
         JsonArrayBuilder savedSearchArrayBuilder = Json.createArrayBuilder();
         JsonArrayBuilder infoPerHit = Json.createArrayBuilder();
@@ -143,7 +156,6 @@ public class SavedSearchServiceBean {
                 infoPerHit.add(hitInfo);
                 break;
             }
-            DataverseRequest dvReq = new DataverseRequest(savedSearch.getCreator(), httpReq);
             if (dvObjectThatDefinitionPointWillLinkTo.isInstanceofDataverse()) {
                 Dataverse dataverseToLinkTo = (Dataverse) dvObjectThatDefinitionPointWillLinkTo;
                 if (wouldResultInLinkingToItself(savedSearch.getDefinitionPoint(), dataverseToLinkTo)) {
@@ -194,7 +206,7 @@ public class SavedSearchServiceBean {
         boolean dataRelatedToMe = false;
         int numResultsPerPage = Integer.MAX_VALUE;
         SolrQueryResponse solrQueryResponse = searchService.search(
-                savedSearch.getCreator(),
+                new DataverseRequest(savedSearch.getCreator(), getHttpServletRequest()),
                 savedSearch.getDefinitionPoint(),
                 savedSearch.getQuery(),
                 savedSearch.getFilterQueriesAsStrings(),
@@ -275,6 +287,34 @@ public class SavedSearchServiceBean {
      */
     private boolean datasetAncestorAlreadyLinked(Dataverse definitionPoint, Dataset datasetToLinkTo) {
         return false;
+    }
+
+    public static HttpServletRequest getHttpServletRequest() {
+        /**
+         * This HttpServletRequest object is purposefully set to null. "There's
+         * another issue here, though - the IP address. The request is sent from
+         * a cron job - I assume localhost? - and it's source IP address is
+         * different from the one the user may have, and quite possibly more
+         * privileged. It maybe safest to pass in a null http request at this
+         * stage." -- michbarsinai
+         *
+         * When Saved Search was designed, there was no DataverseRequest object
+         * so what is persisted is the id of the AuthenticatedUser. When a Saved
+         * Search is later re-executed via cron, the AuthenticatedUser is used
+         * but Saved Search has no memory of which IP address was used when the
+         * Saved Search was created. The default IP address in the
+         * DataverseRequest constructor is used instead, which as of this
+         * writing is 0.0.0.0 to mean "undefined". Is this a feature or a bug?
+         * What is the expected interplay between Saved Search and IP Groups?
+         * Users might be surprised to see certain DvObjects in the results of
+         * their query when creating the Saved Search and later find that those
+         * DvObjects, which are only visible due to an IP Groups membership, are
+         * not found by Saved Search when executed by cron, for example. As of
+         * this writing Saved Search is a superuser-only feature so perhaps IP
+         * Groups are irrelevant because all DvObjects are discoverable to
+         * superusers.
+         */
+        return null;
     }
 
 }

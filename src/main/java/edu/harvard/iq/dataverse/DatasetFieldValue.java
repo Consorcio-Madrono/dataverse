@@ -8,6 +8,8 @@ package edu.harvard.iq.dataverse;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +29,9 @@ import javax.persistence.Transient;
 @ValidateDatasetFieldType
 @Table(indexes = {@Index(columnList="datasetfield_id")})
 public class DatasetFieldValue implements Serializable {
+    
     private static final long serialVersionUID = 1L;
+    private static final ResourceBundle bundle= ResourceBundle.getBundle("Bundle");
     
     public static final Comparator<DatasetFieldValue> DisplayOrder = new Comparator<DatasetFieldValue>() {
         @Override
@@ -69,7 +73,16 @@ public class DatasetFieldValue implements Serializable {
     }
 
     public String getValue() {
-        return value;
+        // Hack to translate values from the database
+        String newValue= null;
+        if (value!= null) {
+            try {
+                newValue = bundle.getString(value);
+            } catch (MissingResourceException e) {
+                newValue = value;
+            }
+        }
+        return newValue;      //  return value;    
     }
 
     public void setValue(String value) {

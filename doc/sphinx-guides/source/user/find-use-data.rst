@@ -7,7 +7,7 @@ Finding Data
 Without logging in to Dataverse, users can browse
 Dataverse, search for dataverses, datasets, and files, view dataset descriptions and files for
 published datasets, and subset, analyze and visualize data for published (restricted & not restricted) data
-files. To view a unpublished dataverse, dataset, or file, a user will need to be given permission from that dataverse's adminstrator to access it. 
+files. To view a unpublished dataverse, dataset, or file, a user will need to be given permission from that dataverse's administrator to access it.
 
 A user can search the dataverses, datasets, and files within a particular dataverse by using the search bar found on a dataverse page. For example, if you are on the Murray Research Archive Dataverse page, you can search that specific dataverse's contents by using the search bar and/or facets displayed on the page.
 
@@ -64,15 +64,15 @@ After performing a search and finding the dataverse or dataset you are looking f
 
 Once on a dataset page, you will see the title, citation, description, and several other fields as well as a button to email the dataset contact. Below that information, the files, metadata, and version information for the dataset are available. 
 
-Download Citation
+Cite Data
 --------------------------
 
-You can find the citation for the dataset at the top of the dataset page in a blue box. Additionally, there is a Download Citation button that offers the option to download the citation as EndNote XML or RIS Format.
+You can find the citation for the dataset at the top of the dataset page in a blue box. Additionally, there is a Cite Data button that offers the option to download the citation as EndNote XML, RIS Format, or BibTeX Format.
 
 Download Files
 -----------------
 
-Within the Files tab on a dataset page, a user can either Explore tabular data files using TwoRavens, Download All File Formats + Information or individually download the Original File Format, Tab Delimited Format, Variable Metadata, Data File Citation (RIS Format or EndNote XML), or Subset (options appear depending on file format).
+Within the Files tab on a dataset page, a user can either Explore tabular data files using TwoRavens, Download All File Formats + Information or individually download the Original File Format, Tab Delimited Format, Variable Metadata, Data File Citation (EndNote XML, RIS Format, or BibTeX Format), or Subset (options appear depending on file format).
 
 To download more than one file at a time, select the files you would like to download and then click the Download button above the files. The selected files will download in zip format.
 

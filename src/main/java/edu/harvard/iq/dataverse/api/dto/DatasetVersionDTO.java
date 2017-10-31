@@ -17,6 +17,7 @@ public class DatasetVersionDTO {
     long id;
     VersionState versionState;
     String releaseDate;
+    String releaseTime;
     String lastUpdateTime;
     String createTime;
     String archiveTime;
@@ -36,10 +37,13 @@ public class DatasetVersionDTO {
     String contactForAccess;
     String sizeOfCollection;
     String studyCompletion; 
+    String citation;
+    String license;
     boolean inReview;
     
     Map<String,MetadataBlockDTO> metadataBlocks;
     List<FileMetadataDTO> fileMetadatas;
+    List<FileDTO> files;
 
     public boolean isInReview() {
         return inReview;
@@ -169,6 +173,14 @@ public class DatasetVersionDTO {
         this.studyCompletion = studyCompletion;
     }
 
+    public String getCitation() {
+        return citation;
+    }
+
+    public void setCitation(String citation) {
+        this.citation = citation;
+    }
+
     public String getUNF() {
         return UNF;
     }
@@ -185,8 +197,14 @@ public class DatasetVersionDTO {
         this.fileMetadatas = fileMetadatas;
     }
 
-    
-    
+    public List<FileDTO> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileDTO> files) {
+        this.files = files;
+    }
+
     public String getArchiveNote() {
         return archiveNote;
     }
@@ -244,6 +262,15 @@ public class DatasetVersionDTO {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+    
+    
+    public String getReleaseTime() {
+        return releaseTime;
+    }
+
+    public void setReleaseTime(String releaseTime) {
+        this.releaseTime = releaseTime;
+    }
 
     public String getLastUpdateTime() {
         return lastUpdateTime;
@@ -267,6 +294,14 @@ public class DatasetVersionDTO {
 
     public void setArchiveTime(String archiveTime) {
         this.archiveTime = archiveTime;
+    }
+    
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public Map<String, MetadataBlockDTO> getMetadataBlocks() {

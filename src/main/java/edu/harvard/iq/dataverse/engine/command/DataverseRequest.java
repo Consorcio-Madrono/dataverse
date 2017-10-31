@@ -1,6 +1,7 @@
 package edu.harvard.iq.dataverse.engine.command;
 
 import edu.harvard.iq.dataverse.authorization.groups.impl.ipaddress.ip.IpAddress;
+import edu.harvard.iq.dataverse.authorization.users.AuthenticatedUser;
 import edu.harvard.iq.dataverse.authorization.users.User;
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,28 +16,28 @@ public class DataverseRequest {
     
     private final User user;
     private final IpAddress sourceAddress;
-
+    
     public DataverseRequest(User aUser, HttpServletRequest aHttpServletRequest) {
         this.user = aUser;
-        String remoteAddressStr = null;
-        try {
-            remoteAddressStr = aHttpServletRequest.getHeader("X-Forwarded-For");
-        } catch ( NullPointerException _npe ) {
-            // ignore
-        }
-        
-        if ( remoteAddressStr == null ) {
-            try {
-                remoteAddressStr = aHttpServletRequest.getRemoteAddr();
-            } catch ( NullPointerException _npe ) {}
-        }
-        
-        if ( remoteAddressStr == null ) {
-            remoteAddressStr = "0.0.0.0";
+
+        final String undefined = "0.0.0.0";
+        String saneDefault = undefined;
+        String remoteAddressStr = saneDefault;
+
+        if (aHttpServletRequest != null) {
+            String remoteAddressFromRequest = aHttpServletRequest.getRemoteAddr();
+            if (remoteAddressFromRequest != null) {
+                remoteAddressStr = remoteAddressFromRequest;
+            }
         }
         sourceAddress = IpAddress.valueOf( remoteAddressStr );
     }
 
+    public DataverseRequest( User aUser, IpAddress aSourceAddress ) {
+        user = aUser;
+        sourceAddress = aSourceAddress;
+    }
+    
     public User getUser() {
         return user;
     }
@@ -48,12 +49,23 @@ public class DataverseRequest {
         return sourceAddress;
     }
 
-    
     @Override
     public String toString() {
-        return "[DataverseRequest user:" + getUser() + "@" + getSourceAddress() + "]";
-                
+        return "[DataverseRequest user:" + getUser() + "@" + getSourceAddress() + "]";                
     }
     
+    /**
+     * Get an AuthenticatedUser or return null
+     * @return 
+     */
+    public AuthenticatedUser getAuthenticatedUser(){
+        
+        User authUser = this.getUser();
+        
+        if (authUser instanceof AuthenticatedUser){
+            return (AuthenticatedUser)authUser;
+        }
+        return null;
+    }
     
 }

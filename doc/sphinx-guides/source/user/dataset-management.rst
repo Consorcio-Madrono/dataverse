@@ -16,10 +16,12 @@ A dataset contains three levels of metadata:
 
 For more details about what Citation and Domain specific metadata is supported please see our `Appendix <../user/appendix.html#metadata-references>`_.
 
+Note that once a dataset has been published its metadata may be exported. A button on the dataset page's metadata tab will allow a user to export the metadata of the most recently published version of the dataset. Currently supported export formats are DDI, Dublin Core and JSON.
+
 File Handling + Uploading
 ===============================
 
-All file formats are supported, up to 10GB per file for the Harvard Dataverse. Please contact support@dataverse.org if you need to upload a file that is larger than 10GB. You can also add descriptions and categorize each of them by adding tags.
+File upload limit size varies based on Dataverse installation. The file upload size limit can be found in the text above where files are uploaded in the application. If you have further questions, contact support for that installation by clicking on the Support link at the top of the application.
 
 The file types listed below are supported by additional functionality, which can include downloading in different formats, subsets, file-level metadata preservation, file-level data citation; and exploration 
 through data visualization and analysis. 
@@ -44,9 +46,7 @@ functionality is also provided by the `TwoRavens
 documentation section <../user/data-exploration/tworavens.html>`_ for
 more information.
 
-To use the ingest functionality for tabular files, a file can only be up to 2GB in size, however, to upload a tabular file without using ingest, a file can be up to 10GB in size.
-
-To use the ingest functionality for RData files, a file can only be up to 1MB in size, however, to upload a RData file without using ingest, a file can be up to 10GB in size.
+For example, the ingest functionality for tabular files in the Harvard Dataverse, a file can only be up to 2GB in size. To use the ingest functionality for RData files, a file can only be up to 1MB in size, however, to upload a RData file without using ingest, a file can be up to 2GB in size.
 
 Additional download options available for tabular data (found
 in the same drop-down menu under the "Download" button): 
@@ -65,10 +65,32 @@ Geospatial
 
 Geospatial `shapefiles <http://en.wikipedia.org/wiki/Shapefile>`_ can be further explored and manipulated through our integration
 with `WorldMap <../user/data-exploration/worldmap.html>`_, a geospatial data visualization
-and analysis tool developed by the `Center for Geographic Analysis <http://gis.harvard.edu/>`_ at Harvard University. Once you publish 
-your dataset with your shape files, you will be able to use the "Map Data" button using `GeoConnect <https://github.com/IQSS/geoconnect>`_ to visualize and manipulate these files
-for users to Explore this geospatial data using the `WorldMap <http://worldmap.harvard.edu/>`_ interface.
-Please note: In order to map your data file, a copy will be sent to Harvard's `WorldMap <http://worldmap.harvard.edu/>`_ platform. You have the ability to delete any maps, and associated data, from the Harvard WorldMap platform, at any time.
+and analysis tool developed by the `Center for Geographic Analysis <http://gis.harvard.edu/>`_ at Harvard University. A shapefile is a set of files, often uploaded/transferred in .zip format.  This set may contain up to 15 files.  A minimum of 3 specific files (.shp, .shx, .dbf) are needed to be a valid shapefile and a 4th file (.prj) is required for WorldMap--or any type of meaningful visualization.
+
+For ingest into Dataverse and connecting to WorldMap, these 4 files are the minimum required:
+
+* .shp - shape format; the feature geometry itself
+* .shx - shape index format; a positional index of the feature geometry to allow seeking forwards and backwards quickly
+* .dbf - attribute format; columnar attributes for each shape, in dBase IV format
+* .prj - projection format; the coordinate system and projection information, a plain text file describing the projection using well-known text format
+
+For a zipped shapefile, we require 4 files with these extensions. Other files may be included within the zipped shapefile, but they are not required: 
+
+* .shp
+* .shx 
+* .prj 
+* .dbf 
+
+For example, if these files were included within a .zip, the “Map Data” button would appear: 
+
+* subway_line.shp 
+* subway_line.shx 
+* subway_line.prj 
+* subway_line.dbf
+
+Once you publish your dataset with your shape files, you will be able to use the "Map Data" button using `GeoConnect <https://github.com/IQSS/geoconnect>`_ to visualize and manipulate these files
+for users to Explore this geospatial data using the `WorldMap <http://worldmap.harvard.edu/>`__ interface.
+Please note: In order to map your data file, a copy will be sent to Harvard's `WorldMap <http://worldmap.harvard.edu/>`__ platform. You have the ability to delete any maps, and associated data, from the Harvard WorldMap platform, at any time.
 
 Astronomy (FITS)
 --------------------
@@ -115,7 +137,7 @@ We currently only support the following HTML tags for any of our textbox meatdat
 <br>, <code>, <del>, <dd>, <dl>, <dt>, <em>, <hr>, <h1>-<h3>, <i>, <img>, <kbd>, <li>, <ol>, <p>, <pre>, <s>, <sup>, <sub>, 
 <strong>, <strike>, <ul>.
 
-Edit Dataset
+Edit Files
 ==================
 
 Go to the dataset you would like to edit where you will see the listing of files. Select the files you would like to edit by using either the Select All checkbox or individually selecting files. Next, click on the Edit button above the files and select if you would like to:
@@ -128,10 +150,18 @@ Go to the dataset you would like to edit where you will see the listing of files
 
 All of these actions, besides editing file metadata, will happen within this page and not bring you to another page. If you restrict files, you will also be asked to fill out the Terms of Access for the files. If Terms of Access already exist, you will be asked to confirm them.
 
-Upload New Files
-===================
+File Tags
+--------------------------------------------------------------
 
-To upload new files to a dataset, go the dataset you want to update and click on the Upload Files Button in the files tab. From there you will be brought to the Upload page for the dataset. Once you have uploaded files, you will be able to edit the file metadata, restrict, add tags, or delete them before saving.
+The File Tags are comprised of custom, category (i.e. Documentation, Data, Code) and tabular data tags (i.e. Event, Genomics, Geospatial, Network, Panel, Survey, Time Series). Use the dropdown select menus as well as the custom file tag input to apply these tags to the selected files. There is also a Delete Tags feature that, if checked, will allow you to delete unused file tags within that dataset.
+
+
+
+Upload New Files
+---------------------------------------------------------------
+
+To upload new files to a dataset, go to the dataset you want to update and click on the Upload Files button in the files tab. From there you will be brought to the Upload Files page for the dataset. Once you have uploaded files, you will be able to edit the file metadata, restrict, add tags, or delete them before saving.
+
 
 .. _license-terms:
 
@@ -167,7 +197,7 @@ If you restrict any files in your dataset, you will be prompted by a pop-up to e
 Guestbook
 --------------
 
-This is where you will enable a particular Guestbook for your dataset, which is setup at the Dataverse-level. For specific instructions please visit the Dataverse Management Guide > `Dataset Guestbook section <../user/dataverse-management.html#dataset-guestbooks>`_.
+This is where you will enable a particular Guestbook for your dataset, which is setup at the Dataverse-level. For specific instructions please visit the `Dataset Guestbooks <../user/dataverse-management.html#dataset-guestbooks>`_ section of the Dataverse Management page.
 
 .. _permissions:
 
@@ -192,6 +222,35 @@ The file permissions page has two sections: Users/Groups and Files.
 
 To give someone access to your restricted files, click on the Grant Access to Users/Groups button in the Users/Groups section. 
 
+.. _dataset-widgets:
+
+Widgets
+=============================
+
+The Widgets feature provides you with code for your personal website so your dataset can be displayed. There are two types of Widgets for a dataset: the Dataset Widget and the Dataset Citation Widget. The Widgets are found by going to your dataset page, clicking the Edit button (the one with the pencil icon) and selecting Widgets from the dropdown menu.
+
+On the Widgets page, you can copy and paste the code snippets for the widget you would like to add to your website. If you need to adjust the height of the widget on your website, you may do so by editing the `heightPx=500` parameter in the code snippet.
+
+Dataset Widget
+---------------------
+
+The Dataset Widget allows the citation, metadata, files and terms of your dataset to be displayed on your website. When someone downloads a data file in the widget, it will download directly from the datasets on your website. If a file is restricted, they will be directed to your dataverse to log in, instead of logging in through the widget on your site. 
+
+To edit your dataset, you will need to return to the Dataverse repository where the dataset is stored. You can easily do this by clicking on the link that says "Data Stored in (Name) Dataverse" found in the bottom of the widget.
+
+Dataset Citation Widget
+--------------------------
+
+The Dataset Citation Widget will provide a citation for your dataset on your personal or project website. Users can download the citation in various formats by using the Cite Data button. The persistent URL in the citation will direct users to the dataset in your dataverse. 
+
+
+Adding Widgets to an OpenScholar Website
+----------------------------------------------
+#. Log in to your OpenScholar website
+#. Either build a new page or navigate to the page you would like to use to show the Dataverse widgets.
+#. Click on the Settings Cog and select Layout
+#. At the top right, select Add New Widget and under Misc. you will see the Dataverse Dataset and the Dataverse Dataset Citation Widgets. Click on the widget you would like to add, fill out the form, and then drag it to where you would like it to display in the page.
+
 Publish Dataset
 ====================
 
@@ -213,6 +272,27 @@ dataset before they decide to either "Publish" the dataset or "Return to Author"
 will be notified that it is now published. If the dataset is returned to the author, the contributor of this dataset will be 
 notified that they need to make modifications before it can be submitted for review again.
 
+.. _privateurl:
+
+Private URL for Reviewing an Unpublished Dataset
+==================================================
+
+To share an unpublished dataset using Private URL
+----------------------------------------------------------------------
+
+Creating a Private URL for your dataset allows you to share your dataset (for viewing and downloading of files) before it is published to a wide group of individuals who may not have a user account on Dataverse. Anyone you send the Private URL to will not have to log into Dataverse to view the dataset.
+
+   1. Go to your unpublished dataset
+   2. Select the “Edit” button
+   3. Select “Private URL” in the dropdown menu
+   4. In the pop-up select “Create Private URL”
+   5. Copy the Private URL which has been created for this dataset and it can now be shared with anyone you wish to have access to view or download files in your unpublished dataset.
+
+To disable a Private URL
+-------------------------------------
+
+If ever you had shared a Private URL to your dataset and wish to revoke access, follow the same steps as above until step #3 but in the pop-up select “Disable Private URL”.
+
 
 Dataset Versioning
 ======================
@@ -230,7 +310,8 @@ a file, your dataset will automatically be bumped up to a major version (example
 
 |image3|
 
-**Dataset Versions Tab**
+Version Details
+-------------------------------------
 
 To view what has exactly changed starting from the originally published version to any subsequent published versions: click on the Versions tab on the dataset page to see all versions and changes made for that particular dataset. Once you have more than one version (can be version 1 and a draft), you can click the Show Details link in the Versions tab to learn more about the metadata fields and files that were either added or edited. 
 
@@ -243,11 +324,17 @@ Deaccession Your Dataset [not recommended]
 
 Deaccessioning a dataset or a version of a dataset is a very serious action that should only occur if there is a legal or valid reason for the dataset to no longer be accessible to the public. If you absolutely must deaccession, you can deaccession a version of a dataset or an entire dataset. To deaccession, go to a dataset you’ve already published (or add a new one and publish it), click on Edit Dataset, then Deaccession Dataset. If you have multiple versions of a dataset, you can select here which versions you want to deaccession or choose to deaccession the entire dataset. You must also include a reason as to why this dataset was deaccessioned from a dropdown list of options. There is also a free-text box to add more details as to why this was deaccessioned. If the dataset has moved to a different repository or site you are encouraged to include a URL (preferably persistent) for users to continue to be able to access this dataset in the future.
 
+If you deaccession the most recently published version of the dataset but not all versions of the dataset, you are able to go in and create a new draft for the dataset. For example, you have a version 1 and version 2 of a dataset, both published, and deaccession version 2. You are then able to edit version 1 of the dataset and a new draft will be created.
+
+
 **Important Note**: A tombstone landing page with the basic citation metadata will always be accessible to the public if they use the persistent URL (Handle or DOI) provided in the citation for that dataset.  Users will not be able to see any of the files or additional metadata that were previously available prior to deaccession.
 
 
 
 .. |image1| image:: ./img/DatasetDiagram.png
-.. |image2| image:: ./img/data-download.png 
-.. |image3| image:: http://static.projects.iq.harvard.edu/files/styles/os_files_xxlarge/public/datascience/files/data_publishing_version_workflow.png?itok=8Z0PM-QC
+   :class: img-responsive
+.. |image2| image:: ./img/data-download.png
+   :class: img-responsive
+.. |image3| image:: ./img/data_publishing_version_workflow.png
+   :class: img-responsive
 

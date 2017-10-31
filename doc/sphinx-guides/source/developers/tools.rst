@@ -17,6 +17,19 @@ Maven
 
 With Maven installed you can run `mvn package` and `mvn test` from the command line. It can be downloaded from https://maven.apache.org
 
+Eclipse Memory Analyzer Tool (MAT)
+++++++++++++++++++++++++++++++++++
+
+The Memory Analyzer Tool (MAT) from Eclipse can help you analyze heap dumps, showing you "leak suspects" such as seen at https://github.com/payara/Payara/issues/350#issuecomment-115262625
+
+It can be downloaded from http://www.eclipse.org/mat
+
+If the heap dump provided to you was created with ``gcore`` (such as with ``gcore -o /tmp/gf.core $glassfish_pid``) rather than ``jmap``, you will need to convert the file before you can open it in MAT. Using ``gf.core.13849`` as example of the original 33 GB file, here is how you could convert it into a 26 GB ``gf.core.13849.hprof`` file. Please note that this operation took almost 90 minutes:
+
+``/usr/java7/bin/jmap -dump:format=b,file=gf.core.13849.hprof /usr/java7/bin/java gf.core.13849``
+
+A file of this size may not "just work" in MAT. When you attempt to open it you may see something like "An internal error occurred during: "Parsing heap dump from '/tmp/heapdumps/gf.core.13849.hprof'". Java heap space". If so, you will need to increase the memory allocated to MAT. On Mac OS X, this can be done by editing ``MemoryAnalyzer.app/Contents/MacOS/MemoryAnalyzer.ini`` and increasing the value "-Xmx1024m" until it's high enough to open the file. See also http://wiki.eclipse.org/index.php/MemoryAnalyzer/FAQ#Out_of_Memory_Error_while_Running_the_Memory_Analyzer
+
 PageKite
 ++++++++
 
@@ -37,25 +50,16 @@ According to https://pagekite.net/support/free-for-foss/ PageKite (very generous
 Vagrant
 +++++++
 
-Vagrant allows you to spin up a virtual machine running Dataverse on
-your development workstation.
+Vagrant allows you to spin up a virtual machine running Dataverse on your development workstation. You'll need to install Vagrant from https://www.vagrantup.com and VirtualBox from https://www.virtualbox.org.
+
+We assume you have already cloned the repo from https://github.com/IQSS/dataverse as explained in the :doc:`/developers/dev-environment` section.
 
 From the root of the git repo, run ``vagrant up`` and eventually you
 should be able to reach an installation of Dataverse at
 http://localhost:8888 (or whatever forwarded_port indicates in the
-Vagrantfile)
+Vagrantfile).
 
-The Vagrant environment can also be used for Shibboleth testing in
-conjunction with PageKite configured like this:
-
-service_on = http:@kitename  : localhost:8888 : @kitesecret
-
-service_on = https:@kitename : localhost:9999 : @kitesecret
-
-Please note that before running ``vagrant up`` for the first time,
-you'll need to ensure that required software (GlassFish, Solr, etc.)
-is available within Vagrant. If you type ``cd downloads`` and
-``./download.sh`` the software should be properly downloaded.
+Please note that running ``vagrant up`` for the first time should run the ``downloads/download.sh`` script for you to download required software such as Glassfish and Solr and any patches. However, these dependencies change over time so it's a place to look if ``vagrant up`` was working but later fails.
 
 MSV
 +++

@@ -4,6 +4,7 @@ import edu.harvard.iq.dataverse.DataFile;
 import edu.harvard.iq.dataverse.Dataset;
 import edu.harvard.iq.dataverse.DvObject;
 import edu.harvard.iq.dataverse.api.Util;
+import edu.harvard.iq.dataverse.util.json.JsonPrinter;
 import edu.harvard.iq.dataverse.util.json.NullSafeJsonBuilder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,8 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import static edu.harvard.iq.dataverse.util.json.NullSafeJsonBuilder.jsonObjectBuilder;
+import java.math.BigDecimal;
+import javax.json.JsonValue;
 
 public class SolrSearchResult {
 
@@ -59,6 +62,7 @@ public class SolrSearchResult {
     private Map<String, String> parent;
     private String dataverseAffiliation;
     private String citation;
+    private String citationHtml;
     /**
      * Files and datasets might have a UNF. Dataverses don't.
      */
@@ -66,7 +70,12 @@ public class SolrSearchResult {
     private String filetype;
     private String fileContentType;
     private Long fileSizeInBytes;
+    /**
+     * fileMD5 is here for legacy and backward-compatibility reasons. It might be deprecated some day in favor of "fileChecksumType" and "fileChecksumValue"
+     */
     private String fileMd5;
+    private DataFile.ChecksumType fileChecksumType;
+    private String fileChecksumValue;
     private String dataverseAlias;
     private String dataverseParentAlias;
 //    private boolean statePublished;
@@ -86,13 +95,45 @@ public class SolrSearchResult {
     private boolean isInTree;
     private float score;
     private List<String> userRole;
-
+    private boolean harvested = false;
+    private String dvTree;
+    private String harvestingDescription = null;
+    private List<String> fileCategories = null;
+    private List<String> tabularDataTags = null;
+    
+    public String getDvTree() {
+        return dvTree;
+    }
+    
+    public void setDvTree(String dvTree) {
+        this.dvTree = dvTree;
+    } 
+    
     public boolean isIsInTree() {
         return isInTree;
     }
 
     public void setIsInTree(boolean isInTree) {
         this.isInTree = isInTree;
+    }
+    
+    public boolean isHarvested() {
+        return harvested;
+    }
+
+    public void setHarvested(boolean harvested) {
+        this.harvested = harvested;
+    }
+    
+    public String getHarvestingDescription() {
+        //if (this.isHarvested()) {
+            return harvestingDescription;
+        //}
+        //return null;
+    }
+    
+    public void setHarvestingDescription(String harvestingDescription) {
+        this.harvestingDescription = harvestingDescription;
     }
 //    public boolean isStatePublished() {
 //        return statePublished;
@@ -461,10 +502,17 @@ public class SolrSearchResult {
                 .add("file_type", this.filetype)
                 .add("file_content_type", this.fileContentType)
                 .add("size_in_bytes", getFileSizeInBytes())
+                /**
+                 * "md5" was the only possible value so it's hard-coded here but
+                 * we might want to deprecate it someday since we now put the
+                 * MD5 or SHA-1 in "checksum".
+                 */
                 .add("md5", getFileMd5())
+                .add("checksum", JsonPrinter.getChecksumTypeAndValue(getFileChecksumType(), getFileChecksumValue()))
                 .add("unf", getUnf())
                 .add("dataset_citation", datasetCitation)
                 .add("deaccession_reason", this.deaccessionReason)
+                .add("citationHtml", this.citationHtml)
                 .add("citation", this.citation);
         // Now that nullSafeJsonBuilder has been instatiated, check for null before adding to it!
         if (showRelevance) {
@@ -671,6 +719,22 @@ public class SolrSearchResult {
         this.highlightsAsList = highlightsAsList;
     }
 
+    public List<String> getFileCategories() {
+        return fileCategories;
+    }
+    
+    public void setFileCategories(List<String> fileCategories) {
+        this.fileCategories = fileCategories;
+    }
+    
+    public List<String> getTabularDataTags() {
+        return tabularDataTags;
+    }
+    
+    public void setTabularDataTags(List<String> tabularDataTags) {
+        this.tabularDataTags = tabularDataTags;
+    }
+    
     public Map<String, String> getParent() {
         return parent;
     }
@@ -716,6 +780,14 @@ public class SolrSearchResult {
         this.citation = citation;
     }
 
+    public String getCitationHtml() {
+        return citationHtml;
+    }
+
+    public void setCitationHtml(String citationHtml) {
+        this.citationHtml = citationHtml;
+    }
+
     public String getFiletype() {
         return filetype;
     }
@@ -749,11 +821,31 @@ public class SolrSearchResult {
     }
 
     public String getFileMd5() {
-        return fileMd5;
+        if (DataFile.ChecksumType.MD5.equals(getFileChecksumType())) {
+            return fileMd5;
+        } else {
+            return null;
+        }
     }
 
     public void setFileMd5(String fileMd5) {
         this.fileMd5 = fileMd5;
+    }
+
+    public DataFile.ChecksumType getFileChecksumType() {
+        return fileChecksumType;
+    }
+
+    public void setFileChecksumType(DataFile.ChecksumType fileChecksumType) {
+        this.fileChecksumType = fileChecksumType;
+    }
+
+    public String getFileChecksumValue() {
+        return fileChecksumValue;
+    }
+
+    public void setFileChecksumValue(String fileChecksumValue) {
+        this.fileChecksumValue = fileChecksumValue;
     }
 
     public String getNameSort() {
@@ -816,7 +908,7 @@ public class SolrSearchResult {
             String badString = "null";
             if (!identifier.contains(badString)) {
                 if (entity != null && entity instanceof Dataset) {
-                    if (((Dataset) entity).isHarvested()) {
+                    if (this.isHarvested()) {
                         String remoteArchiveUrl = ((Dataset) entity).getRemoteArchiveURL();
                         if (remoteArchiveUrl != null) {
                             return remoteArchiveUrl;
@@ -851,13 +943,21 @@ public class SolrSearchResult {
     }
 
     public String getFileUrl() {
-        if (entity != null && entity instanceof DataFile && ((DataFile) entity).isHarvested()) {
+        // Nothing special needs to be done for harvested file URLs: 
+        // simply directing these to the local dataset.xhtml for this dataset
+        // will take care of it - because DatasetPage will issue a redirect 
+        // to the remote archive URL. 
+        // This is true AS OF 4.2.4, FEB. 2016! - We'll probably want to make
+        // .getRemoteArchiveURL() methods, both in DataFile and Dataset objects, 
+        // work again at some point in the future. 
+        /*
+        if (entity != null && entity instanceof DataFile && this.isHarvested()) {
             String remoteArchiveUrl = ((DataFile) entity).getRemoteArchiveURL();
             if (remoteArchiveUrl != null) {
                 return remoteArchiveUrl;
             }
             return null;
-        }
+        }*/
         
         return "/file.xhtml?fileId=" + entity.getId() + "&datasetVersionId=" + datasetVersionId;
         
@@ -870,13 +970,15 @@ public class SolrSearchResult {
     }
     
     public String getFileDatasetUrl() {
-        if (entity != null && entity instanceof DataFile && ((DataFile) entity).isHarvested()) {
+        // See the comment in the getFileUrl() method above. -- L.A. 4.2.4
+        /*
+        if (entity != null && entity instanceof DataFile && this.isHarvested()) {
             String remoteArchiveUrl = ((DataFile) entity).getRemoteArchiveURL();
             if (remoteArchiveUrl != null) {
                 return remoteArchiveUrl;
             }
             return null;
-        }
+        }*/
                
         String parentDatasetGlobalId = parent.get(PARENT_IDENTIFIER);        
 
@@ -951,5 +1053,6 @@ public class SolrSearchResult {
     public void setUserRole(List<String> userRole) {
         this.userRole = userRole;
     }
+
 
 }

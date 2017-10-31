@@ -42,8 +42,8 @@
                                 <p:panelGrid rendered="#{not empty themeWidgetFragment.editDv.dataverseTheme.logo}" columns="3" styleClass="noBorders" columnClasses="text-center,uploadNewLogo,messageCell">
                                     <p:column>
                                         <p>
-                                            <img jsf:rendered="#{themeWidgetFragment.uploadExists()}" class="logoPreview" src="/logos/temp/#{themeWidgetFragment.tempDirName}/#{themeWidgetFragment.editDv.dataverseTheme.logo}" alt="#{themeWidgetFragment.editDv.name} #{bundle.dataverse}"/>
-                                            <img jsf:rendered="#{not themeWidgetFragment.uploadExists()}" class="logoPreview" src="/logos/#{themeWidgetFragment.editDv.id}/#{themeWidgetFragment.editDv.dataverseTheme.logo}" alt="#{themeWidgetFragment.editDv.name} #{bundle.dataverse}"/>
+                                            <img jsf:rendered="#{themeWidgetFragment.uploadExists()}" class="logoPreview" src="/logos/temp/#{themeWidgetFragment.tempDirName}/#{themeWidgetFragment.editDv.dataverseTheme.logo}" alt="#{bundle.dataverse} #{themeWidgetFragment.editDv.name}"/>
+                                            <img jsf:rendered="#{not themeWidgetFragment.uploadExists()}" class="logoPreview" src="/logos/#{themeWidgetFragment.editDv.id}/#{themeWidgetFragment.editDv.dataverseTheme.logo}" alt="#{bundle.dataverse} #{themeWidgetFragment.editDv.name}"/>
                                         </p>
                                         <p:commandButton update=":themeWidgetsForm:themeWidgetsTabView" value="#{bundle.remove}" action="#{themeWidgetFragment.removeLogo()}" oncomplete="bind_bsui_components();"/>
                                     </p:column>                              
@@ -62,14 +62,12 @@
                                             </span>
                                         </label>
                                         <div>
-                                            <p:panelGrid columns="2" styleClass="noBorders">
-                                                <p:selectOneRadio id="logoFormat" value="#{themeWidgetFragment.editDv.dataverseTheme.logoFormat}">
-                                                    <f:selectItem itemLabel="#{bundle['dataverse.theme.logo.format.selectTab.square2']}" itemValue="SQUARE"/>
-                                                    <f:selectItem itemLabel="#{bundle['dataverse.theme.logo.format.selectTab.rectangle2']}" itemValue="RECTANGLE"/>
-                                                    <p:ajax update="@widgetVar(content)" oncomplete="dataverseuser_page_rebind();" />
-                                                </p:selectOneRadio>
-                                                <p:message for="logoFormat" display="text"/>
-                                            </p:panelGrid>
+                                            <p:selectOneRadio id="logoFormat" value="#{themeWidgetFragment.editDv.dataverseTheme.logoFormat}">
+                                                <f:selectItem itemLabel="#{bundle['dataverse.theme.logo.format.selectTab.square2']}" itemValue="SQUARE"/>
+                                                <f:selectItem itemLabel="#{bundle['dataverse.theme.logo.format.selectTab.rectangle2']}" itemValue="RECTANGLE"/>
+                                                <p:ajax update="@widgetVar(content)" oncomplete="dataverseuser_page_rebind();" />
+                                            </p:selectOneRadio>
+                                            <p:message for="logoFormat" display="text"/>
                                         </div>
                                     </div>
                                     <ui:fragment rendered="#{themeWidgetFragment.editDv.dataverseTheme.logoFormat=='RECTANGLE'}">
@@ -80,14 +78,12 @@
                                                 </span>
                                             </label>
                                             <div>
-                                                <p:panelGrid columns="2" styleClass="noBorders">
-                                                    <p:selectOneMenu id="logoAlignment" styleClass="form-control" value="#{themeWidgetFragment.editDv.dataverseTheme.logoAlignment}">
-                                                        <f:selectItem id="left" itemLabel="#{bundle['dataverse.theme.logo.alignment.selectTab.left2']}" itemValue="LEFT" />
-                                                        <f:selectItem id="center" itemLabel="#{bundle['dataverse.theme.logo.alignment.selectTab.center2']}" itemValue="CENTER" />
-                                                        <f:selectItem id="right" itemLabel="#{bundle['dataverse.theme.logo.alignment.selectTab.right2']}" itemValue="RIGHT" />
-                                                    </p:selectOneMenu>
-                                                    <p:message for="logoAlignment" display="text"/>
-                                                </p:panelGrid>
+                                                <p:selectOneMenu id="logoAlignment" styleClass="form-control" value="#{themeWidgetFragment.editDv.dataverseTheme.logoAlignment}">
+                                                    <f:selectItem id="left" itemLabel="#{bundle['dataverse.theme.logo.alignment.selectTab.left2']}" itemValue="LEFT" />
+                                                    <f:selectItem id="center" itemLabel="#{bundle['dataverse.theme.logo.alignment.selectTab.center2']}" itemValue="CENTER" />
+                                                    <f:selectItem id="right" itemLabel="#{bundle['dataverse.theme.logo.alignment.selectTab.right2']}" itemValue="RIGHT" />
+                                                </p:selectOneMenu>
+                                                <p:message for="logoAlignment" display="text"/>
                                             </div>
                                         </div>
                                         <div class="form-col-container col-sm-4">
@@ -97,10 +93,8 @@
                                                 </span>
                                             </label>
                                             <div>
-                                                <p:panelGrid columns="2" styleClass="noBorders">
-                                                    <p:colorPicker id="logoBackgroundColor" value="#{themeWidgetFragment.editDv.dataverseTheme.logoBackgroundColor}"/>
-                                                    <p:message for="logoBackgroundColor" display="text"/>
-                                                </p:panelGrid>
+                                                <p:colorPicker id="logoBackgroundColor" value="#{themeWidgetFragment.editDv.dataverseTheme.logoBackgroundColor}"/>
+                                                <p:message for="logoBackgroundColor" display="text"/>
                                             </div>
                                         </div>
                                     </ui:fragment>
@@ -124,10 +118,8 @@
                                             </span>
                                         </label>
                                         <div>
-                                            <p:panelGrid columns="2" styleClass="noBorders">
-                                                <p:colorPicker id="backgroundColor" value="#{themeWidgetFragment.editDv.dataverseTheme.backgroundColor}"/>
-                                                <p:message for="backgroundColor" display="text"/>
-                                            </p:panelGrid>
+                                            <p:colorPicker id="backgroundColor" value="#{themeWidgetFragment.editDv.dataverseTheme.backgroundColor}"/>
+                                            <p:message for="backgroundColor" display="text"/>
                                         </div>
                                     </div>
                                     <div class="form-col-container col-sm-4">
@@ -137,10 +129,8 @@
                                             </span>
                                         </label>
                                         <div>
-                                            <p:panelGrid columns="2" styleClass="noBorders">
-                                                <p:colorPicker id="linkColor" value="#{themeWidgetFragment.editDv.dataverseTheme.linkColor}"/>
-                                                <p:message for="linkColor" display="text"/>
-                                            </p:panelGrid>
+                                            <p:colorPicker id="linkColor" value="#{themeWidgetFragment.editDv.dataverseTheme.linkColor}"/>
+                                            <p:message for="linkColor" display="text"/>
                                         </div>
                                     </div>
                                     <div class="form-col-container col-sm-4">
@@ -150,10 +140,8 @@
                                             </span>
                                         </label>
                                         <div>
-                                            <p:panelGrid columns="2" styleClass="noBorders">
-                                                <p:colorPicker id="textColor" value="#{themeWidgetFragment.editDv.dataverseTheme.textColor}"/>
-                                                <p:message for="textColor" display="text"/>
-                                            </p:panelGrid>
+                                            <p:colorPicker id="textColor" value="#{themeWidgetFragment.editDv.dataverseTheme.textColor}"/>
+                                            <p:message for="textColor" display="text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -192,33 +180,68 @@
                     </ui:fragment>
                 </p:fragment>
                 <div class="button-block">
-                    <p:commandButton value="#{bundle.saveChanges}" update=":#{p:component('messagePanel')}, :themeWidgetsForm" action="#{themeWidgetFragment.save()}"/>
-                    <p:commandButton action="#{themeWidgetFragment.cancel()}" immediate="true" id="themeCancel" value="#{bundle.cancel}"/>
+                    <p:commandButton class="btn btn-default" value="#{bundle.saveChanges}" update=":#{p:component('messagePanel')}, :themeWidgetsForm" action="#{themeWidgetFragment.save()}" oncomplete="bind_bsui_components();"/>
+                    <p:commandButton class="btn btn-default" action="#{themeWidgetFragment.cancel()}" immediate="true" id="themeCancel" value="#{bundle.cancel}"/>
                 </div>
             </p:tab>
             <p:tab id="widgetsTab" title="#{bundle['dataverse.widgets.title']}">
-                <p class="help-block"><span class="glyphicon glyphicon-info-sign"/> #{bundle['dataverse.widgets.tip']}</p>
-                <div>
-                    <h5>
-                        #{bundle['dataverse.widgets.searchBox.txt']}
-                    </h5>
-                    <p class="help-block">#{bundle['dataverse.widgets.searchBox.tip']}</p>
+                <div id="no-widgets-message" class="panel panel-default" jsf:rendered="#{!themeWidgetFragment.editDv.released}">
+                    <div class="panel-body">
+                        <span class="help-block h3">#{bundle['dataverse.widgets.notPublished.why.header']}</span>
+                        <ul>
+                            <li><h:outputText value="#{bundle['dataverse.widgets.notPublished.why.reason1']}" escape="false"/></li>
+                            <li><h:outputText value="#{bundle['dataverse.widgets.notPublished.why.reason2']}" escape="false"/></li>
+                        </ul>
+                        <span class="help-block h3">#{bundle['dataverse.widgets.notPublished.how.header']}</span>
+                        <ul>
+                            <li><h:outputText value="#{bundle['dataverse.widgets.notPublished.how.tip1']}" escape="false"/></li>
+                            <li><h:outputText value="#{bundle['dataverse.widgets.notPublished.how.tip2']}" escape="false"/></li>
+                            <li>
+                                <h:outputFormat value="#{bundle['dataverse.widgets.notPublished.how.tip3']}" escape="false">
+                                    <f:param value="#{systemConfig.guidesBaseUrl}"/>
+                                    <f:param value="#{systemConfig.version}"/>
+                                </h:outputFormat>
+                            </li>
+                        </ul>
+                        <p>
+                            <h:outputFormat value="#{bundle['dataverse.widgets.notPublished.getStarted']}" escape="false">
+                                <f:param value="#{systemConfig.guidesBaseUrl}"/>
+                                <f:param value="#{systemConfig.version}"/>
+                            </h:outputFormat>
+                        </p>
+                    </div>
                 </div>
-                <div>
-                    <textarea rows="3" cols="54" class="form-control">&lt;script src=&quot;#{systemConfig.dataverseSiteUrl}/resources/js/widgets.js?alias=#{themeWidgetFragment.editDv.alias}&amp;amp;dvUrl=#{systemConfig.dataverseSiteUrl}&amp;amp;widget=search&amp;amp;text=Search&#43;my&#43;dataverse&quot;&gt;&lt;/script&gt;</textarea>
-                </div>
-                <div>
-                    <h5>
-                        #{bundle['dataverse.widgets.dataverseListing.txt']}
-                    </h5>
-                    <p class="help-block">#{bundle['dataverse.widgets.dataverseListing.tip']}</p>
-                </div>
-                <div>
-                    <textarea rows="2" cols="54" class="form-control">&lt;script src=&quot;#{systemConfig.dataverseSiteUrl}/resources/js/widgets.js?alias=#{themeWidgetFragment.editDv.alias}&amp;amp;dvUrl=#{systemConfig.dataverseSiteUrl}&amp;amp;widget=iframe&amp;amp;heightPx=500&quot;&gt;&lt;/script&gt;</textarea>
-                </div>
-                <div class="button-block">
-                    <p:commandButton action="#{themeWidgetFragment.cancel()}" immediate="true" id="widgetsDone" value="#{bundle.done}"/>
-                </div>
+                
+                <ui:fragment rendered="#{themeWidgetFragment.editDv.released}">
+                    <p class="help-block"><span class="glyphicon glyphicon-info-sign"/> 
+                        <h:outputFormat value=" #{bundle['dataverse.widgets.tip']}" escape="false">
+                            <f:param value="#{systemConfig.guidesBaseUrl}"/>
+                            <f:param value="#{systemConfig.version}"/>
+                        </h:outputFormat>
+                    </p>
+                    <div>
+                        <h5>
+                            #{bundle['dataverse.widgets.searchBox.txt']}
+                        </h5>
+                        <p class="help-block">#{bundle['dataverse.widgets.searchBox.tip']}</p>
+                    </div>
+                    <div>
+                        <textarea rows="3" cols="54" class="form-control">&lt;script src=&quot;#{systemConfig.dataverseSiteUrl}/resources/js/widgets.js?alias=#{themeWidgetFragment.editDv.alias}&amp;amp;dvUrl=#{systemConfig.dataverseSiteUrl}&amp;amp;widget=search&amp;amp;text=Search&#43;my&#43;dataverse&quot;&gt;&lt;/script&gt;</textarea>
+                    </div>
+                    <div>
+                        <h5>
+                            #{bundle['dataverse.widgets.dataverseListing.txt']}
+                        </h5>
+                        <p class="help-block">#{bundle['dataverse.widgets.dataverseListing.tip']}</p>
+                    </div>
+                    <div>
+                        <textarea rows="3" cols="54" class="form-control">&lt;script src=&quot;#{systemConfig.dataverseSiteUrl}/resources/js/widgets.js?alias=#{themeWidgetFragment.editDv.alias}&amp;amp;dvUrl=#{systemConfig.dataverseSiteUrl}&amp;amp;widgetScope=#{themeWidgetFragment.editDv.alias}&amp;amp;widget=iframe&amp;amp;heightPx=500&quot;&gt;&lt;/script&gt;</textarea>
+                    </div>
+                    <div class="button-block">
+                        <p:commandButton class="btn btn-default" action="#{themeWidgetFragment.cancel()}" immediate="true" id="widgetsDone" value="#{bundle.done}"/>
+                    </div>
+                </ui:fragment>
             </p:tab>
         </p:tabView>
+    <p:remoteCommand name="saveRedirectUrl" process="@this" update=":#{p:component('messagePanel')}, :themeWidgetsForm, @([id$=Messages])" actionListener="#{themeWidgetFragment.save()}"/>
 </ui:composition>

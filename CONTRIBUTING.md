@@ -4,7 +4,7 @@ Thank you for your interest in contributing to Dataverse! We welcome contributio
 
 ## Ideas/Feature Requests
 
-The [Dataverse roadmap][] might already capture your idea or feature request but if not, the best way to bring it to the community's attention is by posting on the [dataverse-community Google Group][]. You're also welcome make some noise in the [#dataverse IRC channel][] or cram your idea into 140 characters and mention [@dataverseorg][] on Twitter.
+Your idea or feature request might already be captured in the collection of [Dataverse issues] but if not, the best way to bring it to the community's attention is by posting on the [dataverse-community Google Group][]. You're also welcome make some noise in the [#dataverse IRC channel][] or cram your idea into 140 characters and mention [@dataverseorg][] on Twitter.
 
 Once an idea/feature request has been received by the Dataverse Development Team the process outlined in the image below happens.
 
@@ -17,7 +17,7 @@ To review FRDs for Dataverse, you can access them in this [Functional Requiremen
 See also our [Community and Support][] page.
 
 [#dataverse IRC channel]: http://webchat.freenode.net/?channels=dataverse
-[Dataverse roadmap]: http://roadmap.datascience.iq.harvard.edu
+[Dataverse issues]: https://github.com/IQSS/dataverse/issues
 [@dataverseorg]: http://twitter.com/dataverseorg
 [Community and Support]: http://datascience.iq.harvard.edu/dataverse/support
 [Functional Requirements Document (FRD for short)]: https://docs.google.com/document/d/1PRyAlP6zlUlUuHfgyUezzuaVQ4JnapvgtGWo0o7tLEs/edit?usp=sharing
@@ -32,7 +32,7 @@ An issue is a bug (a feature is no longer behaving the way it should) or a featu
 
 Before submitting an issue, please search the existing issues by using the search bar at the top of the page. If there is an existing issue that matches the issue you want to report, please add a comment to it.
 
-If there is no pre-existing issue, please click on the "New Issue" button, log in, and write in what the issue is. Someone on the Dataverse development team will appropriately tag and assign it to a member of the Dataverse development team. 
+If there is no pre-existing issue, please click on the "New Issue" button, log in, and write in what the issue is (unless it is a security issue which should be reported privately to security@dataverse.org). Someone on the Dataverse development team will appropriately tag and assign it to a member of the Dataverse development team.
 
 ## Writing an Issue
 
@@ -70,7 +70,7 @@ The source for the documentation at http://guides.dataverse.org is in the GitHub
 
 ## Code/Pull Requests
 
-To get started developing code for Dataverse, please read our Developer's Guide at http://guides.dataverse.org/en/latest/developers
+To get started developing code for Dataverse, please read our Developer Guide at http://guides.dataverse.org/en/latest/developers
 
 [doc]: https://github.com/IQSS/dataverse/tree/master/doc/sphinx-guides/source
 

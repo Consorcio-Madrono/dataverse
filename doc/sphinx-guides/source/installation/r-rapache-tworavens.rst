@@ -5,8 +5,8 @@ R, rApache and TwoRavens
 Eventually, this document may be split into several parts, dedicated to individual components - 
 such as R, rApache and the TwoRavens applications. Particularly, if the TwoRavens team creates an "official" distribution with their own installation manual. 
 
-0. PREREQUISITS
-+++++++++++++++
+0. PREREQUISITES
+++++++++++++++++
 
 a. httpd (Apache): 
 ------------------
@@ -18,6 +18,9 @@ Disable SELinux on httpd:
 ``setenforce permissive``
 
 ``getenforce``
+
+(Note: a pull request to get rApache working with SELinux is welcome! Please see the :doc:`/developers/selinux` section of the Developer Guide to get started.)
+
 
 https strongly recommended; signed certificate (as opposed to self-signed) is recommended. 
 
@@ -43,6 +46,13 @@ yum install R R-devel
 
 (EPEL distribution recommended; version 3.* required; 3.1.* recommended as of writing this)
 
+To pick up any needed dependencies, CentOS users may simply install the epel-release RPM.
+
+RHEL users will want to log in to their organization's respective RHN interface, find the particular machine in question and:
+
+• click on "Subscribed Channels: Alter Channel Subscriptions"
+• enable EPEL, Server Extras, Server Optional
+
 c. rApache: 
 -----------
 
@@ -53,21 +63,18 @@ install rApache as follows::
 	yum install libapreq2
 	rpm -ivh http://mirror.hmdc.harvard.edu/HMDC-Public/RedHat-6/rapache-1.2.6-rpm0.x86_64.rpm
 
+If you are using RHEL/CentOS 7, you can `download an experimental rapache-1.2.7-rpm0.x86_64.rpm <../_static/installation/files/home/rpmbuild/rpmbuild/RPMS/x86_64/rapache-1.2.7-rpm0.x86_64.rpm>`_ and install it with::
 
+	rpm -ivh rapache-1.2.7-rpm0.x86_64.rpm
 
-d. Install libcurl-devel:
--------------------------
+d. Install system depencies:
+----------------------------
 
-(provides /usr/bin/curl-config, needed by some 3rd-party R packages; package installation *will fail silently* if it's not found!): 
+The r-setup.sh script launches child processes which log to RINSTALL.* files. Once the script exits, search these files for the word "error" and be sure to install any missing dependencies and run the script again. At present, at minimum it needs:
 
-``yum install libcurl-devel``
+``yum install libcurl-devel openssl-devel libxml2-devel ed libX11-devel libpng-devel mesa-libGL-devel mesa-libGLU-devel libpqxx-devel``
 
-Make sure you have the standard GNU compilers installed (needed for 3rd-party R packages to build themselves). 
-
-**Update**: As of Aug. 4 2015, it appears the following rpms had to be installed: 
-
-``yum install openssl-devel``
-``yum install xml2-devel``
+Make sure you have the standard GNU compilers installed (needed for 3rd-party R packages to build themselves). CentOS 6 users will need gcc-fortran 4.6 or greater, available from the CentOS devtools repo. 
 
 Again, without these rpms, R package devtools was failing to install, silently or with a non-informative error message. 
 Note: this package ``devtools`` has proven to be very flaky; it is being very actively maintained, new dependencies are being constantly added and new bugs introduced... however, it is only needed to install the package ``Zelig``, the main R workhorse behind TwoRavens. It cannot be installed from CRAN, like all the other 3rd party packages we use - becase TwoRavens requires version 5, which is still in beta. So devtools is needed to build it from sources downloaded directly from github. Once Zelig 5 is released, we'll be able to drop the requirement for devtools - and that will make this process much simpler. For now, be prepared for it to be somewhat of an adventure. 
@@ -80,7 +87,7 @@ R is used both by the Dataverse application, directly, and the TwoRavens compani
 
 Two distinct interfaces are used to access R: Dataverse uses Rserve; and TwoRavens sends jobs to R running under rApache using Rook interface. 
 
-We provide a shell script (``conf/R/r-setup.sh`` in the Dataverse source tree; you will need the other 3 files in that directory as well - `https://github.com/IQSS/dataverse/conf/R/ <https://github.com/IQSS/dataverseconf/R/>`__) that will attempt to install the required 3rd party packages; it will also configure Rserve and rserve user. rApache configuration will be addressed in its own section.
+We provide a shell script (``conf/R/r-setup.sh`` in the Dataverse source tree; you will need the other 3 files in that directory as well - `https://github.com/IQSS/dataverse/tree/master/conf/R <https://github.com/IQSS/dataverse/tree/master/conf/R>`__) that will attempt to install the required 3rd party packages; it will also configure Rserve and rserve user. rApache configuration will be addressed in its own section.
 
 The script will attempt to download the packages from CRAN (or a mirror) and GitHub, so the system must have access to the internet. On a server fully firewalled from the world, packages can be installed from downloaded sources. This is left as an exercise for the reader. Consult the script for insight.
 
@@ -190,7 +197,7 @@ Note that some of these packages have their own dependencies, and additional ins
 install.pl script:
 ++++++++++++++++++
 
-I. Configure the TwoRavens web (Javascript) application.
+I. Configure the TwoRavens web (Javascript) application
 -------------------------------------------------------
 
 Edit the file ``/var/www/html/dataexplore/app_ddi.js``.
@@ -248,7 +255,7 @@ to
 c. Edit the following lines in dataexplore/rook/rookutils.R: 
 ************************************************************
 
-``url <- paste("https://dataverse-demo.iq.harvard.edu/custom/preprocess_dir/preprocessSubset_",sessionid,".txt",sep="")``
+``url <- paste("https://demo.dataverse.org/custom/preprocess_dir/preprocessSubset_",sessionid,".txt",sep="")``
 
 and 
 
@@ -303,7 +310,11 @@ to user apache:
 g. restart httpd
 ****************
 
-
 ``service httpd restart``
 
+III. Enable TwoRavens' Explore Button in Dataverse
+--------------------------------------------------
 
+The final step of TwoRavens' installation is to tell Dataverse to display its Explore button alongside tabular datafiles by executing the following command on the Glassfish host:
+
+``curl -X PUT -d true http://localhost:8080/api/admin/settings/:TwoRavensTabularView``

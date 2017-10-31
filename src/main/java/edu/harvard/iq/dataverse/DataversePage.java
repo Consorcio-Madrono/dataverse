@@ -5,6 +5,7 @@ import edu.harvard.iq.dataverse.authorization.Permission;
 import edu.harvard.iq.dataverse.authorization.users.AuthenticatedUser;
 import edu.harvard.iq.dataverse.authorization.users.User;
 import edu.harvard.iq.dataverse.engine.command.Command;
+import edu.harvard.iq.dataverse.engine.command.DataverseRequest;
 import edu.harvard.iq.dataverse.engine.command.exception.CommandException;
 import edu.harvard.iq.dataverse.engine.command.impl.CreateDataverseCommand;
 import edu.harvard.iq.dataverse.engine.command.impl.CreateSavedSearchCommand;
@@ -42,6 +43,7 @@ import org.primefaces.model.DualListModel;
 import javax.ejb.EJBException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.event.TransferEvent;
 
@@ -56,12 +58,10 @@ public class DataversePage implements java.io.Serializable {
     private static final Logger logger = Logger.getLogger(DataversePage.class.getCanonicalName());
 
     public enum EditMode {
-
         CREATE, INFO, FEATURED
     }
     
     public enum LinkMode {
-
         SAVEDSEARCH,  LINKDATAVERSE
     }
 
@@ -98,16 +98,19 @@ public class DataversePage implements java.io.Serializable {
     SearchIncludeFragment searchIncludeFragment;
     @Inject
     DataverseRequestServiceBean dvRequestService;
+    @Inject
+    SettingsWrapper settingsWrapper; 
     @EJB
     DataverseLinkingServiceBean linkingService;
+    @Inject PermissionsWrapper permissionsWrapper;
 
     private Dataverse dataverse = new Dataverse();
     private EditMode editMode;
     private LinkMode linkMode;
 
     private Long ownerId;
-    private DualListModel<DatasetFieldType> facets = new DualListModel<>(new ArrayList<DatasetFieldType>(), new ArrayList<DatasetFieldType>());
-    private DualListModel<Dataverse> featuredDataverses = new DualListModel<>(new ArrayList<Dataverse>(), new ArrayList<Dataverse>());
+    private DualListModel<DatasetFieldType> facets = new DualListModel<>(new ArrayList<>(), new ArrayList<>());
+    private DualListModel<Dataverse> featuredDataverses = new DualListModel<>(new ArrayList<>(), new ArrayList<>());
     private List<Dataverse> dataversesForLinking;
     private Long linkingDataverseId;
     private List<SelectItem> linkingDVSelectItems;
@@ -168,9 +171,7 @@ public class DataversePage implements java.io.Serializable {
     private void updateDataverseSubjectSelectItems() {
         DatasetFieldType subjectDatasetField = datasetFieldService.findByName(DatasetFieldConstant.subject);
         setDataverseSubjectControlledVocabularyValues(controlledVocabularyValueServiceBean.findByDatasetFieldTypeId(subjectDatasetField.getId()));
-
     }
-    
     
     public LinkMode getLinkMode() {
         return linkMode;
@@ -179,7 +180,6 @@ public class DataversePage implements java.io.Serializable {
     public void setLinkMode(LinkMode linkMode) {
         this.linkMode = linkMode;
     }
-    
     
     public void setupLinkingPopup (String popupSetting){
         if (popupSetting.equals("link")){
@@ -191,8 +191,8 @@ public class DataversePage implements java.io.Serializable {
     }
 
     public void updateLinkableDataverses() {
-        dataversesForLinking = new ArrayList();
-        linkingDVSelectItems = new ArrayList();
+        dataversesForLinking = new ArrayList<>();
+        linkingDVSelectItems = new ArrayList<>();
         
         //Since only a super user function add all dvs
         dataversesForLinking = dataverseService.findAll();// permissionService.getDataversesUserHasPermissionOn(session.getUser(), Permission.PublishDataverse);
@@ -237,7 +237,6 @@ public class DataversePage implements java.io.Serializable {
     public void updateSelectedLinkingDV(ValueChangeEvent event) {
         linkingDataverseId = (Long) event.getNewValue();
     }
-//    private TreeNode treeWidgetRootNode = new DefaultTreeNode("Root", null);
 
     public Dataverse getDataverse() {
         return dataverse;
@@ -263,13 +262,6 @@ public class DataversePage implements java.io.Serializable {
         this.ownerId = ownerId;
     }
 
-//    public TreeNode getTreeWidgetRootNode() {
-//        return treeWidgetRootNode;
-//    }
-//
-//    public void setTreeWidgetRootNode(TreeNode treeWidgetRootNode) {
-//        this.treeWidgetRootNode = treeWidgetRootNode;
-//    }
     public String init() {
         if (dataverse.getAlias() != null || dataverse.getId() != null || ownerId == null) {// view mode for a dataverse
             if (dataverse.getAlias() != null) {
@@ -287,16 +279,10 @@ public class DataversePage implements java.io.Serializable {
 
             // check if dv exists and user has permission
             if (dataverse == null) {
-                return "/404.xhtml";
+                return permissionsWrapper.notFound();
             }
             if (!dataverse.isReleased() && !permissionService.on(dataverse).has(Permission.ViewUnpublishedDataverse)) {
-                System.out.print(" session.getUser().isAuthenticated() " + session.getUser().isAuthenticated());
-                if (!session.getUser().isAuthenticated()){
-                    return "/loginpage.xhtml" + DataverseHeaderFragment.getRedirectPage();
-                } else {
-                    return "/403.xhtml"; //SEK need a new landing page if user is already logged in but lacks permission
-                }
-
+                return permissionsWrapper.notAuthorized();
             }
 
             ownerId = dataverse.getOwner() != null ? dataverse.getOwner().getId() : null;
@@ -304,13 +290,9 @@ public class DataversePage implements java.io.Serializable {
             editMode = EditMode.INFO;
             dataverse.setOwner(dataverseService.find(ownerId));
             if (dataverse.getOwner() == null) {
-                return "/404.xhtml";
+                return  permissionsWrapper.notFound();
             } else if (!permissionService.on(dataverse.getOwner()).has(Permission.AddDataverse)) {
-                if (!session.getUser().isAuthenticated()){
-                    return "/loginpage.xhtml" + DataverseHeaderFragment.getRedirectPage();
-                } else {
-                    return "/403.xhtml"; //SEK need a new landing page if user is already logged in but lacks permission
-                }              
+                return permissionsWrapper.notAuthorized();            
             }
 
             // set defaults - contact e-mail and affiliation from user
@@ -393,14 +375,21 @@ public class DataversePage implements java.io.Serializable {
         }
     }
 
+    private List<Dataverse> carouselFeaturedDataverses = null;
+    
     public List<Dataverse> getCarouselFeaturedDataverses() {
-        List<Dataverse> retList = new ArrayList();
+        if (carouselFeaturedDataverses != null) {
+            return carouselFeaturedDataverses;
+        }
+        carouselFeaturedDataverses = featuredDataverseService.findByDataverseIdQuick(dataverse.getId());/*new ArrayList();
+        
         List<DataverseFeaturedDataverse> featuredList = featuredDataverseService.findByDataverseId(dataverse.getId());
         for (DataverseFeaturedDataverse dfd : featuredList) {
             Dataverse fd = dfd.getFeaturedDataverse();
             retList.add(fd);
-        }
-        return retList;
+        }*/
+        
+        return carouselFeaturedDataverses;
     }
 
     public List getContents() {
@@ -481,7 +470,7 @@ public class DataversePage implements java.io.Serializable {
     }
 
     public void updateInclude(Long mdbId, long dsftId) {
-        List<DatasetFieldType> childDSFT = new ArrayList();
+        List<DatasetFieldType> childDSFT = new ArrayList<>();
 
         for (MetadataBlock mdb : allMetadataBlocks) {
             if (mdb.getId().equals(mdbId)) {
@@ -514,7 +503,7 @@ public class DataversePage implements java.io.Serializable {
     }
 
     public List<SelectItem> resetSelectItems(DatasetFieldType typeIn) {
-        List retList = new ArrayList();
+        List<SelectItem> retList = new ArrayList<>();
         if ((typeIn.isHasParent() && typeIn.getParentDatasetFieldType().isInclude()) || (!typeIn.isHasParent() && typeIn.isInclude())) {
             SelectItem requiredItem = new SelectItem();
             requiredItem.setLabel("Required");
@@ -561,10 +550,10 @@ public class DataversePage implements java.io.Serializable {
 
 
     public String save() {
-        List<DataverseFieldTypeInputLevel> listDFTIL = new ArrayList();
+        List<DataverseFieldTypeInputLevel> listDFTIL = new ArrayList<>();
         if (editMode != null && editMode.equals(EditMode.INFO)) {
 
-            List<MetadataBlock> selectedBlocks = new ArrayList();
+            List<MetadataBlock> selectedBlocks = new ArrayList<>();
             if (dataverse.isMetadataBlockRoot()) {
                 dataverse.getMetadataBlocks().clear();
             }
@@ -639,7 +628,7 @@ public class DataversePage implements java.io.Serializable {
             if (editMode != null && editMode.equals(EditMode.FEATURED)) {
                 message = "The featured dataverses for this dataverse have been updated.";
             } else {
-                message = (create) ? BundleUtil.getStringFromBundle("dataverse.create.success", Arrays.asList(systemConfig.getGuidesBaseUrl(), systemConfig.getVersion())) : BundleUtil.getStringFromBundle("dataverse.update.success");
+                message = (create) ? BundleUtil.getStringFromBundle("dataverse.create.success", Arrays.asList(settingsWrapper.getGuidesBaseUrl(), systemConfig.getVersion())) : BundleUtil.getStringFromBundle("dataverse.update.success");
             }
             JsfHelper.addSuccessMessage(message);
             
@@ -760,23 +749,13 @@ public class DataversePage implements java.io.Serializable {
             try {
                 // create links (does indexing) right now (might be expensive)
                 boolean debug = false;
-                savedSearchService.makeLinksForSingleSavedSearch(savedSearchOfChildren, debug);
-                //JsfHelper.addSuccessMessage(dataverse.getDisplayName() + " has been successfully linked to " + linkingDataverse.getDisplayName());               
-                List<String> arguments = new ArrayList();
-                arguments.add(dataverse.getDisplayName());
-                arguments.add(systemConfig.getDataverseSiteUrl());                
-                arguments.add(linkingDataverse.getAlias());
-                arguments.add(linkingDataverse.getDisplayName());
-                JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataverse.linked.success", arguments));               
+                DataverseRequest dataverseRequest = new DataverseRequest(savedSearchCreator, SavedSearchServiceBean.getHttpServletRequest());
+                savedSearchService.makeLinksForSingleSavedSearch(dataverseRequest, savedSearchOfChildren, debug);              
+                JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataverse.linked.success", getSuccessMessageArguments()));                   
                 return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
             } catch (SearchException | CommandException ex) {
                 // error: solr is down, etc. can't link children right now
-                List<String> arguments = new ArrayList();
-                arguments.add(dataverse.getDisplayName());
-                arguments.add(linkingDataverse.getAlias());
-                arguments.add(systemConfig.getDataverseSiteUrl());
-                arguments.add(linkingDataverse.getDisplayName());
-                JsfHelper.addErrorMessage(BundleUtil.getStringFromBundle("dataverse.linked.internalerror", arguments));
+                JsfHelper.addErrorMessage(BundleUtil.getStringFromBundle("dataverse.linked.internalerror", getSuccessMessageArguments()));
                 String msg = dataverse.getDisplayName() + " has been successfully linked to " + linkingDataverse.getDisplayName() + " but contents will not appear until an internal error has been fixed.";
                 logger.log(Level.SEVERE, "{0} {1}", new Object[]{msg, ex});
                 //JsfHelper.addErrorMessage(msg);
@@ -785,14 +764,17 @@ public class DataversePage implements java.io.Serializable {
         } else {
             // defer: please wait for the next timer/cron job
             //JsfHelper.addSuccessMessage(dataverse.getDisplayName() + " has been successfully linked to " + linkingDataverse.getDisplayName() + ". Please wait for its contents to appear.");
-            List<String> arguments = new ArrayList();
-            arguments.add(dataverse.getDisplayName());
-            arguments.add(systemConfig.getDataverseSiteUrl());
-            arguments.add(linkingDataverse.getAlias());
-            arguments.add(linkingDataverse.getDisplayName());
-            JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataverse.linked.success.wait", arguments));
+            JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataverse.linked.success.wait", getSuccessMessageArguments()));
             return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
         }
+    }
+    
+    private List<String> getSuccessMessageArguments() {
+        List<String> arguments = new ArrayList<>();
+        arguments.add(StringEscapeUtils.escapeHtml(dataverse.getDisplayName()));
+        String linkString = "<a href=\"/dataverse/" + linkingDataverse.getAlias() + "\">" + StringEscapeUtils.escapeHtml(linkingDataverse.getDisplayName()) + "</a>";
+        arguments.add(linkString);
+        return arguments;
     }
 
     @Deprecated
@@ -835,16 +817,14 @@ public class DataversePage implements java.io.Serializable {
         }
 
         SavedSearch savedSearch = new SavedSearch(searchIncludeFragment.getQuery(), linkingDataverse, savedSearchCreator);
-        savedSearch.setSavedSearchFilterQueries(new ArrayList());
+        savedSearch.setSavedSearchFilterQueries(new ArrayList<>());
         for (String filterQuery : searchIncludeFragment.getFilterQueriesDebug()) {
             /**
              * @todo Why are there null's here anyway? Turn on debug and figure
              * this out.
              */
             if (filterQuery != null && !filterQuery.isEmpty()) {
-                SavedSearchFilterQuery ssfq = new SavedSearchFilterQuery();
-                ssfq.setSavedSearch(savedSearch);
-                ssfq.setFilterQuery(filterQuery);
+                SavedSearchFilterQuery ssfq = new SavedSearchFilterQuery(filterQuery,savedSearch);
                 savedSearch.getSavedSearchFilterQueries().add(ssfq);
             }
         }
@@ -852,9 +832,9 @@ public class DataversePage implements java.io.Serializable {
         try {
             commandEngine.submit(cmd);
 
-            List<String> arguments = new ArrayList();
-            arguments.add(linkingDataverse.getAlias());
-            arguments.add(linkingDataverse.getDisplayName());
+            List<String> arguments = new ArrayList<>();           
+            String linkString = "<a href=\"/dataverse/" + linkingDataverse.getAlias() + "\">" + StringEscapeUtils.escapeHtml(linkingDataverse.getDisplayName()) + "</a>";
+            arguments.add(linkString);
             String successMessageString = BundleUtil.getStringFromBundle("dataverse.saved.search.success", arguments);
             JsfHelper.addSuccessMessage(successMessageString);
             return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
@@ -943,9 +923,9 @@ public class DataversePage implements java.io.Serializable {
 
     private void refreshAllMetadataBlocks() {
         Long dataverseIdForInputLevel = dataverse.getId();
-        List<MetadataBlock> retList = new ArrayList();
+        List<MetadataBlock> retList = new ArrayList<>();
 
-        List<MetadataBlock> availableBlocks = new ArrayList();
+        List<MetadataBlock> availableBlocks = new ArrayList<>();
         //Add System level blocks
         availableBlocks.addAll(dataverseService.findSystemMetadataBlocks());
 

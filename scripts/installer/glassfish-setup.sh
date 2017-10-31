@@ -163,11 +163,13 @@ fi
 
 # avoid OutOfMemoryError: PermGen per http://eugenedvorkin.com/java-lang-outofmemoryerror-permgen-space-error-during-deployment-to-glassfish/
 #./asadmin $ASADMIN_OPTS list-jvm-options
-./asadmin $ASADMIN_OPTS delete-jvm-options "-XX\:MaxPermSize=112m"
-./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:MaxPermSize=256m"
-./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:PermSize=128m"
-./asadmin $ASADMIN_OPTS delete-jvm-options -Xmx256m
+./asadmin $ASADMIN_OPTS delete-jvm-options "-XX\:MaxPermSize=192m"
+./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:MaxPermSize=512m"
+./asadmin $ASADMIN_OPTS create-jvm-options "-XX\:PermSize=256m"
+./asadmin $ASADMIN_OPTS delete-jvm-options -Xmx512m
 ./asadmin $ASADMIN_OPTS create-jvm-options "-Xmx${MEM_HEAP_SIZE}m"
+./asadmin $ASADMIN_OPTS delete-jvm-options -client
+./asadmin $ASADMIN_OPTS create-jvm-options "-server"
 
 ###
 # JDBC connection pool
@@ -213,6 +215,8 @@ fi
 ./asadmin $ASADMIN_OPTS create-jvm-options "\-Ddoi.password=apitest"
 ./asadmin $ASADMIN_OPTS create-jvm-options "\-Ddoi.username=apitest"
 ./asadmin $ASADMIN_OPTS create-jvm-options "\-Ddoi.baseurlstring=https\://ezid.cdlib.org"
+# "I am the timer server" option:
+./asadmin $ASADMIN_OPTS create-jvm-options "-Ddataverse.timerServer=true"
 
 # enable comet support
 ./asadmin $ASADMIN_OPTS set server-config.network-config.protocols.protocol.http-listener-1.http.comet-support-enabled="true"

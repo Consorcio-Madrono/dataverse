@@ -15,8 +15,14 @@ echo  "- Google Analytics setting"
 curl -X PUT -d true "$SERVER/admin/settings/:ScrubMigrationData"
 echo  "- Enabling Shibboleth"
 curl -X PUT -d true http://localhost:8080/api/admin/settings/:ShibEnabled
+echo  "- Enabling TwoRavens"
+curl -s -X PUT -d true "$SERVER/admin/settings/:TwoRavensTabularView"
+echo  "- Enabling Geoconnect"
+curl -s -X PUT -d true "$SERVER/admin/settings/:GeoconnectCreateEditMaps"
+curl -s -X PUT -d true "$SERVER/admin/settings/:GeoconnectViewMaps"
 echo  "- Setting system email"
 curl -X PUT -d "Dataverse Support <support@dataverse.org>" http://localhost:8080/api/admin/settings/:SystemEmail
+curl -X PUT -d ", The President &#38; Fellows of Harvard College" http://localhost:8080/api/admin/settings/:FooterCopyright
 echo "- Setting up the Harvard Shibboleth institutional group"
 curl -s -X POST -H 'Content-type:application/json' --upload-file data/shibGroupHarvard.json "$SERVER/admin/groups/shib?key=$adminKey"
 echo
@@ -30,4 +36,5 @@ curl http://localhost:8080/api/admin/datasetfield/load -X POST --data-binary @da
 curl http://localhost:8080/api/admin/datasetfield/load -X POST --data-binary @data/metadatablocks/customPSI.tsv -H "Content-type: text/tab-separated-values"
 curl http://localhost:8080/api/admin/datasetfield/load -X POST --data-binary @data/metadatablocks/customCHIA.tsv -H "Content-type: text/tab-separated-values"
 curl http://localhost:8080/api/admin/datasetfield/load -X POST --data-binary @data/metadatablocks/customDigaai.tsv -H "Content-type: text/tab-separated-values"
+curl http://localhost:8080/api/admin/datasetfield/load -X POST --data-binary @data/metadatablocks/custom_hbgdki.tsv -H "Content-type: text/tab-separated-values"
 echo

@@ -94,7 +94,7 @@ public class BundleDownloadInstanceWriter implements MessageBodyWriter<BundleDow
                     // Now, the original format: 
                     String origFormat = null; 
                     try {
-                        DataFileIO accessObjectOrig = StoredOriginalFile.retrieve(sf, (FileAccessIO) accessObject);
+                        DataFileIO accessObjectOrig = StoredOriginalFile.retreive(accessObject); //.retrieve(sf, (FileAccessIO) accessObject);
                         if (accessObjectOrig != null) {
                             instream = accessObjectOrig.getInputStream();
                             if (instream != null) {
@@ -183,6 +183,14 @@ public class BundleDownloadInstanceWriter implements MessageBodyWriter<BundleDow
 
                         zout.putNextEntry(e);
                         zout.write(di.getFileCitationRIS().getBytes());
+                        zout.closeEntry();
+                    }
+
+                    if (di.getFileCitationBibtex() != null) {
+                        e = new ZipEntry(fileName.replaceAll("\\.tab$","citation-bib.bib"));
+
+                        zout.putNextEntry(e);
+                        zout.write(di.getFileCitationBibtex().getBytes());
                         zout.closeEntry();
                     }
 

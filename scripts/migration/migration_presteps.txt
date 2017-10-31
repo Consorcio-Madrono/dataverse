@@ -5,17 +5,13 @@
 All the existing DVN studies need to be re-exported *using the
 specially modified version of the DVN3 DDI Export Servlet*. (This
 version of the servlet exports not just the published, but all the
-versions of each study).
+versions of each study). This servlet is NOT available in the DVN
+v3.6.2, the last officially-released version. So please download the
+specially-patched version of the DVN 3.6 war file:
 
-1. Download the migration version of the servlet from here: 
+http://sourceforge.net/projects/dvn/files/dvn/3.6.2/DVN-web_v3_6_3_MIGRATION.war/download
 
-http://sourceforge.net/projects/dvn/files/dvn/3.6.2/DDIExportServlet-3.6.3-migration.class/download
-
-put it in place of your existing servlet: 
-
-/bin/mv DDIExportServlet-3.6.3-migration.class <YOUR GLASSFISH DIRECTORY>/domains/domain1/applications/DVN-web/WEB-INF/classes/edu/harvard/iq/dvn/core/web/servlet/DDIExportServlet.class 
-
-and restart Glassfish. 
+and deploy it on your DVN server (instead of the version 3.6.2 you are currently running). 
 
 IMPORTANT: 
 ----------
@@ -131,13 +127,13 @@ psql -h localhost -U postgres <4.0 database name> -f /tmp/dvn3_data.sql
 ----------------------------------------------
 
 -- offsets
-update _dvn3_vdcnetwork set id = id + (select max(id) from dvobject);
-update _dvn3_vdc set id = id + (select max(id) from _dvn3_vdcnetwork);
-update _dvn3_vdcrole set vdc_id = vdc_id + (select max(id) from _dvn3_vdcnetwork);
-update _dvn3_vdc_usergroup set vdcs_id = vdcs_id + (select max(id) from _dvn3_vdcnetwork);
-update _dvn3_vdc_linked_collections set vdc_id = vdc_id + (select max(id) from _dvn3_vdcnetwork);
-update _dvn3_study set owner_id = owner_id + (select max(id) from _dvn3_vdcnetwork);
-update _dvn3_vdccollection set owner_id = owner_id + (select max(id) from _dvn3_vdcnetwork);
+update _dvn3_vdcnetwork set id = id + (select coalesce(max(id), 0) from dvobject);
+update _dvn3_vdc set id = id + (select coalesce(max(id), 0) from _dvn3_vdcnetwork);
+update _dvn3_vdcrole set vdc_id = vdc_id + (select coalesce(max(id), 0) from _dvn3_vdcnetwork);
+update _dvn3_vdc_usergroup set vdcs_id = vdcs_id + (select coalesce(max(id), 0) from _dvn3_vdcnetwork);
+update _dvn3_vdc_linked_collections set vdc_id = vdc_id + (select coalesce(max(id), 0) from _dvn3_vdcnetwork);
+update _dvn3_study set owner_id = owner_id + (select coalesce(max(id), 0) from _dvn3_vdcnetwork);
+update _dvn3_vdccollection set owner_id = owner_id + (select coalesce(max(id), 0) from _dvn3_vdcnetwork);
 
 -- note: need to determine what offset to use, based on the file scripts
 --update _dvn3_studyfile_vdcuser set studyfiles_id = studyfiles_id +100000;

@@ -7,6 +7,7 @@ import edu.harvard.iq.dataverse.dataaccess.DataAccess;
 import edu.harvard.iq.dataverse.dataaccess.DataFileIO;
 import edu.harvard.iq.dataverse.ingest.IngestReport;
 import edu.harvard.iq.dataverse.ingest.IngestRequest;
+import edu.harvard.iq.dataverse.util.BundleUtil;
 import edu.harvard.iq.dataverse.util.FileUtil;
 import edu.harvard.iq.dataverse.util.ShapefileHandler;
 import java.io.IOException;
@@ -16,11 +17,15 @@ import java.util.Objects;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -41,10 +46,10 @@ import org.hibernate.validator.constraints.NotBlank;
 })
 @Entity
 @Table(indexes = {@Index(columnList="ingeststatus")
-		, @Index(columnList="md5")
+		, @Index(columnList="checksumvalue")
 		, @Index(columnList="contenttype")
 		, @Index(columnList="restricted")})
-public class DataFile extends DvObject {
+public class DataFile extends DvObject implements Comparable {
     private static final long serialVersionUID = 1L;
     
     public static final char INGEST_STATUS_NONE = 65;
@@ -61,9 +66,56 @@ public class DataFile extends DvObject {
     
     @Column( nullable = false )
     private String fileSystemName;
-    
-    @Column( nullable = false )
-    private String md5;
+
+    /**
+     * End users will see "SHA-1" (with a hyphen) rather than "SHA1" in the GUI
+     * and API but in the "datafile" table we persist "SHA1" (no hyphen) for
+     * type safety (using keys of the enum). In the "setting" table, we persist
+     * "SHA-1" (with a hyphen) to match the GUI and the "Algorithm Name" list at
+     * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#MessageDigest
+     *
+     * The list of types should be limited to the list above in the technote
+     * because the string gets passed into MessageDigest.getInstance() and you
+     * can't just pass in any old string.
+     */
+    public enum ChecksumType {
+
+        MD5("MD5"),
+        SHA1("SHA-1");
+
+        private final String text;
+
+        private ChecksumType(final String text) {
+            this.text = text;
+        }
+
+        public static ChecksumType fromString(String text) {
+            if (text != null) {
+                for (ChecksumType checksumType : ChecksumType.values()) {
+                    if (text.equals(checksumType.text)) {
+                        return checksumType;
+                    }
+                }
+            }
+            throw new IllegalArgumentException("ChecksumType must be one of these values: " + Arrays.asList(ChecksumType.values()) + ".");
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ChecksumType checksumType;
+
+    /**
+     * Examples include "f622da34d54bdc8ee541d6916ac1c16f" as an MD5 value or
+     * "3a484dfdb1b429c2e15eb2a735f1f5e4d5b04ec6" as a SHA-1 value"
+     */
+    @Column(nullable = false)
+    private String checksumValue;
 
     @Column(nullable=true)
     private Long filesize;      // Number of bytes in file.  Allows 0 and null, negative numbers not permitted
@@ -105,7 +157,6 @@ public class DataFile extends DvObject {
     
     @OneToOne(mappedBy = "thumbnailFile")
     private Dataset thumbnailForDataset;
-    
 
     public DataFile() {
         this.fileMetadatas = new ArrayList<>();
@@ -229,6 +280,11 @@ public class DataFile extends DvObject {
         return null;
     }
 
+    @Override
+    public boolean isAncestorOf( DvObject other ) {
+        return equals(other);
+    }
+    
     /*
      * A user-friendly version of the "original format":
      */
@@ -365,15 +421,26 @@ public class DataFile extends DvObject {
         this.restricted = restricted;
     }
 
+    public ChecksumType getChecksumType() {
+        return checksumType;
+    }
 
-    public String getmd5() { 
-        return this.md5; 
+    public void setChecksumType(ChecksumType checksumType) {
+        this.checksumType = checksumType;
     }
-    
-    public void setmd5(String md5) { 
-        this.md5 = md5; 
+
+    public String getChecksumValue() {
+        return this.checksumValue;
     }
-    
+
+    public void setChecksumValue(String checksumValue) {
+        this.checksumValue = checksumValue;
+    }
+
+    public String getOriginalChecksumType() {
+        return BundleUtil.getStringFromBundle("file.originalChecksumType", Arrays.asList(this.checksumType.toString()) );
+    }
+
     public DataFileIO getAccessObject() throws IOException {
         DataFileIO dataAccess =  DataAccess.createDataAccessObject(this);
         
@@ -443,6 +510,10 @@ public class DataFile extends DvObject {
         // generate thumbnails and previews for them)
         return (contentType != null && (contentType.startsWith("image/") || contentType.equalsIgnoreCase("application/pdf")));
     }
+
+    public void setIngestStatus(char ingestStatus) {
+        this.ingestStatus = ingestStatus; 
+    }    
    
     public boolean isIngestScheduled() {
         return (ingestStatus == INGEST_STATUS_SCHEDULED);
@@ -538,14 +609,14 @@ public class DataFile extends DvObject {
         this.fileAccessRequesters = fileAccessRequesters;
     }
     
-        
     public boolean isHarvested() {
-        // TODO: 
-        // alternatively, we can determine whether this is a harvested file
-        // by looking at the storage identifier of the physical file; 
-        // if it's something that's not a filesystem path (URL, etc.) - 
-        // then it's a harvested object. 
-        // -- L.A. 4.0 
+        
+        // (storageIdentifier is not nullable - so no need to check for null
+        // pointers below):
+        if (this.getStorageIdentifier().startsWith("http://") || this.getStorageIdentifier().startsWith("https://")) {
+            return true;
+        }
+        
         Dataset ownerDataset = this.getOwner();
         if (ownerDataset != null) {
             return ownerDataset.isHarvested(); 
@@ -600,4 +671,42 @@ public class DataFile extends DvObject {
         // currently this method is not being used
         return getLatestFileMetadata().getLabel();
     }
+    
+    @Override
+    public int compareTo(Object o) {
+        DataFile other = (DataFile) o;
+        return this.getDisplayName().toUpperCase().compareTo(other.getDisplayName().toUpperCase());
+
+    }
+    
+    /**
+     * Check if the Geospatial Tag has been assigned to this file
+     * @return 
+     */
+    public boolean hasGeospatialTag(){
+        if (this.dataFileTags == null){
+            return false;
+        }
+        for (DataFileTag tag : this.dataFileTags){
+            if (tag.isGeospatialTag()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public String getPublicationDateFormattedYYYYMMDD() {
+        if (getPublicationDate() != null){
+                   return new SimpleDateFormat("yyyy-MM-dd").format(getPublicationDate()); 
+        }
+        return null;
+    }
+    
+    public String getCreateDateFormattedYYYYMMDD() {
+        if (getCreateDate() != null){
+                   return new SimpleDateFormat("yyyy-MM-dd").format(getCreateDate()); 
+        }
+        return null;
+    }
+    
 }

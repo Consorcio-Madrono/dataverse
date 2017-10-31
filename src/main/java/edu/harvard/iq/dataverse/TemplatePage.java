@@ -46,6 +46,9 @@ public class TemplatePage implements java.io.Serializable {
     DataverseRequestServiceBean dvRequestService;
     
     @Inject
+    PermissionsWrapper permissionsWrapper;
+    
+    @Inject
     DataverseSession session;
 
     public enum EditMode {
@@ -109,9 +112,17 @@ public class TemplatePage implements java.io.Serializable {
         this.selectedTabIndex = selectedTabIndex;
     }
 
-    public void init() {
+    public String init() {
+ 
+        dataverse = dataverseService.find(ownerId);
+        if (dataverse == null) {
+            return permissionsWrapper.notFound();
+        }
+        if (!permissionsWrapper.canIssueCommand(dataverse, UpdateDataverseCommand.class)) {
+            return permissionsWrapper.notAuthorized();
+        } 
         if (templateId != null) { // edit or view existing for a template  
-            dataverse = dataverseService.find(ownerId);
+
             template = templateService.find(templateId);
             template.setDataverse(dataverse);
             template.setMetadataValueBlocks();
@@ -128,7 +139,7 @@ public class TemplatePage implements java.io.Serializable {
             updateDatasetFieldInputLevels();
         } else if (ownerId != null) {
             // create mode for a new template
-            dataverse = dataverseService.find(ownerId);
+
             editMode = TemplatePage.EditMode.CREATE;
             template = new Template(this.dataverse);
             TermsOfUseAndAccess terms = new TermsOfUseAndAccess();
@@ -138,7 +149,8 @@ public class TemplatePage implements java.io.Serializable {
             updateDatasetFieldInputLevels();
         } else {
             throw new RuntimeException("On Template page without id or ownerid."); // improve error handling
-        }
+        }       
+        return null;        
     }
     
     private void updateDatasetFieldInputLevels(){
@@ -162,36 +174,11 @@ public class TemplatePage implements java.io.Serializable {
     }
 
     public String save(String redirectPage) {
+
+        //SEK - removed dead code 1/6/2015
         
-        boolean dontSave = false;
-        /*
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        for (DatasetField dsf : template.getFlatDatasetFields()) {
-            dsf.setValidationMessage(null); // clear out any existing validation message
-            Set<ConstraintViolation<DatasetField>> constraintViolations = validator.validate(dsf);
-            for (ConstraintViolation<DatasetField> constraintViolation : constraintViolations) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error", constraintViolation.getMessage()));
-                dsf.setValidationMessage(constraintViolation.getMessage());
-                dontSave = true;
-                break; // currently only support one message, so we can break out of the loop after the first constraint violation
-            }
-            for (DatasetFieldValue dsfv : dsf.getDatasetFieldValues()) {
-                dsfv.setValidationMessage(null); // clear out any existing validation message
-                Set<ConstraintViolation<DatasetFieldValue>> constraintViolations2 = validator.validate(dsfv);
-                for (ConstraintViolation<DatasetFieldValue> constraintViolation : constraintViolations2) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation Error", constraintViolation.getMessage()));
-                    dsfv.setValidationMessage(constraintViolation.getMessage());
-                    dontSave = true;
-                    break; // currently only support one message, so we can break out of the loop after the first constraint violation                    
-                }
-            }
-        }*/
-        if (dontSave) {
-            return "";
-        }
         boolean create = false;
-        Command cmd;
+        Command<Void> cmd;
         Long createdId = new Long(0);
         Template created;
         try {

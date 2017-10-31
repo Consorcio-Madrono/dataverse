@@ -8,6 +8,7 @@ import edu.harvard.iq.dataverse.util.SystemConfig;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Named;
@@ -77,19 +78,21 @@ public class PasswordResetServiceBean {
     }
 
     private void sendPasswordResetEmail(BuiltinUser aUser, String passwordResetUrl) throws PasswordResetException {
-        String messageBody = "Hi " + aUser.getDisplayName() + ",\n\n"
-                + "Someone, hopefully you, requested a password reset for " + aUser.getUserName() + ".\n\n"
-                + "Please click the link below to reset your Dataverse account password:\n\n"
+        String messageBody = ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.hi") + aUser.getDisplayName() + ",\n\n"
+                + ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.header1") + aUser.getUserName() + ".\n\n"
+                +  ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.header2") + "\n\n"
                 + passwordResetUrl + "\n\n"
-                + "The link above will only work for the next " + SystemConfig.getMinutesUntilPasswordResetTokenExpires() + " minutes.\n\n"
+                + ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.header3") 
+                + SystemConfig.getMinutesUntilPasswordResetTokenExpires() + " " + ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.minutes")+"\n\n"
+                
                 /**
                  * @todo It would be a nice touch to show the IP from
                  * which the password reset originated.
                  */
-                + "Please contact us if you did not request this password reset or need further help.\n\n";
+                + ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.botton") + "\n\n";
         try {
             String toAddress = aUser.getEmail();
-            String subject = "Dataverse Password Reset Requested";
+            String subject = ResourceBundle.getBundle("Bundle").getString("passwordResetSevice.subject");
             mailService.sendSystemEmail(toAddress, subject, messageBody);
         } catch (Exception ex) {
             /**

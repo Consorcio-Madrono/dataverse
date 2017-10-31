@@ -9,6 +9,7 @@ import com.sun.mail.smtp.SMTPSendFailedException;
 import edu.harvard.iq.dataverse.authorization.groups.Group;
 import edu.harvard.iq.dataverse.authorization.groups.GroupServiceBean;
 import edu.harvard.iq.dataverse.authorization.users.AuthenticatedUser;
+import edu.harvard.iq.dataverse.confirmemail.ConfirmEmailServiceBean;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean.Key;
 import edu.harvard.iq.dataverse.util.BundleUtil;
@@ -62,6 +63,8 @@ public class MailServiceBean implements java.io.Serializable {
     PermissionServiceBean permissionService;
     @EJB
     GroupServiceBean groupService;
+    @EJB
+    ConfirmEmailServiceBean confirmEmailService;
     
     private static final Logger logger = Logger.getLogger(MailServiceBean.class.getCanonicalName());
     
@@ -117,8 +120,7 @@ public class MailServiceBean implements java.io.Serializable {
                     logger.warning("Failed to send mail to " + to + " (SMTPSendFailedException)");
                 }
             } else {
-              // commenting out the warning so as not to clutter the log of installations that haven't set up mail  
-              //  logger.warning("Skipping sending mail to " + to + ", because the \"no-reply\" address not set.");
+                logger.fine("Skipping sending mail to " + to + ", because the \"no-reply\" address not set (" + Key.SystemEmail + " setting).");
             }
         } catch (AddressException ae) {
             logger.warning("Failed to send mail to " + to);
@@ -323,6 +325,18 @@ public class MailServiceBean implements java.io.Serializable {
                 pattern = ResourceBundle.getBundle("Bundle").getString("notification.email.assignRole");
                 String[] paramArrayAssignRole = {joinedRoleNames, dvObjTypeStr, dvObj.getDisplayName(), dvObjURL};
                 messageText += MessageFormat.format(pattern, paramArrayAssignRole);
+                if (joinedRoleNames.contains("File Downloader")){
+                    if (dvObjTypeStr.equals("dataset")){
+                         pattern = ResourceBundle.getBundle("Bundle").getString("notification.access.granted.fileDownloader.additionalDataset");
+                         String[]  paramArrayAssignRoleDS = {" "};
+                        messageText += MessageFormat.format(pattern, paramArrayAssignRoleDS);
+                    }
+                    if (dvObjTypeStr.equals("dataverse")){
+                        pattern = ResourceBundle.getBundle("Bundle").getString("notification.access.granted.fileDownloader.additionalDataverse");
+                         String[]  paramArrayAssignRoleDV = {" "};
+                        messageText += MessageFormat.format(pattern, paramArrayAssignRoleDV);
+                    }                   
+                }
                 return messageText;
             case REVOKEROLE:
                 dvObj = (DvObject) targetObject;
@@ -411,8 +425,14 @@ public class MailServiceBean implements java.io.Serializable {
                 messageText += MessageFormat.format(pattern, paramArrayReturnedDataset);
                 return messageText;
             case CREATEACC:
-                messageText += ResourceBundle.getBundle("Bundle").getString("notification.email.welcome");
-                return messageText;
+                String accountCreatedMessage = BundleUtil.getStringFromBundle("notification.email.welcome", Arrays.asList(
+                        systemConfig.getGuidesBaseUrl(),
+                        systemConfig.getVersion()
+                ));
+                String optionalConfirmEmailAddon = confirmEmailService.optionalConfirmEmailAddonMsg(userNotification.getUser());
+                accountCreatedMessage += optionalConfirmEmailAddon;
+                logger.info("accountCreatedMessage: " + accountCreatedMessage);
+                return messageText += accountCreatedMessage;
         }
         
         return "";

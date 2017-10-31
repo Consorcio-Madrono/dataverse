@@ -122,6 +122,8 @@
                                             <f:selectItem id="dvSelect" itemLabel="#{bundle['dataverse.type.selectTab.top']}" itemValue="" />
                                             <f:selectItem id="dvResearch" itemLabel="#{bundle['dataverse.type.selectTab.researchers']}" itemValue="RESEARCHERS" />
                                             <f:selectItem id="dvResearchProj" itemLabel="#{bundle['dataverse.type.selectTab.researchProjects']}" itemValue="RESEARCH_PROJECTS" />
+                                            <f:selectItem id="dvResearchGrp" itemLabel="#{bundle['dataverse.type.selectTab.researchGroup']}" itemValue="RESEARCH_GROUP" />
+                                            <f:selectItem id="dvLab" itemLabel="#{bundle['dataverse.type.selectTab.laboratory']}" itemValue="LABORATORY" />
                                             <f:selectItem id="dvJournals" itemLabel="#{bundle['dataverse.type.selectTab.journals']}" itemValue="JOURNALS" />
                                             <f:selectItem id="dvOrgInst" itemLabel="#{bundle['dataverse.type.selectTab.organizationsAndInsitutions']}" itemValue="ORGANIZATIONS_INSTITUTIONS" />
                                             <f:selectItem id="dvTeaching" itemLabel="#{bundle['dataverse.type.selectTab.teachingCourses']}" itemValue="TEACHING_COURSES" />
@@ -193,7 +195,7 @@
                         <hr class="margin-top-half margin-bottom-half"/>
                         
                         <!-- Metadata Panel -->
-                        <p:panel styleClass="panelLayoutBlock"  widgetVar="optionBlock">                            
+                        <p:panel styleClass="panelLayoutBlock"  widgetVar="optionBlock" id="optionBlock">                            
                             <p:commandButton id="hiddenRefresh" value="back" style="display:none" 
                                              actionListener="#{DataversePage.refresh}"
                                              update="@widgetVar(optionBlock)" />
@@ -281,8 +283,7 @@
                                                                         <td>
                                                                             <p:selectOneRadio id="OptionsRadio#{dsft.id}" value="#{dsft.requiredDV}" widgetVar="OptButton#{dsft.id}" disabled ="#{DataversePage.editInputLevel == false}"
                                                                                               rendered="#{!dsft.hasChildren and !((!dsft.hasChildren  and dsft.required) or (dsft.hasChildren and dsft.hasRequiredChildren))}">
-                                                                                <f:selectItems value="#{dsft.optionSelectItems}"/>
-                                                                                <p:ajax update="@widgetVar(OptButton#{dsft.id})"/>
+                                                                                <f:selectItems value="#{dsft.optionSelectItems}"/>                                                                               
                                                                             </p:selectOneRadio>
 
                                                                             <span class="text-muted" jsf:rendered="#{(!dsft.hasChildren and dsft.required) or (dsft.hasChildren and dsft.hasRequiredChildren)}">
@@ -295,9 +296,8 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <p:commandLink id="hideDSFT" styleClass="btn btn-default" actionListener="#{DataversePage.hideDatasetFieldTypes(mdb.id)}" rendered="#{mdb.showDatasetFieldTypes}">
+                                                <p:commandLink id="hideDSFT" styleClass="btn btn-default"  update="@widgetVar(optionBlock)" actionListener="#{DataversePage.hideDatasetFieldTypes(mdb.id)}" rendered="#{mdb.showDatasetFieldTypes}">
                                                     <h:outputText value="#{bundle.done}" />
-                                                    <p:ajax update="@widgetVar(optionBlock)" listener="#{DataversePage.hideDatasetFieldTypes(mdb.id)}" />
                                                 </p:commandLink>
                                             </div>
                                         </ui:repeat>
@@ -347,8 +347,7 @@
                     <!-- END Edit Mode -->
                     <!-- View Mode / Description Panel -->
                     <ui:fragment rendered="#{empty DataversePage.editMode}">
-
-                        <div id="actionButtonBlock" class="button-block clearfix">
+                        <div id="actionButtonBlock" class="button-block clearfix" jsf:rendered="#{!widgetWrapper.widgetView}">
                             <!-- Edit/Publish Button Group -->
                             <ui:fragment rendered="#{dataverseSession.user.authenticated and 
                                                      (permissionsWrapper.canIssueUpdateDataverseCommand(DataversePage.dataverse)
@@ -411,7 +410,7 @@
                                                 </h:link>
                                             </li>
                                             <li>
-                                                <p:commandLink id="browseOpts" actionListener="#{DataversePage.edit('FEATURED')}" oncomplete="browseOptsForm.show()"
+                                                <p:commandLink id="browseOpts" actionListener="#{DataversePage.edit('FEATURED')}" oncomplete="PF('browseOptsForm').show()"
                                                                update="dataverseForm:browseOptsForm">
                                                     <h:outputText value="#{bundle['dataverse.option.featuredDataverse']}" />
                                                 </p:commandLink>
@@ -420,7 +419,7 @@
                                                                      and permissionsWrapper.canIssueDeleteDataverseCommand(DataversePage.dataverse)}">
                                                 <li class="divider"></li>
                                                 <li>
-                                                    <p:commandLink id="deleteDataset" onclick="deleteConfirmation.show()">
+                                                    <p:commandLink id="deleteDataset" onclick="PF('deleteConfirmation').show()">
                                                         <h:outputText value="#{bundle['dataverse.option.deleteDataverse']}" />
                                                     </p:commandLink>
                                                 </li>
@@ -430,11 +429,11 @@
                                     <!-- END: Edit Button -->
                                     <!-- Publish Button -->
                                     <ui:fragment rendered="#{permissionsWrapper.canIssuePublishDataverseCommand(DataversePage.dataverse)}">
-                                        <button type="button" class="btn btn-default pull-right" onclick="confirmation.show()"
+                                        <button type="button" class="btn btn-default pull-right" onclick="PF('confirmation').show()"
                                                 jsf:rendered="#{!DataversePage.dataverse.released and (empty DataversePage.dataverse.owner or DataversePage.dataverse.owner.released)}">
                                             <span class="glyphicon glyphicon-globe"/> #{bundle['dataverse.publish.btn']}
                                         </button>
-                                        <button type="button" class="btn btn-default pull-right" onclick="mayNotRelease.show()"
+                                        <button type="button" class="btn btn-default pull-right" onclick="PF('mayNotRelease').show()"
                                                 jsf:rendered="#{!DataversePage.dataverse.released and (!empty DataversePage.dataverse.owner and !DataversePage.dataverse.owner.released)}">
                                             <span class="glyphicon glyphicon-globe"/> #{bundle['dataverse.publish.btn']}
                                         </button>
@@ -446,7 +445,7 @@
                             <!-- Email/Link/Share Button Group -->
                             <div class="btn-group pull-right" role="group">
                                 <p:commandLink type="button" styleClass="btn btn-default bootstrap-button-tooltip" title="#{bundle['dataverse.contact']}"
-                                               update=":contactDialog" oncomplete="contactForm.show()" actionListener="#{sendFeedbackDialog.initUserInput}">   
+                                               update=":contactDialog" oncomplete="PF('contactForm').show()" actionListener="#{sendFeedbackDialog.initUserInput}">   
                                     <f:setPropertyActionListener target="#{sendFeedbackDialog.userMessage}" value=""/>
                                     <f:setPropertyActionListener target="#{sendFeedbackDialog.userEmail}" value=""/>                                     
                                     <f:setPropertyActionListener target="#{sendFeedbackDialog.messageSubject}" value=""/>
@@ -480,7 +479,7 @@
                                 </div>
                                 <p:commandLink type="button" styleClass="btn btn-default bootstrap-button-tooltip"
                                    title="#{bundle['dataverse.share.dataverseShare']}"
-                                   oncomplete="shareDialog.show();sharrre();">
+                                   oncomplete="PF('shareDialog').show();sharrre();">
                                     <span class="glyphicon glyphicon-share no-text"/>
                                 </p:commandLink>
                             </div>
@@ -490,7 +489,7 @@
                                 <div id="sharrre-widget" data-url="#{systemConfig.dataverseSiteUrl}/dataverse.xhtml?alias=#{DataversePage.dataverse.alias}" data-text="#{bundle['dataverse.share.dataverseShare.shareText']}"></div>
                                 
                                 <div class="button-block">
-                                    <button type="button" onclick="shareDialog.hide()" class="btn btn-default" value="#{bundle.close}">
+                                    <button type="button" onclick="PF('shareDialog').hide()" class="btn btn-default" value="#{bundle.close}">
                                         #{bundle.close}
                                     </button>
                                 </div>
@@ -506,7 +505,7 @@
                                         <div id="metrics-views" class="metrics-views tab-pane fade small text-center">
                                             #{bundle['metrics.views']} <em>#{bundle['metrics.comingsoon']}</em>
                                         </div>
-                                        <div id="metrics-downloads" class="metrics-downloads tab-pane fade small text-center">
+                                        <div id="metrics-downloads" class="metrics-downloads tab-pane small text-center active in">
                                             <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
                                                 <f:param value="#{guestbookResponseServiceBean.getCountOfAllGuestbookResponses()}"/>
                                             </h:outputFormat>
@@ -519,17 +518,20 @@
                                         </div>
                                     </div>
                                     <div id="metrics-tabs">
+                                        <!-- DISABLED TOGGLE UNTIL FURTHER DEVELOPMENT ON METRICS IS COMPLETED 
+                                        ADDED style="pointer-events:none;" ATTRIBUTE TO A-HREF ELEMENTS BELOW 
+                                        REMOVED fade CLASS FROM metrics-downloads DIV ABOVE AND ADDED active in -->
                                         <div class="metrics-hover pull-left">
-                                            <a href="#metrics-views" class="metrics-views" data-toggle="tab">&#160;</a>
+                                            <a href="#metrics-views" style="pointer-events:none;" class="metrics-views" data-toggle="tab">&#160;</a>
                                         </div>
                                         <div class="metrics-hover pull-left">
-                                            <a href="#metrics-downloads" class="metrics-downloads first" data-toggle="tab">&#160;</a>
+                                            <a href="#metrics-downloads" style="pointer-events:none;" class="metrics-downloads first" data-toggle="tab">&#160;</a>
                                         </div>
                                         <div class="metrics-hover pull-left">
-                                            <a href="#metrics-citations" class="metrics-citations" data-toggle="tab">&#160;</a>
+                                            <a href="#metrics-citations" style="pointer-events:none;" class="metrics-citations" data-toggle="tab">&#160;</a>
                                         </div>
                                         <div class="metrics-hover pull-left">
-                                            <a href="#metrics-shares" class="metrics-shares" data-toggle="tab">&#160;</a>
+                                            <a href="#metrics-shares" style="pointer-events:none;" class="metrics-shares" data-toggle="tab">&#160;</a>
                                         </div>
                                     </div>
                                 </div>
@@ -539,7 +541,7 @@
                         
                         <ui:fragment rendered="#{SearchIncludeFragment.filterQueries.size() == 0 and SearchIncludeFragment.mode != SearchIncludeFragment.searchModeString}">
                             <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
-                            <ui:fragment rendered="#{!empty DataversePage.dataverse.description}">
+                            <ui:fragment rendered="#{!empty DataversePage.dataverse.description and !widgetWrapper.widgetView}">
                                 <div id="dataverseDesc" style="margin-bottom:1em;">
                                     <h:outputText value="#{MarkupChecker:sanitizeBasicHTML(DataversePage.dataverse.description)}" escape="false"/>
                                 </div>
@@ -557,22 +559,22 @@
                                             <div class="item">
                                                 <div style="vertical-align:middle;">
                                                     <ui:fragment rendered="#{empty dv.dataverseTheme.logo}">
-                                                        <a href="/dataverse/#{dv.alias}" title="#{dv.name} #{bundle.dataverse}">
+                                                        <a href="/dataverse/#{widgetWrapper.wrapURL(dv.alias)}" title="#{bundle.dataverse} #{dv.name}">
                                                             <i class="icon-dataverse"></i>
                                                         </a>
                                                     </ui:fragment>
                                                     <ui:fragment rendered="#{!empty dv.dataverseTheme.logo and dv.dataverseTheme.logoFormat == 'SQUARE'}">
-                                                        <a href="/dataverse/#{dv.alias}" title="#{dv.name} #{bundle.dataverse}">
-                                                            <img src="/logos/#{dv.logoOwnerId}/#{dv.dataverseTheme.logo}" alt="#{dv.name} #{bundle.dataverse}"/>
+                                                        <a href="/dataverse/#{widgetWrapper.wrapURL(dv.alias)}" title="#{bundle.dataverse} #{dv.name}">
+                                                            <img src="/logos/#{dv.logoOwnerId}/#{dv.dataverseTheme.logo}" alt="#{bundle.dataverse} #{dv.name}"/>
                                                         </a>
                                                     </ui:fragment>
                                                     <ui:fragment rendered="#{!empty dv.dataverseTheme.logo and dv.dataverseTheme.logoFormat == 'RECTANGLE'}">
-                                                        <a href="/dataverse/#{dv.alias}" title="#{dv.name} #{bundle.dataverse}">
-                                                            <img src="/logos/#{dv.logoOwnerId}/#{dv.dataverseTheme.logo}" alt="#{dv.name} #{bundle.dataverse}"/>
+                                                        <a href="/dataverse/#{widgetWrapper.wrapURL(dv.alias)}" title="#{bundle.dataverse} #{dv.name}">
+                                                            <img src="/logos/#{dv.logoOwnerId}/#{dv.dataverseTheme.logo}" alt="#{bundle.dataverse} #{dv.name}"/>
                                                         </a>
                                                     </ui:fragment>
-                                                    <a href="/dataverse/#{dv.alias}" title="#{dv.name} #{bundle.dataverse}">
-                                                        <h:outputText value="#{dv.name} #{bundle.dataverse}"/>
+                                                    <a href="/dataverse/#{widgetWrapper.wrapURL(dv.alias)}" title="#{bundle.dataverse} #{dv.name}">
+                                                        <h:outputText value="#{bundle.dataverse} #{dv.name}"/>
                                                     </a>
                                                 </div>
                                             </div>
@@ -590,7 +592,7 @@
                     <!-- Save / Cancel Button Panel -->
                     <div class="button-block" jsf:rendered="#{!empty DataversePage.editMode}">
                         <p:commandButton id="save" tabindex="9" value="#{DataversePage.dataverse.id == null ? bundle.createDataverse : bundle.saveChanges}" action="#{DataversePage.save}" update="@all">
-                            <f:ajax onerror="window.scrollTo(0, 0);" />
+                            <f:ajax onerror="window.scrollTo(0, 0)" />
                         </p:commandButton>
                         <p:commandButton id="cancel" tabindex="10" value="#{bundle.cancel}" actionListener="#{DataversePage.cancel}" process="@this" update="@form" rendered="#{DataversePage.dataverse.id != null}" oncomplete="javascript:post_cancel_edit_dv()" />
                         <p:button tabindex="10" value="#{bundle.cancel}" outcome="/dataverse.xhtml?alias=#{DataversePage.dataverse.owner.alias}" rendered="#{DataversePage.dataverse.id == null and DataversePage.ownerId != null}"/>
@@ -609,7 +611,7 @@
                         </div>
                         <div class="button-block">
                             <p:commandButton value="#{bundle.saveChanges}" action="#{DataversePage.save}"/>
-                            <p:commandButton value="#{bundle.cancel}" onclick="browseOptsForm.hide()"/>
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('browseOptsForm').hide()"/>
                         </div>
                         </ui:fragment>
                          <ui:fragment rendered="#{empty DataversePage.featuredDataverses.source and empty DataversePage.featuredDataverses.target}">
@@ -617,7 +619,7 @@
                             <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataverse.nopublished.tip']}
                         </p>
                         <div class="button-block">
-                            <p:commandButton value="#{bundle.cancel}" onclick="browseOptsForm.hide()"/>
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('browseOptsForm').hide()"/>
                         </div>
                         </ui:fragment>                       
                     </p:dialog>
@@ -628,8 +630,8 @@
                             <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataverse.publish.tip']}
                         </p>
                         <div class="button-block">
-                            <p:commandButton value="#{bundle.continue}" onclick="confirmation.hide()" action="#{DataversePage.releaseDataverse}" />
-                            <p:commandButton value="#{bundle.cancel}" onclick="confirmation.hide();" type="button" />
+                            <p:commandButton value="#{bundle.continue}" onclick="PF('confirmation').hide()" action="#{DataversePage.releaseDataverse}" />
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('confirmation').hide();" type="button" />
                         </div>
                     </p:dialog>
                    
@@ -638,7 +640,7 @@
                             <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataverse.publish.failed.tip']}
                         </p>
                         <div class="button-block">
-                            <p:commandButton value="#{bundle.cancel}" onclick="mayNotRelease.hide();" type="button" />
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('mayNotRelease').hide();" type="button" />
                         </div>
                     </p:dialog>
                    
@@ -647,21 +649,17 @@
                             <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataverse.delete.tip']}
                         </p>
                         <div class="button-block">
-                            <p:commandButton value="#{bundle.continue}" onclick="deleteConfirmation.hide()" action="#{DataversePage.deleteDataverse}" />
-                            <p:commandButton value="#{bundle.cancel}" onclick="deleteConfirmation.hide();" type="button" />
+                            <p:commandButton value="#{bundle.continue}" onclick="PF('deleteConfirmation').hide()" action="#{DataversePage.deleteDataverse}" />
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('deleteConfirmation').hide();" type="button" />
                         </div>
                     </p:dialog>
                 </h:form>
 
                 <!-- Search/Browse Facets Panel -->
                 <ui:fragment rendered="#{empty DataversePage.editMode}">
-                    <ui:include src="search-include-fragment.xhtml">
-                        <ui:param name="showAdvancedSearchLink" value="true"/>
-                        <ui:param name="showFacets" value="true"/>
-                        <ui:param name="showSearch" value="true"/>
-                    </ui:include>
+                    <ui:include src="search-include-fragment.xhtml"/>
                 </ui:fragment>
-               
+                             
                 <!-- Link Dataverse Popup -->
                 <p:dialog id="linkDataverseForm" header="#{DataversePage.linkMode == 'SAVEDSEARCH' ? bundle['dataverse.savedsearch.link'] : bundle['dataverse.link']}" widgetVar="linkDataverseForm" modal="true">
                     <h:form styleClass="form-horizontal" rendered="#{DataversePage.dataversesForLinking.size() > 1}">
@@ -726,7 +724,7 @@
                                               rendered="#{DataversePage.linkMode == 'LINKDATAVERSE'}"/>
                             <p:commandButton value="#{bundle['dataverse.savedsearch.save']}" action="#{DataversePage.saveSavedSearch}"
                                              rendered="#{DataversePage.linkMode == 'SAVEDSEARCH'}"/>
-                            <p:commandButton value="#{bundle.cancel}" onclick="linkDataverseForm.hide()"/>
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('linkDataverseForm').hide()"/>
                         </div>
                     </h:form>
                     <ui:fragment rendered="#{DataversePage.dataversesForLinking.size() == 1}">
@@ -744,8 +742,8 @@
                             </div>
                         </div>
                         <div class="button-block">
-                            <p:commandButton value="#{bundle['dataverse.link.save']}" onclick="linkDataverseForm.hide()" actionListener="#{DataversePage.saveLinkedDataverse()}"/>
-                            <p:commandButton value="#{bundle.cancel}" onclick="linkDataverseForm.hide()"/>
+                            <p:commandButton value="#{bundle['dataverse.link.save']}" onclick="PF('linkDataverseForm').hide()" actionListener="#{DataversePage.saveLinkedDataverse()}"/>
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('linkDataverseForm').hide()"/>
                         </div>
                     </ui:fragment>
                     <ui:fragment rendered="#{DataversePage.dataversesForLinking.size() == 0}">
@@ -753,7 +751,7 @@
                             <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataverse.link.no.linkable']}
                         </p>
                         <div class="button-block">
-                            <p:commandButton value="#{bundle.cancel}" onclick="linkDataverseForm.hide()"/>
+                            <p:commandButton value="#{bundle.cancel}" onclick="PF('linkDataverseForm').hide()"/>
                         </div>
                     </ui:fragment>
                 </p:dialog>
@@ -764,8 +762,8 @@
                         <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataverse.resetModifications.text']}
                     </p>
                     <div class="button-block">
-                        <p:commandButton value="#{bundle.continue}" onclick="check();resetModifications.hide()" />
-                        <p:commandButton value="#{bundle.cancel}" onclick="uncheck();resetModifications.hide()" />
+                        <p:commandButton value="#{bundle.continue}" onclick="check();PF('resetModifications').hide()" />
+                        <p:commandButton value="#{bundle.cancel}" onclick="uncheck();PF('resetModifications').hide()" />
                     </div>
                 </p:dialog>
                 
@@ -782,13 +780,13 @@
                         owl1.owlCarousel({
                             pagination: false,
                             navigation: false,
-                            items: 4, //10 items above 1000px browser width
-                            itemsDesktop: [1140, 4], //5 items between 1000px and 901px
-                            itemsDesktopSmall: [940, 3], // betweem 900px and 601px
-                            itemsTablet: [720, 2], //2 items between 600 and 0
+                            items: 6, //10 items above 1000px browser width
+                            itemsDesktop: [1140, 5], //5 items between 1000px and 901px
+                            itemsDesktopSmall: [940, 4], // betweem 900px and 601px
+                            itemsTablet: [720, 3], //2 items between 600 and 0
                             itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
                         });
-                        if (owl1.find('div.owl-item').length > 4) {
+                        if (owl1.find('div.owl-item').length > 5) {
                             // Custom Navigation Events
                             $(".next1").click(function () {
                                 owl1.trigger('owl.next');
@@ -801,6 +799,11 @@
                         }
                         
                         $('#featuredDataversesList .item').matchHeight();
+                    }
+                    
+                    function callOnError(){
+                        alert("in js");
+                        window.scrollTo(0, 0);
                     }
 
                     function initPopover() {
@@ -826,7 +829,7 @@
                         if (checked === false){
                             $('button[id$="updateMetadataButton"]').trigger('click');
                         } else {
-                            resetModifications.show();
+                            PF('resetModifications').show();
                         }
 
                     }
