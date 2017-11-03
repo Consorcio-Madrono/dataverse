@@ -133,18 +133,13 @@ public class ExportService {
             JsonObject datasetAsJson = datasetAsJsonBuilder.build();
             
             Iterator<Exporter> exporters = loader.iterator();
-	logger.warning("JUAN PUNTO 21 %%%%%%%%%%%%%%%%%%");
             while ( exporters.hasNext()) {
                 Exporter e = exporters.next();
-		logger.warning("JUAN PUNTO 211 %%%%%%%%%%%%%%%%%%");
                 String formatName = e.getProviderName(); 
-		logger.warning("JUAN PUNTO 212 %%%%%%%%%%%%%%%%%%" + formatName);
                 
                 cacheExport(releasedVersion, formatName, datasetAsJson, e);
-		logger.warning("JUAN PUNTO 213 %%%%%%%%%%%%%%%%%%");
                 
             }
-	logger.warning("JUAN PUNTO 22 %%%%%%%%%%%%%%%%%%");
         } catch (ServiceConfigurationError serviceError) {
             throw new ExportException("Service configuration error during export. "+serviceError.getMessage());
         }
@@ -152,8 +147,6 @@ public class ExportService {
         // formats, we'll increment the "last exported" time stamp: 
         
         dataset.setLastExportTime(new Timestamp(new Date().getTime()));
-	logger.warning("JUAN PUNTO 23 %%%%%%%%%%%%%%%%%%");
-        
     }
     
     public void clearAllCachedFormats(Dataset dataset) {
@@ -226,13 +219,9 @@ public class ExportService {
 
             Path cachedMetadataFilePath = Paths.get(version.getDataset().getFileSystemDirectory().toString(), "export_" + format + ".cached");
             FileOutputStream cachedExportOutputStream = new FileOutputStream(cachedMetadataFilePath.toFile());
-	    logger.warning("JUAN PUNTO 2121 %%%%%%%%%%%%%%%%%%");
             exporter.exportDataset(version, datasetAsJson, cachedExportOutputStream);
-	    logger.warning("JUAN PUNTO 2122 %%%%%%%%%%%%%%%%%%");
             cachedExportOutputStream.flush();
-	    logger.warning("JUAN PUNTO 2123 %%%%%%%%%%%%%%%%%%");
             cachedExportOutputStream.close();
-	    logger.warning("JUAN PUNTO 2124 %%%%%%%%%%%%%%%%%%");
 
         } catch (IOException ioex) {
             throw new ExportException("IO Exception thrown exporting as " + format);

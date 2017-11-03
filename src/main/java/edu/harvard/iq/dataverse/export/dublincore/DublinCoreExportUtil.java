@@ -53,10 +53,8 @@ public class DublinCoreExportUtil {
         logger.fine(JsonUtil.prettyPrint(datasetDtoAsJson.toString()));
         Gson gson = new Gson();
         DatasetDTO datasetDto = gson.fromJson(datasetDtoAsJson.toString(), DatasetDTO.class);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 1");
         //try {
         dto2dublincore(datasetDto, outputStream, dcFlavor);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 2");
         //} catch (XMLStreamException ex) {
         //    Logger.getLogger(DdiExportUtil.class.getName()).log(Level.SEVERE, null, ex);
         //}
@@ -69,12 +67,9 @@ public class DublinCoreExportUtil {
             xmlw.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             xmlw.writeAttribute("xmlns:dc", DC_XML_NAMESPACE);
             xmlw.writeAttribute("xmlns:dcterms", DCTERMS_XML_NAMESPACE);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 11");
             xmlw.writeDefaultNamespace(DCTERMS_DEFAULT_NAMESPACE);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 12");
             //xmlw.writeAttribute("xsi:schemaLocation", DCTERMS_DEFAULT_NAMESPACE+" "+DCTERMS_XML_SCHEMALOCATION);
             createDC(xmlw, datasetDto, dcFlavor);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 13");
         } else if (DC_FLAVOR_OAI.equals(dcFlavor)) {      
             xmlw.writeStartElement("oai_dc:dc");        
             xmlw.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -82,16 +77,12 @@ public class DublinCoreExportUtil {
             xmlw.writeAttribute("xmlns:dc", DC_XML_NAMESPACE);
             xmlw.writeAttribute("xsi:schemaLocation", OAI_DC_XML_NAMESPACE+" "+OAI_DC_XML_SCHEMALOCATION);
             //writeAttribute(xmlw, "version", DEFAULT_XML_VERSION);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 14");
             createOAIDC(xmlw, datasetDto, dcFlavor);
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 15");
         }
         
         
         xmlw.writeEndElement(); // <metadata> or <oai_dc:dc>
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 16");
         xmlw.flush();
-        logger.warning("********************************************************* JUAN DublinCoreExportUtil 17");
     }
     
     //UPDATED by rmo-cdsp:

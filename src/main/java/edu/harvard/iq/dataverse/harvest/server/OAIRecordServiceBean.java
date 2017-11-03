@@ -244,15 +244,10 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     
     public void exportAllFormats(Dataset dataset) {
         try {
-            logger.warning("JUAN PUNTO 21 %%%%%%%%%%%%%%%%%%");
             ExportService exportServiceInstance = ExportService.getInstance();
-            logger.warning("JUAN PUNTO 22 %%%%%%%%%%%%%%%%%%");
             logger.fine("Attempting to run export on dataset "+dataset.getGlobalId());
-            logger.warning("JUAN PUNTO 23 %%%%%%%%%%%%%%%%%%");
             exportServiceInstance.exportAllFormats(dataset);
-            logger.warning("JUAN PUNTO 24 %%%%%%%%%%%%%%%%%%");
             datasetService.updateLastExportTimeStamp(dataset.getId());
-            logger.warning("JUAN PUNTO 25 %%%%%%%%%%%%%%%%%%");
         } catch (ExportException ee) {logger.fine("Caught export exception while trying to export. (ignoring)");}
         catch (Exception e) {logger.fine("Caught unknown exception while trying to export (ignoring)");}
     }
@@ -260,13 +255,9 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     @TransactionAttribute(REQUIRES_NEW)
     public void exportAllFormatsInNewTransaction(Dataset dataset) throws ExportException {
         //try {
-            logger.warning("JUAN PUNTO 1 %%%%%%%%%%%%%%%%%%");
             ExportService exportServiceInstance = ExportService.getInstance();
-            logger.warning("JUAN PUNTO 2 %%%%%%%%%%%%%%%%%%");
             exportServiceInstance.exportAllFormats(dataset);
-            logger.warning("JUAN PUNTO 3 %%%%%%%%%%%%%%%%%%");
             datasetService.updateLastExportTimeStamp(dataset.getId());
-            logger.warning("JUAN PUNTO 4 %%%%%%%%%%%%%%%%%%");
         //} catch (Exception e) {
         //    logger.fine("Caught unknown exception while trying to export");
         //    throw new ExportException(e.getMessage());
