@@ -41,14 +41,29 @@
     </subjects>
     </#if>
     <#if funders?has_content>
-    <fundingReferences>
+      <fundingReferences>
         <#list funders as funder>
         <fundingReference>
-            <funderName>${funder.name}</funderName>
-            <awardNumber>${funder.awardNumber}</awardNumber>
+          <funderName>${funder.name}</funderName>
+          <#if funder.name == "Ministerio de Ciencia y Tecnología" || funder.name == "Ministry of Science and Technology" || funder.name == "Spanish Ministry of Science and Technology" || "MICYT">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006280</funderIdentifier>
+          <#elseif funder.name == "Spanish Ministry of Science and Innovation" || funder.name == "Ministerio de Ciencia e Innovación" || funder.name == "Ministry of Science and Innovation" || "MICINN">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100004837</funderIdentifier>
+          <#elseif funder.name == "Ministerio de Economía y Competitividad" || funder.name == "Ministry of Economy and Competitiveness" || funder.name == "MINECO">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100003329</funderIdentifier>
+          <#elseif funder.name == "Consejería de Educación, Juventud y Deporte, Comunidad de Madrid" || funder.name == "Consejería de Educación, Juventud y Deporte de la Comunidad de Madrid" || funder.name == "Ministry of Education, Youth and Sports, Government of Madrid">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008433</funderIdentifier>
+          <#elseif funder.name == "Agencia Antidroga de la Comunidad de Madrid" || funder.name == "Anti-Drug Agency of the Community of Madrid">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006542</funderIdentifier>
+          <#elseif funder.name == "Oficina Regional de Coordinación de Salud Mental, Comunidad de Madrid" || funder.name == "Oficina Regional de Coordinación de Salud Mental">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006543</funderIdentifier>
+          <#elseif funder.name == "Consejería de Sanidad, Comunidad de Madrid">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006541</funderIdentifier>
+          </#if>
+          <awardNumber>${funder.awardNumber}</awardNumber>
         </fundingReference>
         </#list>
-    </fundingReferences>
+      </fundingReferences>
     </#if>
     <dates>
         <#if dateOfDeposit??>
@@ -65,16 +80,16 @@
     <#if publications?has_content>
     <relatedIdentifiers>
         <#list publications as pub>
-	  <#if pub.idNumber??>
-	    <#if pub.idType == "DOI" || pub.idType == "arXiv" || pub.idType == "bibcode"> 
+          <#if pub.idNumber??>
+            <#if pub.idType == "DOI" || pub.idType == "arXiv" || pub.idType == "bibcode"> 
               <relatedIdentifier relationType="IsCitedBy" relatedIdentifierType="${pub.idType}">
                 ${pub.idNumber}
               </relatedIdentifier>                
-	    <#elseif pub.idType == "handle"> 
+            <#elseif pub.idType == "handle"> 
               <relatedIdentifier relationType="IsCitedBy" relatedIdentifierType="Handle">
                 ${pub.idNumber}
               </relatedIdentifier>                
-	    <#elseif pub.idType == "ark" || pub.idType == "ean13" || pub.idType == "eissn" || pub.idType == "isbn" || pub.idType == "issn" || pub.idType == "istc" || pub.idType == "lissn" || pub.idType == "lsid" || pub.idType == "pmid" || pub.idType == "purl" || pub.idType == "upc" || pub.idType == "url" || pub.idType == "urn"> 
+            <#elseif pub.idType == "ark" || pub.idType == "ean13" || pub.idType == "eissn" || pub.idType == "isbn" || pub.idType == "issn" || pub.idType == "istc" || pub.idType == "lissn" || pub.idType == "lsid" || pub.idType == "pmid" || pub.idType == "purl" || pub.idType == "upc" || pub.idType == "url" || pub.idType == "urn"> 
               <relatedIdentifier relationType="IsCitedBy" relatedIdentifierType="${pub.idType?upper_case}">
                 ${pub.idNumber}
               </relatedIdentifier>                
@@ -86,7 +101,7 @@
     <#if rights??>
     <rightsList>
         <rights<#if rightsUri??> rightsURI="${rightsUri}"</#if>>${rights}</rights>
-        <rights rightsURI=”info:eu-repo/semantics/openAccess” />
+        <rights rightsURI="info:eu-repo/semantics/openAccess" />
     </rightsList>
     </#if>
     <#if description??>
@@ -97,7 +112,7 @@
     <#if contributors?has_content>
     <contributors>
         <#list contributors as contrib>
-	  <#if contrib.composedName??>
+          <#if contrib.composedName??>
             <contributor contributorType="${contrib.role}">
               <contributorName>${contrib.composedName}</contributorName>
             </contributor>        
