@@ -45,9 +45,9 @@
         <#list funders as funder>
         <fundingReference>
           <funderName>${funder.name}</funderName>
-          <#if funder.name == "Ministerio de Ciencia y Tecnología" || funder.name == "Ministry of Science and Technology" || funder.name == "Spanish Ministry of Science and Technology" || "MICYT">
+          <#if funder.name == "Ministerio de Ciencia y Tecnología" || funder.name == "Ministry of Science and Technology" || funder.name == "Spanish Ministry of Science and Technology" || funder.name == "MICYT">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006280</funderIdentifier>
-          <#elseif funder.name == "Spanish Ministry of Science and Innovation" || funder.name == "Ministerio de Ciencia e Innovación" || funder.name == "Ministry of Science and Innovation" || "MICINN">
+          <#elseif funder.name == "Spanish Ministry of Science and Innovation" || funder.name == "Ministerio de Ciencia e Innovación" || funder.name == "Ministry of Science and Innovation" || funder.name == "MICINN">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100004837</funderIdentifier>
           <#elseif funder.name == "Ministerio de Economía y Competitividad" || funder.name == "Ministry of Economy and Competitiveness" || funder.name == "MINECO">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100003329</funderIdentifier>
