@@ -45,11 +45,11 @@
         <#list funders as funder>
         <fundingReference>
           <funderName>${funder.name}</funderName>
-          <#if funder.name == "Ministerio de Ciencia y Tecnología" || funder.name == "Ministry of Science and Technology" || funder.name == "Spanish Ministry of Science and Technology" || funder.name == "MICYT">
+          <#if funder.name == "España. Ministerio de Ciencia y Tecnología" || funder.name == "Ministerio de Ciencia y Tecnología" || funder.name == "Ministry of Science and Technology" || funder.name == "Spanish Ministry of Science and Technology" || funder.name == "MICYT">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006280</funderIdentifier>
           <#elseif funder.name == "Spanish Ministry of Science and Innovation" || funder.name == "Ministerio de Ciencia e Innovación" || funder.name == "Ministry of Science and Innovation" || funder.name == "MICINN">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100004837</funderIdentifier>
-          <#elseif funder.name == "Ministerio de Economía y Competitividad" || funder.name == "Ministry of Economy and Competitiveness" || funder.name == "MINECO">
+          <#elseif funder.name == "Spanish Ministry of Economy and Competitiveness" || funder.name == "Gobierno de España. Ministerio de Economía y Competitividad" || funder.name == "Ministerio de Economía y Competitividad" || funder.name == "Ministry of Economy and Competitiveness" || funder.name == "MINECO">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100003329</funderIdentifier>
           <#elseif funder.name == "Consejería de Educación, Juventud y Deporte, Comunidad de Madrid" || funder.name == "Consejería de Educación, Juventud y Deporte de la Comunidad de Madrid" || funder.name == "Ministry of Education, Youth and Sports, Government of Madrid">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008433</funderIdentifier>
@@ -59,6 +59,10 @@
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006543</funderIdentifier>
           <#elseif funder.name == "Consejería de Sanidad, Comunidad de Madrid">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100006541</funderIdentifier>
+	  <#elseif funder.name == "Instituto de Salud Carlos III" || funder.name == "Institute of Health Carlos III" || funder.name == "Carlos III Health Institute" || funder.name == "ISCIII">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100004587</funderIdentifier>
+          <#elseif funder.name == "ERDF" || funder.name == "Fondo Europeo de Desarrollo Regional" || funder.name == "European Regional Development Fund">
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008530</funderIdentifier>
           </#if>
           <awardNumber>${funder.awardNumber}</awardNumber>
         </fundingReference>
