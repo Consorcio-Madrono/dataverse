@@ -129,11 +129,11 @@ public class OAIServlet extends HttpServlet {
     }
     
     private void addSupportedMetadataFormats(Context context) {
-        for (String[] provider : ExportService.getInstance().getExportersLabels()) {
+        for (String[] provider : ExportService.getInstance(settingsService).getExportersLabels()) {
             String formatName = provider[1];
             Exporter exporter;
             try {
-                exporter = ExportService.getInstance().getExporter(formatName);
+                exporter = ExportService.getInstance(settingsService).getExporter(formatName);
             } catch (ExportException ex) {
                 exporter = null;
             }
@@ -229,7 +229,9 @@ public class OAIServlet extends HttpServlet {
         
         try {
             if (!isHarvestingServerEnabled()) {
-                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Sorry. OAI Service is disabled on this Dataverse node.");
+                response.sendError(
+                        HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                        "Sorry. OAI Service is disabled on this Dataverse node.");
                 return;
             }
             
@@ -239,6 +241,7 @@ public class OAIServlet extends HttpServlet {
                 String parameterName = (String)p; 
                 String parameterValue = request.getParameter(parameterName);
                 parametersBuilder = parametersBuilder.with(parameterName, parameterValue);
+
             }
             
             OAIPMH handle = dataProvider.handle(parametersBuilder);
@@ -277,7 +280,6 @@ public class OAIServlet extends HttpServlet {
     // Custom methods for the potentially expensive GetRecord and ListRecords requests:
     
     private void writeListRecords(HttpServletResponse response, OAIPMH handle) throws IOException {
-        logger.warning("################################## Juan: WRITE LIST RECORDS");
         OutputStream outputStream = response.getOutputStream();
 
         outputStream.write(oaiPmhResponseToString(handle).getBytes());
@@ -357,6 +359,7 @@ public class OAIServlet extends HttpServlet {
             writer.flush();
             writer.close();
 
+            /* Juan: Original code String ret = byteOutputStream.toString().replaceFirst("</"+OAI_PMH+">", ""); */
             String ret = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ("" + byteOutputStream.toString().replaceFirst("</"+OAI_PMH+">", "").replaceAll("<\\?xml version=[^>]*>",""));
 
             return ret;

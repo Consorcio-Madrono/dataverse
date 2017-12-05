@@ -10,28 +10,40 @@
 
     <cc:interface>
         <cc:attribute name="collapsible" default="false" />
-    </cc:interface>
+     </cc:interface>
 
     <cc:implementation>
         <ui:fragment rendered="#{not empty flash['successMsg']}">
             <div class="alert alert-success">
-                <span class="glyphicon glyphicon glyphicon-ok-sign"></span>&#160;<strong>#{bundle['iqbs.message.success']}</strong> – <h:outputText escape="false" value="#{flash['successMsg']}"/>
+                <span class="glyphicon glyphicon glyphicon-ok-sign"></span>&#160;<strong>#{bundle['messages.success']}</strong> – <h:outputText escape="false" value="#{flash['successMsg']}"/>
             </div>
         </ui:fragment>
         <ui:fragment rendered="#{not empty flash['errorMsg']}">
             <div class="alert alert-danger">
-                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>#{bundle['iqbs.message.error']}</strong> – <h:outputText escape="false" value="#{flash['errorMsg']} "/>
-                #{bundle['Please']} <a href="#" onclick="event.preventDefault();PF('contactForm').show();" title="Contact Dataverse Support">#{bundle['contact support']}</a>
+                <o:form useRequestURI="true">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>#{bundle['messages.error']}</strong> – 
+                    <h:outputText value="#{flash['errorMsg']} " escape="false"/>
+                    <h:outputFormat value="#{bundle['error.support.message']}" escape="false">
+                        <o:param>
+                            <p:commandLink value="#{settingsWrapper.supportTeamName}" oncomplete="PF('contactForm').show()" update=":contactDialog" actionListener="#{sendFeedbackDialog.initUserInput}">
+                                <f:setPropertyActionListener target="#{sendFeedbackDialog.messageSubject}" value=""/>
+                                <f:setPropertyActionListener target="#{sendFeedbackDialog.recipient}" value="#{null}"/>
+                                <f:setPropertyActionListener target="#{sendFeedbackDialog.userMessage}" value=""/>
+                                <f:setPropertyActionListener target="#{sendFeedbackDialog.userEmail}" value=""/>
+                            </p:commandLink>                                
+                        </o:param>
+                    </h:outputFormat>
+                </o:form>
             </div>
         </ui:fragment>
         <ui:fragment rendered="#{not empty flash['infoMsg']}">
             <div class="alert alert-info">
-                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>#{bundle['iqbs.message.info']}</strong> – <h:outputText escape="false" value="#{flash['infoMsg']} "/>
+                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>#{bundle['messages.info']}</strong> – <h:outputText escape="false" value="#{flash['infoMsg']} "/>
             </div>
         </ui:fragment>
         <ui:fragment rendered="#{not empty flash['warningMsg']}">
             <div class="alert alert-warning">
-                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>#{bundle['iqbs.message.info']}</strong> – <h:outputText escape="false" value="#{flash['warningMsg']} "/>
+                <span class="glyphicon glyphicon-exclamation-sign"></span>&#160;<strong>#{bundle['messages.info']}</strong> – <h:outputText escape="false" value="#{flash['warningMsg']} "/>
             </div>
         </ui:fragment>
         <ui:fragment rendered="#{facesContext.validationFailed}">
@@ -52,7 +64,7 @@
                 </ui:fragment>
                 <span class="glyphicon glyphicon-info-sign"></span>&#160;<strong>#{msg.summary}</strong>&#160;<h:outputText value="#{msg.detail}" rendered="#{!empty msg.detail and (msg.detail != msg.summary)}"/>
                 <ui:fragment rendered="#{level eq 'FATAL'}">
-                    #{bundle['Please']} <a href="#" onclick="event.preventDefault();PF('contactForm').show();" title="Contact Dataverse Support">#{bundle['contact support']}</a>
+                    #{bundle['Please']} <a href="#" onclick="event.preventDefault();PF('contactForm').show();" title="Contact #{settingsWrapper.supportTeamName}">#{settingsWrapper.supportTeamName} #{bundle['contact support']}</a>
                     <strong>#{bundle['iqbs.message.dateTime']}: </strong>
                     <h:outputText value="#{now}">
                         <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" type="date" />

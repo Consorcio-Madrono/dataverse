@@ -11,7 +11,7 @@
 
     <h:body>
         <ui:composition template="/dataverse_template.xhtml">
-            <ui:param name="thisPageTitle" value="#{bundle['dataverse.search.advancedSearch']} - #{bundle.dataverse} #{AdvancedSearchPage.dataverse.name}"/>
+            <ui:param name="thisPageTitle" value="#{bundle['dataverse.search.advancedSearch']} - #{AdvancedSearchPage.dataverse.name}"/>
             <ui:param name="pageTitle" value="#{thisPageTitle}"/>
             <ui:param name="dataverse" value="#{AdvancedSearchPage.dataverse}"/>
             <ui:param name="ownerId" value="#{DataversePage.ownerId}"/>
@@ -73,7 +73,7 @@
                                         <div class="ui-inputfield form-control select-scroll-block">
                                             <p:selectManyCheckbox value="#{AdvancedSearchPage.dvFieldSubject}" layout="pageDirection">
                                                 <f:selectItems value="#{AdvancedSearchPage.dvFieldSubjectValues}" var="cvv"
-                                                               itemLabel="#{(bundle[cvv.strValue].startsWith('???')) ? cvv.strValue : bundle[cvv.strValue]}" itemValue="#{cvv.strValue}"/> <!-- Hack to translate values from the database -->
+                                                               itemLabel="#{cvv.strValue}" itemValue="#{cvv.strValue}"/>
                                             </p:selectManyCheckbox>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                                 <div class="ui-inputfield form-control select-scroll-block" jsf:rendered="#{!empty item.controlledVocabularyValues}">
                                                     <p:selectManyCheckbox value="#{item.listValues}" layout="pageDirection">
                                                         <f:selectItems value="#{item.controlledVocabularyValues}" var="cvs"
-                                                                       itemLabel="#{(bundle[cvs.strValue].startsWith('???')) ? cvs.strValue : bundle[cvs.strValue]}" itemValue="#{cvs.strValue}"/> <!-- Hack to translate values from the database -->
+                                                                       itemLabel="#{cvs.strValue}" itemValue="#{cvs.strValue}"/>
                                                     </p:selectManyCheckbox>
                                                 </div>
                                             </div>

@@ -12,7 +12,7 @@
 
     <h:body>
         <ui:composition template="/dataverse_template.xhtml">
-            <ui:param name="pageTitle" value="#{bundle['error.404.page.title']} - #{bundle.dataverse} #{dataverseServiceBean.findRootDataverse().name}"/>
+            <ui:param name="pageTitle" value="#{bundle['error.404.page.title']} - #{dataverseServiceBean.findRootDataverse().name}"/>
             <ui:param name="showDataverseHeader" value="false"/>
             <ui:param name="loginRedirectPage" value="dataverse.xhtml"/>
             <ui:param name="showMessagePanel" value="#{true}"/>
@@ -22,7 +22,8 @@
                         <h:outputText value="#{bundle['error.404.message']} " escape="false"/>
                         <h:outputFormat value="#{bundle['error.support.message']}" escape="false">
                             <o:param>
-                                <p:commandLink value="#{bundle['contact.support']}" oncomplete="PF('contactForm').show()" update=":contactDialog" actionListener="#{sendFeedbackDialog.initUserInput}">
+<!-- JUAN: en versión anterior <p:commandLink value="#{bundle['contact.support']}" oncomplete="PF('contactForm').show()" update=":contactDialog" actionListener="#{sendFeedbackDialog.initUserInput}">-->
+                                <p:commandLink value="#{settingsWrapper.supportTeamName}" oncomplete="PF('contactForm').show()" update=":contactDialog" actionListener="#{sendFeedbackDialog.initUserInput}">
                                     <f:setPropertyActionListener target="#{sendFeedbackDialog.messageSubject}" value=""/>
                                     <f:setPropertyActionListener target="#{sendFeedbackDialog.recipient}" value="#{null}"/>
                                     <f:setPropertyActionListener target="#{sendFeedbackDialog.userMessage}" value=""/>

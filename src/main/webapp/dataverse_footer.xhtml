@@ -14,9 +14,6 @@
             <div class="row">
                 <div class="col-sm-8 small" jsf:rendered="#{!widgetView}">
                     <p>
-                        <h:outputText value="#{bundle['footer.dataScienceIQSS']}" escape="false"/> <br/> #{bundle['footer.dataverseProjectOn']} <a href="https://twitter.com/dataverseorg" target="_blank" title="#{bundle['footer.dataverseProjectOn']} #{bundle['footer.Twitter']}"><span class="socicon socicon-twitter" title="#{bundle['footer.dataverseProjectOn']} #{bundle['footer.Twitter']}"/></a> &#160;|&#160; #{bundle['footer.codeAvailable']} <a href="https://github.com/IQSS/dataverse" target="_blank" title="#{bundle['footer.dataverseOnGitHub']}"><span class="socicon socicon-github" title="#{bundle['footer.dataverseOnGitHub']}"/></a>
-                    </p>
-                    <p>
                         <h:outputText value="#{systemConfig.footerCopyrightAndYear}#{settingsWrapper.get(':FooterCopyright')}" escape="false"/> <ui:fragment rendered="#{!empty settingsWrapper.get(':ApplicationPrivacyPolicyUrl')}">&#160;|&#160; <h:outputLink value="#{settingsWrapper.get(':ApplicationPrivacyPolicyUrl')}" target="_blank">#{bundle['footer.privacyPolicy']}</h:outputLink></ui:fragment>
                     </p>
                 </div>
@@ -36,16 +33,16 @@
                     </span>
                 </div>
                 <div class="#{widgetView ? 'col-xs-5' : 'col-sm-4'} text-right">
-                    <div class="poweredbylogo" style="margin-bottom:25px">
-                            <a href="http://www.re3data.org/repository/r3d100012316"><img src="/resources/images/openAIRECompliant.png" style="max-width:20%"/></a>
-                        <a href="http://www.re3data.org/repository/r3d100012316"><img src="/resources/images/logoRe3data.png" style="max-width:35%"/></a>
+                    <div class="poweredbylogo">
                         <span>#{bundle['footer.poweredby']}</span>
-                        <a href="http://dataverse.org/" title="#{bundle['footer.dataverseProject']}" target="_blank"><img src="/resources/images/dataverseproject_logo.jpg" style="max-width:25%" alt="#{bundle['footer.dataverseProject']}" /></a>
-                        <!--<h:outputText class="version" value="v. #{systemConfig.getVersion(true)}" rendered="#{!widgetView}"/>-->
+                        <a href="http://dataverse.org/" title="#{bundle['footer.dataverseProject']}" target="_blank"><img src="/resources/images/dataverseproject_logo.png" alt="#{bundle['footer.dataverseProject']}" /></a>
+                        <h:outputText class="version" value="v. #{systemConfig.getVersion(true)}" rendered="#{!widgetView}"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <o:resourceInclude path="/CustomizationFilesServlet?customFileType=footer" rendered="#{!widgetWrapper.widgetView}"/>
     
 </ui:composition>

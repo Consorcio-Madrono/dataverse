@@ -4,6 +4,7 @@ import edu.harvard.iq.dataverse.UserNotification.Type;
 import edu.harvard.iq.dataverse.authorization.Permission;
 import edu.harvard.iq.dataverse.authorization.users.AuthenticatedUser;
 import edu.harvard.iq.dataverse.authorization.users.User;
+import edu.harvard.iq.dataverse.dataverse.DataverseUtil;
 import edu.harvard.iq.dataverse.engine.command.Command;
 import edu.harvard.iq.dataverse.engine.command.DataverseRequest;
 import edu.harvard.iq.dataverse.engine.command.exception.CommandException;
@@ -263,6 +264,8 @@ public class DataversePage implements java.io.Serializable {
     }
 
     public String init() {
+        //System.out.println("_YE_OLDE_QUERY_COUNTER_");  // for debug purposes
+
         if (dataverse.getAlias() != null || dataverse.getId() != null || ownerId == null) {// view mode for a dataverse
             if (dataverse.getAlias() != null) {
                 dataverse = dataverseService.findByAlias(dataverse.getAlias());
@@ -300,6 +303,9 @@ public class DataversePage implements java.io.Serializable {
             dataverse.setAffiliation(session.getUser().getDisplayInfo().getAffiliation());
             setupForGeneralInfoEdit();
             // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Create New Dataverse", " - Create a new dataverse that will be a child dataverse of the parent you clicked from. Asterisks indicate required fields."));
+            if (dataverse.getName() == null) {
+                dataverse.setName(DataverseUtil.getSuggestedDataverseNameOnCreate(session.getUser()));
+            }
         }
 
         return null;
@@ -628,12 +634,12 @@ public class DataversePage implements java.io.Serializable {
             if (editMode != null && editMode.equals(EditMode.FEATURED)) {
                 message = "The featured dataverses for this dataverse have been updated.";
             } else {
-                message = (create) ? BundleUtil.getStringFromBundle("dataverse.create.success", Arrays.asList(settingsWrapper.getGuidesBaseUrl(), systemConfig.getVersion())) : BundleUtil.getStringFromBundle("dataverse.update.success");
+                message = (create) ? BundleUtil.getStringFromBundle("dataverse.create.success", Arrays.asList(settingsWrapper.getGuidesBaseUrl(), systemConfig.getGuidesVersion())) : BundleUtil.getStringFromBundle("dataverse.update.success");
             }
             JsfHelper.addSuccessMessage(message);
             
             editMode = null;
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";            
+            return returnRedirect();            
             
 
         } catch (CommandException ex) {
@@ -726,7 +732,7 @@ public class DataversePage implements java.io.Serializable {
             String msg = "Only authenticated users can link a dataverse.";
             logger.severe(msg);
             JsfHelper.addErrorMessage(msg);
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+            return returnRedirect();
         }
 
         linkingDataverse = dataverseService.find(linkingDataverseId);
@@ -739,7 +745,7 @@ public class DataversePage implements java.io.Serializable {
             String msg = "Unable to link " + dataverse.getDisplayName() + " to " + linkingDataverse.getDisplayName() + ". An internal error occurred.";
             logger.log(Level.SEVERE, "{0} {1}", new Object[]{msg, ex});
             JsfHelper.addErrorMessage(msg);
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+            return returnRedirect();
         }
 
         SavedSearch savedSearchOfChildren = createSavedSearchForChildren(savedSearchCreator);
@@ -752,20 +758,20 @@ public class DataversePage implements java.io.Serializable {
                 DataverseRequest dataverseRequest = new DataverseRequest(savedSearchCreator, SavedSearchServiceBean.getHttpServletRequest());
                 savedSearchService.makeLinksForSingleSavedSearch(dataverseRequest, savedSearchOfChildren, debug);              
                 JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataverse.linked.success", getSuccessMessageArguments()));                   
-                return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+                return returnRedirect();
             } catch (SearchException | CommandException ex) {
                 // error: solr is down, etc. can't link children right now
                 JsfHelper.addErrorMessage(BundleUtil.getStringFromBundle("dataverse.linked.internalerror", getSuccessMessageArguments()));
                 String msg = dataverse.getDisplayName() + " has been successfully linked to " + linkingDataverse.getDisplayName() + " but contents will not appear until an internal error has been fixed.";
                 logger.log(Level.SEVERE, "{0} {1}", new Object[]{msg, ex});
                 //JsfHelper.addErrorMessage(msg);
-                return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+                return returnRedirect();
             }
         } else {
             // defer: please wait for the next timer/cron job
             //JsfHelper.addSuccessMessage(dataverse.getDisplayName() + " has been successfully linked to " + linkingDataverse.getDisplayName() + ". Please wait for its contents to appear.");
             JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataverse.linked.success.wait", getSuccessMessageArguments()));
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+            return returnRedirect();
         }
     }
     
@@ -813,7 +819,7 @@ public class DataversePage implements java.io.Serializable {
             String msg = "Only authenticated users can save a search.";
             logger.severe(msg);
             JsfHelper.addErrorMessage(msg);
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+            return returnRedirect();
         }
 
         SavedSearch savedSearch = new SavedSearch(searchIncludeFragment.getQuery(), linkingDataverse, savedSearchCreator);
@@ -837,12 +843,12 @@ public class DataversePage implements java.io.Serializable {
             arguments.add(linkString);
             String successMessageString = BundleUtil.getStringFromBundle("dataverse.saved.search.success", arguments);
             JsfHelper.addSuccessMessage(successMessageString);
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+            return returnRedirect();
         } catch (CommandException ex) {
             String msg = "There was a problem linking this search to yours: " + ex;
             logger.severe(msg);
             JsfHelper.addErrorMessage(BundleUtil.getStringFromBundle("dataverse.saved.search.failure") + " " +  ex);
-            return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+            return returnRedirect();
         }
     }
 
@@ -870,7 +876,7 @@ public class DataversePage implements java.io.Serializable {
         } else {
             JsfHelper.addErrorMessage(BundleUtil.getStringFromBundle("dataverse.publish.not.authorized"));            
         }
-        return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";
+        return returnRedirect();
 
     }
 
@@ -1009,6 +1015,10 @@ public class DataversePage implements java.io.Serializable {
                 context.addMessage(toValidate.getClientId(context), message);
             }
         }
+    }
+    
+    private String returnRedirect(){
+        return "/dataverse.xhtml?alias=" + dataverse.getAlias() + "&faces-redirect=true";  
     }
 
 }

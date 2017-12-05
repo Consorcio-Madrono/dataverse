@@ -7,10 +7,12 @@ package edu.harvard.iq.dataverse.export.dublincore;
 
 import com.google.gson.Gson;
 import edu.harvard.iq.dataverse.DatasetFieldConstant;
+import edu.harvard.iq.dataverse.GlobalId;
 import edu.harvard.iq.dataverse.api.dto.DatasetDTO;
 import edu.harvard.iq.dataverse.api.dto.DatasetVersionDTO;
 import edu.harvard.iq.dataverse.api.dto.FieldDTO;
 import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
+import edu.harvard.iq.dataverse.export.ddi.DdiExportUtil;
 import edu.harvard.iq.dataverse.util.json.JsonUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -31,7 +33,7 @@ import javax.xml.stream.XMLStreamWriter;
  */
 public class DublinCoreExportUtil {
  
-    private static final Logger logger = Logger.getLogger(DublinCoreExportUtil.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(DdiExportUtil.class.getCanonicalName());
     
     public static String OAI_DC_XML_NAMESPACE = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
     public static String OAI_DC_XML_SCHEMALOCATION = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd";
@@ -97,11 +99,12 @@ public class DublinCoreExportUtil {
         String persistentAgency = datasetDto.getProtocol();
         String persistentAuthority = datasetDto.getAuthority();
         String persistentId = datasetDto.getIdentifier();
+        GlobalId globalId = new GlobalId(persistentAgency, persistentAuthority, persistentId);
   
         writeFullElement(xmlw, dcFlavor+":"+"title", dto2Primitive(version, DatasetFieldConstant.title));                       
         
         xmlw.writeStartElement(dcFlavor+":"+"identifier");
-        xmlw.writeCharacters(persistentAgency + ":" + persistentAuthority + "/" + persistentId);
+        xmlw.writeCharacters(globalId.toURL().toString());
         xmlw.writeEndElement(); // decterms:identifier       
 
         writeAuthorsElement(xmlw, version, dcFlavor);
@@ -146,11 +149,12 @@ public class DublinCoreExportUtil {
         String persistentAgency = datasetDto.getProtocol();
         String persistentAuthority = datasetDto.getAuthority();
         String persistentId = datasetDto.getIdentifier();
+        GlobalId globalId = new GlobalId(persistentAgency, persistentAuthority, persistentId);
   
         writeFullElement(xmlw, dcFlavor+":"+"title", dto2Primitive(version, DatasetFieldConstant.title));                       
         
         xmlw.writeStartElement(dcFlavor+":"+"identifier");
-        xmlw.writeCharacters(persistentAgency + ":" + persistentAuthority + "/" + persistentId);
+        xmlw.writeCharacters(globalId.toURL().toString());
         xmlw.writeEndElement(); // decterms:identifier       
 
         writeAuthorsElement(xmlw, version, dcFlavor); //creator

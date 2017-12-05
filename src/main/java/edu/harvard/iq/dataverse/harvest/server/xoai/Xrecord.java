@@ -17,10 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Logger;
-import java.nio.charset.Charset;
-
-
 
 /**
  *
@@ -45,7 +41,6 @@ public class Xrecord extends Record {
     private static final String DATAVERSE_EXTENDED_METADATA_API = "/api/datasets/export";
     private static final Logger logger = Logger.getLogger(Xrecord.class.getCanonicalName());
 
-    
     protected Dataset dataset; 
     protected String formatName;
     
@@ -117,7 +112,6 @@ public class Xrecord extends Record {
              if (header.getStatus() != null) {
                 writer.writeAttribute(STATUS_ATTRIBUTE, header.getStatus().value());
              }
-
             writer.writeElement(IDENTIFIER_FIELD, header.getIdentifier());
             writer.writeElement(DATESTAMP_FIELD, header.getDatestamp());
             for (String setSpec : header.getSetSpecs()) {
@@ -148,6 +142,10 @@ public class Xrecord extends Record {
             outputStream.write(buffer, 0, bufsize);
             outputStream.flush();
 	    count++;
+
+/* Original code        while ((bufsize = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bufsize);
+            outputStream.flush();*/
         }
 
         inputStream.close();

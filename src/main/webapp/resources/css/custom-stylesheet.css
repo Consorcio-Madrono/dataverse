@@ -1,0 +1,101 @@
+/* Add any CSS necessary for your custom content */
+
+.navbar-default .container {
+	background-color: #e51a4c;
+}
+
+body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .container .navbar-nav > li > a:focus, .navbar-default .container .navbar-nav > li > a:hover, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink:hover {
+	color: black;
+}
+.navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink {
+	color: white;
+}
+.navbar-default .container .nav > .open > a {
+	background-color: #bc0f3a;
+	background-image: none;
+}
+.navbar-nav {
+	padding-top: 16px;
+}
+#navbarFixed img {
+	margin-left:5px;
+}
+
+body .text-danger {
+	color: orange;
+}
+#footer {
+  display: none;
+}
+#custom-footer .container {
+  margin-top: 10px;
+  padding-top: 15px;
+  background-color: black;
+  color: white;
+}
+#custom-footer .col-sm-8 {
+  padding-top: 30px;
+  width: 30%
+}
+#custom-footer .col-sm-4 {
+  width: 70%
+}
+body a:hover, #dv-sidebar form[id$="facetType"] > div.clearfix a.facetTypeLink:hover, a.dataverseHeaderDataverseName, body .ui-widget-content a:hover, body .ui-widget-content a:focus {
+ color: #e51a4c;
+}
+body a, #dv-sidebar form[id$="facetType"] > div.clearfix a.facetTypeLink, body .ui-widget-content a {
+  color: #333;
+  text-decoration: underline;
+}
+#topNavBar a {
+  text-decoration: none;
+}
+body .ui-button, body .btn,body .btn.btn-default.btn-access:focus, body .btn.btn-default.btn-access {
+  text-shadow: none;
+  text-decoration: none;
+  background-color: #e51a4c;
+  background-image: none;
+  color: white;
+}
+body .ui-button:hover, body .btn:hover, body .btn.btn-default.btn-access:hover {
+  text-shadow: none;
+  text-decoration: none;
+  background-color: #a4052d;
+  color: white;
+}
+body .text-info {
+    color:#666;
+}
+body .alert-info {
+  color: #a4052d;
+  background-image: linear-gradient(to bottom,#fff 0,#eae8ed 100%);
+  border-color: #a4052d;
+}
+.navbar-nav > li > .dropdown-menu, .btn-group .dropdown-menu > li > a, .btn-group .dropdown-menu {
+  text-decoration: none;
+  background-color: #e51a4c;
+  color: white;
+}
+.navbar-nav > li > .dropdown-menu > li > a, #navbarFixed .dropdown.accountName.open .logout a {
+  color: white;
+}
+li.dropdown > .dropdown-menu > li > a:focus,li.dropdown > .dropdown-menu > li > a:hover, #navbarFixed .dropdown.accountName.open .logout a:focus, #navbarFixed .dropdown.accountName.open .logout a:hover, .btn-group .dropdown-menu > li > a:hover {
+  background-color: #a4052d;
+  background-image: none;
+}
+body .ui-picklist-buttons-cell .ui-button, body .button-block .ui-button, body .ui-widget-content .ui-fileupload-buttonbar .ui-state-default, body .ui-widget-header .ui-fileupload-buttonbar .ui-state-default, body .ui-widget-content a.btn-default {
+    color: white;
+    background-color: #e51a4c;
+    background-image: none;
+    border: 1px solid #a4052d;
+    text-shadow:none;
+    text-decoration: none;
+}
+body .ui-picklist-buttons-cell .ui-button:hover, body .button-block .ui-button:hover, body .ui-widget-content .ui-fileupload-buttonbar .ui-state-default:hover, body .ui-widget-header .ui-fileupload-buttonbar .ui-state-default:hover, body .ui-widget-content a.btn-default:hover {
+    background-color: #a4052d;
+}
+
+body .ui-tabs .ui-tabs-nav.ui-widget-header li a {
+    color: #e51a4c;
+}
+ 

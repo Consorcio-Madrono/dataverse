@@ -315,7 +315,7 @@ public class Shib implements java.io.Serializable {
         String lookupStringPerAuthProvider = userPersistentId;
         UserIdentifier userIdentifier = new UserIdentifier(lookupStringPerAuthProvider, internalUserIdentifer);
         logger.fine("builtin username: " + builtinUsername);
-        AuthenticatedUser builtInUserToConvert = shibService.canLogInAsBuiltinUser(builtinUsername, builtinPassword);
+        AuthenticatedUser builtInUserToConvert = authSvc.canLogInAsBuiltinUser(builtinUsername, builtinPassword);
         if (builtInUserToConvert != null) {
             AuthenticatedUser au = authSvc.convertBuiltInToShib(builtInUserToConvert, shibAuthProvider.getId(), userIdentifier);
             if (au != null) {
@@ -441,9 +441,9 @@ public class Shib implements java.io.Serializable {
         String rootDvAlias = getRootDataverseAlias();
         if (includeFacetDashRedirect) {
             if (rootDvAlias != null) {
-                return plainHomepageString + "?alias=" + rootDvAlias + "&faces-redirect=true";
+                return plainHomepageString + "?alias="  + rootDvAlias + "&faces-redirect=true";
             } else {
-                return plainHomepageString + "?faces-redirect=true";
+                return  plainHomepageString + "?faces-redirect=true";
             }
         } else if (rootDvAlias != null) {
             /**

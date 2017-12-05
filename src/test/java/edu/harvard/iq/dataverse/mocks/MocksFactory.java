@@ -98,6 +98,8 @@ public class MocksFactory {
         user.setFirstName(firstName);
         user.setPosition("In-Memory user");
         user.setUserIdentifier("unittest" + user.getId() );
+        user.setCreatedTime(new Timestamp(new Date().getTime()));
+        user.setLastLoginTime(user.getCreatedTime());
         return user;
     }
     
@@ -146,10 +148,10 @@ public class MocksFactory {
         final List<FileMetadata> metadatas = new ArrayList<>(10);
         final List<DataFileCategory> categories = ds.getCategories();
         Random rand = new Random();
-        for ( DataFile df : files ) {
+        files.forEach( df ->{
             df.getFileMetadata().addCategory(categories.get(rand.nextInt(categories.size())));
             metadatas.add( df.getFileMetadata() );
-        }
+        });
         ds.setFiles(files);
         final DatasetVersion initialVersion = ds.getVersions().get(0);
         initialVersion.setFileMetadatas(metadatas);
@@ -171,10 +173,10 @@ public class MocksFactory {
         final List<DataFile> files = makeFiles(10);
         final List<FileMetadata> metadatas = new ArrayList<>(10);
         Random rand = new Random();
-        for ( DataFile df : files ) {
+        files.forEach(df -> {
             df.getFileMetadata().addCategory(categories.get(rand.nextInt(categories.size())));
             metadatas.add( df.getFileMetadata() );
-        }
+        });
         retVal.setFileMetadatas(metadatas);
         
         List<DatasetField> fields = new ArrayList<>();
