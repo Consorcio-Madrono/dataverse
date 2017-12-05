@@ -47,7 +47,6 @@ import javax.json.JsonObjectBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
@@ -559,6 +558,7 @@ public class JsonPrinter {
             fileName = df.getFileMetadata().getLabel();
         }
         
+        
         return jsonObjectBuilder()
                 .add("id", df.getId())
                 .add("filename", fileName)
@@ -829,5 +829,4 @@ public class JsonPrinter {
         in.keySet().forEach( k->b.add(k, in.get(k)) );
         return b;
     }
-
 }
