@@ -844,19 +844,19 @@
                             <ui:repeat value="#{DatasetPage.datasetVersionDifference.detailDataByBlock}" var="block">
                                 <div class="panel panel-default">
                                     <div class="panel-heading text-info">
-                                        <h:outputText value="#{block.get(0)[0].datasetFieldType.metadataBlock.displayName}" /> A
+                                        <h:outputText value="#{block.get(0)[0].datasetFieldType.metadataBlock.displayName}" />
                                     </div>
-                                    <p:dataTable id="byBlockInner" styleClass="dvnDifferanceTable" var="dsfArray" value="#{block}"> B
+                                    <p:dataTable id="byBlockInner" styleClass="dvnDifferanceTable" var="dsfArray" value="#{block}">
                                         <p:column styleClass="versionValue">
-                                            <h:outputText value="#{dsfArray[0].datasetFieldType.title}" /> C
+                                            <h:outputText value="#{dsfArray[0].datasetFieldType.title}" />
                                         </p:column>
                                         <p:column styleClass="versionDetails">
-                                            <h:outputText rendered="#{dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].displayValue}" /> D
-                                            <h:outputText rendered="#{!dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].compoundDisplayValue}" /> E
+                                            <h:outputText rendered="#{dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].displayValue}" />
+                                            <h:outputText rendered="#{!dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].compoundDisplayValue}" />
                                         </p:column>
                                         <p:column styleClass="versionDetails" >
-                                            <h:outputText rendered="#{dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].displayValue}" /> F
-                                            <h:outputText rendered="#{!dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].compoundDisplayValue}" /> G
+                                            <h:outputText rendered="#{dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].displayValue}" />
+                                            <h:outputText rendered="#{!dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].compoundDisplayValue}" />
                                         </p:column>
                                     </p:dataTable>
                                 </div>
