@@ -148,6 +148,10 @@ public class PasswordValidatorServiceBean implements java.io.Serializable {
     public List<String> validate(String password, Date passwordModificationTime, boolean isHumanReadable) {
 //    public List<String> validate(String password, boolean isHumanReadable) {
 
+	logger.fine ("fine Juan: " + password);
+	logger.fine ("fine Juan: " + isHumanReadable);
+	logger.warning ("Warning Juan: " + password);
+	logger.warning ("Warning Juan: " + isHumanReadable);
         init();
         final PasswordData passwordData = PasswordData.newInstance(password, String.valueOf(passwordModificationTime.getTime()), null);
 //        final PasswordData passwordData = PasswordData.newInstance(password, "username", null);

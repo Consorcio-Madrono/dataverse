@@ -359,7 +359,7 @@
                                         <div class="form-group" jsf:rendered="#{dsf.datasetFieldType.name!='publication' and dsf.datasetFieldType.name!='keyword'  }">
                                             <label for="metadata_#{dsf.datasetFieldType.name}" class="col-sm-3 control-label">
                                                 <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{dsf.datasetFieldType.description}">
-                                                        #{dsf.datasetFieldType.title}
+                                                   #{(bundle [dsfArray[0].datasetFieldType.title].startsWith('???')) ? dsfArray[0].datasetFieldType.title : bundle [dsfArray[0].datasetFieldType.title]} <!-- Hack to translate values from the database -->
                                                 </span>
                                             </label>
                                             <!-- Primitive datasetFields -->
@@ -844,19 +844,19 @@
                             <ui:repeat value="#{DatasetPage.datasetVersionDifference.detailDataByBlock}" var="block">
                                 <div class="panel panel-default">
                                     <div class="panel-heading text-info">
-                                        <h:outputText value="#{block.get(0)[0].datasetFieldType.metadataBlock.displayName}" />
+                                        <h:outputText value="#{block.get(0)[0].datasetFieldType.metadataBlock.displayName}" /> A
                                     </div>
-                                    <p:dataTable id="byBlockInner" styleClass="dvnDifferanceTable" var="dsfArray" value="#{block}">
+                                    <p:dataTable id="byBlockInner" styleClass="dvnDifferanceTable" var="dsfArray" value="#{block}"> B
                                         <p:column styleClass="versionValue">
-                                            <h:outputText value="#{dsfArray[0].datasetFieldType.title}" />
+                                            <h:outputText value="#{dsfArray[0].datasetFieldType.title}" /> C
                                         </p:column>
                                         <p:column styleClass="versionDetails">
-                                            <h:outputText rendered="#{dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].displayValue}" />
-                                            <h:outputText rendered="#{!dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].compoundDisplayValue}" />
+                                            <h:outputText rendered="#{dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].displayValue}" /> D
+                                            <h:outputText rendered="#{!dsfArray[0].datasetFieldType.primitive and !(dsfArray[0].isEmpty())}" value="#{dsfArray[0].compoundDisplayValue}" /> E
                                         </p:column>
                                         <p:column styleClass="versionDetails" >
-                                            <h:outputText rendered="#{dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].displayValue}" />
-                                            <h:outputText rendered="#{!dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].compoundDisplayValue}" />
+                                            <h:outputText rendered="#{dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].displayValue}" /> F
+                                            <h:outputText rendered="#{!dsfArray[1].datasetFieldType.primitive and !(dsfArray[1].isEmpty())}" value="#{dsfArray[1].compoundDisplayValue}" /> G
                                         </p:column>
                                     </p:dataTable>
                                 </div>

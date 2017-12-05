@@ -129,11 +129,19 @@ public class OAIServlet extends HttpServlet {
     }
     
     private void addSupportedMetadataFormats(Context context) {
+<<<<<<< HEAD
         for (String[] provider : ExportService.getInstance().getExportersLabels()) {
             String formatName = provider[1];
             Exporter exporter;
             try {
                 exporter = ExportService.getInstance().getExporter(formatName);
+=======
+        for (String[] provider : ExportService.getInstance(settingsService).getExportersLabels()) {
+            String formatName = provider[1];
+            Exporter exporter;
+            try {
+                exporter = ExportService.getInstance(settingsService).getExporter(formatName);
+>>>>>>> v4.8.3
             } catch (ExportException ex) {
                 exporter = null;
             }
@@ -229,18 +237,26 @@ public class OAIServlet extends HttpServlet {
         
         try {
             if (!isHarvestingServerEnabled()) {
+<<<<<<< HEAD
+                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Sorry. OAI Service is disabled on this Dataverse node.");
+=======
                 response.sendError(
                         HttpServletResponse.SC_SERVICE_UNAVAILABLE,
                         "Sorry. OAI Service is disabled on this Dataverse node.");
+>>>>>>> v4.8.3
                 return;
             }
             
             OAIRequestParametersBuilder parametersBuilder = newXoaiRequest();
-
+            
             for (Object p : request.getParameterMap().keySet()) {
                 String parameterName = (String)p; 
                 String parameterValue = request.getParameter(parameterName);
                 parametersBuilder = parametersBuilder.with(parameterName, parameterValue);
+<<<<<<< HEAD
+=======
+
+>>>>>>> v4.8.3
             }
             
             OAIPMH handle = dataProvider.handle(parametersBuilder);
@@ -279,6 +295,10 @@ public class OAIServlet extends HttpServlet {
     // Custom methods for the potentially expensive GetRecord and ListRecords requests:
     
     private void writeListRecords(HttpServletResponse response, OAIPMH handle) throws IOException {
+<<<<<<< HEAD
+        logger.warning("################################## Juan: WRITE LIST RECORDS");
+=======
+>>>>>>> v4.8.3
         OutputStream outputStream = response.getOutputStream();
 
         outputStream.write(oaiPmhResponseToString(handle).getBytes());
@@ -304,6 +324,7 @@ public class OAIServlet extends HttpServlet {
 
         outputStream.flush();
         outputStream.close();
+
     }
     
     private void writeGetRecord(HttpServletResponse response, OAIPMH handle) throws IOException, XmlWriteException, XMLStreamException {
@@ -318,7 +339,11 @@ public class OAIServlet extends HttpServlet {
         }
 
         if (!verb.getType().equals(Verb.Type.GetRecord)) {
+<<<<<<< HEAD
+            throw new IOException("writeGetRecord() called on a non-GetRecord verb");
+=======
             throw new IOException("writeListRecords() called on a non-GetRecord verb");
+>>>>>>> v4.8.3
         }
 
         outputStream.write(("<" + verb.getType().displayName() + ">").getBytes());
@@ -357,7 +382,11 @@ public class OAIServlet extends HttpServlet {
             writer.flush();
             writer.close();
 
+<<<<<<< HEAD
+            String ret = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ("" + byteOutputStream.toString().replaceFirst("</"+OAI_PMH+">", "").replaceAll("<\\?xml version=[^>]*>",""));
+=======
             String ret = byteOutputStream.toString().replaceFirst("</"+OAI_PMH+">", "");
+>>>>>>> v4.8.3
 
             return ret;
         } catch (Exception ex) {
