@@ -31,8 +31,11 @@ public class BuiltinAuthenticationProvider implements CredentialsAuthenticationP
     public BuiltinAuthenticationProvider( BuiltinUserServiceBean aBean, PasswordValidatorServiceBean passwordValidatorService  ) {
         this.bean = aBean;
         this.passwordValidatorService = passwordValidatorService;
-        KEY_USERNAME_OR_EMAIL = BundleUtil.getStringFromBundle("login.builtin.credential.usernameOrEmail");
-        KEY_PASSWORD = BundleUtil.getStringFromBundle("login.builtin.credential.password");
+	// Strings "Username/Email" and Password can not be translated in credentials proccessing
+        KEY_USERNAME_OR_EMAIL = "Username/Email";
+        KEY_PASSWORD = "Password";
+        //KEY_USERNAME_OR_EMAIL = BundleUtil.getStringFromBundle("login.builtin.credential.usernameOrEmail");
+        //KEY_PASSWORD = BundleUtil.getStringFromBundle("login.builtin.credential.password");
         CREDENTIALS_LIST = Arrays.asList(new Credential(KEY_USERNAME_OR_EMAIL), new Credential(KEY_PASSWORD, true));
     }
 
