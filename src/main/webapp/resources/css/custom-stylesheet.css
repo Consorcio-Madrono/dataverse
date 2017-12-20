@@ -1,28 +1,30 @@
 /* Add any CSS necessary for your custom content */
 
 .navbar-default .container {
-	background-color: #e51a4c;
+  border-top: 15px solid #bc0f3a;
+  border-bottom: 15px solid #bc0f3a;
+  background-color: #e51a4c;
 }
 
-body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .container .navbar-nav > li > a:focus, .navbar-default .container .navbar-nav > li > a:hover, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink:hover {
-	color: black;
+body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .container .navbar-nav > li > a:focus, .navbar-default .container .navbar-nav > li > a:hover, .navbar-default .container .navbar-nav > li > form > a:hover, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink:hover {
+  color: black;
 }
-.navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink {
-	color: white;
+.navbar-default .container .navbar-nav > li > form > a, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink {
+  color: white;
 }
 .navbar-default .container .nav > .open > a {
-	background-color: #bc0f3a;
-	background-image: none;
+  background-color: #bc0f3a;
+  background-image: none;
 }
 .navbar-nav {
-	padding-top: 16px;
+  padding-top: 16px;
 }
 #navbarFixed img {
-	margin-left:5px;
+  margin-left:5px;
 }
 
 body .text-danger {
-	color: orange;
+  color: orange;
 }
 #footer {
   display: none;

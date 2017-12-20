@@ -54,12 +54,30 @@
                             </button>
                         </form>
                         <ui:fragment rendered="#{!empty settingsWrapper.get(':NavbarAboutUrl')}">
-                        <li>
+                          <li>
                             <h:outputLink value="#{settingsWrapper.get(':NavbarAboutUrl')}" target="_blank">
                                 #{bundle['header.about']}
                             </h:outputLink>                         
-                        </li>
+                          </li>
                         </ui:fragment>
+
+			<li>
+                          <li class="dropdown" style="margin-top:15px; margin-bottom:15px">
+			    <h:form>
+                              <a href="#" id="changeLang" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">
+                                <h:outputText value="#{bundle.Language}" id="buttonLang"/>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li>
+                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >Español</a>
+                                </li>
+                                <li>
+                                  <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >English</a>
+                               </li>
+			      </ul>
+			    </h:form>
+                          </li>
+                        </li>
 
                         <li>
                             <h:outputLink value="#{settingsWrapper.guidesBaseUrl}/#{systemConfig.guidesVersion}/user" target="_blank">
