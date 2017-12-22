@@ -13,6 +13,11 @@
         <div class="container">
                 <div class="collapse navbar-collapse" id="topNavBar">
                     <ul class="nav navbar-nav navbar-right">
+			<li>
+			    <h:form>
+                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH </a> 
+			    </h:form>
+                        </li>
                         <li>
                             <a id="navbar-search-toggle" title="Buscar en todos los dataverses...">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -32,22 +37,6 @@
                             </a>
                         </li>
 			<li>
-                          <li class="dropdown" style="margin-top:15px; margin-bottom:15px">
-			    <h:form>
-                              <a href="#" id="changeLang" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">
-                                <h:outputText value="#{bundle.Language}" id="buttonLang"/>
-                              </a>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >Español</a>
-                                </li>
-                                <li>
-                                  <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >English</a>
-                               </li>
-			      </ul>
-			    </h:form>
-                          </li>
-                        </li>
                         <li class="dropdown">
                             <span id="dataverseSupportLink" class="dropdown-toggle" data-toggle="dropdown">
                                 Guías <b class="caret"></b>

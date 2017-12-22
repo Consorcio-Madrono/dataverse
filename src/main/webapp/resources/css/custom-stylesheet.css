@@ -1,8 +1,8 @@
 /* Add any CSS necessary for your custom content */
 
 .navbar-default .container {
-  border-top: 15px solid #bc0f3a;
-  border-bottom: 15px solid #bc0f3a;
+  border-top: 25px solid #bc0f3a;
+  border-bottom: 25px solid #bc0f3a;
   background-color: #e51a4c;
 }
 
@@ -11,6 +11,13 @@ body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .conta
 }
 .navbar-default .container .navbar-nav > li > form > a, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink {
   color: white;
+}
+.navbar-default .container .navbar-nav > li > form {
+  position: absolute;
+  font-weight: bold;
+  margin-top: -37px;
+  right: 5px;
+  width: 150px;
 }
 .navbar-default .container .nav > .open > a {
   background-color: #bc0f3a;

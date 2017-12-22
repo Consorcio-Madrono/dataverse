@@ -9,6 +9,7 @@
                 xmlns:o="http://omnifaces.org/ui"
                 xmlns:iqbs="http://xmlns.jcp.org/jsf/composite/iqbs">
 
+    <f:view locale="#{language.locale}">
     <o:resourceInclude path="/CustomizationFilesServlet?customFileType=header" rendered="#{!widgetWrapper.widgetView}"/>
     
     <div id="dataverse-header-block">
@@ -38,6 +39,11 @@
                 </div>
                 <div class="collapse navbar-collapse" id="topNavBar">
                     <ul class="nav navbar-nav navbar-right">
+			<li>
+			    <h:form>
+                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH </a> 
+			    </h:form>
+                        </li>
                          <li>
                             <a href="#" id="navbar-search-toggle" title="#{bundle['header.search.title']}">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -60,24 +66,6 @@
                             </h:outputLink>                         
                           </li>
                         </ui:fragment>
-
-			<li>
-                          <li class="dropdown" style="margin-top:15px; margin-bottom:15px">
-			    <h:form>
-                              <a href="#" id="changeLang" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">
-                                <h:outputText value="#{bundle.Language}" id="buttonLang"/>
-                              </a>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >Español</a>
-                                </li>
-                                <li>
-                                  <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >English</a>
-                               </li>
-			      </ul>
-			    </h:form>
-                          </li>
-                        </li>
 
                         <li>
                             <h:outputLink value="#{settingsWrapper.guidesBaseUrl}/#{systemConfig.guidesVersion}/user" target="_blank">
@@ -167,6 +155,7 @@
                                 </ul>
                             </li>
                         </ui:fragment>
+
                     </ul>
                 </div>
             </div>
@@ -280,4 +269,5 @@
             </div>
         </p:fragment>
     </div>
+</f:view>
 </ui:composition>
