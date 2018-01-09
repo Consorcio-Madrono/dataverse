@@ -140,10 +140,11 @@
     </h:outputLink>
                
     <p:commandLink rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and !(downloadPopupRequired) }"
-                   type="button" styleClass="btn btn-default"
+		   type="button" styleClass="piwik_download btn btn-default" 
                    process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    actionListener="#{fileDownloadService.startFileDownload(guestbookResponse, fileMetadata, 'Download')}">
+        <!-- MADRONO MADROÑO JUAN Count downloads in piwik -->
         <!-- non-tabular data file: -->
         <!-- no guest book/terms of use/etc. - straight to the download API url: -->
         <span class="glyphicon glyphicon-download-alt"/> #{bundle.download}
