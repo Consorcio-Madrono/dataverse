@@ -320,8 +320,10 @@
                 <div jsf:id="downloadButtonBlock" class="btn-group" 
                      jsf:rendered="#{(!(empty DatasetPage.workingVersion.fileMetadatas) 
                                     and DatasetPage.workingVersion.fileMetadatas.size() > 1) and DatasetPage.downloadButtonAvailable}">
+                    <!-- DOWNLOAD -->
+		    <!-- MADRONO MADROÑO JUAN Count downloads in piwik -->
                     <p:commandLink rendered="#{!(DatasetPage.downloadPopupRequired)}"
-                                    type="button" styleClass="btn btn-default"
+                                    type="button" styleClass="piwik_download btn btn-default"
                                     disabled="#{DatasetPage.lockedFromDownload}"
                                     update="@form"
                                     actionListener="#{DatasetPage.validateFilesForDownload(false)}">
