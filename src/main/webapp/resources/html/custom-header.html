@@ -1,23 +1,11 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-                xmlns:jsf="http://xmlns.jcp.org/jsf"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:o="http://omnifaces.org/ui"
-                xmlns:iqbs="http://xmlns.jcp.org/jsf/composite/iqbs">
-
+				<form id="j_idt100" name="j_idt100" class="lang" method="post" action="/" enctype="application/x-www-form-urlencoded">
+					<input name="j_idt100" value="j_idt100" type="hidden">
+					<a id="j_idt100:langSpanish" href="#" onclick="mojarra.jsfcljs(document.getElementById('j_idt100'),{'j_idt100:langSpanish':'j_idt100:langSpanish'},'');return false">ESPAÑOL</a> | <a id="j_idt100:langEnglish" href="#" onclick="mojarra.jsfcljs(document.getElementById('j_idt100'),{'j_idt100:langEnglish':'j_idt100:langEnglish'},'');return false">ENGLISH</a><input name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="-3039485756960544980:-3776933169516834780" autocomplete="off" type="hidden">
+				</form>
     <div id="custom-header">
         <div class="container">
                 <div class="collapse navbar-collapse" id="topNavBar">
                     <ul class="nav navbar-nav navbar-right">
-			<li>
-			    <h:form>
-                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH </a> 
-			    </h:form>
-                        </li>
                         <li>
                             <a id="navbar-search-toggle" title="Buscar en todos los dataverses...">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -31,7 +19,7 @@
                             <button type="submit" class="btn btn-default" onclick="window.location = '/?q=' + document.getElementById('navbarsearch').value;                                     return false;">
                                 <span class="glyphicon glyphicon-search"></span> Buscar
                             </button>
-                        </form>
+                    </form>
                         <li><a href="http://www.consorciomadrono.es/investigam" target="_blank">
                                 Acerca de
                             </a>
@@ -54,22 +42,16 @@
                                 </li>
                             </ul>
                         </li>
-<form id="j_idt62" name="j_idt62" method="post" action="/" class="navbar-form navbar-left navbar-form-link">
-<input name="j_idt62" value="j_idt62" type="hidden"/>
-<a id="j_idt62:j_idt63" href="#" class="ui-commandlink ui-widget" onclick="PrimeFaces.ab({s:&quot;j_idt62:j_idt63&quot;,u:&quot;contactDialog&quot;,onco:function(xhr,status,args){PF('contactForm').show();}});return false;">Soporte</a><input name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="2854557572582603208:-8090141679714151675" autocomplete="off" type="hidden"/>
-</form>
-<!-- Lo quitamos para no dejar crear cuentas de forma autom&aacute;tica                            &lt;li&gt;
-                                &lt;h:outputLink rendered="true"
-                                              value="/dataverseuser.xhtml?editMode=CREATE&amp;redirectPage=%2Fdataverse.xhtml"&gt;
-                                    Crear Cuenta
-                                &lt;/h:outputLink&gt;
-                            &lt;/li&gt;-->
                             <li><a href="/loginpage.xhtml?redirectPage=%2Fdataverse.xhtml">
                                     Iniciar Sesión
                                 </a>
                             </li>
+                        </li>
                     </ul>
+<form id="j_idt62" name="j_idt62" method="post" action="/" class="navbar-form navbar-left navbar-form-link">
+<input name="j_idt62" value="j_idt62" type="hidden"/>
+<a id="j_idt62:j_idt63" href="#" class="ui-commandlink ui-widget" onclick="PrimeFaces.ab({s:&quot;j_idt62:j_idt63&quot;,u:&quot;contactDialog&quot;,onco:function(xhr,status,args){PF('contactForm').show();}});return false;">Soporte</a><input name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="2854557572582603208:-8090141679714151675" autocomplete="off" type="hidden"/>
+</form>
                 </div>
             </div>
     </div>
-</ui:composition>

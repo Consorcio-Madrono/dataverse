@@ -39,16 +39,10 @@
                 </div>
                 <div class="collapse navbar-collapse" id="topNavBar">
                     <ul class="nav navbar-nav navbar-right">
-			<li>
-			    <h:form>
-                                  <a jsf:id="langSpanigh" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH </a> 
-			    </h:form>
-                        </li>
-                         <li>
+                         <!--<li>
                             <a href="#" id="navbar-search-toggle" title="#{bundle['header.search.title']}">
                                 <span class="glyphicon glyphicon-search"></span>
                             </a>
-                        </li>
                         <form class="navbar-form navbar-left" role="search" style="display:none;">
                             <div class="form-group">
                                 <label class="sr-only" for="navbarsearch">#{bundle.search}</label>
@@ -59,6 +53,7 @@
                                 <span class="glyphicon glyphicon-search"/> #{bundle.find}
                             </button>
                         </form>
+			 </li>-->
                         <ui:fragment rendered="#{!empty settingsWrapper.get(':NavbarAboutUrl')}">
                           <li>
                             <h:outputLink value="#{settingsWrapper.get(':NavbarAboutUrl')}" target="_blank">
@@ -87,12 +82,14 @@
                             </h:outputLink>
                         </li>
                         <ui:fragment rendered="#{!dataverseSession.user.authenticated}">
+			   <!--
                             <li>
                                 <h:outputLink rendered="#{dataverseHeaderFragment.signupAllowed}"
                                               value="#{dataverseHeaderFragment.getSignupUrl(navigationWrapper.redirectPage)}">
                                     #{bundle['header.signUp']}
                                 </h:outputLink>
                             </li>
+			   -->
                             <li>
                                 <h:outputLink value="/loginpage.xhtml?#{loginRedirectPage}">
                                     #{bundle.login}
@@ -155,6 +152,11 @@
                                 </ul>
                             </li>
                         </ui:fragment>
+			<li>
+			    <h:form>
+                                  <a jsf:id="langSpanish" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH </a> 
+			    </h:form>
+                        </li>
 
                     </ul>
                 </div>
@@ -176,8 +178,11 @@
                     <img src="/logos/#{dataverse.logoOwnerId}/#{dataverse.dataverseTheme.logo}" alt="#{dataverse.name}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{!empty dataverse.name}">
-                    <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};">#{dataverse.name}</a>
-                    <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
+                    <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};">#{dataverse.name}</a>   
+		    <h:outputText value="  " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
+                    <h:outputLink value="http://#{dataverse.affiliation}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : ''};" target="_blank" rendered="#{!empty dataverse.affiliation}">
+                      <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
+		    </h:outputLink>
                     <h:outputText value="#{bundle.unpublished}" styleClass="label label-warning label-unpublished" rendered="#{!dataverse.released}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{empty dataverse.name}">

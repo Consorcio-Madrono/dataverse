@@ -133,7 +133,8 @@ public class SwordConfigurationImpl implements SwordConfiguration {
         
         }else if (maxUploadInBytes > Integer.MAX_VALUE){
             // (b) setting returns the limit of int, return max int value  (BUG)
-            return Integer.MAX_VALUE;
+            //return Integer.MAX_VALUE;
+            return unlimited;
             
         }else{            
             // (c) Return the setting as an int

@@ -12,7 +12,7 @@ body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .conta
 .navbar-default .container .navbar-nav > li > form > a, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink {
   color: white;
 }
-.navbar-default .container .navbar-nav > li > form {
+form.lang {
   position: absolute;
   font-weight: bold;
   margin-top: -37px;
@@ -134,4 +134,65 @@ body table[id$='resultsTable'] td > div.datasetResult {
   color: #a4052d;
 }
 
+@media (max-width: 767px) {
+  .navbar-collapse .navbar-nav {
+    border: 1px solid #eae8ed;
+    margin: 0;
+  }
+  .navbar-collapse .navbar-form-link {
+    border: 1px solid #eae8ed;
+    padding: 0;
+  }
+  div#topNavBar.navbar-collapse.collapse.in {
+    position: fixed;
+    top: 140px;
+    right: 0;
+    left: 0px;
+    z-index: 99930;
+    background-image: linear-gradient(to bottom,#fff 0,#eae8ed 100%);
+  }
+  #topNavBar>ul.nav.navbar-nav.navbar-right>li {
+    margin-left:10px;
+  }
+  #topNavBar .nav > li > a {
+    padding:0 0 5px 0;
+  }
+  #topNavBar form {
+    padding-left: 25px;
+  }
+  #topNavBar li.dropdown > .dropdown-menu > li > a {
+    background-color: white;
+    color: black;
+  }
+  #topNavBar li.dropdown > .dropdown-menu > li > a:hover {
+    color: #a4052d;
+  }
+  form.lang {
+    position: absolute;
+    font-weight: bold;
+    right: 5px;
+    width: 150px;
+    z-index: 99940;
+  }
+  body #dataverseHeader {
+    margin-top: 70px;
+  }
+  body #content {
+    margin-top: 10px;
+  }
+  body #login-container {
+    margin-top: 30px;
+  }
+  body .lang {
+    top:40px;
+    right:0;
+  }
+  body .lang a:hover, body .lang a:focus{ 
+    color:black;
+  }
+  body .lang a{
+    color:white;
+    text-decoration:none;
+  }
 
+}  
