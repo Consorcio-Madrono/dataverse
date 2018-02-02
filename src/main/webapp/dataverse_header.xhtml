@@ -10,7 +10,7 @@
                 xmlns:iqbs="http://xmlns.jcp.org/jsf/composite/iqbs">
 
     <f:view locale="#{language.locale}">
-    <o:resourceInclude path="/CustomizationFilesServlet?customFileType=header" rendered="#{!widgetWrapper.widgetView}"/>
+    <o:resourceInclude path="/CustomizationFilesServlet?customFileType=header"/>
     
     <div id="dataverse-header-block">
         <!-- Navbar Panel -->
@@ -153,11 +153,10 @@
                             </li>
                         </ui:fragment>
 			<li>
-			    <h:form>
-                                  <a jsf:id="langSpanish" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH </a> 
+			    <h:form class="lang" styleClass="lang">
+                                  <a jsf:id="langSpanish" jsf:action="#{language.changeLanguage('es', 'ES')}" >ESPAÑOL</a> | <a jsf:id="langEnglish" jsf:action="#{language.changeLanguage('en','US')}" >ENGLISH</a> 
 			    </h:form>
                         </li>
-
                     </ul>
                 </div>
             </div>
@@ -179,7 +178,7 @@
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{!empty dataverse.name}">
                     <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};">#{dataverse.name}</a>   
-		    <h:outputText value="  " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
+		    <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
                     <h:outputLink value="http://#{dataverse.affiliation}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : ''};" target="_blank" rendered="#{!empty dataverse.affiliation}">
                       <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
 		    </h:outputLink>
