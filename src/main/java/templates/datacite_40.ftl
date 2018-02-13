@@ -63,6 +63,10 @@
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100004587</funderIdentifier>
           <#elseif funder.name == "ERDF" || funder.name == "Fondo Europeo de Desarrollo Regional" || funder.name == "European Regional Development Fund">
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008530</funderIdentifier>
+          <#elseif funder.name == "EPSRC" || funder.name == "Engineering and Physical Sciences Research Council" >
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000266</funderIdentifier>
+          <#elseif funder.name == "ERC" || funder.name == "European Research Council" >
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000781</funderIdentifier>
           </#if>
           <awardNumber>${funder.awardNumber}</awardNumber>
         </fundingReference>
