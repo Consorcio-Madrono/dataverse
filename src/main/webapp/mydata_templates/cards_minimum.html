@@ -26,11 +26,11 @@
             <a href="/file.xhtml?fileId={{ card_info.entity_id }}"><span style="padding:4px 0;">{{ card_info.name }}</span></a>
  {% endif %}
         <!-- publication status -->
-        {#({{ loop.index }})#} {% if card_info.is_draft_state %}<span class="label label-primary">{{ ResourceBundle.getBundle("Bundle").getString("dataset.versionUI.draft") }}</span> {% endif %}
-        {% if card_info.is_in_review_state %}<span class="label label-success">ResourceBundle.getBundle("Bundle").getString("dataset.versionUI.inReview") }}</span> {% endif %}
-        {% if card_info.is_unpublished_state %}<span class="label label-warning">{{ ResourceBundle.getBundle("Bundle").getString("dataset.versionUI.unpublished") }}</span> {% endif %}
-        {% if card_info.is_published %} <span class="label label-warning">{{ ResourceBundle.getBundle("Bundle").getString("dataset.versionUI.published") }}</span> {% endif %}
-        {% if card_info.is_deaccesioned %} <span class="label label-danger">{{ ResourceBundle.getBundle("Bundle").getString("dataset.versionUI.deaccessioned") }}</span> {% endif %}
+        {#({{ loop.index }})#} {% if card_info.is_draft_state %}<span class="label label-primary">Draft</span> {% endif %}
+        {% if card_info.is_in_review_state %}<span class="label label-success">In Review</span> {% endif %}
+        {% if card_info.is_unpublished_state %}<span class="label label-warning">Unpublished</span> {% endif %}
+        {% if card_info.is_published %} <span class="label label-warning">Published</span> {% endif %}
+        {% if card_info.is_deaccesioned %} <span class="label label-danger">Deaccessioned</span> {% endif %}
         
         <!-- roles -->
         {% for role_name in card_info.user_roles %}
