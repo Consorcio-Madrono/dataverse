@@ -241,7 +241,6 @@ public class OAIServlet extends HttpServlet {
                 String parameterName = (String)p; 
                 String parameterValue = request.getParameter(parameterName);
                 parametersBuilder = parametersBuilder.with(parameterName, parameterValue);
-
             }
             
             OAIPMH handle = dataProvider.handle(parametersBuilder);

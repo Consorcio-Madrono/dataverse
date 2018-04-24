@@ -79,7 +79,8 @@ public class Xrecord extends Record {
         
         outputStream.write(headerString.getBytes());
         
-        if (!isExtendedDataverseMetadataMode(formatName)) {
+				if (header.getStatus() == null) { //JUAN record deleted?
+	        if (!isExtendedDataverseMetadataMode(formatName)) {
             outputStream.write(METADATA_START_ELEMENT.getBytes());
 
             outputStream.flush();
@@ -98,11 +99,11 @@ public class Xrecord extends Record {
                 writeMetadataStream(inputStream, outputStream);
             }
             outputStream.write(METADATA_END_ELEMENT.getBytes());
-        } else {
+  	      } else {
             outputStream.write(customMetadataExtensionRef(this.dataset.getGlobalId()).getBytes());
-        }
+    	    }
+				}
         outputStream.flush();
-
     }
     
     private String itemHeaderToString(Header header) {
