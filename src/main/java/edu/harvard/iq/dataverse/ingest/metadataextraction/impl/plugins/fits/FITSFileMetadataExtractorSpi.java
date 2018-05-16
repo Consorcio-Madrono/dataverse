@@ -24,7 +24,7 @@ import org.apache.commons.codec.binary.Hex;
  * @author Leonid Andreev
  */
 public class FITSFileMetadataExtractorSpi extends FileMetadataExtractorSpi{
-    private static Logger dbgLog = Logger.getLogger(FITSFileMetadataExtractorSpi.class.getPackage().getName());
+    private static java.util.logging.Logger dbgLog = java.util.logging.Logger.getLogger(FITSFileMetadataExtractorSpi.class.getPackage().getName());
     private static int FITS_HEADER_SIZE = 10;
     private static String FITS_FILE_SIGNATURE = "SIMPLE  = ";
 

@@ -100,7 +100,7 @@ public class JhoveFileType implements java.io.Serializable  {
             jb.setSignatureFlag(true); // -k option
             
             // String moduleName = null;
-            Module module = jb.getModule(null);
+            edu.harvard.hul.ois.jhove.Module module = jb.getModule(null);
             
             if (DEBUG) {
                 if (module != null) {
@@ -134,9 +134,9 @@ public class JhoveFileType implements java.io.Serializable  {
                      * throw arbitrary files at it, so we'll skip it.
                      */
                     //Iterator iter = _moduleList.iterator();
-                    Iterator<Module> iter = jb.getModuleList().iterator();
+                    Iterator<edu.harvard.hul.ois.jhove.Module> iter = jb.getModuleList().iterator();
                     while (iter.hasNext()) {
-                        Module mod = iter.next();
+                        edu.harvard.hul.ois.jhove.Module mod = iter.next();
                         RepInfo infc = (RepInfo) info.clone();
 
                         if (mod.hasFeature("edu.harvard.hul.ois.jhove.canValidate")) {

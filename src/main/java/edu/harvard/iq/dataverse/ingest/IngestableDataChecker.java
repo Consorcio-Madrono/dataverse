@@ -46,7 +46,7 @@ public class IngestableDataChecker implements java.io.Serializable {
      */
 
     // static fields
-    private static Logger dbgLog = Logger.getLogger(IngestableDataChecker.class.getPackage().getName());
+    private static java.util.logging.Logger dbgLog = java.util.logging.Logger.getLogger(IngestableDataChecker.class.getPackage().getName());
 
     // default format set
     private static String[] defaultFormatSet = {"POR", "SAV", "DTA", "RDA", "XPT"};

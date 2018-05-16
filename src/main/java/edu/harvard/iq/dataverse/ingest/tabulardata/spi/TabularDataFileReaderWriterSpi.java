@@ -35,8 +35,8 @@ import edu.harvard.iq.dataverse.ingest.plugin.spi.*;
 
 public abstract class TabularDataFileReaderWriterSpi extends IngestServiceProvider{
 
-    private static Logger dbgLog = 
-    Logger.getLogger(TabularDataFileReaderWriterSpi.class.getPackage().getName());
+    private static java.util.logging.Logger dbgLog = 
+    java.util.logging.Logger.getLogger(TabularDataFileReaderWriterSpi.class.getPackage().getName());
     /**
      * A <code>String</code> array that contains human-readable format names
      * and are used by the <code>StatDataFileReader</code> or 
