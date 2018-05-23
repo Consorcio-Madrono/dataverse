@@ -51,7 +51,6 @@ public class AdvancedSearchPage implements java.io.Serializable {
     private String dsPersistentId;
     private String fileFieldName;
     private String fileFieldDescription;
-    private String filePersistentId;
     private String fileFieldFiletype;
     private String fileFieldVariableName;
     private String fileFieldVariableLabel;
@@ -151,10 +150,6 @@ public class AdvancedSearchPage implements java.io.Serializable {
 
         if (StringUtils.isNotBlank(fileFieldDescription)) {
             queryStrings.add(constructQuery(SearchFields.FILE_DESCRIPTION, fileFieldDescription));
-        }
-        
-        if (StringUtils.isNotBlank(filePersistentId)) {
-            queryStrings.add(constructQuery(SearchFields.FILE_PERSISTENT_ID, filePersistentId));
         }
 
         if (StringUtils.isNotBlank(fileFieldFiletype)) {
@@ -337,15 +332,6 @@ public class AdvancedSearchPage implements java.io.Serializable {
 
     public void setFileFieldDescription(String fileFieldDescription) {
         this.fileFieldDescription = fileFieldDescription;
-    }
-    
-    
-    public String getFilePersistentId() {
-        return filePersistentId;
-    }
-
-    public void setFilePersistentId(String filePersistentId) {
-        this.filePersistentId = filePersistentId;
     }
 
     public String getFileFieldFiletype() {

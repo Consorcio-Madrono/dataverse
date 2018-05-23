@@ -33,16 +33,18 @@ public class ListDataverseContentCommand extends AbstractCommand<List<DvObject>>
     @Override
     public List<DvObject> execute(CommandContext ctxt) throws CommandException {
         LinkedList<DvObject> result = new LinkedList<>();
-        
-        for (Dataset ds : ctxt.datasets().findByOwnerId(dvToList.getId())) {            
-            if (ds.isReleased() || ctxt.permissions().requestOn(getRequest(), ds).has(Permission.ViewUnpublishedDataset)) {
+        for (Dataset ds : ctxt.datasets().findByOwnerId(dvToList.getId())) {
+            try {
+                ds = ctxt.engine().submit(new GetDatasetCommand(getRequest(), ds));
                 result.add(ds);
+            } catch (PermissionException ex) {
             }
         }
-        
         for (Dataverse dv : ctxt.dataverses().findByOwnerId(dvToList.getId())) {
-            if (dv.isReleased() || ctxt.permissions().requestOn(getRequest(), dv).has(Permission.ViewUnpublishedDataverse)) {
+            try {
+                dv = ctxt.engine().submit(new GetDataverseCommand(getRequest(), dv));
                 result.add(dv);
+            } catch (PermissionException ex) {
             }
         }
 

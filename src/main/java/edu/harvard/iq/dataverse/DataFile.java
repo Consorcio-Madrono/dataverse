@@ -54,9 +54,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @NamedQueries({
 	@NamedQuery( name="DataFile.removeFromDatasetVersion",
-		query="DELETE FROM FileMetadata f WHERE f.datasetVersion.id=:versionId and f.dataFile.id=:fileId"),
-        @NamedQuery(name="DataFile.findDataFileByIdProtocolAuth", 
-                query="SELECT s FROM DataFile s WHERE s.identifier=:identifier AND s.protocol=:protocol AND s.authority=:authority")
+		query="DELETE FROM FileMetadata f WHERE f.datasetVersion.id=:versionId and f.dataFile.id=:fileId")
 })
 @Entity
 @Table(indexes = {@Index(columnList="ingeststatus")
@@ -66,7 +64,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class DataFile extends DvObject implements Comparable {
     private static final Logger logger = Logger.getLogger(DatasetPage.class.getCanonicalName());
     private static final long serialVersionUID = 1L;
-    public static final String TARGET_URL = "/file.xhtml?persistentId=";
+    
     public static final char INGEST_STATUS_NONE = 65;
     public static final char INGEST_STATUS_SCHEDULED = 66;
     public static final char INGEST_STATUS_INPROGRESS = 67;

@@ -35,7 +35,6 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import org.apache.commons.lang.StringEscapeUtils;
 
 
 /**
@@ -327,8 +326,8 @@ public class FileMetadata implements Serializable {
          return getFileCitation(false);
      }
      
-
-    
+     
+     
      
     public String getFileCitation(boolean html){
          String citation = this.getDatasetVersion().getCitation(html);
@@ -342,7 +341,6 @@ public class FileMetadata implements Serializable {
          }
          return citation;
      }
-    
         
     public DatasetVersion getDatasetVersion() {
         return datasetVersion;

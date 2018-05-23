@@ -39,9 +39,6 @@ import edu.harvard.iq.dataverse.api.exceptions.AuthorizationRequiredException;
 
 /**
  *
- * PLEASE NOTE that the "/api/meta" endpoints are deprecated! All code should
- * point to the newer "/api/access/datafile/.../access" endpoints instead.
- *
  * @author Leonid Andreev
  * 
  * The metadata access API is based on the DVN metadata API v.1.0 (that came 
@@ -51,7 +48,6 @@ import edu.harvard.iq.dataverse.api.exceptions.AuthorizationRequiredException;
  * specific fragments of these sections. 
  */
 
-@Deprecated
 @Path("meta")
 public class Meta {
     private static final Logger logger = Logger.getLogger(Meta.class.getCanonicalName());
@@ -68,7 +64,6 @@ public class Meta {
     @EJB
     DatasetServiceBean datasetService;
 
-    @Deprecated
     @Path("variable/{varId}")
     @GET
     @Produces({ "application/xml" })
@@ -98,8 +93,6 @@ public class Meta {
         return retValue; 
     }
     
-    // Because this API is deprecated, we prefer to continue letting it operate on fileId rather adding support for persistent identifiers.
-    @Deprecated
     @Path("datafile/{fileId}")
     @GET
     @Produces({"text/xml"})
@@ -145,7 +138,6 @@ public class Meta {
         return retValue;
     }
     
-    @Deprecated
     @Path("dataset/{datasetId}")
     @GET
     @Produces({"application/xml"})

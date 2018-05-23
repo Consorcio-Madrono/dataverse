@@ -69,7 +69,6 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
     private static final Logger logger = Logger.getLogger(HandlenetServiceBean.class.getCanonicalName());
     
     private static final String HANDLE_PROTOCOL_TAG = "hdl";
-    int handlenetIndex = System.getProperty("dataverse.handlenet.index")!=null? Integer.parseInt(System.getProperty("dataverse.handlenet.index")) : 300;
     
     public HandlenetServiceBean() {
         logger.log(Level.FINE,"Constructor");
@@ -80,13 +79,13 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
         return false; // TODO current value plays safe, can we loosen up?
     }
 
-    public void reRegisterHandle(DvObject dvObject) {
+    public void reRegisterHandle(Dataset dataset) {
         logger.log(Level.FINE,"reRegisterHandle");
-        if (!HANDLE_PROTOCOL_TAG.equals(dvObject.getProtocol())) {
-            logger.warning("reRegisterHandle called on a dvObject with the non-handle global id: "+dvObject.getId());
+        if (!HANDLE_PROTOCOL_TAG.equals(dataset.getProtocol())) {
+            logger.warning("reRegisterHandle called on a dataset with the non-handle global id: "+dataset.getId());
         }
         
-        String handle = getDvObjectHandle(dvObject);
+        String handle = getDatasetHandle(dataset);
 
         boolean handleRegistered = isHandleRegistered(handle);
         
@@ -95,15 +94,17 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
             
             logger.info("Re-registering an existing handle id "+handle);
             
-            String authHandle = getHandleAuthority(dvObject);
+            String authHandle = getHandleAuthority(dataset);
 
             HandleResolver resolver = new HandleResolver();
 
-            String datasetUrl = getRegistrationUrl(dvObject);
+            String datasetUrl = getRegistrationUrl(dataset);
             
             logger.info("New registration URL: "+datasetUrl);
+           
+            int handlenetIndex = System.getProperty("dataverse.handlenet.index")!=null? Integer.parseInt(System.getProperty("dataverse.handlenet.index")) : 300;
 
-            PublicKeyAuthenticationInfo auth = getAuthInfo(dvObject.getAuthority());
+            PublicKeyAuthenticationInfo auth = getAuthInfo(dataset.getAuthority());
             
             try {
 
@@ -136,19 +137,20 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
         } else {
             // Create a new handle from scratch:
             logger.info("Handle " + handle + " not registered. Registering (creating) from scratch.");
-            registerNewHandle(dvObject);
+            registerNewHandle(dataset);
         }
     }
     
-    public Throwable registerNewHandle(DvObject dvObject) {
+    public Throwable registerNewHandle(Dataset dataset) {
         logger.log(Level.FINE,"registerNewHandle");
-        String handlePrefix = dvObject.getAuthority();
-        String handle = getDvObjectHandle(dvObject);
-        String datasetUrl = getRegistrationUrl(dvObject);
-
+        String handlePrefix = dataset.getAuthority();
+        String handle = getDatasetHandle(dataset);
+        String datasetUrl = getRegistrationUrl(dataset);
+        int handlenetIndex = System.getProperty("dataverse.handlenet.index")!=null? Integer.parseInt(System.getProperty("dataverse.handlenet.index")) : 300;
+       
         logger.info("Creating NEW handle " + handle);
 
-        String authHandle = getHandleAuthority(dvObject);
+        String authHandle = getHandleAuthority(dataset);
 
         PublicKeyAuthenticationInfo auth = getAuthInfo(handlePrefix);
         HandleResolver resolver = new HandleResolver();
@@ -202,7 +204,7 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
             response = resolver.processRequest(req);
         } catch (HandleException ex) {
             logger.info("Caught exception trying to process lookup request");
-            logger.info(ex.getLocalizedMessage());
+            ex.printStackTrace();
         }
         if((response!=null && response.responseCode==AbstractMessage.RC_SUCCESS)) {
             logger.info("Handle "+handle+" registered.");
@@ -244,11 +246,13 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
                 new PublicKeyAuthenticationInfo(Util.encodeString(authHandle), handlenetIndex, privkey);
         return auth;
     }
-    private String getRegistrationUrl(DvObject dvObject) {
+    private String getRegistrationUrl(Dataset dataset) {
         logger.log(Level.FINE,"getRegistrationUrl");
         String siteUrl = systemConfig.getDataverseSiteUrl();
-        String targetUrl = siteUrl + dvObject.getTargetUrl() + "hdl:" + dvObject.getAuthority()         
-                + "/" + dvObject.getIdentifier();         
+                
+        //String targetUrl = siteUrl + "/dataset.xhtml?persistentId=hdl:" + dataset.getAuthority() 
+        String targetUrl = siteUrl + Dataset.TARGET_URL + "hdl:" + dataset.getAuthority()         
+                + "/" + dataset.getIdentifier();  
         return targetUrl;
     }
  
@@ -305,17 +309,17 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
         return privkey;
     }
     
-    private String getDvObjectHandle(DvObject dvObject) {
+    private String getDatasetHandle(Dataset dataset) {
         /* 
          * This is different from dataset.getGlobalId() in that we don't 
          * need the "hdl:" prefix.
          */
-        String handle = dvObject.getAuthority() + "/" + dvObject.getIdentifier();
+        String handle = dataset.getAuthority() + "/" + dataset.getIdentifier();
         return handle;
     }
     
-    private String getHandleAuthority(DvObject dvObject){
-        return getHandleAuthority(dvObject.getAuthority());
+    private String getHandleAuthority(Dataset dataset){
+        return getHandleAuthority(dataset.getAuthority());
     }
     
     private String getHandleAuthority(String handlePrefix) {
@@ -324,13 +328,22 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
     }
 
     @Override
-    public boolean alreadyExists(DvObject dvObject) throws Exception {
-        String handle = getDvObjectHandle(dvObject);
+    public boolean alreadyExists(Dataset dataset) throws Exception {
+        String handle = getDatasetHandle(dataset);
         return isHandleRegistered(handle);
     }
-    
+
     @Override
-    public HashMap getIdentifierMetadata(DvObject dvObject) {
+    public String createIdentifier(Dataset dataset) throws Throwable  {
+        Throwable result = registerNewHandle(dataset);
+        if (result != null)
+            throw result;
+        // TODO get exceptions from under the carpet
+        return getDatasetHandle(dataset);
+    }
+
+    @Override
+    public HashMap getIdentifierMetadata(Dataset dataset)  {
         throw new NotImplementedException();
     }
 
@@ -340,22 +353,16 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
     }
 
     @Override
-    public String modifyIdentifierTargetURL(DvObject dvObject) throws Exception  {
+    public String modifyIdentifier(Dataset dataset, HashMap<String, String> metadata) throws Exception  {
         logger.log(Level.FINE,"modifyIdentifier");
-        reRegisterHandle(dvObject);
-        if(dvObject instanceof Dataset){
-            Dataset dataset = (Dataset) dvObject;
-            dataset.getFiles().forEach((df) -> {
-                reRegisterHandle(df);
-            });            
-        }
-        return getIdentifier(dvObject);
+        reRegisterHandle(dataset);
+        return getIdentifierFromDataset(dataset);
     }
 
     @Override
-    public void deleteIdentifier(DvObject dvObject) throws Exception  {
-        String handle = getDvObjectHandle(dvObject);
-        String authHandle = getAuthHandle(dvObject);
+    public void deleteIdentifier(Dataset datasetIn) throws Exception  {
+        String handle = getDatasetHandle(datasetIn);
+        String authHandle = getAuthHandle(datasetIn);
 
         String adminCredFile = System.getProperty("dataverse.handlenet.admcredfile");
         int handlenetIndex = System.getProperty("dataverse.handlenet.index")!=null? Integer.parseInt(System.getProperty("dataverse.handlenet.index")) : 300;
@@ -384,15 +391,21 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
         }
     }
 
-    private boolean updateIdentifierStatus(DvObject dvObject, String statusIn) {
+    @Override
+    public boolean publicizeIdentifier(Dataset dataset)  {
+        logger.log(Level.FINE,"publicizeIdentifier");
+        return updateIdentifierStatus(dataset, "public");
+    }
+
+    private boolean updateIdentifierStatus(Dataset dataset, String statusIn) {
         logger.log(Level.FINE,"updateIdentifierStatus");
-        reRegisterHandle(dvObject); // No Need to register new - this is only called when a handle exists
+        reRegisterHandle(dataset); // No Need to register new - this is only called when a handle exists
         return true;
     }
 
-    private String getAuthHandle(DvObject dvObject) {
+    private String getAuthHandle(Dataset datasetIn) {
         // TODO hack: GNRSServiceBean retrieved this from vdcNetworkService
-        return "0.NA/" + dvObject.getAuthority();
+        return "0.NA/" + datasetIn.getAuthority();
     }
     
     @Override
@@ -404,28 +417,6 @@ public class HandlenetServiceBean extends AbstractIdServiceBean {
         providerInfo.add(providerLink);
         return providerInfo;
     }
-
-
-    @Override
-    public String createIdentifier(DvObject dvObject) throws Throwable {
-        Throwable result = registerNewHandle(dvObject);
-        if (result != null)
-            throw result;
-        // TODO get exceptions from under the carpet
-        return getDvObjectHandle(dvObject);
-
-    }
-
-
-    @Override
-    public boolean publicizeIdentifier(DvObject dvObject) {
-        if (dvObject.getIdentifier() == null || dvObject.getIdentifier().isEmpty()){
-            generateIdentifier(dvObject);
-        }
-        return updateIdentifierStatus(dvObject, "public");
-
-    }
-
 }
 
 

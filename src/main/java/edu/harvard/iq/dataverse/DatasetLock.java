@@ -67,10 +67,7 @@ public class DatasetLock implements Serializable {
         InReview, 
         
         /** DCM (rsync) upload in progress */
-        DcmUpload,
-        
-        //** Registering PIDs for DS and DFs
-        pidRegister
+        DcmUpload
     }
     
     private static final long serialVersionUID = 1L;

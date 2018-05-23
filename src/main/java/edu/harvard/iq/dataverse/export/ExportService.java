@@ -262,7 +262,7 @@ public class ExportService {
                     exporter.exportDataset(version, datasetAsJson, cachedExportOutputStream);
                     cachedExportOutputStream.flush();
                     cachedExportOutputStream.close();
-                    outputStream.close();
+
                 } else {
                     // this method copies a local filesystem Path into this DataAccess Auxiliary location:
                     exporter.exportDataset(version, datasetAsJson, outputStream);
@@ -306,7 +306,7 @@ public class ExportService {
         try {
             dataAccess = DataAccess.getStorageIO(dataset);
         } catch (IOException ioex) {
-            throw new IOException("IO Exception thrown exporting as " + "export_" + formatName + ".cached");
+            throw new IOException("IO Exception thrown exporting as " + "export_" + formatName + ".cached", ioex);
         }
 
         InputStream cachedExportInputStream = null;
@@ -317,7 +317,7 @@ public class ExportService {
                 return cachedExportInputStream;
             }
         } catch (IOException ioex) {
-            throw new IOException("IO Exception thrown exporting as " + "export_" + formatName + ".cached");
+            throw new IOException("IO Exception thrown exporting as " + "export_" + formatName + ".cached", ioex);
         }
         return null;
 

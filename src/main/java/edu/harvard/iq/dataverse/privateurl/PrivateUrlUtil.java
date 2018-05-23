@@ -130,7 +130,12 @@ public class PrivateUrlUtil {
             Dataset dataset = draft.getDataset();
             if (dataset != null) {
                 String persistentId = dataset.getGlobalId();
-                if (!"".equals(persistentId)) {
+                /**
+                 * @todo Investigate why dataset.getGlobalId() yields the String
+                 * "null:null/null" when I expect null value. This smells like a
+                 * bug.
+                 */
+                if (!"null:null/null".equals(persistentId)) {
                     String relativeUrl = "/dataset.xhtml?persistentId=" + persistentId + "&version=DRAFT";
                     return relativeUrl;
                 }

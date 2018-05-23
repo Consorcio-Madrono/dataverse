@@ -91,16 +91,13 @@ public class DestroyDatasetCommand extends AbstractVoidCommand {
         }   
         
         IdServiceBean idServiceBean = IdServiceBean.getBean(ctxt);
-        try {
-            if (idServiceBean.alreadyExists(doomed)) {
+        try{
+            if(idServiceBean.alreadyExists(doomed)){
                 idServiceBean.deleteIdentifier(doomed);
-                for (DataFile df : doomed.getFiles()) {
-                    idServiceBean.deleteIdentifier(df);
-                }
             }
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Identifier deletion was not successfull:", e.getMessage());
-        }
+        }  catch (Exception e) {
+             logger.log(Level.WARNING, "Identifier deletion was not successfull:",e.getMessage());
+        } 
         Dataverse toReIndex = managedDoomed.getOwner();
 
         // dataset
