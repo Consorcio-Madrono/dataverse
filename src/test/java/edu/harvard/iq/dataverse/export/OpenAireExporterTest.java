@@ -1,6 +1,8 @@
 package edu.harvard.iq.dataverse.export;
 
 import com.jayway.restassured.path.xml.XmlPath;
+import com.jayway.restassured.path.xml.element.Node;
+import com.jayway.restassured.path.xml.element.NodeChildren;
 import edu.harvard.iq.dataverse.DatasetVersion;
 import edu.harvard.iq.dataverse.util.xml.XmlPrinter;
 import java.io.ByteArrayOutputStream;
@@ -67,6 +69,26 @@ public class OpenAireExporterTest {
         assertEquals("Spruce Goose", xmlpath.getString("resource.titles.title"));
         assertEquals("Spruce, Sabrina", xmlpath.getString("resource.creators.creator"));
         assertEquals("1.0", xmlpath.getString("resource.version"));
+        
+        datasetVersionJson = new File("src/test/java/edu/harvard/iq/dataverse/export/backToFuture.json");
+        datasetVersionAsJson = new String(Files.readAllBytes(Paths.get(datasetVersionJson.getAbsolutePath())));
+        jsonReader = Json.createReader(new StringReader(datasetVersionAsJson));
+        jsonObject = jsonReader.readObject();
+        nullVersion = null;
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        openAireExporter.exportDataset(nullVersion, jsonObject, byteArrayOutputStream);
+        xmlOnOneLine = new String(byteArrayOutputStream.toByteArray());
+        xmlAsString = XmlPrinter.prettyPrintXml(xmlOnOneLine);
+        System.out.println("XML: " + xmlAsString);
+        xmlpath = XmlPath.from(xmlAsString);
+        assertEquals("Back to the Future", xmlpath.getList("resource.titles.title").get(0));
+        assertEquals("Robert Zemeckis", xmlpath.getString("resource.creators.creator.creatorName"));
+        assertEquals("0001-0002-0003-0004", xmlpath.get("resource.creators.creator.nameIdentifier.findAll {it.@nameIdentifierScheme == 'ORCID'}"));
+        assertEquals("1985-01", xmlpath.get("resource.dates.date.findAll { it.@dateType == 'Created'}"));
+        assertEquals("1985-01-01", xmlpath.get("resource.dates.date.findAll { it.@dateType == 'Issued'}"));
+        assertEquals("1985-02/1985-03", xmlpath.get("resource.dates.date.findAll { it.@dateType == 'Collected'}"));
+        assertEquals("United States; California; Hill Valley; fantasy cityHill Valley City32.64542843   116.36588226", xmlpath.getString("resources.geoLocations.geoLocation.geoLocationPlace"));
+
     }
 
     /**

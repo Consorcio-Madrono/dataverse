@@ -1,0 +1,544 @@
+{
+    "id": 2556,
+    "identifier": "JR6WQX",
+    "persistentUrl": "http://dx.doi.org/10.21950/JR6WQX",
+    "protocol": "doi",
+    "authority": "10.21950",
+    "publisher": "e-cienciaDatos",
+    "publicationDate": "2018-06-03",
+    "datasetVersion": {
+        "id": 757,
+        "versionNumber": 1,
+        "versionMinorNumber": 0,
+        "versionState": "RELEASED",
+        "distributionDate": "1985-01-01",
+        "productionDate": "Production Date",
+        "lastUpdateTime": "2018-06-03T07:21:50Z",
+        "releaseTime": "2018-06-03T07:21:50Z",
+        "createTime": "2018-06-03T06:57:28Z",
+        "license": "NONE",
+        "termsOfUse": "<p><img src=\"https://licensebuttons.net/l/by/4.0/88x31.png\"/>  This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License.</a></p> ",
+        "metadataBlocks": {
+            "citation": {
+                "displayName": "Citation Metadata",
+                "fields": [{
+                        "typeName": "title",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Back to the Future"
+                    }, {
+                        "typeName": "subtitle",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Part I"
+                    }, {
+                        "typeName": "alternativeTitle",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Regreso al futuro"
+                    }, {
+                        "typeName": "alternativeURL",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "https://www.filmaffinity.com/en/film309023.html"
+                    }, {
+                        "typeName": "otherId",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "otherIdAgency": {
+                                    "typeName": "otherIdAgency",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "filmaffinity"
+                                },
+                                "otherIdValue": {
+                                    "typeName": "otherIdValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "film309023"
+                                }
+                            }]
+                    }, {
+                        "typeName": "author",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "authorName": {
+                                    "typeName": "authorName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Robert Zemeckis"
+                                },
+                                "authorAffiliation": {
+                                    "typeName": "authorAffiliation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "University of Southern California"
+                                },
+                                "authorIdentifierScheme": {
+                                    "typeName": "authorIdentifierScheme",
+                                    "multiple": false,
+                                    "typeClass": "controlledVocabulary",
+                                    "value": "ORCID"
+                                },
+                                "authorIdentifier": {
+                                    "typeName": "authorIdentifier",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "0001-0002-0003-0004"
+                                }
+                            }]
+                    }, {
+                        "typeName": "datasetContact",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "datasetContactName": {
+                                    "typeName": "datasetContactName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Robert Zemeckis (contact)"
+                                },
+                                "datasetContactAffiliation": {
+                                    "typeName": "datasetContactAffiliation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "University of Southern California (Contact"
+                                },
+                                "datasetContactEmail": {
+                                    "typeName": "datasetContactEmail",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Robert.Zemeckis@University.of.Southern.California.org"
+                                }
+                            }]
+                    }, {
+                        "typeName": "dsDescription",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "dsDescriptionValue": {
+                                    "typeName": "dsDescriptionValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Marty McFly (Michael J. Fox) is a typical 17 year old child. Marty is good friends with Doc Brown, the local crackpot scientist, who recently invented a time machine. When Marty accidently launches himself to the year 1955, he meets his dad and consequently interferes with his parent's first meeting. Marty must find a way to throw his parents together before he leaves, or he may never be born! Beyond this little difficulty, the time machine is out of fuel and Marty must find a way to power the vehicle for his return home. "
+                                },
+                                "dsDescriptionDate": {
+                                    "typeName": "dsDescriptionDate",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "1985"
+                                }
+                            }]
+                    }, {
+                        "typeName": "subject",
+                        "multiple": true,
+                        "typeClass": "controlledVocabulary",
+                        "value": ["Ingeniería"]
+                    }, {
+                        "typeName": "keyword",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "keywordValue": {
+                                    "typeName": "keywordValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Sci-Fi"
+                                }
+                            }, {
+                                "keywordValue": {
+                                    "typeName": "keywordValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Time Travel"
+                                },
+                                "keywordVocabularyURI": {
+                                    "typeName": "keywordVocabularyURI",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "http://www.future.net"
+                                }
+                            }, {
+                                "keywordValue": {
+                                    "typeName": "keywordValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "DeLorean"
+                                },
+                                "keywordVocabulary": {
+                                    "typeName": "keywordVocabulary",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "future cars"
+                                },
+                                "keywordVocabularyURI": {
+                                    "typeName": "keywordVocabularyURI",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "http://www.future.cars.com"
+                                }
+                            }]
+                    }, {
+                        "typeName": "topicClassification",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "topicClassValue": {
+                                    "typeName": "topicClassValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Topic classification term"
+                                },
+                                "topicClassVocab": {
+                                    "typeName": "topicClassVocab",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Topic classification Vocabulary"
+                                },
+                                "topicClassVocabURI": {
+                                    "typeName": "topicClassVocabURI",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "https://www.loc.gov/catdir/cpso/lcco/"
+                                }
+                            }]
+                    }, {
+                        "typeName": "publication",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "publicationCitation": {
+                                    "typeName": "publicationCitation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Back to the Future. Part II"
+                                },
+                                "publicationIDType": {
+                                    "typeName": "publicationIDType",
+                                    "multiple": false,
+                                    "typeClass": "controlledVocabulary",
+                                    "value": "url"
+                                },
+                                "publicationIDNumber": {
+                                    "typeName": "publicationIDNumber",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "film775323"
+                                },
+                                "publicationURL": {
+                                    "typeName": "publicationURL",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "https://www.filmaffinity.com/en/film775323.html"
+                                }
+                            }]
+                    }, {
+                        "typeName": "notesText",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "This movie picks up where the last one left off; with Doc Brown and Marty going into the future to help Marty's future offspring. After doing that they returned to their own time, only to discover that things have changed. They discovered that while in the future, Marty's nemesis, Biff Tannen got the sports book that Marty bought so that he could know the results of sports events and make a killing, but Doc Brown nixed his plans, but Tannen who overheard their conversation, got the book and the time machine and went back into the past and gave the book to himself, who has not only amassed a fortune but also extremely powerful. So Doc and Marty have to go back to when Biff got the book and get it away from him. And it seems that it was in 1955 on the night of the dance that Biff got the book. So not only must they get the book but they must also avoid the other versions of themselves."
+                    }, {
+                        "typeName": "producer",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "producerName": {
+                                    "typeName": "producerName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Universal Pictures"
+                                },
+                                "producerAffiliation": {
+                                    "typeName": "producerAffiliation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Cinema Producers"
+                                },
+                                "producerAbbreviation": {
+                                    "typeName": "producerAbbreviation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Universal"
+                                },
+                                "producerURL": {
+                                    "typeName": "producerURL",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "https://www.universalpictures.com/"
+                                },
+                                "producerLogoURL": {
+                                    "typeName": "producerLogoURL",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "https://www.universalpictures.com/assets/img/universalglobe.png"
+                                }
+                            }]
+                    }, {
+                        "typeName": "productionDate",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "1985-01"
+                    }, {
+                        "typeName": "productionPlace",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Holliwood"
+                    }, {
+                        "typeName": "contributor",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "contributorType": {
+                                    "typeName": "contributorType",
+                                    "multiple": false,
+                                    "typeClass": "controlledVocabulary",
+                                    "value": "ProjectLeader"
+                                },
+                                "contributorName": {
+                                    "typeName": "contributorName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Doc"
+                                }
+                            }]
+                    }, {
+                        "typeName": "grantNumber",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "grantNumberAgency": {
+                                    "typeName": "grantNumberAgency",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Ministry of Economy and Competitiveness"
+                                },
+                                "grantNumberValue": {
+                                    "typeName": "grantNumberValue",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "1234.5567.8899"
+                                }
+                            }]
+                    }, {
+                        "typeName": "distributor",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "distributorName": {
+                                    "typeName": "distributorName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Amblin Entertainment"
+                                },
+                                "distributorAffiliation": {
+                                    "typeName": "distributorAffiliation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Cinema Producers"
+                                },
+                                "distributorAbbreviation": {
+                                    "typeName": "distributorAbbreviation",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "AE"
+                                },
+                                "distributorURL": {
+                                    "typeName": "distributorURL",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "https://pro.imdb.com/company/co0009119/"
+                                }
+                            }]
+                    }, {
+                        "typeName": "distributionDate",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "1985-01-01"
+                    }, {
+                        "typeName": "depositor",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Admin, Dataverse"
+                    }, {
+                        "typeName": "dateOfDeposit",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "2018-06-03"
+                    }, {
+                        "typeName": "timePeriodCovered",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "timePeriodCoveredStart": {
+                                    "typeName": "timePeriodCoveredStart",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "1985"
+                                },
+                                "timePeriodCoveredEnd": {
+                                    "typeName": "timePeriodCoveredEnd",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "2017"
+                                }
+                            }]
+                    }, {
+                        "typeName": "dateOfCollection",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "dateOfCollectionStart": {
+                                    "typeName": "dateOfCollectionStart",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "1985-02"
+                                },
+                                "dateOfCollectionEnd": {
+                                    "typeName": "dateOfCollectionEnd",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "1985-03"
+                                }
+                            }]
+                    }, {
+                        "typeName": "kindOfData",
+                        "multiple": true,
+                        "typeClass": "primitive",
+                        "value": ["Future information"]
+                    }, {
+                        "typeName": "series",
+                        "multiple": false,
+                        "typeClass": "compound",
+                        "value": {
+                            "seriesName": {
+                                "typeName": "seriesName",
+                                "multiple": false,
+                                "typeClass": "primitive",
+                                "value": "Back to the Future (TV Series)"
+                            },
+                            "seriesInformation": {
+                                "typeName": "seriesInformation",
+                                "multiple": false,
+                                "typeClass": "primitive",
+                                "value": "https://www.filmaffinity.com/en/film894085.html"
+                            }
+                        }
+                    }, {
+                        "typeName": "software",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "softwareName": {
+                                    "typeName": "softwareName",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "vlc"
+                                },
+                                "softwareVersion": {
+                                    "typeName": "softwareVersion",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "3.0.3"
+                                }
+                            }]
+                    }, {
+                        "typeName": "relatedMaterial",
+                        "multiple": true,
+                        "typeClass": "primitive",
+                        "value": ["https://www.filmaffinity.com/en/movie-relations.php?movie-id=309023"]
+                    }, {
+                        "typeName": "relatedDatasets",
+                        "multiple": true,
+                        "typeClass": "primitive",
+                        "value": ["https://www.filmaffinity.com/en/film233937.html"]
+                    }, {
+                        "typeName": "otherReferences",
+                        "multiple": true,
+                        "typeClass": "primitive",
+                        "value": ["https://en.wikipedia.org/wiki/Back_to_the_Future", "https://www.imdb.com/title/tt0088763/"]
+                    }, {
+                        "typeName": "dataSources",
+                        "multiple": true,
+                        "typeClass": "primitive",
+                        "value": ["https://www.filmaffinity.com/"]
+                    }, {
+                        "typeName": "originOfSources",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "World Wide Web"
+                    }, {
+                        "typeName": "characteristicOfSources",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Copy Paste"
+                    }, {
+                        "typeName": "accessToSources",
+                        "multiple": false,
+                        "typeClass": "primitive",
+                        "value": "Web Crawlers"
+                    }]
+            },
+            "geospatial": {
+                "displayName": "Geospatial Metadata",
+                "fields": [{
+                        "typeName": "geographicCoverage",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "country": {
+                                    "typeName": "country",
+                                    "multiple": false,
+                                    "typeClass": "controlledVocabulary",
+                                    "value": "United States"
+                                },
+                                "state": {
+                                    "typeName": "state",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "California"
+                                },
+                                "city": {
+                                    "typeName": "city",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "Hill Valley"
+                                },
+                                "otherGeographicCoverage": {
+                                    "typeName": "otherGeographicCoverage",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "fantasy city"
+                                }
+                            }]
+                    }, {
+                        "typeName": "geographicUnit",
+                        "multiple": true,
+                        "typeClass": "primitive",
+                        "value": ["Hill Valley City"]
+                    }, {
+                        "typeName": "geographicBoundingBox",
+                        "multiple": true,
+                        "typeClass": "compound",
+                        "value": [{
+                                "eastLongitude": {
+                                    "typeName": "eastLongitude",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "116.36588226"
+                                },
+                                "northLongitude": {
+                                    "typeName": "northLongitude",
+                                    "multiple": false,
+                                    "typeClass": "primitive",
+                                    "value": "32.64542843"
+                                }
+                            }]
+                    }]
+            }
+        },
+        "files": [],
+        "citation": "Robert Zemeckis, 2018, \"Back to the Future\", doi:10.21950/JR6WQX, e-cienciaDatos, V1"
+    }
+}
