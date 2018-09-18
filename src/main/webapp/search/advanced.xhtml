@@ -73,7 +73,7 @@
                                         <div class="ui-inputfield form-control select-scroll-block">
                                             <p:selectManyCheckbox value="#{AdvancedSearchPage.dvFieldSubject}" layout="pageDirection">
                                                 <f:selectItems value="#{AdvancedSearchPage.dvFieldSubjectValues}" var="cvv"
-                                                               itemLabel="#{cvv.strValue}" itemValue="#{cvv.strValue}"/>
+                                                               itemLabel="#{(bundle[cvv.strValue].startsWith('???')) ? cvv.strValue : bundle[cvv.strValue]}" itemValue="#{cvv.strValue}"/> <!-- Hack to translate values from the database --> 
                                             </p:selectManyCheckbox>
                                         </div>
                                     </div>
@@ -84,14 +84,14 @@
                         <ui:repeat value="#{AdvancedSearchPage.metadataBlocks}" var="mdb" varStatus="status">
                             <div class="panel panel-default" jsf:rendered="#{not empty AdvancedSearchPage.metadataFieldMap.get(mdb.getId())}">
                                 <div data-toggle="collapse" data-target="#panelCollapseCitationFieldList#{mdb.id}" class="panel-heading">
-                                    <h:outputText value="#{bundle['advanced.search.header.datasets']}: #{mdb.displayName}"/> &#160;<span class="glyphicon #{status.first?'glyphicon-chevron-up':'glyphicon-chevron-down'}"/>
+			                              <h:outputText value="#{bundle['advanced.search.header.datasets']}: #{(bundle[mdb.displayName].startsWith('???')) ? mdb.displayName : bundle[mdb.displayName]}"/> &#160;<span class="glyphicon #{status.first?'glyphicon-chevron-up':'glyphicon-chevron-down'}"/>  <!-- Hack to translate values from the database -->
                                 </div>
                                 <div id="panelCollapseCitationFieldList#{mdb.id}" class="collapse #{status.first?'in':''} panel-body form-horizontal">
                                     <ui:repeat value="#{AdvancedSearchPage.metadataFieldMap.get(mdb.getId())}" var="item">
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">
                                                 <span data-toggle="tooltip" data-placement="auto right" class="tooltiplabel text-info" data-original-title="#{item.description}">
-                                                    #{item.displayName}
+                                                    #{(bundle[item.displayName].startsWith('???')) ? item.displayName : bundle[item.displayName]} <!-- Hack to translate values from the database -->
                                                 </span>
                                             </label>
                                             <div class="col-sm-6">
@@ -99,7 +99,7 @@
                                                 <div class="ui-inputfield form-control select-scroll-block" jsf:rendered="#{!empty item.controlledVocabularyValues}">
                                                     <p:selectManyCheckbox value="#{item.listValues}" layout="pageDirection">
                                                         <f:selectItems value="#{item.controlledVocabularyValues}" var="cvs"
-                                                                       itemLabel="#{cvs.strValue}" itemValue="#{cvs.strValue}"/>
+                                                                       itemLabel="#{(bundle[cvs.strValue].startsWith('???')) ? cvs.strValue : bundle[cvs.strValue]}" itemValue="#{cvs.strValue}"/> <!-- Hack to translate values from the database -->
                                                     </p:selectManyCheckbox>
                                                 </div>
                                             </div>

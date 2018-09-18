@@ -17,6 +17,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Logger;
+import java.nio.charset.Charset;
+
 
 /**
  *
@@ -39,7 +42,8 @@ public class Xrecord extends Record {
     private static final String SETSPEC_FIELD = "setSpec";
     private static final String DATAVERSE_EXTENDED_METADATA_FORMAT = "dataverse_json";
     private static final String DATAVERSE_EXTENDED_METADATA_API = "/api/datasets/export";
-    
+    private static final Logger logger = Logger.getLogger(Xrecord.class.getCanonicalName());
+
     protected Dataset dataset; 
     protected String formatName;
     
@@ -75,36 +79,31 @@ public class Xrecord extends Record {
         
         outputStream.write(headerString.getBytes());
         
-        // header.getStatus() is only non-null when it's indicating "deleted".
-        if (header.getStatus() == null) { // Deleted records should not show metadata
-            if (!isExtendedDataverseMetadataMode(formatName)) {
-                outputStream.write(METADATA_START_ELEMENT.getBytes());
-  
-                outputStream.flush();
-  
-                if (dataset != null && formatName != null) {
-                    InputStream inputStream = null;
-                    try {
-                        inputStream = ExportService.getInstance().getExport(dataset, formatName);
-                    } catch (ExportException ex) {
-                        inputStream = null;
-                    }
-    
-                    if (inputStream == null) {
-                        throw new IOException("Xrecord: failed to open metadata stream.");
-                    }
-                    writeMetadataStream(inputStream, outputStream);
+				if (header.getStatus() == null) { //JUAN record deleted?
+	        if (!isExtendedDataverseMetadataMode(formatName)) {
+            outputStream.write(METADATA_START_ELEMENT.getBytes());
+
+            outputStream.flush();
+
+            if (dataset != null && formatName != null) {
+                InputStream inputStream = null;
+                try {
+                    inputStream = ExportService.getInstance().getExport(dataset, formatName);
+                } catch (ExportException ex) {
+                    inputStream = null;
                 }
-                outputStream.write(METADATA_END_ELEMENT.getBytes());
-            } else {
-                outputStream.write(customMetadataExtensionRef(this.dataset.getGlobalIdString()).getBytes());
+
+                if (inputStream == null) {
+                    throw new IOException("Xrecord: failed to open metadata stream.");
+                }
+                writeMetadataStream(inputStream, outputStream);
             }
             outputStream.write(METADATA_END_ELEMENT.getBytes());
-        } else {
+  	      } else {
             outputStream.write(customMetadataExtensionRef(this.dataset.getGlobalIdString()).getBytes());
-        }
+    	    }
+				}
         outputStream.flush();
-
     }
     
     private String itemHeaderToString(Header header) {
@@ -137,10 +136,20 @@ public class Xrecord extends Record {
     private void writeMetadataStream(InputStream inputStream, OutputStream outputStream) throws IOException {
         int bufsize;
         byte[] buffer = new byte[4 * 8192];
+	int count= 0;
 
         while ((bufsize = inputStream.read(buffer)) != -1) {
+            if (count== 0) {
+              String metadataInit= (new String (buffer)).replaceFirst("<\\?xml version=[^>]*>","                                      ");
+	      buffer= metadataInit.getBytes(Charset.forName("UTF-8"));
+            }
             outputStream.write(buffer, 0, bufsize);
             outputStream.flush();
+	    count++;
+
+/* Original code        while ((bufsize = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bufsize);
+            outputStream.flush();*/
         }
 
         inputStream.close();
