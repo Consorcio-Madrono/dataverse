@@ -113,8 +113,9 @@
         <span class="glyphicon glyphicon-flash"/> #{bundle['file.compute']}
     </h:outputLink>
                
+    <!-- MADRONO MADROÑO JUAN Count downloads in piwik -->
     <p:commandLink rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and !(downloadPopupRequired) }"
-                   type="button" styleClass="btn btn-default"
+                   type="button" styleClass="piwik_download btn btn-default"
                    process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    actionListener="#{fileDownloadService.startFileDownload(guestbookResponse, fileMetadata, 'Download')}">
@@ -124,7 +125,7 @@
     </p:commandLink>
 
     <p:commandLink rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and downloadPopupRequired }"
-                   type="button" styleClass="btn btn-default"
+                   type="button" styleClass="piwik_download btn btn-default"
                    process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    action="#{guestbookResponseService.modifyDatafile(guestbookResponse, fileMetadata)}"
@@ -135,7 +136,7 @@
 
     <div class="btn-group" jsf:rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and fileMetadata.dataFile.tabularData }">
         <!-- Download Dropdown -->
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="piwik_download btn btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="glyphicon glyphicon-download-alt"/> #{bundle.download} <span class="caret"/>
         </button>
         <ul class="dropdown-menu multi-level pull-right text-left" role="menu">
