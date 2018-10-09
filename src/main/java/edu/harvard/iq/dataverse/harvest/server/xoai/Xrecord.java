@@ -79,7 +79,7 @@ public class Xrecord extends Record {
         
         outputStream.write(headerString.getBytes());
         
-				if (header.getStatus() == null) { //JUAN record deleted?
+				if (header.getStatus() == null) { //MADROÑO record deleted?
 	        if (!isExtendedDataverseMetadataMode(formatName)) {
             outputStream.write(METADATA_START_ELEMENT.getBytes());
 

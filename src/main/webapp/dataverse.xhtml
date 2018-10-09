@@ -516,6 +516,12 @@
                             <ui:fragment rendered="#{!empty DataversePage.dataverse.description and !widgetWrapper.widgetView}">
                                 <div id="dataverseDesc" style="margin-bottom:1em;">
                                     <h:outputText value="#{MarkupChecker:sanitizeBasicHTML(DataversePage.dataverse.description)}" escape="false"/>
+				    <!-- MADROÑO: Add link to affiliation home page (www.consorciomadrono.es) -->
+	                            <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
+                                    <h:outputLink value="http://#{dataverse.affiliation}" target="_blank" rendered="#{!empty dataverse.affiliation}">
+                                        <h:outputText value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
+                                    </h:outputLink>
+
                                 </div>
                                 <div class="clearfix"/>
                             </ui:fragment>
