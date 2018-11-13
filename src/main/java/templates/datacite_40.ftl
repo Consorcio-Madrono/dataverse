@@ -66,7 +66,7 @@
           <#elseif funder.name == "EPSRC" || funder.name == "Engineering and Physical Sciences Research Council (EPSRC)" || funder.name == "Engineering and Physical Sciences Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000266</funderIdentifier>
           <#elseif funder.name == "ERC" || funder.name == "European Research Council" >
-            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000781</funderIdentifier>
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/100010663</funderIdentifier>
           </#if>
           <awardNumber>${funder.awardNumber}</awardNumber>
         </fundingReference>
