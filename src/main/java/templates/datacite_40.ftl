@@ -65,6 +65,7 @@
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008530</funderIdentifier>
           <#elseif funder.name == "EPSRC" || funder.name == "Engineering and Physical Sciences Research Council (EPSRC)" || funder.name == "Engineering and Physical Sciences Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000266</funderIdentifier>
+          <#elseif funder.name == "FP7 Ideas: European Research Council" ||  funder.name == "FP7-IDEAS-ERC" ||  funder.name == "FP7 Ideas" ||  funder.name == "Ideas: European Research Council" ||  funder.name == "IDEAS-ERC" >
           <#elseif funder.name == "ERC" || funder.name == "European Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/100010663</funderIdentifier>
           </#if>
