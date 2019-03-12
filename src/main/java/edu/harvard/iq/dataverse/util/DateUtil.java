@@ -36,8 +36,18 @@ public class DateUtil {
             formattedDate = formatDate(_date);
             return formattedDate;
         } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+            // Trick to evite the ParseException in French and Spanish Operating System installation
+            // Have the solr dateToDisplayOnCard parameter the date in a localized format?
+            try { 
+                format="dd-MMM-yyyy";
+                inputFormat = new SimpleDateFormat(format);
+                _date = inputFormat.parse(dateToformat);
+                formattedDate = formatDate(_date);
+                return formattedDate;
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+                return null;
+            }
         }
     }
 
