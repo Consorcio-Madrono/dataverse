@@ -633,6 +633,7 @@ public class SearchServiceBean {
                     if (facetField.getName().equals(SearchFields.METADATA_SOURCE)) {
                         numMetadataSources++;
                     }
+                    facetLabel.setName(getLocaleSolrTitle (facetLabel.getName()));
                 }
             }
             if (numMetadataSources > 1) {
@@ -937,6 +938,14 @@ public class SearchServiceBean {
             return BundleUtil.getStringFromPropertyFile("datasetfieldtype." + title + ".title", "citation");
         } catch (MissingResourceException e) {
             return originalTitle;
+        }
+    }
+
+    public String getLocaleSolrTitle(String title) {
+        try {
+            return BundleUtil.getStringFromPropertyFile(title, "solr");
+        } catch (MissingResourceException e) {
+            return title;
         }
     }
 }
