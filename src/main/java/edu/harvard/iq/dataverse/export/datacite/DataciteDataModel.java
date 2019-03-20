@@ -77,7 +77,7 @@ public class DataciteDataModel {
         // compose DOI if necessary
         data.put("identifierType", dataset.getProtocol().toUpperCase());
         if (dataset.getProtocol().equalsIgnoreCase("DOI")) {
-            data.put("identifier", dataset.getAuthority() + dataset.getDoiSeparator() + dataset.getIdentifier());
+            data.put("identifier", dataset.getAuthority() + "/" + dataset.getIdentifier());
         } else {
             data.put("identifier", dataset.getIdentifier());
         }
