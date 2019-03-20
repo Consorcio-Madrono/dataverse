@@ -75,13 +75,14 @@
                         </li>
 -->
                         <li>
-                        
+<!--                        
                         <li jsf:rendered="#{!empty settingsWrapper.get(':NavbarAboutUrl')}">
                             <h:outputLink value="#{settingsWrapper.get(':NavbarAboutUrl')}" target="_blank">
                                 <h:outputText value="#{bundle['header.about']}"/>
                             </h:outputLink>
                         </li>
 
+-->
                         <li>
                             <h:outputLink value="#{settingsWrapper.guidesBaseUrl}/#{systemConfig.guidesVersion}/user" target="_blank">
                                 <h:outputText value="#{bundle['header.guides.user']}"/>
@@ -108,13 +109,11 @@
                         
                         <li class="dropdown" jsf:rendered="#{dataverseLocaleBean.useLocale()}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{bundle.language}">#{dataverseLocaleBean.localeTitle} <b class="caret"></b></a>
-
                             <ul class="dropdown-menu">
                                 <h:form class="form-inline">
                                     <ui:repeat value="#{dataverseLocaleBean.dataverseLocales.entrySet().toArray()}" var="language">
                                         <li class="#{dataverseLocaleBean.localeTitle == language.value ? 'active' : ''}">
                                             <h:commandLink value="#{language.value}" actionListener="#{dataverseLocaleBean.countryLocaleCodeChanged(language.key)}" action="submit()"
-
                                                            style="padding: 3px 20px;
                                                                     clear: both;
                                                                     font-weight: 400;
@@ -248,6 +247,7 @@
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{!empty dataverse.name}">
                     <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : '428bca'};">#{dataverse.name}</a>
 
+		    <!-- MADROÑO: Make the affiliation linkable -->
 		    <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
                     <h:outputLink value="http://#{dataverse.affiliation}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : ''};" target="_blank" rendered="#{!empty dataverse.affiliation}">
                       <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
@@ -339,9 +339,6 @@
             </div>
         </ui:remove>
 
-        
-
-        
         <!-- Message Panel -->
         <p:fragment id="messagePanel" rendered="#{showMessagePanel}">
             <div class="container messagePanel">

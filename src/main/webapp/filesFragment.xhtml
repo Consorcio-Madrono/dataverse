@@ -147,7 +147,6 @@
                         <p:commandLink value="#{bundle['file.clearSelection']}" action="#{DatasetPage.clearSelection}" update="@form"/>
                     </p>
                     </div>
-
                 </div>
         </f:facet>
         
@@ -290,12 +289,13 @@
                 <!-- when the dataset is locked. I didn't want to completely remove the disabled="" attributes, -->
                 <!-- since I feel we should figure out/remember why we put that logic in place in the first place... -->
                 <!-- so I have replaced them with {false && DatasetPage.lockedFromDownload}. - L.A. Aug. 2018 -->
+		    				<!-- MADROÑO JUAN Count downloads in piwik -->
                 <div jsf:id="downloadButtonBlockNormal" class="btn-group" 
                      jsf:rendered="#{(!(empty DatasetPage.workingVersion.fileMetadatas) 
                                     and DatasetPage.workingVersion.fileMetadatas.size() > 1) and DatasetPage.downloadButtonAvailable
                                     and !DatasetPage.isHasTabular()}">
                     <p:commandLink rendered="#{!(DatasetPage.downloadPopupRequired)}"
-                                    type="button" styleClass="btn btn-default btn-download"
+                                    type="button" styleClass="piwik_download btn btn-default btn-download"
                                     disabled="#{false and DatasetPage.lockedFromDownload}"
                                     update="@form"
                                     actionListener="#{DatasetPage.validateFilesForDownload(false, false)}">
@@ -303,7 +303,7 @@
                     </p:commandLink>
                     <!-- guest book or terms of use, etc. enabled - open "download popup" first: -->
                     <p:commandLink rendered="#{DatasetPage.downloadPopupRequired}"
-                                    type="button" styleClass="btn btn-default btn-download"
+                                    type="button" styleClass="piwik_download btn btn-default btn-download"
                                     disabled="#{false and DatasetPage.lockedFromDownload}"
                                     action="#{DatasetPage.validateFilesForDownload(true, false)}"
                                     update="@form" oncomplete="">
@@ -352,13 +352,13 @@
                 </div>
 
                 <p:commandLink rendered="#{DatasetPage.fileAccessRequestMultiButtonRequired}"
-                                type="button" styleClass="btn btn-default btn-request"                                   
+                                type="button" styleClass="piwik_download btn btn-default btn-request"                                   
                                 update="@form" action="#{DatasetPage.requestAccessMultipleFiles()}"
                                 disabled="#{DatasetPage.locked}">
                     <span class="glyphicon glyphicon-bullhorn"/> #{bundle['file.requestAccess']}
                 </p:commandLink>
                 <p:commandLink rendered="#{DatasetPage.fileAccessRequestMultiSignUpButtonRequired}"
-                                type="button" styleClass="btn btn-default btn-request"
+                                type="button" styleClass="piwik_download btn btn-default btn-request"
                                 onclick="PF('accessSignUpLogIn_popup').show()"
                                 disabled="#{DatasetPage.locked}">
                     <span class="glyphicon glyphicon-bullhorn"/> #{bundle['file.requestAccess']}

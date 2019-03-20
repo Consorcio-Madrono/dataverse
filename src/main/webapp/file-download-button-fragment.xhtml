@@ -112,10 +112,11 @@
     <h:outputLink value="#{DatasetPage.getComputeUrl(fileMetadata)}" type="button" class="btn btn-default btn-compute" target="_blank" rendered="#{!isFilePg and DatasetPage.showComputeButton(fileMetadata) and fileDownloadHelper.canDownloadFile(fileMetadata)}"> 
         <span class="glyphicon glyphicon-flash"/> #{bundle['file.compute']}
     </h:outputLink>
-    
+
+    <!-- MADRONO MADROÑO JUAN Count downloads in piwik -->
     <p:commandLink rendered="#{fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and !(downloadPopupRequired) 
                               and fileMetadata.dataFile.filePackage and systemConfig.HTTPDownload}"
-                   type="button" styleClass="btn btn-default btn-download" process="@this"
+                   type="button" styleClass="piwik_download btn btn-default btn-download" process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    update="@widgetVar(downloadPackagePopup)" oncomplete="PF('downloadPackagePopup').show();handleResizeDialog('downloadPackagePopup');">
         <f:actionListener binding="#{packagePopupFragmentBean.setFileMetadata(fileMetadata)}" />
@@ -127,7 +128,7 @@
 
     <p:commandLink rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and (downloadPopupRequired) 
                               and fileMetadata.dataFile.filePackage and systemConfig.HTTPDownload}"
-                    type="button" styleClass="btn btn-default btn-download"
+                    type="button" styleClass="piwik_download btn btn-default btn-download"
                    process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    action="#{guestbookResponseService.modifyDatafileAndFormat(guestbookResponse, fileMetadata, 'package')}"
@@ -140,7 +141,7 @@
 
     <p:commandLink rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and !(downloadPopupRequired) 
                                 and !(fileMetadata.dataFile.filePackage and systemConfig.HTTPDownload)}"
-                   type="button" styleClass="btn btn-default btn-download"
+                   type="button" styleClass="piwik_download btn btn-default btn-download"
                    process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    actionListener="#{fileDownloadService.writeGuestbookAndStartFileDownload(guestbookResponse, fileMetadata, 'Download')}">
@@ -151,7 +152,7 @@
 
     <p:commandLink rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and downloadPopupRequired 
                                 and !(fileMetadata.dataFile.filePackage and systemConfig.HTTPDownload)}"
-                   type="button" styleClass="btn btn-default btn-download"
+                   type="button" styleClass="piwik_download btn btn-default btn-download"
                    process="@this"
                    disabled="#{(fileMetadata.dataFile.ingestInProgress  or lockedFromDownload) ? 'disabled' : ''}" 
                    action="#{guestbookResponseService.modifyDatafile(guestbookResponse, fileMetadata)}"
@@ -162,7 +163,7 @@
 
     <div class="btn-group" jsf:rendered="#{ fileDownloadHelper.canDownloadFile(fileMetadata) and fileMetadata.dataFile.tabularData }">
         <!-- Download Dropdown -->
-        <button type="button" class="btn btn-default btn-download dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="piwik_downloadbtn btn-default btn-download dropdown-toggle" data-toggle="dropdown">
             <span class="glyphicon glyphicon-download-alt"/> #{bundle.download} <span class="caret"/>
         </button>
         <ul class="dropdown-menu multi-level pull-right text-left" role="menu">
