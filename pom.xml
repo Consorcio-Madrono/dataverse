@@ -632,6 +632,7 @@
                 <includes>
                     <include>*.properties</include>
                     <include>**/mime.types</include>
+                    <include>**/*.ftl</include>
                     <include>**/*.R</include>
                 </includes>
             </resource>
