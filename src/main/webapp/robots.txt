@@ -1,7 +1,13 @@
 User-agent: *
+Allow: /$
+Allow: /dataverse.xhtml
+Allow: /dataset.xhtml
 Disallow: /
-User-agent: Googlebot
-Disallow: /
+Crawl-delay: 20
+#User-agent: *
+#Disallow: /
+#User-agent: Googlebot
+#Disallow: /
 #Crawl-delay: 120
 #Disallow: /dvn/faces/javax.faces.resource
 #Disallow: /dvn/OAIHandler
