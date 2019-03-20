@@ -1,9 +1,46 @@
 /* Add any CSS necessary for your custom content */
+#float_survey {opacity:0.9;position:absolute; width:100%; left:0;top:120px; z-index:5000; display:none}
+#survey .btn a, #float_survey a {color: white}
+#survey h2 {
+ color:#e51a4c;
+}
+
+#survey .remember {
+  min-width:200px;
+  font-size:0.8em;
+}
+#survey .in {
+ background:black;
+ color:#cccccc;
+ padding:30px;
+ margin-right:auto;
+ margin-left:auto
+}
+@media (max-width:767px) {
+ #survey .in {
+  top: 0;
+ }
+}
+@media (min-width:768px) {
+ #survey .in {
+  width:750px
+ }
+}
+@media (min-width:992px) {
+ #survey .in {
+  width:970px
+ }
+}
+@media (min-width:1200px) {
+ #survey .in {
+  width:1170px;
+ }
+}
 
 body li.map a{
   position: absolute;
   font-weight: bold;
-  margin-top: 42px;
+  margin-top: 37px;
   right: 0;
   width: 114px;
   padding-right:0px;
@@ -24,7 +61,7 @@ body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .conta
 form.lang {
   position: absolute;
   font-weight: bold;
-  margin-top: -27px;
+  margin-top: -37px;
   right: 5px;
   width: 150px;
 }
@@ -33,7 +70,7 @@ form.lang {
   background-image: none;
 }
 .navbar-nav {
-  padding-top: 5px;
+  padding-top: 10px;
 }
 #navbarFixed img {
   margin-left:5px;
@@ -94,7 +131,10 @@ body .alert-info {
   background-color: #e51a4c;
   color: white;
 }
-.navbar-nav > li > .dropdown-menu > li > a, #navbarFixed .dropdown.accountName.open .logout a {
+.navbar-nav > li > .dropdown-menu > .form-inline > li:hover  {
+  background-color: #bc0f3a;
+}
+.navbar-nav > li > .dropdown-menu > li > a, #navbarFixed .dropdown.accountName.open .logout a, .navbar-nav > li > .dropdown-menu > .form-inline >li > a {
   color: white;
 }
 li.dropdown > .dropdown-menu > li > a:focus,li.dropdown > .dropdown-menu > li > a:hover, #navbarFixed .dropdown.accountName.open .logout a:focus, #navbarFixed .dropdown.accountName.open .logout a:hover, .btn-group .dropdown-menu > li > a:hover {
@@ -139,14 +179,6 @@ body table[id$='resultsTable'] td > div.datasetResult {
   border-color: #a4052d;
 }
 
-#metrics-block .col-xs-8 {
-  width: 46%;
-}
-
-#metrics-block .col-xs-4 {
-  width: 54%;
-}
-
 [id$='title-block'] div.title-preview-icon-block {
   color: #a4052d;
 }
@@ -162,7 +194,7 @@ body table[id$='resultsTable'] td > div.datasetResult {
   }
   div#topNavBar.navbar-collapse.collapse.in {
     position: fixed;
-    top: 80px;
+    top: 140px;
     right: 0;
     left: 0px;
     z-index: 99930;
@@ -184,6 +216,9 @@ body table[id$='resultsTable'] td > div.datasetResult {
   #topNavBar li.dropdown > .dropdown-menu > li > a:hover {
     color: #a4052d;
   }
+  .navbar-nav  ul.dropdown-menu li > a:hover {
+    color: white;
+  }
   form.lang {
     position: absolute;
     font-weight: bold;
@@ -195,22 +230,21 @@ body table[id$='resultsTable'] td > div.datasetResult {
     margin-top: 70px;
   }
   body #content {
-    margin-top: 45px;
+    margin-top: 10px;
   }
-  body #login-container {
-    margin-top: 30px;
+  body #content #login-container {
+    margin-top: 3em;
   }
   body .lang {
-    top:30px;
+    top:40px;
     right:0;
   }
   body .lang a:hover, body .lang a:focus{ 
     color:black;
   }
-  #metrics-block.col-xs-3 {
-	  width: 45%;
+  body .lang a{
+    color:white;
+    text-decoration:none;
   }
-  #metrics-block .small {
-	  padding:5px;
-  }
+
 }  
