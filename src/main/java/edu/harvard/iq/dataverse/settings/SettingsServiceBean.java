@@ -270,6 +270,7 @@ public class SettingsServiceBean {
          Location and name of HomePage customization file
         */
         HomePageCustomizationFile,
+        HomePageCustomizationFile_es, // MADROÑO
         /*
          Location and name of Header customization file
         */

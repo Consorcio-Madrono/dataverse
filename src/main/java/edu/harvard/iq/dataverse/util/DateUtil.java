@@ -36,7 +36,7 @@ public class DateUtil {
             formattedDate = formatDate(_date);
             return formattedDate;
         } catch (ParseException e) {
-            // Trick to evite the ParseException in French and Spanish Operating System installation
+            // MADROÑO Trick to evite the ParseException in French and Spanish Operating System installation
             // Have the solr dateToDisplayOnCard parameter the date in a localized format?
             try { 
                 format="dd-MMM-yyyy";
