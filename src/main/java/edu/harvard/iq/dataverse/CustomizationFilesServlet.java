@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
+import edu.harvard.iq.dataverse.util.BundleUtil;
 import javax.ejb.EJB;
+import java.util.Locale;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -97,7 +99,10 @@ public class CustomizationFilesServlet extends HttpServlet {
         if (fileTypeParam.equals(CustomizationConstants.fileTypeHomePage)) {
             
             // Homepage
-            return settingsService.getValueForKey(SettingsServiceBean.Key.HomePageCustomizationFile, nonNullDefaultIfKeyNotFound);
+						if (BundleUtil.getCurrentLocale().equals(new Locale ("es"))) //MADROÑO
+	            return settingsService.getValueForKey(SettingsServiceBean.Key.HomePageCustomizationFile_es, nonNullDefaultIfKeyNotFound);
+						else
+	            return settingsService.getValueForKey(SettingsServiceBean.Key.HomePageCustomizationFile, nonNullDefaultIfKeyNotFound);
                 
         } else if (fileTypeParam.equals(CustomizationConstants.fileTypeHeader)) {
             
