@@ -29,15 +29,10 @@
                         <h:graphicImage rendered="#{!empty settingsWrapper.get(':LogoCustomizationFile')}"
                             url="#{settingsWrapper.get(':LogoCustomizationFile')}" styleClass="navbar-brand custom-logo"/>
                     </a>
-                    <h:outputLink value="#" onclick="PF('statusInfo').show()" rendered="#{!empty settingsWrapper.get(':StatusMessageText')}">
-                        <span class="label label-default status">#{!empty settingsWrapper.get(':StatusMessageHeader') ? settingsWrapper.get(':StatusMessageHeader') : bundle['header.status.header']}</span>
-                    </h:outputLink>
-                    <ui:fragment rendered="#{empty settingsWrapper.get(':StatusMessageText') and !empty settingsWrapper.get(':StatusMessageHeader')}">
-                        <span class="label label-default status">#{settingsWrapper.get(':StatusMessageHeader')}</span>
-                    </ui:fragment>
                 </div>
                 <div class="collapse navbar-collapse" id="topNavBar">
                     <ul class="nav navbar-nav navbar-right">
+			<!--MADROÑO-->
                         <!--<li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{bundle.search} <b class="caret"></b></a>
                             <ul class="dropdown-menu" style="padding:12px;min-width:350px;">
@@ -54,14 +49,14 @@
                                     </div>
                                 </form>
                             </ul>
-                        </li>-->
-                        
+                        </li>
+                       --> 
                         <li jsf:rendered="#{!empty settingsWrapper.get(':NavbarAboutUrl')}">
                             <h:outputLink value="#{settingsWrapper.get(':NavbarAboutUrl')}" target="_blank">
                                 <h:outputText value="#{bundle['header.about']}"/>
                             </h:outputLink>
                         </li>
-
+			<!-- MADROÑO -->				
                         <li>
                             <h:outputLink value="/survey.xhtml">
                                 #{bundle['madrono.survey.header']}
@@ -74,15 +69,7 @@
                             </h:outputLink>
                         </li>
 -->
-                        <li>
-<!--                        
-                        <li jsf:rendered="#{!empty settingsWrapper.get(':NavbarAboutUrl')}">
-                            <h:outputLink value="#{settingsWrapper.get(':NavbarAboutUrl')}" target="_blank">
-                                <h:outputText value="#{bundle['header.about']}"/>
-                            </h:outputLink>
-                        </li>
 
--->
                         <li>
                             <h:outputLink value="#{settingsWrapper.guidesBaseUrl}/#{systemConfig.guidesVersion}/user" target="_blank">
                                 <h:outputText value="#{bundle['header.guides.user']}"/>
@@ -107,17 +94,18 @@
                             </o:form>
                         </ui:fragment>
                         
-                        <li class="dropdown" jsf:rendered="#{dataverseLocaleBean.useLocale()}">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{bundle.language}">#{dataverseLocaleBean.localeTitle} <b class="caret"></b></a>
+                        <li class="dropdown" jsf:rendered="#{settingsWrapper.localesConfigured}">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{bundle.language}">#{dataverseSession.localeTitle} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <h:form class="form-inline">
-                                    <ui:repeat value="#{dataverseLocaleBean.dataverseLocales.entrySet().toArray()}" var="language">
-                                        <li class="#{dataverseLocaleBean.localeTitle == language.value ? 'active' : ''}">
-                                            <h:commandLink value="#{language.value}" actionListener="#{dataverseLocaleBean.countryLocaleCodeChanged(language.key)}" action="submit()"
+                                    <ui:repeat value="#{settingsWrapper.configuredLocales.entrySet().toArray()}" var="language">
+                                        <li class="#{dataverseSession.localeTitle == language.value ? 'active' : ''}">
+                                            <h:commandLink value="#{language.value}" actionListener="#{dataverseSession.updateLocaleInViewRootAndRedirect(language.key)}" action="submit()"
                                                            style="padding: 3px 20px;
                                                                     clear: both;
                                                                     font-weight: 400;
                                                                     line-height: 1.42857143;
+                                                                    color: rgb(51, 51, 51);
                                                                     white-space: nowrap;
                                                                     text-decoration: none;
                                                                     display: block;"/>
@@ -203,6 +191,7 @@
                                 </ul>
                             </li>
                         </ui:fragment>
+			<!-- MADROÑO -->
                         <li class="map">
                                 <a target="_blank" href="https://www.google.com/maps/d/viewer?mid=1-G_zeOVt60qdiINFlCxnPsTTWWbvErp-">#{bundle['view.map']} <img src="/resources/images/mini-world.png"/></a>
                         </li>
@@ -246,15 +235,7 @@
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{!empty dataverse.name}">
                     <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : '428bca'};">#{dataverse.name}</a>
-
-		    <!-- MADROÑO: Make the affiliation linkable -->
-		    <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
-                    <h:outputLink value="http://#{dataverse.affiliation}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : ''};" target="_blank" rendered="#{!empty dataverse.affiliation}">
-                      <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
-		    </h:outputLink>
- 
-
-
+                    <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
                     <h:outputText value="#{bundle.unpublished}" styleClass="label label-warning label-unpublished" rendered="#{!dataverse.released}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{empty dataverse.name}">
@@ -339,6 +320,9 @@
             </div>
         </ui:remove>
 
+        
+
+        
         <!-- Message Panel -->
         <p:fragment id="messagePanel" rendered="#{showMessagePanel}">
             <div class="container messagePanel">

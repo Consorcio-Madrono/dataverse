@@ -1,4 +1,41 @@
 /* Add any CSS necessary for your custom content */
+#float_survey {opacity:0.9;position:absolute; width:100%; left:0;top:120px; z-index:5000; display:none}
+#survey .btn a, #float_survey a {color: white}
+#survey h2 {
+ color:#e51a4c;
+}
+
+#survey .remember {
+  min-width:200px;
+  font-size:0.8em;
+}
+#survey .in {
+ background:black;
+ color:#cccccc;
+ padding:30px;
+ margin-right:auto;
+ margin-left:auto
+}
+@media (max-width:767px) {
+ #survey .in {
+  top: 0;
+ }
+}
+@media (min-width:768px) {
+ #survey .in {
+  width:750px
+ }
+}
+@media (min-width:992px) {
+ #survey .in {
+  width:970px
+ }
+}
+@media (min-width:1200px) {
+ #survey .in {
+  width:1170px;
+ }
+}
 
 body li.map a{
   position: absolute;
