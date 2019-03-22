@@ -903,7 +903,7 @@ public class SearchServiceBean {
          * A JOIN on "permission documents" will determine if the user can find
          * a given "content document" (dataset version, etc) in Solr.
          */
-        String groupsFromProviders = ""; 
+        String groupsFromProviders = "";
         Set<Group> groups = groupService.collectAncestors(groupService.groupsFor(dataverseRequest));
         StringBuilder sb = new StringBuilder();
         for (Group group : groups) {
@@ -935,7 +935,7 @@ public class SearchServiceBean {
 
     public String getLocaleTitle(String title, String originalTitle) {
         try {
-            return BundleUtil.getStringFromPropertyFile("controlledvocabulary." + title + ".title", "citation");
+            return BundleUtil.getStringFromPropertyFile("datasetfieldtype." + title + ".title", "citation");
         } catch (MissingResourceException e) {
             return originalTitle;
         }
