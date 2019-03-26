@@ -3,7 +3,7 @@ package edu.harvard.iq.dataverse.api;
 import edu.harvard.iq.dataverse.Dataset;
 import edu.harvard.iq.dataverse.DatasetServiceBean;
 import edu.harvard.iq.dataverse.PermissionServiceBean;
-import edu.harvard.iq.dataverse.export.DataciteExporter;
+import edu.harvard.iq.dataverse.export.OpenAireDataciteExporter;
 
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
@@ -44,7 +44,7 @@ public class DataciteResource extends AbstractApiBean {
                 @Override
                 public void write(OutputStream os) {
                     try {
-                        DataciteExporter exporter = new DataciteExporter();
+                        OpenAireDataciteExporter exporter = new OpenAireDataciteExporter();
                         exporter.exportDataset(dataset.getLatestVersion(), null, os);
                         os.flush();
                         os.close();
