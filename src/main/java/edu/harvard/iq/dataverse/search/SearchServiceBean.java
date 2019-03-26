@@ -608,6 +608,7 @@ public class SearchServiceBean {
         boolean deaccessionedAvailable = false;
         boolean hideMetadataSourceFacet = true;
         for (FacetField facetField : queryResponse.getFacetFields()) {
+
             FacetCategory facetCategory = new FacetCategory();
             List<FacetLabel> facetLabelList = new ArrayList<>();
             int numMetadataSources = 0;
@@ -633,6 +634,7 @@ public class SearchServiceBean {
                     if (facetField.getName().equals(SearchFields.METADATA_SOURCE)) {
                         numMetadataSources++;
                     }
+                    facetLabel.setName(getLocaleSolrTitle (facetLabel.getName()));
                 }
             }
             if (numMetadataSources > 1) {
@@ -929,7 +931,6 @@ public class SearchServiceBean {
         logger.fine(publicPlusUserPrivateGroup);
 
         return publicPlusUserPrivateGroup;
-
     }
 
     public String getLocaleTitle(String title, String originalTitle) {
@@ -937,6 +938,14 @@ public class SearchServiceBean {
             return BundleUtil.getStringFromPropertyFile("datasetfieldtype." + title + ".title", "citation");
         } catch (MissingResourceException e) {
             return originalTitle;
+        }
+    }
+    
+    public String getLocaleSolrTitle(String title) {
+        try {
+            return BundleUtil.getStringFromPropertyFile(title, "solr");
+        } catch (MissingResourceException e) {
+            return title;
         }
     }
 }

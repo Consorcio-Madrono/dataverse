@@ -113,7 +113,7 @@
         <span class="glyphicon glyphicon-flash"/> #{bundle['file.compute']}
     </h:outputLink>
 
-    <!-- MADRONO MADROÑO JUAN Count downloads in piwik -->
+    <!-- MADROÑO Count downloads in piwik -->
     <p:commandLink rendered="#{fileDownloadHelper.canDownloadFile(fileMetadata) and !(fileMetadata.dataFile.tabularData) and !(downloadPopupRequired) 
                               and fileMetadata.dataFile.filePackage and systemConfig.HTTPDownload}"
                    type="button" styleClass="piwik_download btn btn-default btn-download" process="@this"
