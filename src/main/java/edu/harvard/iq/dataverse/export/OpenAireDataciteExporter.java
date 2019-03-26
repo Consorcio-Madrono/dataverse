@@ -13,9 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @AutoService(Exporter.class)
-public class DataciteExporter implements Exporter {
+public class OpenAireDataciteExporter implements Exporter {
 
-    private static final Logger logger = Logger.getLogger(DataciteExporter.class.getName());
+    private static final Logger logger = Logger.getLogger(OpenAireDataciteExporter.class.getName());
 
     public static String DATACITE_XML_NAMESPACE = "http://datacite.org/schema/kernel-4";
     public static String DATACITE_XML_SCHEMALOCATION = "http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd";
