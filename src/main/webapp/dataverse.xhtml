@@ -42,7 +42,7 @@
                     <f:viewParam name="debug" value="#{SearchIncludeFragment.debug}"/>
                     <f:viewAction action="#{SearchIncludeFragment.search()}" />
                 </f:metadata>
-	<!-- INIT MADROÑO: ENCUESTA -->
+	<!-- INIT MADROÑO: SURVEY -->
 	<div id="float_survey">
 	  <div id="survey">
 	    <div class="in">
@@ -55,7 +55,7 @@
 	    </div>
 	  </div>
         </div>
-	<!-- END MADROÑO: ENCUESTA -->
+	<!-- END MADROÑO: SURVEY -->
 
                 <h:form id="dataverseForm">
                     <!-- Edit Mode -->
@@ -530,6 +530,12 @@
                             <ui:fragment rendered="#{!empty DataversePage.dataverse.description and !widgetWrapper.widgetView}">
                                 <div id="dataverseDesc" style="margin-bottom:1em;">
                                     <h:outputText value="#{MarkupChecker:sanitizeBasicHTML(DataversePage.dataverse.description)}" escape="false"/>
+                                    <!-- MADROÑO: Add link to affiliation home page (www.consorciomadrono.es) -->
+                                    <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
+                                    <h:outputLink value="http://#{dataverse.affiliation}" target="_blank" rendered="#{!empty dataverse.affiliation}">
+                                        <h:outputText value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
+                                    </h:outputLink>
+
                                 </div>
                                 <div class="clearfix"/>
                             </ui:fragment>
@@ -765,7 +771,7 @@
                         initPopover();
                         initCarousel();
                         popoverHTML('#{bundle.htmlAllowedTitle}');
-			// INIT MADROÑO: ENCUESTA
+			// INIT MADROÑO: SURVEY
 			var el_container = document.getElementById("dataverse-header-block"); 
 			el_container.addEventListener("click", hideSurvey, false);
 			el_container = document.getElementById("custom-header"); 
@@ -773,10 +779,10 @@
 			el_container = document.getElementById("search-row-panel"); 
 			el_container.addEventListener("click", hideSurvey, false);
 			showSurvey ();
-			// END MADROÑO: ENCUESTA
+			// END MADROÑO: SURVEY
  
                     });
-		    // INIT MADROÑO: ENCUESTA
+		    // INIT MADROÑO: SURVEY
 		    function showSurvey () {
         		var cookies = document.cookie.split( ';' );
 			var cookieFound= false;
@@ -819,7 +825,7 @@
 			survey= document.getElementById("float_survey");
 			survey.style.display='none';
 		    }
-		    // END MADROÑO: ENCUESTA
+		    // END MADROÑO: SURVEY
 
                     function initCarousel() {
                         var owl1 = $("#featuredDataversesList");
@@ -827,6 +833,7 @@
                         owl1.owlCarousel({
                             pagination: false,
                             navigation: false,
+                            // MADROÑO Change the number of featured dataverses shown
                             items: 6, //10 items above 1000px browser width
                             itemsDesktop: [1140, 6], //5 items between 1000px and 901px
                             itemsDesktopSmall: [940, 4], // betweem 900px and 601px
