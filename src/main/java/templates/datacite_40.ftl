@@ -65,6 +65,8 @@
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008530</funderIdentifier>
           <#elseif funder.name == "EPSRC" || funder.name == "Engineering and Physical Sciences Research Council (EPSRC)" || funder.name == "Engineering and Physical Sciences Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000266</funderIdentifier>
+          <#elseif funder.name == "H2020 Health" || funder.name == "H2020 Societal Challenges - Health, Demographic Change and Well-being" >
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/100010677</funderIdentifier>
           <#elseif funder.name == "ERC" || funder.name == "European Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000781</funderIdentifier>
           </#if>
