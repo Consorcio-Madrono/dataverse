@@ -65,8 +65,7 @@
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100008530</funderIdentifier>
           <#elseif funder.name == "EPSRC" || funder.name == "Engineering and Physical Sciences Research Council (EPSRC)" || funder.name == "Engineering and Physical Sciences Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000266</funderIdentifier>
-          <#elseif funder.name == "H2020 Health" || funder.name == "H2020 Societal Challenges - Health, Demographic Change and Well-being" >
-            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/100010677</funderIdentifier>
+          <#elseif funder.name == "Horizon 2020 Framework Programme" || funder.name == "EU Framework Programme for Research and Innovation H2020" || funder.name == "Horizon 2020" >
           <#elseif funder.name == "ERC" || funder.name == "European Research Council" >
             <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100000781</funderIdentifier>
           <#elseif funder.name == "FP7 Ideas: European Research Council" || funder.name == "FP7-IDEAS-ERC" || funder.name == "Ideas: European Research Council" >
