@@ -22,6 +22,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>                       
+                    <a href="http://www.consorciomadrono.es">
+			<img class="navbar-brand custom-logo" style="border-right: 2px solid #ffffff;" src="/resources/images/madronoConsorcioEDatos.png" />
+                    </a>
                     <a href="/">
                         <ui:fragment rendered="#{empty settingsWrapper.get(':LogoCustomizationFile')}">
                             <span class="navbar-brand" tabindex="1"><i id="icon-dataverse" class="icon-dataverse"></i> #{bundle.dataverse}</span>
@@ -58,12 +61,18 @@
                         </li>
 			<!-- MADROÑO -->				
                         <li>
+                            <h:outputLink value="/metrics.xhtml">
+                                #{bundle['madrono.metrics.short']}
+                            </h:outputLink>
+                        </li>
+
+<!--                        <li>
                             <h:outputLink value="/survey.xhtml">
                                 #{bundle['madrono.survey.header']}
                             </h:outputLink>
                         </li>
 
-<!--                        <li>
+                        <li>
                             <h:outputLink value="/readme.xhtml">
                                 #{bundle['readmeTxt.title']}
                             </h:outputLink>
@@ -71,7 +80,7 @@
 -->
 
                         <li>
-                            <h:outputLink value="#{settingsWrapper.guidesBaseUrl}/#{systemConfig.guidesVersion}/user" target="_blank">
+                            <h:outputLink value="/resources/txt/guiaEcienciaDatos.pdf" target="_blank">
                                 <h:outputText value="#{bundle['header.guides.user']}"/>
                             </h:outputLink>
                         </li>
@@ -241,6 +250,7 @@
                       <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
                     </h:outputLink>
 
+                    <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
                     <h:outputText value="#{bundle.unpublished}" styleClass="label label-warning label-unpublished" rendered="#{!dataverse.released}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{empty dataverse.name}">
