@@ -105,6 +105,10 @@ body a, #dv-sidebar form[id$="facetType"] > div.clearfix a.facetTypeLink, body .
 #topNavBar a {
   text-decoration: none;
 }
+body #datasetForm .btn.btn-link.dropdown-toggle {
+background-color: white;
+color: #e51a4c;
+}
 body .btn-default.btn-download.dropdown-toggle {
 display: inline-block;
 padding: 5px 12px;
