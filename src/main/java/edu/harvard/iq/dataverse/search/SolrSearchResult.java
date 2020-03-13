@@ -761,7 +761,7 @@ public class SolrSearchResult {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+            this.imageUrl = imageUrl;
     }
 
     public DatasetThumbnail getDatasetThumbnail() {
