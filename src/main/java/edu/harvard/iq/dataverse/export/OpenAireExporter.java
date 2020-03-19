@@ -17,7 +17,7 @@ public class OpenAireExporter implements Exporter {
 
     public OpenAireExporter() {
     }
-
+    
     @Override
     public String getProviderName() {
         return "oai_datacite";

@@ -8,6 +8,7 @@ package edu.harvard.iq.dataverse.harvest.server;
 import edu.harvard.iq.dataverse.Dataset;
 import edu.harvard.iq.dataverse.DatasetServiceBean;
 import edu.harvard.iq.dataverse.DatasetVersion;
+import edu.harvard.iq.dataverse.FundersMap;
 import edu.harvard.iq.dataverse.export.ExportException;
 import edu.harvard.iq.dataverse.export.ExportService;
 import edu.harvard.iq.dataverse.search.IndexServiceBean;
@@ -21,9 +22,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -33,7 +36,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.TemporalType;
-
 /**
  *
  * @author Leonid Andreev
@@ -44,6 +46,7 @@ import javax.persistence.TemporalType;
 @Stateless
 @Named
 public class OAIRecordServiceBean implements java.io.Serializable {
+
     @EJB 
     OAISetServiceBean oaiSetService;    
     @EJB 
@@ -58,7 +61,13 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     @PersistenceContext(unitName = "VDCNet-ejbPU")
     EntityManager em;   
     
+    private static HashMap <String, String> fundersMap;
+
     private static final Logger logger = Logger.getLogger("edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean");
+
+    public static String getFunderDOI(String funderName) {
+        return fundersMap.get (funderName);
+    }
 
     public void updateOaiRecords(String setName, List<Long> datasetIds, Date updateTime, boolean doExport) {
         updateOaiRecords(setName, datasetIds, updateTime, doExport, logger);
@@ -240,6 +249,14 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     @TransactionAttribute(REQUIRES_NEW)
     public void exportAllFormatsInNewTransaction(Dataset dataset) throws ExportException {
         try {
+            // BEGIN CONSORCIO MADROÑO
+            if (fundersMap == null) {
+                Vector <FundersMap> fundersMapList = null;
+                fundersMapList = (Vector) em.createNamedQuery("FundersMap.findAll", FundersMap.class).getResultList();
+                
+                fundersMap= (HashMap) fundersMapList.stream().collect(Collectors.toMap(FundersMap::getId, FundersMap::getDoi));
+            }
+            // END CONSORCIO MADROÑO
             ExportService exportServiceInstance = ExportService.getInstance(settingsService);
             exportServiceInstance.exportAllFormats(dataset);
             datasetService.updateLastExportTimeStamp(dataset.getId());

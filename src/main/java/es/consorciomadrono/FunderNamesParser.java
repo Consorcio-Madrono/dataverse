@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.consorciomadrono;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -21,8 +16,14 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 /**
  *
- * @author juan
+ *
+ * @author juancorr
+ * 
+ * CONSORCIO MADROÑO. New class to read the funder dois from the fundersmap table to 
+ * have a better OpenAIRE compability
+ * 
  */
+
 public class FunderNamesParser {
     
     final String FUNDERS_REGISTRY_PATH="src/main/resources/es/consorciomadrono/fundersRegistry.rdf";
