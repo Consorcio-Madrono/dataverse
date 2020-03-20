@@ -1,4 +1,14 @@
 /* Add any CSS necessary for your custom content */
+
+.row span.glyphicon-question-sign.tooltip-icon {
+  color:#bc0f3a !important;
+}
+
+.btn.btn-link.dropdown-toggle {
+  background-color:white;
+  color:#bc0f3a
+}
+
 #float_survey {opacity:0.9;position:absolute; width:100%; left:0;top:120px; z-index:5000; display:none}
 #survey .btn a, #float_survey a {color: white}
 #survey h2 {
