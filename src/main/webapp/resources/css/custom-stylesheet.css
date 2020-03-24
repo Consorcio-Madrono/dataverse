@@ -1,6 +1,6 @@
 /* Add any CSS necessary for your custom content */
 
-.row span.glyphicon-question-sign.tooltip-icon {
+div span.glyphicon-question-sign.tooltip-icon, tr span.glyphicon-question-sign.tooltip-icon, a.glyphicon.glyphicon-question-sign.tooltip-icon, .row span.glyphicon-question-sign.tooltip-icon {
   color:#bc0f3a !important;
 }
 
