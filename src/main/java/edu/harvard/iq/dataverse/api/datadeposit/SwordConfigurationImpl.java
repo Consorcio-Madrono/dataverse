@@ -122,8 +122,9 @@ public class SwordConfigurationImpl implements SwordConfiguration {
 
     @Override
     public int getMaxUploadSize() {
-        
-        int unlimited = -1;
+	// CONSORCIO MADROÑO. Empty :MaxFileUploadSizeInBytes setting value does not work.
+	return -1;
+        /*int unlimited = -1;
 
         Long maxUploadInBytes = systemConfig.getMaxFileUploadSize();
 
@@ -139,7 +140,7 @@ public class SwordConfigurationImpl implements SwordConfiguration {
             // (c) Return the setting as an int
             return maxUploadInBytes.intValue();
 
-        }
+        }*/
     }
 
     @Override
