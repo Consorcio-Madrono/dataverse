@@ -179,6 +179,13 @@ public class MailServiceBean implements java.io.Serializable {
 
     public void sendMail(String reply, String to, String subject, String messageText, Map<Object, Object> extraHeaders) {
         try {
+            /* MADROÑO hack. The smtp server is not readed from asadmin configuration. This problem is found sometimes
+            in some Dataverse versions, but not in another. */
+            Properties props = System.getProperties();
+            String host="127.0.0.1";
+            props.put("mail.smtp.host", host);
+            Session session = Session.getDefaultInstance(props, null);
+            /* End MADROÑO HACK */
             MimeMessage msg = new MimeMessage(session);
             //Always send from system address to avoid email being blocked
             InternetAddress fromAddress=getSystemAddress();
