@@ -120,6 +120,13 @@ public class MailServiceBean implements java.io.Serializable {
     public boolean sendSystemEmail(String to, String subject, String messageText, boolean isHtmlContent) {
 
 
+        /* MADROÑO hack. The smtp server is not readed from asadmin configuration. This problem is found sometimes
+        in some Dataverse versions, but not in another. */
+        Properties props = System.getProperties();
+        String host="127.0.0.1";
+        props.put("mail.smtp.host", host);
+        Session session = Session.getDefaultInstance(props, null);
+        /* End MADROÑO HACK */
         boolean sent = false;
         String rootDataverseName = dataverseService.findRootDataverse().getName();
         InternetAddress systemAddress = getSystemAddress();
