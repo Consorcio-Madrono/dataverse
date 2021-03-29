@@ -238,6 +238,14 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     
     public void exportAllFormats(Dataset dataset) {
         try {
+            // BEGIN CONSORCIO MADROÑO
+            if (fundersMap == null) {
+                Vector <FundersMap> fundersMapList = null;
+                fundersMapList = (Vector) em.createNamedQuery("FundersMap.findAll", FundersMap.class).getResultList();
+                
+                fundersMap= (HashMap) fundersMapList.stream().collect(Collectors.toMap(FundersMap::getId, FundersMap::getDoi));
+            }
+            // END CONSORCIO MADROÑO
             ExportService exportServiceInstance = ExportService.getInstance(settingsService);
             logger.log(Level.FINE, "Attempting to run export on dataset {0}", dataset.getGlobalId());
             exportServiceInstance.exportAllFormats(dataset);
