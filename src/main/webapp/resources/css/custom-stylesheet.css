@@ -2,6 +2,7 @@
 
 div span.glyphicon-question-sign.tooltip-icon, tr span.glyphicon-question-sign.tooltip-icon, a.glyphicon.glyphicon-question-sign.tooltip-icon, .row span.glyphicon-question-sign.tooltip-icon {
   color:#bc0f3a !important;
+  text-decoration:none;
 }
 
 .btn.btn-link.dropdown-toggle {
@@ -218,7 +219,15 @@ body table[id$='resultsTable'] td > div.datasetResult {
   color: #a4052d;
 }
 
+#dataverse-header-block>#navbarFixed>.container ul.nav.navbar-nav.navbar-right>li.dropdown.open>ul.dropdown-menu>li>form>a.ui-commandlink {
+  padding: 3px 20px ;
+}
+
 @media (max-width: 767px) {
+  .navbar-nav {
+    margin:100px 0 0 0;
+  }
+
   .navbar-collapse .navbar-nav {
     border: 1px solid #eae8ed;
     margin: 0;
