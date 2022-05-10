@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="dataverseId" value="#{dataverseServiceBean.findRootDataverse().id}"/>
+            <f:viewAction action="#{dataverseHeaderFragment.initBreadcrumbs(dataverseServiceBean.findRootDataverse())}"/>
+            <f:viewAction action="#{dataverseHeaderFragment.addBreadcrumb('/survey.xhtml?dataverseId='.concat(dataverse.id), bundle['dashboard.title'])}"/>
+            <f:viewAction action="#{dataverseHeaderFragment.addBreadcrumb(bundle['madrono.survey.title'])}"/>
+        </f:metadata>
+        <ui:composition template="/dataverse_template.xhtml">
+            <ui:param name="pageTitle" value="#{bundle['madrono.survey.title']}"/>
+            <ui:param name="showDataverseHeader" value="false"/>
+            <ui:define name="body">
+
+
+                     <p:fragment id="emptyClientsTable" rendered="#{empty harvestingClientsPage.configuredHarvestingClients}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="no-clients-message" class="panel panel-default">
+                                    <div class="panel-body">
+                                       <span class="help-block h3">#{bundle['madrono.survey.title']}</span>
+	                               <div id="survey" style="display:block;position:relative">
+                                           <h:outputText value="#{bundle['madrono.survey.introduction']}" escape="false" /> 
+	                                   <div>
+		                               <div style="text-align:center">
+				                  <h:outputText value="#{bundle['madrono.survey.surveyLinks']}" escape="false" /> 
+		                               </div>
+	                                   </div>
+                                       </div>
+	                            </div>
+                                </div>
+                            </div>
+                        </div>
+                     </p:fragment>
+
+                   <script type="text/javascript">
+                    //<![CDATA[
+                    function hideSurvey () {
+                        if (forever == true) {
+                                var now = new Date();
+                                var expireDate = new Date(now.getTime() + 24 * 60 * 60 * 1000).toUTCString();
+ 
+                                document.cookie='__hideEdatosSurvey=true;path=/;expires=' + expireDate
+                        }
+                    }
+                    //]]>                                     
+                   </script>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
