@@ -1,5 +1,13 @@
 /* Add any CSS necessary for your custom content */
 
+a.dataverseHeaderDataverseName h1 {
+color: #e51a4c;
+}
+
+div.row div.citation-block div.preview-icon-block span[class^="icon"] {
+color: #e51a4c;
+}
+
 div span.glyphicon-question-sign.tooltip-icon, tr span.glyphicon-question-sign.tooltip-icon, a.glyphicon.glyphicon-question-sign.tooltip-icon, .row span.glyphicon-question-sign.tooltip-icon {
   color:#bc0f3a !important;
   text-decoration:none;
