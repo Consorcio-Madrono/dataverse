@@ -288,7 +288,7 @@
                     <h:outputText styleClass="dataverseHeaderDataverseName" value="#{bundle.newDataverse}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{editModeDataverse != 'CREATE'}">
-                    <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};"><h1>#{dataverse.name}</h1></a>
+                    <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};"><h1>#{dataverse.name}</h1></a>  <!-- MADROÑO: Change the color hardcode -->
                     <!-- MADROÑO: Make the affiliation linkable -->
                     <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
                     <h:outputLink value="http://#{dataverse.affiliation}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : ''};" target="_blank" rendered="#{!empty dataverse.affiliation}">
@@ -301,7 +301,7 @@
                     <h:outputText escape="false" style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value="#{StringEscapeUtils:escapeHtml4(dataverse.dataverseTheme.tagline)}" />
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderLink" jsf:rendered="#{!empty dataverse.dataverseTheme.tagline and !empty dataverse.dataverseTheme.linkUrl}">
-                    <h:outputLink value="#{dataverse.dataverseTheme.linkUrl}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};" target="_blank" rel="noopener">
+                    <h:outputLink value="#{dataverse.dataverseTheme.linkUrl}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};" target="_blank" rel="noopener"> <!-- MADROÑO: Change the color hardcode -->
                         <h:outputText value="#{StringEscapeUtils:escapeHtml4(dataverse.dataverseTheme.tagline)}" escape="false"/>
                     </h:outputLink>
                 </div>
