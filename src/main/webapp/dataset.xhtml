@@ -1847,7 +1847,9 @@
                     <p:remoteCommand name="returnToAuthorCommand" action="#{DatasetPage.sendBackToContributor}"/>
                     <!-- END: Publish/Submit for Review Dialogs -->
                 </h:form>
+                <o:importFunctions type="edu.harvard.iq.dataverse.dataset.DatasetUtil" />
                 <script>
+            
                     //<![CDATA[
                     $(document).ready(function () {
                         popoverHTML('#{bundle.htmlAllowedTitle}', '#{bundle.htmlAllowedTags}');
@@ -1856,12 +1858,15 @@
                     function summaryDescTruncation() {
                         // truncate summary description, contentTruncate function in dv_rebind_bootstrap_ui.js
                         // add summary desc row id to pass as selector param
+
                         var descId = 'dsDescription';
                         // add metadata dynamic label text, tooltip text from bundle as param
-                        var truncMoreBtn = '#{of:format1(bundle.truncateMoreBtn, DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle)}';
-                        var truncMoreTip = '#{of:format1(bundle.truncateMoreTip, DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle)}';
-                        var truncLessBtn = '#{of:format1(bundle.truncateLessBtn, DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle)}';
-                        var truncLessTip = '#{of:format1(bundle.truncateLessTip, DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle)}';
+                        // MADROÑO BEGIN. These tags should be in lower case in Spanish
+                        var truncMoreBtn = '#{of:format1(bundle.truncateMoreBtn, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        var truncMoreTip = '#{of:format1(bundle.truncateMoreTip, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        var truncLessBtn = '#{of:format1(bundle.truncateLessBtn, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        var truncLessTip = '#{of:format1(bundle.truncateLessTip, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+			                  // MADROÑO END. These tags should be in lower case in Spanish
                         
                         // pass bundle text variabls as params to function
                         contentTruncate(descId, truncMoreBtn, truncMoreTip, truncLessBtn, truncLessTip);
