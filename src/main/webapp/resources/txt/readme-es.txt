@@ -12,6 +12,7 @@ INFORMACIÓN GENERAL
         Nombre:
         Filiación:
         Correo electrónico:
+	ORCID:
 
 3. Descripción del proyecto
 
@@ -40,6 +41,7 @@ AUTORÍA
         Apellidos:
         Filiación:
         Correo electrónico:
+	ORCID:
 
 
 

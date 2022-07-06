@@ -12,6 +12,7 @@ GENERAL INFORMATION
         Name:
         Institution:
         Email:
+	ORCID:
 
 3. Description of the project
 
@@ -40,6 +41,7 @@ AUTHOR INFORMATION
         Last name  :
         Institution:
         Email:
+	ORCID:
 
 
 
