@@ -1,4 +1,57 @@
 /* Add any CSS necessary for your custom content */
+.card-title-icon-block .label.label-primary {
+  background-color:#e51a4c;
+}
+
+#dataverseHeader .dataverseHeaderBlock .dataverseHeaderCell.dataverseHeaderName {
+  padding:2em 1em 1em 0em;
+}
+
+
+#navbarFixed .dropdown-menu.navbar-language li a.language-menu-link {
+  color:#ffffcc;
+}
+
+#navbarFixed .dropdown-menu.navbar-language li.active a.language-menu-link {
+  color:white;
+}
+
+#navbarFixed .dropdown-menu.navbar-language li.active a.language-menu-link:hover {
+  color:black;
+}
+
+div.btn-group>.btn-group>a.btn-preview.btn.btn-link.bootstrap-button-tooltip {
+  background-color:rgb(255,255,255,0);
+  color:#bc0f3a
+}
+
+span.glyphicon.glyphicon-download-alt:hover {
+  color:#e51a4c;
+}
+
+tr.ui-state-highlight div.btn-group a.btn-link {
+  color:#bc0f3a
+}
+
+tr.ui-state-highlight div.media-body a:not(.btn) {
+  color:#333;
+}
+
+tr.ui-state-highlight div.media-body a:not(.btn):hover {
+  color:#e51a4c;
+}
+
+li.dropdown-header, span.text-success {
+  color:#ffffcc;
+}
+
+div.btn-group>.btn-group>a.btn.btn-link.dropdown-toggle {
+  background-color:rgb(255,255,255,0);
+}
+
+div.btn-group>.btn-group>a.btn-preview.btn.btn-link.bootstrap-button-tooltip:hover {
+  color:#e51a4c;
+}
 
 a.dataverseHeaderDataverseName h1 {
 color: #e51a4c;
