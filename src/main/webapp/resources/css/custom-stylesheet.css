@@ -1,5 +1,5 @@
 /* Add any CSS necessary for your custom content */
-.card-title-icon-block .label.label-primary {
+.card-title-icon-block .label.label-primary, #title-block .label.label-primary {
   background-color:#e51a4c;
 }
 
