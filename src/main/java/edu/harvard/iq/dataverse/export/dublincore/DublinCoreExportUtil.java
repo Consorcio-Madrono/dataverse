@@ -132,7 +132,7 @@ public class DublinCoreExportUtil {
         writeTimeElements(xmlw, version, dcFlavor);
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
-        
+              
         writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
         
         writeFullElementList(xmlw, dcFlavor+":"+"source", dto2PrimitiveList(version, DatasetFieldConstant.dataSources));
@@ -184,7 +184,37 @@ public class DublinCoreExportUtil {
         
         writeFullElementList(xmlw, dcFlavor+":"+"source", dto2PrimitiveList(version, DatasetFieldConstant.dataSources));
         
+        boolean restrict = false;
+        boolean closed = false;
 
+        if (version.isFileAccessRequest()) {
+            restrict = true;
+        }
+        if (version.getFiles() != null) {
+            for (int i = 0; i < version.getFiles().size(); i++) {
+                if (version.getFiles().get(i).isRestricted()) {
+                    closed = true;
+                    break;
+                }
+            }
+        }
+        if (restrict && closed) {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/restrictedAccess"); 
+        } else if (!restrict && closed) {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/closedAccess"); 
+        } else {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/openAccess"); 
+        }
+        
+        //License and Terms
+        LicenseDTO licDTO = version.getLicense();
+        if(licDTO != null) {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", licDTO.getName());
+        }
+        writeFullElement(xmlw, dcFlavor+":"+"rights", version.getTermsOfUse()); 
+        writeFullElement(xmlw, dcFlavor+":"+"rights", version.getRestrictions()); 
+        
+        
     }
     
     private static void writeAuthorsElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
@@ -458,6 +488,7 @@ public class DublinCoreExportUtil {
     }
     
     private static List<String> dto2PrimitiveList(DatasetVersionDTO datasetVersionDTO, String datasetFieldTypeName) {
+//                    logger.log(Level.SEVERE, "Juan:SEVERE " + datasetFieldTypeName);
         for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
             MetadataBlockDTO value = entry.getValue();
             for (FieldDTO fieldDTO : value.getFields()) {
@@ -471,6 +502,13 @@ public class DublinCoreExportUtil {
     
     private static void writeFullElementList(XMLStreamWriter xmlw, String name, List<String> values) throws XMLStreamException {
         //For the simplest Elements we can 
+        ///MADROÑO BEGIN
+        if (name.equals("dc:type")) {
+                xmlw.writeStartElement(name);
+                xmlw.writeCharacters("info:eu-repo/semantics/dataset");
+                xmlw.writeEndElement(); // labl
+        }
+        ///MADROÑO END
         if (values != null && !values.isEmpty()) {
             for (String value : values) {
                 xmlw.writeStartElement(name);
@@ -478,6 +516,7 @@ public class DublinCoreExportUtil {
                 xmlw.writeEndElement(); // labl
             }
         }
+//                          logger.log(Level.SEVERE, "Juan:SEVERE writeFullElementList" + name);
     }
     
     
