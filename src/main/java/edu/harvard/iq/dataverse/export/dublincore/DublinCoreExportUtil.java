@@ -198,6 +198,7 @@ public class DublinCoreExportUtil {
                 }
             }
         }
+				// MADROÑO BEGIN
         if (restrict && closed) {
             writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/restrictedAccess"); 
         } else if (!restrict && closed) {
@@ -213,8 +214,7 @@ public class DublinCoreExportUtil {
         }
         writeFullElement(xmlw, dcFlavor+":"+"rights", version.getTermsOfUse()); 
         writeFullElement(xmlw, dcFlavor+":"+"rights", version.getRestrictions()); 
-        
-        
+				// MADROÑO END
     }
     
     private static void writeAuthorsElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
