@@ -13,7 +13,7 @@
       xmlns:of="http://omnifaces.org/functions">
     <h:head>
     </h:head>
-    <h:body>
+    <h:body onload="javascript:showEnabled();">
         <ui:composition template="/dataverse_template.xhtml">
             <ui:param name="pageTitle" value="#{DatasetPage.editMode == 'CREATE' ? bundle['dataset.pageTitle'] : DatasetPage.workingVersion.title} - #{DatasetPage.dataset.owner.name}"/>
             <ui:param name="dataverse" value="#{DatasetPage.dataset.owner}"/>
@@ -293,10 +293,18 @@
                                             <!-- END: DOWNLOAD/ACCESS DATASET -->
 
                                             <!-- PUBLISH DATASET -->
+<!-- MADROÑO BEGIN -->
+<div>
+    <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense">#{bundle['madrono.grantedLicense']}</label>
+</div>
+<!-- MADROÑO END -->
                                             <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
                                                 <div class="btn-group">
                                                     <!-- Publish BTN -->
-                                                    <h:outputLink value="#" disabled="#{DatasetPage.lockedFromPublishing}">
+<!-- MADROÑO BEGIN -->
+                                                    <h:outputLink id="publishButton" value="#" disabled="#{DatasetPage.lockedFromPublishing}">
+<!--                                                    <h:outputLink value="#" disabled="#{DatasetPage.lockedFromPublishing}">-->
+<!-- MADROÑO END -->
                                                         <c:if test="#{!((showSubmitForReviewLink or showReturnToAuthorLink or not empty DatasetPage.allowedExternalStatuses) and showPublishLink)}">
                                                             <f:passThroughAttribute name="class" value="btn btn-default btn-access btn-publish #{DatasetPage.lockedFromPublishing ? 'disabled' : ''}"/>
                                                             <f:passThroughAttribute name="onclick" value="$(this).parent().find( 'li > a' ).trigger( 'click' );"/>
