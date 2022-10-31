@@ -13,7 +13,7 @@
       xmlns:of="http://omnifaces.org/functions">
     <h:head>
     </h:head>
-    <h:body onload="javascript:showEnabled();">
+    <h:body>
         <ui:composition template="/dataverse_template.xhtml">
             <ui:param name="pageTitle" value="#{DatasetPage.editMode == 'CREATE' ? bundle['dataset.pageTitle'] : DatasetPage.workingVersion.title} - #{DatasetPage.dataset.owner.name}"/>
             <ui:param name="dataverse" value="#{DatasetPage.dataset.owner}"/>
@@ -293,11 +293,13 @@
                                             <!-- END: DOWNLOAD/ACCESS DATASET -->
 
                                             <!-- PUBLISH DATASET -->
-<!-- MADROÑO BEGIN -->
-<div>
-    <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense">#{bundle['madrono.grantedLicense']}</label>
-</div>
-<!-- MADROÑO END -->
+                                            <!-- MADROÑO BEGIN -->
+                                            <c:if test="#{!DatasetPage.dataset.released}">
+                                                <div>
+                                                    <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense">#{bundle['madrono.grantedLicense']}</label>
+                                                </div>
+                                            </c:if>
+                                            <!-- MADROÑO END -->
                                             <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
                                                 <div class="btn-group">
                                                     <!-- Publish BTN -->
@@ -315,7 +317,8 @@
                                                             <f:passThroughAttribute name="aria-haspopup" value="true"/>
                                                             <f:passThroughAttribute name="aria-expanded" value="false"/>
                                                         </c:if>
-                                                        #{showPublishLink ? bundle['dataset.publishBtn'] : (DatasetPage.dataset.latestVersion.inReview ? bundle['dataset.disabledSubmittedBtn'] : bundle['dataset.submitBtn'])} <span jsf:rendered="#{(showSubmitForReviewLink or showReturnToAuthorLink or not empty DatasetPage.allowedExternalStatuses) and showPublishLink}" class="caret"></span>
+                                                        #{showPublishLink ? bundle['dataset.publishBtn'] : (DatasetPage.dataset.latestVersion.inReview ? bundle['dataset.disabledSubmittedBtn'] : bundle['dataset.submitBtn'])} 
+                                                        <span jsf:rendered="#{(showSubmitForReviewLink or showReturnToAuthorLink or not empty DatasetPage.allowedExternalStatuses) and showPublishLink}" class="caret"></span>
                                                     </h:outputLink>
                                                     <!-- Publish BTN DROPDOWN-MENU OPTIONS -->
                                                     <ul class="dropdown-menu pull-right text-left">
@@ -780,6 +783,7 @@
                                 // javascript for refreshing page when locks
                                 $(this).ready(function () {
                                     refreshIfStillLocked();
+                                    showEnabled();
                                 });
                                 function refreshIfStillLocked() {
                                     if ($('input[id$="datasetLockedForAnyReasonVariable"]').val() === 'true') {
