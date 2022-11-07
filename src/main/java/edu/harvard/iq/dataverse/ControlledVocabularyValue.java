@@ -35,12 +35,15 @@ import javax.persistence.Table;
 @Entity
 @Table(indexes = {@Index(columnList="datasetfieldtype_id"), @Index(columnList="displayorder")})
 public class ControlledVocabularyValue implements Serializable  {
-    
     private static final Logger logger = Logger.getLogger(ControlledVocabularyValue.class.getCanonicalName());
     
     public static final Comparator<ControlledVocabularyValue> DisplayOrder = new Comparator<ControlledVocabularyValue>() {
         @Override
         public int compare(ControlledVocabularyValue o1, ControlledVocabularyValue o2) {
+            // MADROÑO BEGIN
+            if (o1.displayOrder== -1)
+                return o1.getLocaleStrValue().compareTo(o2.getLocaleStrValue());
+            // MADROÑO BEGIN
             return Integer.compare( o1.getDisplayOrder(), o2.getDisplayOrder() );
     }};
 
