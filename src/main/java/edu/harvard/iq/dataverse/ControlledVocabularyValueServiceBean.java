@@ -27,8 +27,9 @@ public class ControlledVocabularyValueServiceBean implements java.io.Serializabl
 
         String queryString = "select o from ControlledVocabularyValue as o where o.datasetFieldType.id = " + dsftId + " ";
         TypedQuery<ControlledVocabularyValue> query = em.createQuery(queryString, ControlledVocabularyValue.class);
+        query.getResultList().sort(ControlledVocabularyValue.DisplayOrder);
+
         return query.getResultList();
-        
     }
     
 }

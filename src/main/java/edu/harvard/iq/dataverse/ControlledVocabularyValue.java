@@ -41,7 +41,12 @@ public class ControlledVocabularyValue implements Serializable  {
     public static final Comparator<ControlledVocabularyValue> DisplayOrder = new Comparator<ControlledVocabularyValue>() {
         @Override
         public int compare(ControlledVocabularyValue o1, ControlledVocabularyValue o2) {
-            return Integer.compare( o1.getDisplayOrder(), o2.getDisplayOrder() );
+					  if (o1.getDisplayOrder() == -1) {
+                logger.fine("********** Juan: " + o1.getLocaleStrValue() + " " + o1.getLocaleStrValue("es"));
+                return o1.getLocaleStrValue("es").compareTo(o2.getLocaleStrValue("es"));
+            }
+						else
+              return Integer.compare( o1.getDisplayOrder(), o2.getDisplayOrder() );
     }};
 
     public ControlledVocabularyValue() {
