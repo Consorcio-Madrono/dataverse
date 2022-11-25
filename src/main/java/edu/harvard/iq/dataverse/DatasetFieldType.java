@@ -6,6 +6,7 @@ import edu.harvard.iq.dataverse.util.BundleUtil;
 import java.util.Collection;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -323,7 +324,11 @@ public class DatasetFieldType implements Serializable, Comparable<DatasetFieldTy
     private Collection<ControlledVocabularyValue> controlledVocabularyValues;
 
     public Collection<ControlledVocabularyValue> getControlledVocabularyValues() {
-        return this.controlledVocabularyValues;
+        // MADROÑO BEGIN
+        ArrayList al= new ArrayList <ControlledVocabularyValue> (controlledVocabularyValues);
+        al.sort(ControlledVocabularyValue.DisplayOrder);
+        return al;
+        // MADROÑO END
     }
 
     public void setControlledVocabularyValues(Collection<ControlledVocabularyValue> controlledVocabularyValues) {

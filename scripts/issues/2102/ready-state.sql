@@ -3261,29 +3261,29 @@ COPY builtinuser (id, affiliation, email, encryptedpassword, firstname, lastname
 
 COPY controlledvocabalternate (id, strvalue, controlledvocabularyvalue_id, datasetfieldtype_id) FROM stdin;
 1	arxiv	17	30
-2	BOTSWANA	266	79
-3	Brasil	268	79
-4	Gambia, The	317	79
-5	Germany (Federal Republic of)	319	79
-6	GHANA	320	79
-7	INDIA	339	79
-8	Sumatra	340	79
-9	Iran	341	79
-10	Iran (Islamic Republic of)	341	79
-11	IRAQ	342	79
-12	Laos	358	79
-13	LESOTHO	361	79
-14	MOZAMBIQUE	388	79
-15	NAMIBIA	390	79
-16	SWAZILAND	450	79
-17	Taiwan	454	79
-18	Tanzania	456	79
-19	UAE	470	79
-20	USA	472	79
-21	U.S.A	472	79
-22	United States of America	472	79
-23	U.S.A.	472	79
-24	YEMEN	483	79
+2	BOTSWANA	266	-1
+3	Brasil	268	-1
+4	Gambia, The	317	-1
+5	Germany (Federal Republic of)	319	-1
+6	GHANA	320	-1
+7	INDIA	339	-1
+8	Sumatra	340	-1
+9	Iran	341	-1
+10	Iran (Islamic Republic of)	341	-1
+11	IRAQ	342	-1
+12	Laos	358	-1
+13	LESOTHO	361	-1
+14	MOZAMBIQUE	388	-1
+15	NAMIBIA	390	-1
+16	SWAZILAND	450	-1
+17	Taiwan	454	-1
+18	Tanzania	456	-1
+19	UAE	470	-1
+20	USA	472	-1
+21	U.S.A	472	-1
+22	United States of America	472	-1
+23	U.S.A.	472	-1
+24	YEMEN	483	-1
 \.
 
 
@@ -3344,440 +3344,440 @@ COPY controlledvocabularyvalue (id, displayorder, identifier, strvalue, datasetf
 50	0		ORCID	10
 51	1		ISNI	10
 52	2		LCNA	10
-53	0		Abkhaz	34
-54	1		Afar	34
-55	2		Afrikaans	34
-56	3		Akan	34
-57	4		Albanian	34
-58	5		Amharic	34
-59	6		Arabic	34
-60	7		Aragonese	34
-61	8		Armenian	34
-62	9		Assamese	34
-63	10		Avaric	34
-64	11		Avestan	34
-65	12		Aymara	34
-66	13		Azerbaijani	34
-67	14		Bambara	34
-68	15		Bashkir	34
-69	16		Basque	34
-70	17		Belarusian	34
-71	18		Bengali, Bangla	34
-72	19		Bihari	34
-73	20		Bislama	34
-74	21		Bosnian	34
-75	22		Breton	34
-76	23		Bulgarian	34
-77	24		Burmese	34
-78	25		Catalan,Valencian	34
-79	26		Chamorro	34
-80	27		Chechen	34
-81	28		Chichewa, Chewa, Nyanja	34
-82	29		Chinese	34
-83	30		Chuvash	34
-84	31		Cornish	34
-85	32		Corsican	34
-86	33		Cree	34
-87	34		Croatian	34
-88	35		Czech	34
-89	36		Danish	34
-90	37		Divehi, Dhivehi, Maldivian	34
-91	38		Dutch	34
-92	39		Dzongkha	34
-93	40		English	34
-94	41		Esperanto	34
-95	42		Estonian	34
-96	43		Ewe	34
-97	44		Faroese	34
-98	45		Fijian	34
-99	46		Finnish	34
-100	47		French	34
-101	48		Fula, Fulah, Pulaar, Pular	34
-102	49		Galician	34
-103	50		Georgian	34
-104	51		German	34
-105	52		Greek (modern)	34
-106	53		Guaraní	34
-107	54		Gujarati	34
-108	55		Haitian, Haitian Creole	34
-109	56		Hausa	34
-110	57		Hebrew (modern)	34
-111	58		Herero	34
-112	59		Hindi	34
-113	60		Hiri Motu	34
-114	61		Hungarian	34
-115	62		Interlingua	34
-116	63		Indonesian	34
-117	64		Interlingue	34
-118	65		Irish	34
-119	66		Igbo	34
-120	67		Inupiaq	34
-121	68		Ido	34
-122	69		Icelandic	34
-123	70		Italian	34
-124	71		Inuktitut	34
-125	72		Japanese	34
-126	73		Javanese	34
-127	74		Kalaallisut, Greenlandic	34
-128	75		Kannada	34
-129	76		Kanuri	34
-130	77		Kashmiri	34
-131	78		Kazakh	34
-132	79		Khmer	34
-133	80		Kikuyu, Gikuyu	34
-134	81		Kinyarwanda	34
-135	82		Kyrgyz	34
-136	83		Komi	34
-137	84		Kongo	34
-138	85		Korean	34
-139	86		Kurdish	34
-140	87		Kwanyama, Kuanyama	34
-141	88		Latin	34
-142	89		Luxembourgish, Letzeburgesch	34
-143	90		Ganda	34
-144	91		Limburgish, Limburgan, Limburger	34
-145	92		Lingala	34
-146	93		Lao	34
-147	94		Lithuanian	34
-148	95		Luba-Katanga	34
-149	96		Latvian	34
-150	97		Manx	34
-151	98		Macedonian	34
-152	99		Malagasy	34
-153	100		Malay	34
-154	101		Malayalam	34
-155	102		Maltese	34
-156	103		Māori	34
-157	104		Marathi (Marāṭhī)	34
-158	105		Marshallese	34
-159	106		Mongolian	34
-160	107		Nauru	34
-161	108		Navajo, Navaho	34
-162	109		Northern Ndebele	34
-163	110		Nepali	34
-164	111		Ndonga	34
-165	112		Norwegian Bokmål	34
-166	113		Norwegian Nynorsk	34
-167	114		Norwegian	34
-168	115		Nuosu	34
-169	116		Southern Ndebele	34
-170	117		Occitan	34
-171	118		Ojibwe, Ojibwa	34
-172	119		Old Church Slavonic,Church Slavonic,Old Bulgarian	34
-173	120		Oromo	34
-174	121		Oriya	34
-175	122		Ossetian, Ossetic	34
-176	123		Panjabi, Punjabi	34
-177	124		Pāli	34
-178	125		Persian (Farsi)	34
-179	126		Polish	34
-180	127		Pashto, Pushto	34
-181	128		Portuguese	34
-182	129		Quechua	34
-183	130		Romansh	34
-184	131		Kirundi	34
-185	132		Romanian	34
-186	133		Russian	34
-187	134		Sanskrit (Saṁskṛta)	34
-188	135		Sardinian	34
-189	136		Sindhi	34
-190	137		Northern Sami	34
-191	138		Samoan	34
-192	139		Sango	34
-193	140		Serbian	34
-194	141		Scottish Gaelic, Gaelic	34
-195	142		Shona	34
-196	143		Sinhala, Sinhalese	34
-197	144		Slovak	34
-198	145		Slovene	34
-199	146		Somali	34
-200	147		Southern Sotho	34
-201	148		Spanish, Castilian	34
-202	149		Sundanese	34
-203	150		Swahili	34
-204	151		Swati	34
-205	152		Swedish	34
-206	153		Tamil	34
-207	154		Telugu	34
-208	155		Tajik	34
-209	156		Thai	34
-210	157		Tigrinya	34
-211	158		Tibetan Standard, Tibetan, Central	34
-212	159		Turkmen	34
-213	160		Tagalog	34
-214	161		Tswana	34
-215	162		Tonga (Tonga Islands)	34
-216	163		Turkish	34
-217	164		Tsonga	34
-218	165		Tatar	34
-219	166		Twi	34
-220	167		Tahitian	34
-221	168		Uyghur, Uighur	34
-222	169		Ukrainian	34
-223	170		Urdu	34
-224	171		Uzbek	34
-225	172		Venda	34
-226	173		Vietnamese	34
-227	174		Volapük	34
-228	175		Walloon	34
-229	176		Welsh	34
-230	177		Wolof	34
-231	178		Western Frisian	34
-232	179		Xhosa	34
-233	180		Yiddish	34
-234	181		Yoruba	34
-235	182		Zhuang, Chuang	34
-236	183		Zulu	34
-237	184		Not applicable	34
-238	0		Afghanistan	79
-239	1		Albania	79
-240	2		Algeria	79
-241	3		American Samoa	79
-242	4		Andorra	79
-243	5		Angola	79
-244	6		Anguilla	79
-245	7		Antarctica	79
-246	8		Antigua and Barbuda	79
-247	9		Argentina	79
-248	10		Armenia	79
-249	11		Aruba	79
-250	12		Australia	79
-251	13		Austria	79
-252	14		Azerbaijan	79
-253	15		Bahamas	79
-254	16		Bahrain	79
-255	17		Bangladesh	79
-256	18		Barbados	79
-257	19		Belarus	79
-258	20		Belgium	79
-259	21		Belize	79
-260	22		Benin	79
-261	23		Bermuda	79
-262	24		Bhutan	79
-263	25		Bolivia, Plurinational State of	79
-264	26		Bonaire, Sint Eustatius and Saba	79
-265	27		Bosnia and Herzegovina	79
-266	28		Botswana	79
-267	29		Bouvet Island	79
-268	30		Brazil	79
-269	31		British Indian Ocean Territory	79
-270	32		Brunei Darussalam	79
-271	33		Bulgaria	79
-272	34		Burkina Faso	79
-273	35		Burundi	79
-274	36		Cambodia	79
-275	37		Cameroon	79
-276	38		Canada	79
-277	39		Cape Verde	79
-278	40		Cayman Islands	79
-279	41		Central African Republic	79
-280	42		Chad	79
-281	43		Chile	79
-282	44		China	79
-283	45		Christmas Island	79
-284	46		Cocos (Keeling) Islands	79
-285	47		Colombia	79
-286	48		Comoros	79
-287	49		Congo	79
-288	50		Congo, the Democratic Republic of the	79
-289	51		Cook Islands	79
-290	52		Costa Rica	79
-291	53		Croatia	79
-292	54		Cuba	79
-293	55		Curaçao	79
-294	56		Cyprus	79
-295	57		Czech Republic	79
-296	58		Côte d'Ivoire	79
-297	59		Denmark	79
-298	60		Djibouti	79
-299	61		Dominica	79
-300	62		Dominican Republic	79
-301	63		Ecuador	79
-302	64		Egypt	79
-303	65		El Salvador	79
-304	66		Equatorial Guinea	79
-305	67		Eritrea	79
-306	68		Estonia	79
-307	69		Ethiopia	79
-308	70		Falkland Islands (Malvinas)	79
-309	71		Faroe Islands	79
-310	72		Fiji	79
-311	73		Finland	79
-312	74		France	79
-313	75		French Guiana	79
-314	76		French Polynesia	79
-315	77		French Southern Territories	79
-316	78		Gabon	79
-317	79		Gambia	79
-318	80		Georgia	79
-319	81		Germany	79
-320	82		Ghana	79
-321	83		Gibraltar	79
-322	84		Greece	79
-323	85		Greenland	79
-324	86		Grenada	79
-325	87		Guadeloupe	79
-326	88		Guam	79
-327	89		Guatemala	79
-328	90		Guernsey	79
-329	91		Guinea	79
-330	92		Guinea-Bissau	79
-331	93		Guyana	79
-332	94		Haiti	79
-333	95		Heard Island and Mcdonald Islands	79
-334	96		Holy See (Vatican City State)	79
-335	97		Honduras	79
-336	98		Hong Kong	79
-337	99		Hungary	79
-338	100		Iceland	79
-339	101		India	79
-340	102		Indonesia	79
-341	103		Iran, Islamic Republic of	79
-342	104		Iraq	79
-343	105		Ireland	79
-344	106		Isle of Man	79
-345	107		Israel	79
-346	108		Italy	79
-347	109		Jamaica	79
-348	110		Japan	79
-349	111		Jersey	79
-350	112		Jordan	79
-351	113		Kazakhstan	79
-352	114		Kenya	79
-353	115		Kiribati	79
-354	116		Korea, Democratic People's Republic of	79
-355	117		Korea, Republic of	79
-356	118		Kuwait	79
-357	119		Kyrgyzstan	79
-358	120		Lao People's Democratic Republic	79
-359	121		Latvia	79
-360	122		Lebanon	79
-361	123		Lesotho	79
-362	124		Liberia	79
-363	125		Libya	79
-364	126		Liechtenstein	79
-365	127		Lithuania	79
-366	128		Luxembourg	79
-367	129		Macao	79
-368	130		Macedonia, the Former Yugoslav Republic of	79
-369	131		Madagascar	79
-370	132		Malawi	79
-371	133		Malaysia	79
-372	134		Maldives	79
-373	135		Mali	79
-374	136		Malta	79
-375	137		Marshall Islands	79
-376	138		Martinique	79
-377	139		Mauritania	79
-378	140		Mauritius	79
-379	141		Mayotte	79
-380	142		Mexico	79
-381	143		Micronesia, Federated States of	79
-382	144		Moldova, Republic of	79
-383	145		Monaco	79
-384	146		Mongolia	79
-385	147		Montenegro	79
-386	148		Montserrat	79
-387	149		Morocco	79
-388	150		Mozambique	79
-389	151		Myanmar	79
-390	152		Namibia	79
-391	153		Nauru	79
-392	154		Nepal	79
-393	155		Netherlands	79
-394	156		New Caledonia	79
-395	157		New Zealand	79
-396	158		Nicaragua	79
-397	159		Niger	79
-398	160		Nigeria	79
-399	161		Niue	79
-400	162		Norfolk Island	79
-401	163		Northern Mariana Islands	79
-402	164		Norway	79
-403	165		Oman	79
-404	166		Pakistan	79
-405	167		Palau	79
-406	168		Palestine, State of	79
-407	169		Panama	79
-408	170		Papua New Guinea	79
-409	171		Paraguay	79
-410	172		Peru	79
-411	173		Philippines	79
-412	174		Pitcairn	79
-413	175		Poland	79
-414	176		Portugal	79
-415	177		Puerto Rico	79
-416	178		Qatar	79
-417	179		Romania	79
-418	180		Russian Federation	79
-419	181		Rwanda	79
-420	182		Réunion	79
-421	183		Saint Barthélemy	79
-422	184		Saint Helena, Ascension and Tristan da Cunha	79
-423	185		Saint Kitts and Nevis	79
-424	186		Saint Lucia	79
-425	187		Saint Martin (French part)	79
-426	188		Saint Pierre and Miquelon	79
-427	189		Saint Vincent and the Grenadines	79
-428	190		Samoa	79
-429	191		San Marino	79
-430	192		Sao Tome and Principe	79
-431	193		Saudi Arabia	79
-432	194		Senegal	79
-433	195		Serbia	79
-434	196		Seychelles	79
-435	197		Sierra Leone	79
-436	198		Singapore	79
-437	199		Sint Maarten (Dutch part)	79
-438	200		Slovakia	79
-439	201		Slovenia	79
-440	202		Solomon Islands	79
-441	203		Somalia	79
-442	204		South Africa	79
-443	205		South Georgia and the South Sandwich Islands	79
-444	206		South Sudan	79
-445	207		Spain	79
-446	208		Sri Lanka	79
-447	209		Sudan	79
-448	210		Suriname	79
-449	211		Svalbard and Jan Mayen	79
-450	212		Swaziland	79
-451	213		Sweden	79
-452	214		Switzerland	79
-453	215		Syrian Arab Republic	79
-454	216		Taiwan, Province of China	79
-455	217		Tajikistan	79
-456	218		Tanzania, United Republic of	79
-457	219		Thailand	79
-458	220		Timor-Leste	79
-459	221		Togo	79
-460	222		Tokelau	79
-461	223		Tonga	79
-462	224		Trinidad and Tobago	79
-463	225		Tunisia	79
-464	226		Turkey	79
-465	227		Turkmenistan	79
-466	228		Turks and Caicos Islands	79
-467	229		Tuvalu	79
-468	230		Uganda	79
-469	231		Ukraine	79
-470	232		United Arab Emirates	79
-471	233		United Kingdom	79
-472	234		United States	79
-473	235		United States Minor Outlying Islands	79
-474	236		Uruguay	79
-475	237		Uzbekistan	79
-476	238		Vanuatu	79
-477	239		Venezuela, Bolivarian Republic of	79
-478	240		Viet Nam	79
-479	241		Virgin Islands, British	79
-480	242		Virgin Islands, U.S.	79
-481	243		Wallis and Futuna	79
-482	244		Western Sahara	79
-483	245		Yemen	79
-484	246		Zambia	79
-485	247		Zimbabwe	79
-486	248		Åland Islands	79
+53	0		Abkhaz	-1
+54	1		Afar	-1
+55	2		Afrikaans	-1
+56	3		Akan	-1
+57	4		Albanian	-1
+58	5		Amharic	-1
+59	6		Arabic	-1
+60	7		Aragonese	-1
+61	8		Armenian	-1
+62	9		Assamese	-1
+63	10		Avaric	-1
+64	11		Avestan	-1
+65	12		Aymara	-1
+66	13		Azerbaijani	-1
+67	14		Bambara	-1
+68	15		Bashkir	-1
+69	16		Basque	-1
+70	17		Belarusian	-1
+71	18		Bengali, Bangla	-1
+72	19		Bihari	-1
+73	20		Bislama	-1
+74	21		Bosnian	-1
+75	22		Breton	-1
+76	23		Bulgarian	-1
+77	24		Burmese	-1
+78	25		Catalan,Valencian	-1
+79	26		Chamorro	-1
+80	27		Chechen	-1
+81	28		Chichewa, Chewa, Nyanja	-1
+82	29		Chinese	-1
+83	30		Chuvash	-1
+84	31		Cornish	-1
+85	32		Corsican	-1
+86	33		Cree	-1
+87	34		Croatian	-1
+88	35		Czech	-1
+89	36		Danish	-1
+90	37		Divehi, Dhivehi, Maldivian	-1
+91	38		Dutch	-1
+92	39		Dzongkha	-1
+93	40		English	-1
+94	41		Esperanto	-1
+95	42		Estonian	-1
+96	43		Ewe	-1
+97	44		Faroese	-1
+98	45		Fijian	-1
+99	46		Finnish	-1
+100	47		French	-1
+101	48		Fula, Fulah, Pulaar, Pular	-1
+102	49		Galician	-1
+103	50		Georgian	-1
+104	51		German	-1
+105	52		Greek (modern)	-1
+106	53		Guaraní	-1
+107	54		Gujarati	-1
+108	55		Haitian, Haitian Creole	-1
+109	56		Hausa	-1
+110	57		Hebrew (modern)	-1
+111	58		Herero	-1
+112	59		Hindi	-1
+113	60		Hiri Motu	-1
+114	61		Hungarian	-1
+115	62		Interlingua	-1
+116	63		Indonesian	-1
+117	64		Interlingue	-1
+118	65		Irish	-1
+119	66		Igbo	-1
+120	67		Inupiaq	-1
+121	68		Ido	-1
+122	69		Icelandic	-1
+123	70		Italian	-1
+124	71		Inuktitut	-1
+125	72		Japanese	-1
+126	73		Javanese	-1
+127	74		Kalaallisut, Greenlandic	-1
+128	75		Kannada	-1
+129	76		Kanuri	-1
+130	77		Kashmiri	-1
+131	78		Kazakh	-1
+132	79		Khmer	-1
+133	80		Kikuyu, Gikuyu	-1
+134	81		Kinyarwanda	-1
+135	82		Kyrgyz	-1
+136	83		Komi	-1
+137	84		Kongo	-1
+138	85		Korean	-1
+139	86		Kurdish	-1
+140	87		Kwanyama, Kuanyama	-1
+141	88		Latin	-1
+142	89		Luxembourgish, Letzeburgesch	-1
+143	90		Ganda	-1
+144	91		Limburgish, Limburgan, Limburger	-1
+145	92		Lingala	-1
+146	93		Lao	-1
+147	94		Lithuanian	-1
+148	95		Luba-Katanga	-1
+149	96		Latvian	-1
+150	97		Manx	-1
+151	98		Macedonian	-1
+152	99		Malagasy	-1
+153	100		Malay	-1
+154	101		Malayalam	-1
+155	102		Maltese	-1
+156	103		Māori	-1
+157	104		Marathi (Marāṭhī)	-1
+158	105		Marshallese	-1
+159	106		Mongolian	-1
+160	107		Nauru	-1
+161	108		Navajo, Navaho	-1
+162	109		Northern Ndebele	-1
+163	110		Nepali	-1
+164	111		Ndonga	-1
+165	112		Norwegian Bokmål	-1
+166	113		Norwegian Nynorsk	-1
+167	114		Norwegian	-1
+168	115		Nuosu	-1
+169	116		Southern Ndebele	-1
+170	117		Occitan	-1
+171	118		Ojibwe, Ojibwa	-1
+172	119		Old Church Slavonic,Church Slavonic,Old Bulgarian	-1
+173	120		Oromo	-1
+174	121		Oriya	-1
+175	122		Ossetian, Ossetic	-1
+176	123		Panjabi, Punjabi	-1
+177	124		Pāli	-1
+178	125		Persian (Farsi)	-1
+179	126		Polish	-1
+180	127		Pashto, Pushto	-1
+181	128		Portuguese	-1
+182	129		Quechua	-1
+183	130		Romansh	-1
+184	131		Kirundi	-1
+185	132		Romanian	-1
+186	133		Russian	-1
+187	134		Sanskrit (Saṁskṛta)	-1
+188	135		Sardinian	-1
+189	136		Sindhi	-1
+190	137		Northern Sami	-1
+191	138		Samoan	-1
+192	139		Sango	-1
+193	140		Serbian	-1
+194	141		Scottish Gaelic, Gaelic	-1
+195	142		Shona	-1
+196	143		Sinhala, Sinhalese	-1
+197	144		Slovak	-1
+198	145		Slovene	-1
+199	146		Somali	-1
+200	147		Southern Sotho	-1
+201	148		Spanish, Castilian	-1
+202	149		Sundanese	-1
+203	150		Swahili	-1
+204	151		Swati	-1
+205	152		Swedish	-1
+206	153		Tamil	-1
+207	154		Telugu	-1
+208	155		Tajik	-1
+209	156		Thai	-1
+210	157		Tigrinya	-1
+211	158		Tibetan Standard, Tibetan, Central	-1
+212	159		Turkmen	-1
+213	160		Tagalog	-1
+214	161		Tswana	-1
+215	162		Tonga (Tonga Islands)	-1
+216	163		Turkish	-1
+217	164		Tsonga	-1
+218	165		Tatar	-1
+219	166		Twi	-1
+220	167		Tahitian	-1
+221	168		Uyghur, Uighur	-1
+222	169		Ukrainian	-1
+223	170		Urdu	-1
+224	171		Uzbek	-1
+225	172		Venda	-1
+226	173		Vietnamese	-1
+227	174		Volapük	-1
+228	175		Walloon	-1
+229	176		Welsh	-1
+230	177		Wolof	-1
+231	178		Western Frisian	-1
+232	179		Xhosa	-1
+233	180		Yiddish	-1
+234	181		Yoruba	-1
+235	182		Zhuang, Chuang	-1
+236	183		Zulu	-1
+237	184		Not applicable	-1
+238	0		Afghanistan	-1
+239	1		Albania	-1
+240	2		Algeria	-1
+241	3		American Samoa	-1
+242	4		Andorra	-1
+243	5		Angola	-1
+244	6		Anguilla	-1
+245	7		Antarctica	-1
+246	8		Antigua and Barbuda	-1
+247	9		Argentina	-1
+248	10		Armenia	-1
+249	11		Aruba	-1
+250	12		Australia	-1
+251	13		Austria	-1
+252	14		Azerbaijan	-1
+253	15		Bahamas	-1
+254	16		Bahrain	-1
+255	17		Bangladesh	-1
+256	18		Barbados	-1
+257	19		Belarus	-1
+258	20		Belgium	-1
+259	21		Belize	-1
+260	22		Benin	-1
+261	23		Bermuda	-1
+262	24		Bhutan	-1
+263	25		Bolivia, Plurinational State of	-1
+264	26		Bonaire, Sint Eustatius and Saba	-1
+265	27		Bosnia and Herzegovina	-1
+266	28		Botswana	-1
+267	29		Bouvet Island	-1
+268	30		Brazil	-1
+269	31		British Indian Ocean Territory	-1
+270	32		Brunei Darussalam	-1
+271	33		Bulgaria	-1
+272	34		Burkina Faso	-1
+273	35		Burundi	-1
+274	36		Cambodia	-1
+275	37		Cameroon	-1
+276	38		Canada	-1
+277	39		Cape Verde	-1
+278	40		Cayman Islands	-1
+279	41		Central African Republic	-1
+280	42		Chad	-1
+281	43		Chile	-1
+282	44		China	-1
+283	45		Christmas Island	-1
+284	46		Cocos (Keeling) Islands	-1
+285	47		Colombia	-1
+286	48		Comoros	-1
+287	49		Congo	-1
+288	50		Congo, the Democratic Republic of the	-1
+289	51		Cook Islands	-1
+290	52		Costa Rica	-1
+291	53		Croatia	-1
+292	54		Cuba	-1
+293	55		Curaçao	-1
+294	56		Cyprus	-1
+295	57		Czech Republic	-1
+296	58		Côte d'Ivoire	-1
+297	59		Denmark	-1
+298	60		Djibouti	-1
+299	61		Dominica	-1
+300	62		Dominican Republic	-1
+301	63		Ecuador	-1
+302	64		Egypt	-1
+303	65		El Salvador	-1
+304	66		Equatorial Guinea	-1
+305	67		Eritrea	-1
+306	68		Estonia	-1
+307	69		Ethiopia	-1
+308	70		Falkland Islands (Malvinas)	-1
+309	71		Faroe Islands	-1
+310	72		Fiji	-1
+311	73		Finland	-1
+312	74		France	-1
+313	75		French Guiana	-1
+314	76		French Polynesia	-1
+315	77		French Southern Territories	-1
+316	78		Gabon	-1
+317	79		Gambia	-1
+318	80		Georgia	-1
+319	81		Germany	-1
+320	82		Ghana	-1
+321	83		Gibraltar	-1
+322	84		Greece	-1
+323	85		Greenland	-1
+324	86		Grenada	-1
+325	87		Guadeloupe	-1
+326	88		Guam	-1
+327	89		Guatemala	-1
+328	90		Guernsey	-1
+329	91		Guinea	-1
+330	92		Guinea-Bissau	-1
+331	93		Guyana	-1
+332	94		Haiti	-1
+333	95		Heard Island and Mcdonald Islands	-1
+334	96		Holy See (Vatican City State)	-1
+335	97		Honduras	-1
+336	98		Hong Kong	-1
+337	99		Hungary	-1
+338	100		Iceland	-1
+339	101		India	-1
+340	102		Indonesia	-1
+341	103		Iran, Islamic Republic of	-1
+342	104		Iraq	-1
+343	105		Ireland	-1
+344	106		Isle of Man	-1
+345	107		Israel	-1
+346	108		Italy	-1
+347	109		Jamaica	-1
+348	110		Japan	-1
+349	111		Jersey	-1
+350	112		Jordan	-1
+351	113		Kazakhstan	-1
+352	114		Kenya	-1
+353	115		Kiribati	-1
+354	116		Korea, Democratic People's Republic of	-1
+355	117		Korea, Republic of	-1
+356	118		Kuwait	-1
+357	119		Kyrgyzstan	-1
+358	120		Lao People's Democratic Republic	-1
+359	121		Latvia	-1
+360	122		Lebanon	-1
+361	123		Lesotho	-1
+362	124		Liberia	-1
+363	125		Libya	-1
+364	126		Liechtenstein	-1
+365	127		Lithuania	-1
+366	128		Luxembourg	-1
+367	129		Macao	-1
+368	130		Macedonia, the Former Yugoslav Republic of	-1
+369	131		Madagascar	-1
+370	132		Malawi	-1
+371	133		Malaysia	-1
+372	134		Maldives	-1
+373	135		Mali	-1
+374	136		Malta	-1
+375	137		Marshall Islands	-1
+376	138		Martinique	-1
+377	139		Mauritania	-1
+378	140		Mauritius	-1
+379	141		Mayotte	-1
+380	142		Mexico	-1
+381	143		Micronesia, Federated States of	-1
+382	144		Moldova, Republic of	-1
+383	145		Monaco	-1
+384	146		Mongolia	-1
+385	147		Montenegro	-1
+386	148		Montserrat	-1
+387	149		Morocco	-1
+388	150		Mozambique	-1
+389	151		Myanmar	-1
+390	152		Namibia	-1
+391	153		Nauru	-1
+392	154		Nepal	-1
+393	155		Netherlands	-1
+394	156		New Caledonia	-1
+395	157		New Zealand	-1
+396	158		Nicaragua	-1
+397	159		Niger	-1
+398	160		Nigeria	-1
+399	161		Niue	-1
+400	162		Norfolk Island	-1
+401	163		Northern Mariana Islands	-1
+402	164		Norway	-1
+403	165		Oman	-1
+404	166		Pakistan	-1
+405	167		Palau	-1
+406	168		Palestine, State of	-1
+407	169		Panama	-1
+408	170		Papua New Guinea	-1
+409	171		Paraguay	-1
+410	172		Peru	-1
+411	173		Philippines	-1
+412	174		Pitcairn	-1
+413	175		Poland	-1
+414	176		Portugal	-1
+415	177		Puerto Rico	-1
+416	178		Qatar	-1
+417	179		Romania	-1
+418	180		Russian Federation	-1
+419	181		Rwanda	-1
+420	182		Réunion	-1
+421	183		Saint Barthélemy	-1
+422	184		Saint Helena, Ascension and Tristan da Cunha	-1
+423	185		Saint Kitts and Nevis	-1
+424	186		Saint Lucia	-1
+425	187		Saint Martin (French part)	-1
+426	188		Saint Pierre and Miquelon	-1
+427	189		Saint Vincent and the Grenadines	-1
+428	190		Samoa	-1
+429	191		San Marino	-1
+430	192		Sao Tome and Principe	-1
+431	193		Saudi Arabia	-1
+432	194		Senegal	-1
+433	195		Serbia	-1
+434	196		Seychelles	-1
+435	197		Sierra Leone	-1
+436	198		Singapore	-1
+437	199		Sint Maarten (Dutch part)	-1
+438	200		Slovakia	-1
+439	201		Slovenia	-1
+440	202		Solomon Islands	-1
+441	203		Somalia	-1
+442	204		South Africa	-1
+443	205		South Georgia and the South Sandwich Islands	-1
+444	206		South Sudan	-1
+445	207		Spain	-1
+446	208		Sri Lanka	-1
+447	209		Sudan	-1
+448	210		Suriname	-1
+449	211		Svalbard and Jan Mayen	-1
+450	212		Swaziland	-1
+451	213		Sweden	-1
+452	214		Switzerland	-1
+453	215		Syrian Arab Republic	-1
+454	216		Taiwan, Province of China	-1
+455	217		Tajikistan	-1
+456	218		Tanzania, United Republic of	-1
+457	219		Thailand	-1
+458	220		Timor-Leste	-1
+459	221		Togo	-1
+460	222		Tokelau	-1
+461	223		Tonga	-1
+462	224		Trinidad and Tobago	-1
+463	225		Tunisia	-1
+464	226		Turkey	-1
+465	227		Turkmenistan	-1
+466	228		Turks and Caicos Islands	-1
+467	229		Tuvalu	-1
+468	230		Uganda	-1
+469	231		Ukraine	-1
+470	232		United Arab Emirates	-1
+471	233		United Kingdom	-1
+472	234		United States	-1
+473	235		United States Minor Outlying Islands	-1
+474	236		Uruguay	-1
+475	237		Uzbekistan	-1
+476	238		Vanuatu	-1
+477	239		Venezuela, Bolivarian Republic of	-1
+478	240		Viet Nam	-1
+479	241		Virgin Islands, British	-1
+480	242		Virgin Islands, U.S.	-1
+481	243		Wallis and Futuna	-1
+482	244		Western Sahara	-1
+483	245		Yemen	-1
+484	246		Zambia	-1
+485	247		Zimbabwe	-1
+486	248		Åland Islands	-1
 487	0		Image	115
 488	1		Mosaic	115
 489	2		EventList	115
