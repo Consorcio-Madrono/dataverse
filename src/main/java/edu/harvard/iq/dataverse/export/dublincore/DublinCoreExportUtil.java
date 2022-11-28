@@ -28,6 +28,7 @@ import javax.json.JsonObject;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -132,7 +133,9 @@ public class DublinCoreExportUtil {
         writeTimeElements(xmlw, version, dcFlavor);
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
-              
+
+        writeFunderElement(xmlw, version);
+        
         writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
         
         writeFullElementList(xmlw, dcFlavor+":"+"source", dto2PrimitiveList(version, DatasetFieldConstant.dataSources));
@@ -179,6 +182,8 @@ public class DublinCoreExportUtil {
         writeContributorElement(xmlw, version, dcFlavor);
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
+        
+        writeFunderElement(xmlw, version);
         
         writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
         
@@ -353,6 +358,40 @@ public class DublinCoreExportUtil {
         }
     }
     
+    
+    private static void writeFunderElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO) throws XMLStreamException {
+        for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
+            String key = entry.getKey();
+            MetadataBlockDTO value = entry.getValue();
+            if ("citation".equals(key)) {
+                for (FieldDTO fieldDTO : value.getFields()) {
+                    if (DatasetFieldConstant.grantNumber.equals(fieldDTO.getTypeName())) {
+                        for (HashSet<FieldDTO> fieldDTOs : fieldDTO.getMultipleCompound()) {
+                            String awardNumber = null;
+                            String funderName = null;
+
+                            for (FieldDTO next : fieldDTOs) {
+                                if (DatasetFieldConstant.grantNumberValue.equals(next.getTypeName())) {
+                                    awardNumber = next.getSinglePrimitive();
+                                }
+                                if (DatasetFieldConstant.grantNumberAgency.equals(next.getTypeName())) {
+                                    funderName = next.getSinglePrimitive();
+                                }
+                            }
+
+                            if (StringUtils.isNotBlank(funderName) && StringUtils.isNotBlank(awardNumber)) {
+                                xmlw.writeStartElement("dc:relation");
+                                xmlw.writeCharacters("info:eu-repo/grantAgreement/" + funderName + "//" + awardNumber);
+                                xmlw.writeEndElement(); // labl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     private static void writeContributorElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
         for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
             String key = entry.getKey();
