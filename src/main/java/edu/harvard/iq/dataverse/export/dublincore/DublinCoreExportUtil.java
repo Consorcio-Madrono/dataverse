@@ -372,7 +372,7 @@ public class DublinCoreExportUtil {
 
                             for (FieldDTO next : fieldDTOs) {
                                 if (DatasetFieldConstant.grantNumberValue.equals(next.getTypeName())) {
-                                    awardNumber = next.getSinglePrimitive();
+                                    awardNumber = next.getSinglePrimitive().replaceAll("\\/", "%2F");
                                 }
                                 if (DatasetFieldConstant.grantNumberAgency.equals(next.getTypeName())) {
                                     funderName = next.getSinglePrimitive();
