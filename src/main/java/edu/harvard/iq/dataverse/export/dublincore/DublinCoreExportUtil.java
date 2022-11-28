@@ -134,7 +134,7 @@ public class DublinCoreExportUtil {
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
 
-        writeFunderElement(xmlw, version);
+        writeFunderElement(xmlw, version); // MADROÑO
         
         writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
         
@@ -183,7 +183,7 @@ public class DublinCoreExportUtil {
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
         
-        writeFunderElement(xmlw, version);
+        writeFunderElement(xmlw, version); // MADROÑO
         
         writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
         
@@ -203,7 +203,7 @@ public class DublinCoreExportUtil {
                 }
             }
         }
-				// MADROÑO BEGIN
+        // MADROÑO BEGIN
         if (restrict && closed) {
             writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/restrictedAccess"); 
         } else if (!restrict && closed) {
@@ -219,7 +219,7 @@ public class DublinCoreExportUtil {
         }
         writeFullElement(xmlw, dcFlavor+":"+"rights", version.getTermsOfUse()); 
         writeFullElement(xmlw, dcFlavor+":"+"rights", version.getRestrictions()); 
-				// MADROÑO END
+	// MADROÑO END
     }
     
     private static void writeAuthorsElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
@@ -358,7 +358,7 @@ public class DublinCoreExportUtil {
         }
     }
     
-    
+    // MADROÑO BEGIN
     private static void writeFunderElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO) throws XMLStreamException {
         for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
             String key = entry.getKey();
@@ -390,6 +390,7 @@ public class DublinCoreExportUtil {
             }
         }
     }
+    // MADROÑO END
 
 
     private static void writeContributorElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
