@@ -13,7 +13,6 @@ import edu.harvard.iq.dataverse.api.dto.DatasetVersionDTO;
 import edu.harvard.iq.dataverse.api.dto.FieldDTO;
 import edu.harvard.iq.dataverse.api.dto.LicenseDTO;
 import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
-import edu.harvard.iq.dataverse.export.ddi.DdiExportUtil;
 import edu.harvard.iq.dataverse.license.License;
 import edu.harvard.iq.dataverse.util.json.JsonUtil;
 import java.io.ByteArrayOutputStream;
@@ -36,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DublinCoreExportUtil {
  
-    private static final Logger logger = Logger.getLogger(DdiExportUtil.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(DublinCoreExportUtil.class.getCanonicalName());
     
     public static String OAI_DC_XML_NAMESPACE = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
     public static String OAI_DC_XML_SCHEMALOCATION = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd";
@@ -61,7 +60,7 @@ public class DublinCoreExportUtil {
         //try {
         dto2dublincore(datasetDto, outputStream, dcFlavor);
         //} catch (XMLStreamException ex) {
-        //    Logger.getLogger(DdiExportUtil.class.getName()).log(Level.SEVERE, null, ex);
+        //    Logger.getLogger(DublinCoreExportUtil.class.getName()).log(Level.SEVERE, null, ex);
         //}
     }
     
