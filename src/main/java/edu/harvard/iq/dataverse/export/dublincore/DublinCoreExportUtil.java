@@ -13,10 +13,10 @@ import edu.harvard.iq.dataverse.api.dto.DatasetVersionDTO;
 import edu.harvard.iq.dataverse.api.dto.FieldDTO;
 import edu.harvard.iq.dataverse.api.dto.LicenseDTO;
 import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
-import edu.harvard.iq.dataverse.license.License;
+import edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean;
 import edu.harvard.iq.dataverse.util.json.JsonUtil;
-import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -51,6 +51,7 @@ public class DublinCoreExportUtil {
     public static String DC_FLAVOR_DCTERMS = "dcterms";
     
     public static String DEFAULT_DC_FLAVOR = DC_FLAVOR_DCTERMS;
+    protected static HashMap <String, String> recolectaAcronymsMap;
 
         
     public static void datasetJson2dublincore(JsonObject datasetDtoAsJson, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
@@ -359,6 +360,23 @@ public class DublinCoreExportUtil {
     
     // MADROÑO BEGIN
     private static void writeFunderElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO) throws XMLStreamException {
+        if (recolectaAcronymsMap== null) {
+            recolectaAcronymsMap= new HashMap<>();
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100011033", "AEI");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100001872", "CDTI");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100011100", "FECYT");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100004587", "ISCIII");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100004336", "MAAMA");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100004837", "MICINN");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100006280", "MICYT");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100003329", "MINECO");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100010198", "MINECO");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100003176", "MECD");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100008409", "MFOM");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100006591", "MINETUR");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100014211", "MARM");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100003751", "MSSSI");
+        }
         for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
             String key = entry.getKey();
             MetadataBlockDTO value = entry.getValue();
@@ -375,6 +393,16 @@ public class DublinCoreExportUtil {
                                 }
                                 if (DatasetFieldConstant.grantNumberAgency.equals(next.getTypeName())) {
                                     funderName = next.getSinglePrimitive();
+
+                                    if (StringUtils.isNotBlank(funderName)) {
+                                        String funderDoi= OAIRecordServiceBean.getFunderDOI(funderName);
+                                        if (funderDoi!= null) {
+                                            String recolectaAcronym= recolectaAcronymsMap.get(funderDoi);
+                                            if (recolectaAcronym!= null) {
+                                                funderName= recolectaAcronym;
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
