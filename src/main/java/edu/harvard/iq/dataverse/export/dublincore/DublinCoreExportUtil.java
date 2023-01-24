@@ -16,6 +16,7 @@ import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
 import edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean;
 import edu.harvard.iq.dataverse.util.json.JsonUtil;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,6 +53,7 @@ public class DublinCoreExportUtil {
     
     public static String DEFAULT_DC_FLAVOR = DC_FLAVOR_DCTERMS;
     protected static HashMap <String, String> recolectaAcronymsMap;
+    protected static HashSet <String> recolectaAcronymsSet;
 
         
     public static void datasetJson2dublincore(JsonObject datasetDtoAsJson, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
@@ -361,6 +363,7 @@ public class DublinCoreExportUtil {
     // MADROÑO BEGIN
     private static void writeFunderElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO) throws XMLStreamException {
         if (recolectaAcronymsMap== null) {
+            recolectaAcronymsSet= new HashSet<> (Arrays.asList("AEI","CDTI","FECYT", "ISCIII", "MAAMA", "MICINN", "MICYT", "MINECO", "MINECO", "MECD", "MFOM", "MINETUR", "MARM", "MSSSI"));
             recolectaAcronymsMap= new HashMap<>();
             recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100011033", "AEI");
             recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100001872", "CDTI");
@@ -408,7 +411,10 @@ public class DublinCoreExportUtil {
 
                             if (StringUtils.isNotBlank(funderName) && StringUtils.isNotBlank(awardNumber)) {
                                 xmlw.writeStartElement("dc:relation");
-                                xmlw.writeCharacters("info:eu-repo/grantAgreement/" + funderName + "//" + awardNumber);
+                                if (recolectaAcronymsSet.contains(funderName))
+                                    xmlw.writeCharacters("info:eu-repo/grantAgreement/" + funderName + "//" + awardNumber);
+                                else
+                                    xmlw.writeCharacters("info:eu-repo/grantAgreement/" + funderName + "/" + awardNumber);
                                 xmlw.writeEndElement(); // labl
                             }
                         }
