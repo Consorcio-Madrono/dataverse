@@ -41,6 +41,8 @@ public class XgetRecordHandler extends VerbHandler<GetRecord> {
     public GetRecord handle(OAICompiledRequest parameters) throws OAIException, HandlerException {        
 
         MetadataFormat format = getContext().formatForPrefix(parameters.getMetadataPrefix());
+        if (format == null)
+            System.err.println("**************************** JUAN: FORMAT ES NULL ****************");
         Item item = getRepository().getItemRepository().getItem(parameters.getIdentifier());
 
         if (getContext().hasCondition() &&

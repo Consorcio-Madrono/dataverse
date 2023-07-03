@@ -253,7 +253,6 @@ public class FilePage implements java.io.Serializable {
         return permissionsWrapper.canIssuePublishDatasetCommand(fileMetadata.getDatasetVersion().getDataset());
     }
    
-
     public FileMetadata getFileMetadata() {
         return fileMetadata;
     }
@@ -823,7 +822,82 @@ public class FilePage implements java.io.Serializable {
     }
 
     private Boolean lockedFromEditsVar;
-    private Boolean lockedFromDownloadVar; 
+    private Boolean lockedFromDownloadVar;
+    
+    private String piwikCodeVar="<!-- Matomo -->" +
+//"		<script type=\"text/javascript\">\n" +
+//"   var _paq = _paq || [];\n" +
+//"   _paq.push(['setDocumentTitle', document.domain + '/' + document.title]);\n" +
+//"   _paq.push(['setCookieDomain', '*.edatossandbox.consorciomadrono.es']);\n" +
+//"   _paq.push(['trackPageView']);\n" +
+//"   _paq.push(['enableLinkTracking']);\n" +
+//"   _paq.push(['setDownloadClasses', \"btn-download\"]);\n" +
+//"   (function() {\n" +
+//"             var u=\"//piwik.consorciomadrono.es/piwik/\";\n" +
+//"             var t=\"piwik\";\n" +
+//"             _paq.push(['setTrackerUrl', u+t+'.php']);\n" +
+//"             _paq.push(['setSiteId', '14']);\n" +
+//"             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n" +
+//"             g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+t+'.js'; s.parentNode.insertBefore(g,s);\n" +
+//"   })();\n" +
+//"</script>\n" +
+"<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>\n" +
+"<script>\n" +
+//            "setTimeout(function(){ console.log('Executed after 1 second');}, 1000);\n" +
+"  var _paq2 = window._paq = window._paq || [];\n" +
+"  /* tracker methods like 'setCustomDimension' should be called before 'trackPageView' */\n" +
+"  _paq2.push(['setDownloadClasses', 'btn-download']);\n" +
+"  _paq2.push(['trackPageView']);\n" +
+"  _paq2.push(['enableLinkTracking']);\n" +
+"  (function() {\n" +
+"    var u='https://piwik.consorciomadrono.es/piwik/';\n" +
+"    // We will also collect the website data into Website ID = 7\n" +
+"    var websiteIdDuplicate = 14;\n" +
+"    // The data will be duplicated into `https://piwik.consorciomadrono.es/piwik/piwik.php`\n" +
+"    _paq.push(['addTracker', u+'piwik.php', websiteIdDuplicate]);\n" +
+"    _paq2.push(['setTrackerUrl', u+'piwik.php']);\n" +
+"    _paq2.push(['setSiteId', '__ID__']);\n" +
+"    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n" +
+"    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\n" +
+"  })();\n" +
+"</script>\n" +
+"<noscript>\n" +
+"      <p><img src=\"//piwik.consorciomadrono.es/piwik/piwik.php?idsite=14\" style=\"border:0;\" alt=\"\" /></p>\n" +
+"</noscript>\n" +
+"<!-- End Matomo Code -->\n";
+
+//    private String piwikCodeVar="<!-- Matomo Code --><script type=\"text/javascript\">\n" +
+//"   var _paq = _paq || [];\n" +
+//"   _paq.push(['setDownloadClasses', \"btn-download\"]);\n" +
+//"   _paq.push(['trackPageView']);\n" +
+//"   _paq.push(['enableLinkTracking']);\n" +
+//"   (function() {\n" +
+//"             var u=\"//piwik.consorciomadrono.es/piwik/\";\n" +
+//"             var t=\"piwik\";\n" +
+//"             _paq.push(['setTrackerUrl', u+t+'.php']);\n" +
+//"             _paq.push(['setSiteId', '14']);\n" +
+//"             _paq.push(['trackPageView']);\n" +
+//"             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n" +
+//"             g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+t+'.js'; s.parentNode.insertBefore(g,s);\n" +
+//"             _paq.push(['setSiteId', '__ID__']);\n" +
+//"             _paq.push(['setCookiePath', 'subDomain']);\n" +
+//"             _paq.push(['setDomains', 'subDomain']);\n" +
+//"             _paq.push(['trackPageView']);\n" +
+//"             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n" +
+//"    g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);\n" +
+//"   })();\n" +
+//"</script>\n" +
+//"<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>\n" +
+//"<noscript>\n" +
+//"      <p><img src=\"//piwik.consorciomadrono.es/piwik/piwik.php?idsite=14\" style=\"border:0;\" alt=\"\" /></p>\n" +
+//"</noscript>\n" +
+//"<!-- End Matomo Code -->\n";
+
+    public String getPiwikCode() {
+        return piwikCodeVar;
+    }
+
+
     
     /**
      * Authors are not allowed to edit but curators are allowed - when Dataset is inReview

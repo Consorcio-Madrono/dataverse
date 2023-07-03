@@ -98,10 +98,23 @@ public class XlistRecordsHandler extends VerbHandler<ListRecords> {
                         length, parameters.getMetadataPrefix(),
                         parameters.getSet(), parameters.getFrom(),
                         parameters.getUntil());
-            else
+            else {
+                System.err.println("**************************** JUAN: length: " + length + ". offset: " + offset + "  ****************");
+                if (itemRepositoryHelper == null)
+                    System.err.println("**************************** JUAN: itemRepositoryHelper ES NULL ****************");
+                if (getContext() == null)
+                    System.err.println("**************************** JUAN: getContext() ES NULL ****************");
+                if (parameters == null)
+                    System.err.println("**************************** JUAN: parameters ES NULL ****************");
+                if (parameters.getMetadataPrefix() == null)
+                    System.err.println("**************************** JUAN: parameters.getMetadataPrefix() ES NULL ****************");
+                if (parameters.getSet() == null)
+                    System.err.println("**************************** JUAN: parameters.getSet() ES NULL ****************");
+                    
                 result = itemRepositoryHelper.getItems(getContext(), offset,
                         length, parameters.getMetadataPrefix(),
                         parameters.getSet());
+            }
         }
 
         List<Item> results = result.getResults();

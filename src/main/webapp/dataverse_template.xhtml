@@ -14,7 +14,35 @@
     <h:head>
 	<o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
         <f:facet name="first">
-            <o:resourceInclude path="/CustomizationFilesServlet?customFileType=analytics" />
+             <ui:param name="dv2" value="1500"/>
+	     <c:if test="#{dataverse != null}">
+             <ui:param name="dv2" value="#{dataverse.alias == 'URJC' ? 36 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'UPM' ? 35 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'UNED' ? 34 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'UC3M' ? 33 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'UAM' ? 32 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'UAH' ? 31 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'FRONTESPO' ? 30 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'federico-tena' ? 29 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'empatia' ? 28 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'nonlinear_solid_mechanics' ? 27 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'ESA' ? 26 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'RMP' ? 25 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'catalogos_barrios_vulnerables' ? 24 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'evaluacion_transparencia' ? 23 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'GCOM' ? 22 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'derecho' ? 21 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'YLDI' ? 20 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'BARD' ? 19 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'federico-tena-population' ? 18 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'XChem' ? 17 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'bodytransit' ? 16 : dv2}"/>
+             <ui:param name="dv2" value="#{dataverse.alias == 'humanidades_digitales' ? 15 : dv2}"/>
+
+             <ui:param name="id_string" value="__ID__"/>
+	     <h:outputText value="#{of:replaceAll(FilePage.piwikCode,id_string,dv2)}" escape="false" />
+	     </c:if>
+
             <title><h:outputText value="#{pageTitle}"/></title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
