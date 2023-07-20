@@ -13,37 +13,47 @@
     <f:view locale="#{dataverseSession.localeCode}">
     <h:head>
 	<o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
-        <f:facet name="first">
-             <ui:param name="dv2" value="1500"/>
-	     <c:if test="#{dataverse != null}">
-             <ui:param name="dv2" value="#{dataverse.alias == 'URJC' ? 36 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'UPM' ? 35 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'UNED' ? 34 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'UC3M' ? 33 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'UAM' ? 32 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'UAH' ? 31 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'FRONTESPO' ? 30 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'federico-tena' ? 29 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'empatia' ? 28 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'nonlinear_solid_mechanics' ? 27 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'ESA' ? 26 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'RMP' ? 25 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'catalogos_barrios_vulnerables' ? 24 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'evaluacion_transparencia' ? 23 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'GCOM' ? 22 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'derecho' ? 21 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'YLDI' ? 20 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'BARD' ? 19 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'federico-tena-population' ? 18 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'XChem' ? 17 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'bodytransit' ? 16 : dv2}"/>
-             <ui:param name="dv2" value="#{dataverse.alias == 'humanidades_digitales' ? 15 : dv2}"/>
+       <f:facet name="first">
+					<!-- INIT MADROÑO: Matomo statistics -->
+          <ui:param name="dv2" value="1"/>
+          <ui:param name="dv3" value=""/>
+          <ui:param name="websiteIdTemplate" value="var websiteIdDuplicate = __ID__; _paq2.push(['addTracker', u+'piwik.php', websiteIdDuplicate]);"/>
 
-             <ui:param name="id_string" value="__ID__"/>
-	     <h:outputText value="#{of:replaceAll(FilePage.piwikCode,id_string,dv2)}" escape="false" />
-	     </c:if>
 
-            <title><h:outputText value="#{pageTitle}"/></title>
+          <c:if test="${not empty dataverse}" var="dataverseCheck">
+	           <ui:param name="dv3" value="#{empty dataverse ? [] : dataverse.alias}"/>
+             <ui:param name="dv2" value="#{dv3 == 'URJC' ? [36] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UPM' ? [35] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UNED' ? [34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UC3M' ? [33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UAM' ? [32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UAH' ? [31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'FRONTESPO' ? [30,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'federico-tena' ? [29,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'empatia' ? [28,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'nonlinear_solid_mechanics' ? [27,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'ESA' ? [26,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'RMP' ? [25,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'catalogos_barrios_vulnerables' ? [24,35] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'evaluacion_transparencia' ? [23,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'GCOM' ? [22,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'derecho' ? [21,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'YLDI' ? [20,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'BARD' ? [19,26,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'federico-tena-population' ? [18,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'XChem' ? [17,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'bodytransit' ? [16,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'humanidades_digitales' ? [15,33] : dv2}"/>
+
+             <h:outputText value="#{FilePage.initPiwikCode}" escape="false" />
+             <ui:repeat value="#{dv2}" var="i" varStatus="loop">
+                 <h:outputText value="#{of:replaceAll(websiteIdTemplate,'__ID__',i)}" escape="false" />
+             </ui:repeat>
+             <h:outputText value="#{FilePage.endPiwikCode}" escape="false" />
+	        </c:if>
+					<!-- END MADROÑO: Matomo statistics -->
+
+          <title><h:outputText value="#{pageTitle}"/></title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
             <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
