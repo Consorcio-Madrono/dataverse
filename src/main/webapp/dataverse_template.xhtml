@@ -19,11 +19,12 @@
 					<!-- INIT MADROÑO: Matomo statistics -->
           <ui:param name="dv2" value="1"/>
           <ui:param name="dv3" value=""/>
+          <ui:param name="dv4" value="1"/>
           <ui:param name="websiteIdTemplate" value="var websiteIdDuplicate = __ID__; _paq2.push(['addTracker', u+'piwik.php', websiteIdDuplicate]);"/>
 
 
           <c:if test="${not empty dataverse}" var="dataverseCheck">
-	           <ui:param name="dv3" value="#{empty dataverse ? [] : dataverse.alias}"/>
+	     <ui:param name="dv3" value="#{empty dataverse ? [] : dataverse.alias}"/>
              <ui:param name="dv2" value="#{dv3 == 'URJC' ? [36] : dv2}"/>
              <ui:param name="dv2" value="#{dv3 == 'UPM' ? [35] : dv2}"/>
              <ui:param name="dv2" value="#{dv3 == 'UNED' ? [34] : dv2}"/>
@@ -47,7 +48,11 @@
              <ui:param name="dv2" value="#{dv3 == 'bodytransit' ? [16,33] : dv2}"/>
              <ui:param name="dv2" value="#{dv3 == 'humanidades_digitales' ? [15,33] : dv2}"/>
              <ui:param name="dv2" value="#{dv3 == 'vedymec' ? [37,33] : dv2}"/>
-             <ui:param name="dv2" value="#{dv3 == 'artext' ? [18,34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'artext' ? [38,34] : dv2}"/>
+	     <ui:param name="dv2" value="#{dv3 == 'maaes' ? [39,33] : dv2}"/>
+
+	     <ui:param name="dv5" value="#{of:replaceAll(dv2,'[\\[\\]]','')}" escape="false"/>
+	     <ui:param name="dv4" value="#{of:replaceAll(dv5,',.*','')}" escape="false"/>
 
              <h:outputText value="#{FilePage.initPiwikCode}" escape="false" />
              <ui:repeat value="#{dv2}" var="i" varStatus="loop">

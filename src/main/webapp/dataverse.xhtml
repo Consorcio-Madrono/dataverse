@@ -487,6 +487,13 @@
                                            oncomplete="PF('shareDialog').show();sharrre();">
                                             <span class="glyphicon glyphicon-share"/> #{bundle['share']}
                                         </p:commandLink>
+                                    	<!-- BEGIN: MADROÑO Statistics -->
+                                        <h:outputLink type="button" styleClass="text-button btn-statistics bootstrap-button-tooltip"
+						value="https://piwik.consorciomadrono.es/piwik/index.php?module=CoreHome&amp;action=index&amp;idSite=#{dv4}&amp;period=week&amp;date=today&amp;category=Dashboard_Dashboard&amp;subcategory=1" 
+						target="_blank" title="#{bundle['madrono.metrics.short']}">
+                                            <span class="glyphicon glyphicon-stats"/> #{bundle['madrono.metrics.short']}
+                                        </h:outputLink>
+                                    	<!-- END: MADROÑO Statistics -->
                                     </div>
                                     <!-- END: Email/Link/Share Button Group -->
                                     <!-- Edit/Publish Button Group -->
