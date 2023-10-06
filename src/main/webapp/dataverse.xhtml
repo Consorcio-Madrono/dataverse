@@ -50,7 +50,6 @@
                     <f:viewAction action="#{SearchIncludeFragment.search()}" />
                 </f:metadata>
 	<!-- INIT MADROÑO: SURVEY -->
-	<!--
 	<div id="float_survey">
 	  <div id="survey">
 	    <div class="in">
@@ -63,7 +62,6 @@
 	    </div>
 	  </div>
         </div>
-	-->
 	<!-- END MADROÑO: SURVEY -->
 
                 <h:form id="dataverseForm">
@@ -868,17 +866,17 @@
                         initCarousel();
                         popoverHTML('#{bundle.htmlAllowedTitle}','#{bundle.htmlAllowedTags}');
 			// INIT MADROÑO: SURVEY
-/*			var el_container = document.getElementById("dataverse-header-block"); 
+			var el_container = document.getElementById("dataverse-header-block"); 
 			el_container.addEventListener("click", hideSurvey, false);
 			el_container = document.getElementById("custom-header"); 
 			el_container.addEventListener("click", hideSurvey, false);
 			el_container = document.getElementById("search-row-panel"); 
 			el_container.addEventListener("click", hideSurvey, false);
-			showSurvey ();*/
+			showSurvey ();
 			// END MADROÑO: SURVEY			    
                     });
 		    // INIT MADROÑO: SURVEY
-/*		    function showSurvey () {
+		    function showSurvey () {
         		var cookies = document.cookie.split( ';' );
 			var cookieFound= false;
         		for (i = 0; i < cookies.length; i++) {
@@ -920,7 +918,7 @@
 			survey= document.getElementById("float_survey");
 			survey.style.display='none';
 		    }
-*/		    // END MADROÑO: SURVEY
+		    // END MADROÑO: SURVEY
 
                     function initCarousel() {
                         var owl1 = $("#featuredDataversesList");

@@ -12,6 +12,7 @@
       xmlns:o="http://omnifaces.org/ui"
       xmlns:of="http://omnifaces.org/functions">
     <h:head>
+
     </h:head>
     <h:body>
         <ui:composition template="/dataverse_template.xhtml">
@@ -548,6 +549,9 @@
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.citations.tip']}"></span>
                                                 </div>
+						<!-- MADRONO almetric stats-->
+                                                        <div class='altmetric-embed' data-hide-no-mentions='true' data-badge-type='donut' data-doi="#{DatasetPage.persistentId}"></div>
+                                                <!-- MADRONO almetric stats-->
                                             </div>
                                         </div>
                                         <!-- END: Metrics -->
