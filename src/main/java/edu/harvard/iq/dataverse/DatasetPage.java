@@ -93,7 +93,7 @@ import javax.validation.ConstraintViolation;
 import org.apache.commons.httpclient.HttpClient;
 //import org.primefaces.context.RequestContext;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashSet; 
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
@@ -137,7 +137,14 @@ import edu.harvard.iq.dataverse.search.SearchFields;
 import edu.harvard.iq.dataverse.search.SearchServiceBean;
 import edu.harvard.iq.dataverse.search.SearchUtil;
 import edu.harvard.iq.dataverse.search.SolrClientService;
+import es.consorciomadrono.DatasetMetricsByMonth;
 import java.util.Comparator;
+import java.util.Vector;
+import java.util.stream.Collectors;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -168,6 +175,13 @@ public class DatasetPage implements java.io.Serializable {
         INIT, SAVE
     };
 
+    // MADROÑO BEGIN
+    @PersistenceContext(unitName = "VDCNet-ejbPU")
+    protected EntityManager em;
+    private static HashMap <String, String> countriesMap;
+    private static ArrayList <String> countriesList;
+    // MADROÑO END
+    
 
     @EJB
     DatasetServiceBean datasetService;
@@ -1786,6 +1800,11 @@ public class DatasetPage implements java.io.Serializable {
     }
 
     private String init(boolean initFull) {
+        // MADROÑO BEGIN
+        if (countriesMap == null) {
+            initCountriesMapList ();
+        }
+        // MADROÑO END
 
         //System.out.println("_YE_OLDE_QUERY_COUNTER_");  // for debug purposes
         setDataverseSiteUrl(systemConfig.getDataverseSiteUrl());
@@ -5879,4 +5898,31 @@ public class DatasetPage implements java.io.Serializable {
         }
         return false;
     }
+
+    // MADROÑO BEGIN
+    @TransactionAttribute(REQUIRES_NEW)
+    private void initCountriesMapList () {
+        if (countriesMap== null) {
+            if (em== null)
+                Logger.getLogger(DatasetMetricsByMonth.class.getName()).log(Level.SEVERE, "*************#####*****######********* createDatasetMetricsByMonth: em is NULL");
+
+            Vector <CountriesMap> countriesMapList = (Vector) em.createNamedQuery("CountriesMap.findAll", CountriesMap.class).getResultList();
+            countriesMap= (HashMap) countriesMapList.stream().collect(Collectors.toMap(CountriesMap::getId, CountriesMap::getName));
+            countriesList= new ArrayList<>();
+        }
+    }
+
+
+    public static ArrayList <String> getCountriesList () {
+        for (String id: countriesMap.keySet()) {
+            String country= countriesMap.get(id);
+            String bundle="country." + id;
+            String translatedCountry= BundleUtil.getStringFromBundle(bundle);
+            //Logger.getLogger(DatasetPage.class.getName()).log(Level.SEVERE, "#####*****###### createDatasetMetricsByMonth country: {0}; bundle: {1} ; translatedCountry {2}", new Object[]{country, bundle, translatedCountry});
+            countriesList.add("\"" + id+";"+ translatedCountry + "\"");
+        }
+        return countriesList;
+    }
+    // MADROÑO END
+
 }

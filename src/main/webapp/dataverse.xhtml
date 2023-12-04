@@ -50,6 +50,7 @@
                     <f:viewAction action="#{SearchIncludeFragment.search()}" />
                 </f:metadata>
 	<!-- INIT MADROÑO: SURVEY -->
+	<!--
 	<div id="float_survey">
 	  <div id="survey">
 	    <div class="in">
@@ -62,6 +63,7 @@
 	    </div>
 	  </div>
         </div>
+	-->
 	<!-- END MADROÑO: SURVEY -->
 
                 <h:form id="dataverseForm">
@@ -617,7 +619,7 @@
                             <!-- END: ActionButtonBlock -->
                         </div>
                         <!-- BEGIN: MADROÑO Statistics -->
-			<!--			<div id="widgetIframe"><iframe width="100%" height="280px" src="https://piwik.consorciomadrono.es/piwik/index.php?module=Widgetize&amp;action=iframe&amp;disableLink=1&amp;widget=1&amp;moduleToWidgetize=UserCountryMap&amp;actionToWidgetize=visitorMap&amp;idSite=#{dv4}&amp;period=range&amp;date=2018-01-08,today" scrolling="yes" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>-->
+			<!--			<div id="widgetIframe"><iframe width="100%" height="280px" src="https://piwik.consorciomadrono.es/piwik/index.php?module=Widgetize&amp;action=iframe&amp;disableLink=1&amp;widget=1&amp;moduleToWidgetize=UserCountryMapMadrono&amp;actionToWidgetize=visitorMap&amp;idSite=#{dv4}&amp;period=range&amp;date=2018-01-08,today" scrolling="yes" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>-->
                         <!-- END: MADROÑO Statistics -->
                         <ui:fragment rendered="#{SearchIncludeFragment.filterQueries.size() == 0 and SearchIncludeFragment.mode != SearchIncludeFragment.searchModeString}">
                             <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
@@ -866,17 +868,17 @@
                         initCarousel();
                         popoverHTML('#{bundle.htmlAllowedTitle}','#{bundle.htmlAllowedTags}');
 			// INIT MADROÑO: SURVEY
-			var el_container = document.getElementById("dataverse-header-block"); 
+/*			var el_container = document.getElementById("dataverse-header-block"); 
 			el_container.addEventListener("click", hideSurvey, false);
 			el_container = document.getElementById("custom-header"); 
 			el_container.addEventListener("click", hideSurvey, false);
 			el_container = document.getElementById("search-row-panel"); 
 			el_container.addEventListener("click", hideSurvey, false);
-			showSurvey ();
+			showSurvey ();*/
 			// END MADROÑO: SURVEY			    
                     });
 		    // INIT MADROÑO: SURVEY
-		    function showSurvey () {
+/*		    function showSurvey () {
         		var cookies = document.cookie.split( ';' );
 			var cookieFound= false;
         		for (i = 0; i < cookies.length; i++) {
@@ -918,7 +920,7 @@
 			survey= document.getElementById("float_survey");
 			survey.style.display='none';
 		    }
-		    // END MADROÑO: SURVEY
+*/		    // END MADROÑO: SURVEY
 
                     function initCarousel() {
                         var owl1 = $("#featuredDataversesList");

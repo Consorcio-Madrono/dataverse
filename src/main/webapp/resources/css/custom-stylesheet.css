@@ -1,4 +1,44 @@
 /* Add any CSS necessary for your custom content */
+#statsByCountry {
+  margin-top: 10px;
+}
+
+#statsByCountry table th {
+  vertical-align: middle;
+}
+
+#statsByCountry table {
+  border:solid 1px #e51a4c;
+}
+
+#statsByCountry img {
+  width: 25px;
+}
+
+#statsByCountry thead {
+  background-color:#e51a4c; 
+  color:white;
+}
+
+#metrics_calendar {
+  display: flex;
+}
+
+#canvas {
+  display: none;
+}
+
+.export_button {
+  color:white;
+  background-color:#e51a4c;
+  width:60px;
+}
+
+.export_line {
+  display:inline-block; 
+  width:110px;
+}
+
 .card-title-icon-block .label.label-primary, #title-block .label.label-primary {
   background-color:#e51a4c;
 }
@@ -88,14 +128,10 @@ div span.glyphicon-question-sign.tooltip-icon, tr span.glyphicon-question-sign.t
  margin-right:auto;
  margin-left:auto
 }
-@media (max-width:767px) {
- #survey .in {
-  top: 0;
- }
-}
 @media (min-width:768px) {
  #survey .in {
   width:750px
+  top: 0;
  }
 }
 @media (min-width:992px) {
@@ -166,10 +202,10 @@ body .text-danger {
 }
 #custom-footer .col-sm-8 {
   padding-top: 30px;
-  width: 30%
+  width: 20%
 }
 #custom-footer .col-sm-4 {
-  width: 70%
+  width: 80%
 }
 body a:hover, #dv-sidebar form[id$="facetType"] > div.clearfix a.facetTypeLink:hover, a.dataverseHeaderDataverseName, body .ui-widget-content a:hover, body .ui-widget-content a:focus {
  color: #e51a4c;
@@ -284,7 +320,7 @@ body table[id$='resultsTable'] td > div.datasetResult {
   padding: 3px 20px ;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .navbar-nav {
     margin:100px 0 0 0;
   }
@@ -352,4 +388,11 @@ body table[id$='resultsTable'] td > div.datasetResult {
     text-decoration:none;
   }
 
+  footer span {
+    font-size: 10px;
+  }
+
+  body footer {
+    height 132px;
+  }
 }  

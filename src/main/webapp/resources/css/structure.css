@@ -20,7 +20,7 @@ body .ui-widget {font-size: inherit;}
 
 #navbarFixed.navbar-fixed-top {margin-bottom:0; z-index:9999;}
 #navbarFixed .navbar-brand {color:#C55B28; padding-left:32px;}
-#navbarFixed .navbar-brand.custom-logo {height:auto; padding:0;}
+#navbarFixed .navbar-brand.custom-logo {height:59px; padding:0;}
 #navbarFixed .icon-dataverse {color:#C55B28; font-size:28px; margin: -4px 0 0 -27px; position: absolute;}
 #navbarFixed .dropdown.accountName a:focus {outline: -webkit-focus-ring-color 5px auto;}
 #navbarFixed form.navbar-form.navbar-form-link {margin:0; padding:0;}
@@ -612,7 +612,7 @@ div.alert-info.bg-citation, div.alert-danger.bg-danger {border-radius:0; color:#
 div.citation-block div.alert {padding:10px 10px 0px 10px;}
 div.citation-block div.preview-icon-block {padding-right:10px;padding-bottom:10px; min-height:140px;} /* min-height needed for colorder bootstrap layout hack */
 div.citation-block div.preview-icon-block img {max-width:140px; max-height:140px;}
-div.citation-block div.preview-icon-block span[class^='icon'] {font-size:7.5em; line-height:1.1; color:#428BCA;}
+div.citation-block div.preview-icon-block span[class^='icon'] {font-size:7.5em; line-height:1.1; color:#e7e7e7;}
 @media(max-width:767px){
     div.citation-block div.preview-icon-block img {max-width:100px; max-height:100px;}
     div.citation-block div.preview-icon-block span[class^='icon'] {font-size:6em;}
@@ -986,7 +986,7 @@ span.ui-autocomplete input.ui-autocomplete-input {width:100%;}
     }
     .navbar-nav {
         float: none!important;
-        margin-top: 7.5px;
+        margin-top: 95px;
     }
     .navbar-nav>li {
         float: none;

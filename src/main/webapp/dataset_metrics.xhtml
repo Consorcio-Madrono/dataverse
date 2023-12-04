@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:pt="http://java.sun.com/jsf/passthrough"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/dataverse_template.xhtml">
+            <ui:param name="pageTitle" value="#{DatasetPage.workingVersion.title} - #{DatasetPage.dataset.owner.name}"/>
+            <ui:param name="dataverse" value="#{DatasetPage.dataset.owner}"/>
+            <ui:param name="dataset" value="#{DatasetPage.dataset}"/>
+            <ui:param name="version" value="#{DatasetPage.workingVersion}"/>
+            <ui:define name="meta_header">
+                <ui:fragment rendered="#{!DatasetPage.anonymizedAccess}">
+                    <meta name="description" content="#{DatasetPage.description}"/>
+                </ui:fragment>
+            </ui:define>
+            <ui:define name="dc_meta_header">
+                <ui:fragment rendered="#{!DatasetPage.anonymizedAccess}">
+                    <meta name="DC.identifier" content="#{DatasetPage.persistentId}"/>
+                    <meta name="DC.type" content="Dataset"/>
+                    <meta name="DC.title" content="#{DatasetPage.title}"/>
+                    <meta name="DC.date" content="#{DatasetPage.workingVersion.publicationDateAsString}"/>
+                    <meta name="DC.publisher" content="#{DatasetPage.publisher}" />
+                    <meta name="DC.description" content="#{DatasetPage.description}" />
+                    <ui:repeat var="author" value="#{DatasetPage.datasetAuthors}">
+                        <meta name="DC.creator" content="#{author}"/>
+                    </ui:repeat>
+                    <ui:repeat var="subject" value="#{DatasetPage.workingVersion.datasetSubjects}">
+                        <meta name="DC.subject" content="#{subject}"/>
+                    </ui:repeat>
+                </ui:fragment>
+            </ui:define>
+                
+            <ui:define name="jsonld_header">
+                <ui:fragment>
+                    <script type="application/ld+json">
+                        <h:outputText value="#{DatasetPage.jsonLd}"/>
+                    </script>
+                </ui:fragment>
+            </ui:define>
+            <ui:define name="og_header">
+                <ui:fragment rendered="#{!DatasetPage.anonymizedAccess}">
+                    <meta property="og:title" content="#{DatasetPage.title}" />
+                    <meta property="og:type" content="article" />
+                    <meta property="og:url" content="#{DatasetPage.dataverseSiteUrl}/dataset.xhtml?persistentId=#{dataset.globalId}" />
+                    <meta property="og:image" content="#{DatasetPage.dataverseSiteUrl.concat(resource['images/dataverse-icon-1200.png'])}" />
+                    <meta property="og:site_name" content="#{DatasetPage.publisher}" />
+                    <meta property="og:description" content="#{(DatasetPage.description.length()>150 ? DatasetPage.description.substring(0,147).concat('...') : DatasetPage.description)}" />
+                    <ui:repeat var="author" value="#{DatasetPage.datasetAuthors}">
+                        <meta property="article:author" content="#{author}" />
+                    </ui:repeat>
+                    <meta property="article:published_time" content="#{DatasetPage.workingVersion.publicationDateAsString}" />
+                </ui:fragment>
+            </ui:define>
+            <ui:define name="body">
+                <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
+                <f:metadata>
+                    <f:viewParam name="id" value="#{DatasetPage.id}"/>
+                    <o:viewParam name="ownerId" value="#{DatasetPage.ownerId}"/>
+                    <f:viewParam name="version" value="#{DatasetPage.version}"/>
+                    <f:viewParam name="versionId" value="#{DatasetPage.versionId}"/>
+                    <f:viewParam name="persistentId" value="#{DatasetPage.persistentId}"/>
+                    <f:viewAction action="#{dataverseSession.updateLocaleInViewRoot}"/>
+                    <f:viewAction action="#{DatasetPage.init}" rendered="true"/>
+                    <f:viewAction action="#{dataverseHeaderFragment.initBreadcrumbs(DatasetPage.dataset)}"/>
+                </f:metadata>
+                <h:form id="datasetForm">
+
+                    <!-- View infoMode -->
+                    <!-- Top Button/Citation Blocks -->
+                    <p:fragment id="topDatasetBlockFragment">
+		        <div class="row">
+                            <div class="col-xs-12">
+                                <div id="datasetVersionBlock" class="row">
+                                    <div id="title-block" class="col-xs-12 margin-bottom-half">
+                                        <h1 id="title">#{DatasetPage.datasetVersionUI.title.value}</h1>
+                                    </div>
+                                </div>
+
+                                <!-- START: NEW RESPONSIVE ABOVE FOLD BLOCK -->
+                                <div id="datasetCitationActionSummaryBlock" class="row">
+                                    <div id="graphics" class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+                                        <script src="./resources/js/xlsx.core.min.js"></script>
+                                        <script src="./resources/js/d3.v7.8.5.js"></script>
+					<link href="./resources/css/air-datepicker.css" rel="stylesheet"/>
+					<script src="./resources/js/air-datepicker.js"></script>
+
+					<!-- Place for the calendar items-->
+					<div id="metrics_calendar">
+					  <div>
+					    <p><span class="label label-default">#{bundle['metrics.initDate']}</span><br/></p>
+				          <div id="el1"></div>
+				        </div>
+				        <div>
+					  <p><span class="label label-default">#{bundle['metrics.endDate']}</span><br/></p>
+					  <div id="el2"></div>
+					  </div>
+					</div>
+					<div id="my_dataviz"></div> <!-- Place for the graphic -->
+					<canvas id="canvas"></canvas> <!-- hack to export graphic to png -->
+					<div id="export_buttons"><!-- Export buttons of course -->
+					  <span class="export_line">#{bundle['metrics.exportGraphic']}</span> 
+					  <button class="export_button" id="export_svg" type="button" onclick="exportSVG()">SVG</button> 
+					  <button class="export_button" id="export_png" type="button" onclick="exportPNG()">PNG</button><br/>
+					  <span class="export_line">#{bundle['metrics.exportData']}</span>
+					  <button class="export_button" id="export_xlsx" type="button" onclick="exportXLSX()">XLSX</button> 
+					  <button class="export_button" id="export_ods"  type="button" onclick="exportODS()">ODS</button>
+					  <button class="export_button" id="export_csv"  type="button" onclick="exportCSV()">CSV</button>
+					</div>
+                                    </div>
+
+				    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pull-right margin-bottom"> <!-- Check buttons to select graphics type to be shown -->
+					<label class="stats" id="views"><input type="checkbox" style="accent-color:#e51a4c" checked="true" id="cboxViews" onclick="updateChar ()"/> #{bundle['metrics.visits']}</label><br/>
+					<label class="stats" id="uniqueViews"><input type="checkbox" style="accent-color:#bc0f3a" id="cboxUniqViews" onclick="updateChar ()"/> #{bundle['metrics.uniqVisits']}</label><br/>
+					<label class="stats" id="downloads"><input type="checkbox" style="accent-color:#000" id="cboxDownloads" onclick="updateChar ()"/> #{bundle['metrics.downloads']}</label><br/>
+				        <label class="stats" id="uniqueDownloads"><input type="checkbox" style="accent-color:#666666" id="cboxUniqDownloads" onclick="updateChar ()"/> #{bundle['metrics.uniqDownloads']}</label>
+                                        <!-- Metrics -->
+                                        <div id="metrics-block">
+                                            <div id="metrics-body">
+                                                <!-- Make Data Count citations (DOIs only, not Handles) -->
+                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled and settingsWrapper.doiInstallation}">
+                                                    <p:commandLink oncomplete="PF('citationsDialog').show();">
+                                                        <h:outputFormat value="{0} #{bundle['metrics.citations']}">
+                                                            <f:param value="#{fn:length(datasetExternalCitationsServiceBean.getDatasetExternalCitationsByDataset(DatasetPage.dataset))}"/>
+                                                        </h:outputFormat>
+                                                    </p:commandLink>
+                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon"
+                                                          data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.citations.tip']}"></span>
+                                                </div>
+						<!-- MADRONO almetric stats-->
+                                                <div class='altmetric-embed' data-hide-no-mentions='true' data-badge-type='donut' data-doi="#{DatasetPage.persistentId}"></div> <!-- Altimetric plugin -->
+                                                <!-- MADRONO almetric stats-->
+						<div id='statsByCountry'> <!-- Table with usage statistics by country-->
+                                                   <table class="table table-striped">
+                                                     <thead>
+                                                       <tr>
+                                                           <th>#{bundle['metrics.country']}</th>
+							   <th>#{bundle['metrics.br1']}<br/>#{bundle['metrics.br2']}</th>
+							   <th>#{bundle['metrics.br3']}<br/>#{bundle['metrics.br4']}</th>
+                                                       </tr>
+                                                     </thead>
+                                                     <tbody></tbody>
+                                                   </table>
+						</div>
+                                            </div>
+                                        </div>
+                                        <!-- END: Metrics -->
+                                    </div>
+				    <script>
+				    // <![CDATA[
+				        // air-datepicker locale setup
+					const localeEs = {
+					    days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+					    daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', ],
+					    daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+					    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+					    monthsShort: ['#{bundle["metrics.shortMonth.jan"]}', '#{bundle["metrics.shortMonth.feb"]}', '#{bundle["metrics.shortMonth.mar"]}', '#{bundle["metrics.shortMonth.apr"]}', '#{bundle["metrics.shortMonth.may"]}', '#{bundle["metrics.shortMonth.jun"]}', '#{bundle["metrics.shortMonth.jul"]}', '#{bundle["metrics.shortMonth.aug"]}', '#{bundle["metrics.shortMonth.sep"]}', '#{bundle["metrics.shortMonth.oct"]}', '#{bundle["metrics.shortMonth.nov"]}', '#{bundle["metrics.shortMonth.dec"]}'],
+					    today: 'Hoy',
+					    clear: 'Cancelar',
+					    dateFormat: '#{bundle["metrics.dateFormat"]}',
+					    timeFormat: 'hh:ii',
+					    firstDay: 1
+					}
+
+				        // Get the full list of country code and names in a map to get the flag icons.
+					function getCountryNameMap () {
+					  let countryNameMap= new Map();
+					  let flagMapList=#{DatasetPage.dataset.getDatasetMetricsByMonth().getCountriesList()};
+					  flagMapList.forEach(function (el, i, array) {
+					    let countries= el.split (";");
+					    let code= countries[0];
+					    let name= countries[1];
+					    countryNameMap.set(code,name);
+				          });
+					  return countryNameMap;
+				        }
+
+				        // Get the current list of country code and names for the selected dates to draw the country table
+					function getCountryMap (arrayOrig, months) {
+					  const resultMap= new Map();
+					  let i= 0;
+					  arrayOrig.forEach (function (el, i, array) {
+					    if (months[i].localeCompare(currentMinDate)>= 0 && months [i].localeCompare(currentMaxDate)<= 0) {
+					      if (el && el.includes (";")) {
+					        countries= el.split (";");
+					        countries.forEach (function (el, i, array) {
+					          if (el) {
+					            const countryCount= el.split (":");
+					            const oldValue= resultMap.get(countryCount[0]);
+					            if (oldValue)
+					              resultMap.set (countryCount [0], oldValue + Number (countryCount [1]));
+				                    else
+					              resultMap.set (countryCount [0], Number (countryCount [1]));
+					          }
+				                });
+					      }
+					      i ++;
+				 	    }
+				          });
+				          return resultMap;
+				        }
+
+                                        // Export data and graphic functions
+					// Get the array of data to be exported
+					function generateDataArray () {
+					    let externalDataArray= [];
+					    let dataArray= [];
+					    dataArray.push ("#{bundle['metrics.date']}","#{bundle['metrics.visits']}","#{bundle['metrics.uniqVisits']}","#{bundle['metrics.downloads']}","#{bundle['metrics.uniqDownloads']}");
+					    externalDataArray.push(dataArray);
+					    monthsList.forEach(function (el, i, array) {
+						dataArray= [];
+					        if (monthsList[i].localeCompare(currentMinDate)>= 0 && monthsList [i].localeCompare(currentMaxDate)<= 0) {
+					           dataArray.push (monthsList[i], totalViews[i], uniqueViews[i], totalDownloads[i], uniqueDownloads[i]);
+					           externalDataArray.push(dataArray);
+					        }
+					    });
+					    return externalDataArray;
+					}
+
+                                        // Export data in xlsx format
+					function exportXLSX () {
+					    var currentDataArray= generateDataArray ();
+					    var wb = XLSX.utils.book_new();
+	                                    var ws = XLSX.utils.aoa_to_sheet(currentDataArray);
+                                            XLSX.utils.book_append_sheet(wb, ws, "e-cienciaDatos Data");
+					      
+					    XLSX.writeFile (wb, 'data.xlsx');
+					}
+
+                                        // Export data in ods format
+					function exportODS () {
+					    var currentDataArray= generateDataArray ();
+					    var wb = XLSX.utils.book_new();
+	                                    var ws = XLSX.utils.aoa_to_sheet(currentDataArray);
+                                            XLSX.utils.book_append_sheet(wb, ws, "e-cienciaDatos Data");
+					    XLSX.writeFile (wb, 'data.ods');
+					}
+
+                                        // Export data in csv format
+					function exportCSV () {
+					    var currentDataArray= generateDataArray ();
+					    var wb = XLSX.utils.book_new();
+	                                    var ws = XLSX.utils.aoa_to_sheet(currentDataArray);
+                                            XLSX.utils.book_append_sheet(wb, ws, "e-cienciaDatos Data");
+					    XLSX.writeFile (wb, 'data.csv');
+					}
+
+                                        // Export the main graphic in svg format
+					function exportSVG () {
+					    //get svg source.
+                                            var svgGraphic = document.getElementById("svgGraphic");
+
+                                            var serializer = new XMLSerializer();
+                                            var source = serializer.serializeToString(svgGraphic);
+
+                                            //add name spaces.
+                                            if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+                                                source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+                                            }
+                                            if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
+                                                source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+                                            }
+
+                                            //add xml declaration
+                                            source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+                                            //convert svg source to URI data scheme.
+                                            var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+
+                                            var blob = new Blob([source], { type: "data:image/svg+xml" });
+                                            var a = document.createElement('a');
+                                            a.download = "graphic.svg";
+                                            a.href = URL.createObjectURL(blob);
+                                            a.dataset.downloadurl = ["data:image/svg+xml", a.download, a.href].join(':');
+                                            a.style.display = "none";
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            document.body.removeChild(a);
+                                            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
+					}
+
+                                        // Export the main graphic in png format
+    					function exportPNG () {
+                                            var svgGraphic = document.getElementById("svgGraphic");
+                                            const svgString = (new XMLSerializer()).serializeToString(svgGraphic);
+                                            const blob = new Blob([svgString], {
+                                              type: 'image/svg+xml;charset=utf-8'
+                                            });
+
+	                                    const DOMURL = window.URL || window.webkitURL || window;
+                                            const url = DOMURL.createObjectURL(blob);
+
+                                            const image = new Image();
+                                            image.width = svgGraphic.width.baseVal.value;
+                                            image.height = svgGraphic.height.baseVal.value;
+                                            image.src = url;
+                                            image.onload = function () {
+                                              const canvas = document.getElementById('canvas');
+                                              canvas.width = image.width;
+                                              canvas.height = image.height;
+
+                                              const ctx = canvas.getContext('2d');
+                                              ctx.fillStyle = "white";
+                                              ctx.fillRect(0,0,canvas.width, canvas.height);
+                                              ctx.drawImage(image, 0, 0);
+                                              DOMURL.revokeObjectURL(url);
+					      document.body.appendChild (canvas);
+
+                                              const imgURI = canvas
+                                                .toDataURL('image/png')
+                                                .replace('image/png', 'image/octet-stream');
+                                              const a = document.createElement('a');
+                                              a.download = 'graphic.png';
+                                              a.target = '_blank';
+                                              a.href = imgURI;
+                                            
+                                              // trigger download button (set `bubbles` to false here or just `a.click()` if you don't care about bubbling)
+                                              a.dispatchEvent(new MouseEvent('click', {
+                                                view: window,
+                                                bubbles: false,
+                                                cancelable: true
+                                              }));
+			                    }
+					}
+
+					// Get the Min or Max dates to be represented in the calendar
+				        function getDate (givenDate, returnMin) {
+				          let returnDateString= givenDate;
+					  const today  = new Date();
+					  const todayMS= today.getTime();
+                                          const givenDateMS= new Date (givenDate).getTime ();
+					  let previousDateMS;
+                                          if (returnMin) {
+				            previousDateMS= todayMS - (377*24*3600*1000);
+					    let previousDate=new Date(previousDateMS);
+					    if (previousDateMS> givenDateMS) {
+					       let returnDate= previousDate;
+			                       let year = returnDate.getFullYear();
+					       let month= returnDate.getMonth() + 1;
+					       if (month > 9)
+				                 returnDateString= ""+year+"-" + month;
+					       else
+				                 returnDateString= ""+year+"-0" + month;
+					     }
+					  } else {
+			                    let year = today.getFullYear();
+					    let month= today.getMonth();
+					    if (month == 0) {
+				                year--;
+					        month= 12;
+					    }
+					    if (month > 9)
+				                returnDateString= ""+year+"-" + month;
+					    else
+				                returnDateString= ""+year+"-0" + month;
+	                                  }
+					  return returnDateString;
+				        }
+                      
+					// Draw the bars for the selected date and type of data
+	                                function updateBar (u, cd, color, count, pos, barClass) {
+			                  u
+			                    .join("rect")
+                                            .attr("class", barClass)
+			                    .transition() // and apply changes to all of them
+                                            .duration(1000)
+			                    .attr("x", d => x(d.month)+(x.bandwidth()/count*pos))
+			                    .attr("y", d => y(cd=="tv"?d.tViews:(cd=="uv"?d.uViews:(cd=="td"?d.tDownloads:(cd=="ud"?d.uDownloads:[])))))
+			                    .attr("width", x.bandwidth()/count)
+			                    .attr("height", d => height - y(cd=="tv"?d.tViews:(cd=="uv"?d.uViews:(cd=="td"?d.tDownloads:(cd=="ud"?d.uDownloads:[])))))
+		                            .attr("stroke", "yellow")
+			                    .attr("fill", color);
+		                        }
+
+					// Draw the Legend with the selected type of data
+	                                function updateLegend (cd, color, pos, svg, currentWidth) {
+                                          svg.append('text')
+                                            .attr('class', 'legendText')
+                                            .attr('x', currentWidth - 140 )
+                                            .attr('y', 20*pos+10)
+                                            .attr('fill', color)
+                                            .text(cd=="tv"?"#{bundle['metrics.visits']}":(cd=="uv"?"#{bundle['metrics.uniqVisits']}":(cd=="td"?"#{bundle['metrics.downloads']}":"#{bundle['metrics.uniqDownloads']}")));
+			                  return ++pos;
+		                        }
+
+                                        // Draw countries table
+                                        function buildTable(tdata) {
+                                          // First, clear out any existing data
+                                          tbody.html("");
+                      
+                                          // Next, loop through each object in the data and append a row and cells for each value in the row
+                                          tdata.forEach((dataRow) => {
+                                          // Append a row to the table body
+                                          let row = tbody.append("tr");
+                                          
+                                          // Loop through each field in the dataRow and add each value as a table cell (td)
+                                          let i= 0;
+                                          Object.values(dataRow).forEach((val) => {
+                                            let cell = row.append("td");
+                                            if (i==0) {
+	                                      countryName= countryNameMap.get (val);
+                                              cell.html("<img alt='" + countryName + "' title='" + countryName + "' src='/resources/flags/"+val+".svg'/>");
+                                            } else
+                                              cell.html(val);
+                                              i ++;
+                                            });
+                                          });
+                                        }
+
+                                        // Update countries table and grapich with the current dates selection and statistic type selection
+	                                function updateChar () {
+			                  downloadsByCountryMap=getCountryMap (downloadsByCountryArray, monthsList);
+			                  viewsByCountryMap=new Map ([...getCountryMap (viewsByCountryArray, monthsList).entries()].sort((a, b) => b[1] - a[1]));
+		                          let countryData=[];
+		                          for (let i of viewsByCountryMap.keys()) {
+		                            countryData.push ({c:i, v: viewsByCountryMap.get(i), u: downloadsByCountryMap.get(i)});
+                                          }
+                                          buildTable (countryData);
+
+	                                  const newWidth= document.getElementById("graphics").offsetWidth - margin.left - margin.right;
+	                                  if (newWidth < 450)
+                                            d3.selectAll('.air-datepicker').style("width","180px");
+	                                  else 
+                                            d3.selectAll('.air-datepicker').style("width","245px");
+			                          
+	                                  document.getElementById("svgGraphic").setAttribute ("width", newWidth + margin.left + margin.right);
+	                                  x.range ([0, newWidth-60]).padding(0.2);
+			    
+	                                  // Update the X axis
+	                                  let tv= document.getElementById("cboxViews").checked;
+	                                  let uv= document.getElementById("cboxUniqViews").checked;
+	                                  let td= document.getElementById("cboxDownloads").checked;
+	                                  let ud= document.getElementById("cboxUniqDownloads").checked;
+                                          x.domain(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.month))
+		                          xAxis.transition().duration(1000).call(d3.axisBottom(x))
+		                            .selectAll("text")
+		                            .attr("transform", "translate(-10,0)rotate(-45)")
+		                            .style("text-anchor", "end");
+  
+		                          let maxV = 0;
+		                          let count= 0;
+		                          if (tv) {
+		                            count ++;
+		                            maxV= d3.max(data.filter((d)=>d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.tViews));
+		                          }
+		                          if (uv) {
+		                            count ++;
+		                            maxV= Math.max(d3.max(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.uViews)), maxV);
+		                          }
+		                          if (td) {
+		                            count ++;
+		                            maxV= Math.max(d3.max(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.tDownloads)), maxV);
+		                          }
+		                          if (ud) {
+		                            count ++;
+		                            maxV= Math.max(d3.max(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.uDownloads)), maxV);
+		                          }
+                                          // Update the Y axis
+                                          y.domain([0, maxV + 1]);
+                                          yAxis.transition().duration(1000).call(d3.axisLeft(y));
+                       
+			                  let pos=0;
+		                          const u_out=svg.selectAll(".bar0")
+			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
+		                          const u2_out=svg.selectAll(".bar1")
+			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
+		                          const u3_out=svg.selectAll(".bar2")
+			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
+		                          const u4_out=svg.selectAll(".bar3")
+			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
+			                  u_out.remove().exit();
+			                  u2_out.remove().exit();
+			                  u3_out.remove().exit();
+			                  u4_out.remove().exit();
+		                          const u=svg.selectAll(".bar0")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
+		                          const u2=svg.selectAll(".bar1")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
+		                          const u3=svg.selectAll(".bar2")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
+		                          const u4=svg.selectAll(".bar3")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
+                                          svg.selectAll('.legendText').remove().exit();
+                                          svg.selectAll('.legend').remove().exit();
+		                          // Bars
+			                  if (tv) {
+			                    updateBar (u, "tv", "#e51a4c", count, pos, "bar0");
+			                    pos ++;
+		                          } else {
+			                    u.remove().exit();
+			                  }
+			                  if (uv) {
+			                    updateBar (u2, "uv", "#bc0f3a", count, pos, "bar1");
+			                    pos ++;
+		                          } else {
+			                    u2.remove().exit();
+			                  }
+			                  if (td) {
+			                    updateBar (u3, "td", "#000", count, pos, "bar2");
+			                    pos ++;
+		                          } else {
+			                    u3.remove().exit();
+			                  }
+			                  if (ud) {
+			                    updateBar (u4, "ud", "#666666", count, pos, "bar3");
+		                          } else {
+			                    u4.remove().exit();
+			                  }	
+                                          svg.append('rect')
+                                            .attr('class', 'legend')
+                                            .attr('x', newWidth - 145)
+                                            .attr('y', -5)
+                                            .attr('width', '150')
+                                            .attr('height', 20*count+5)
+			                    .attr('opacity', '0.9')
+		                            .attr("stroke", "black")
+			                    .attr("fill", "white");
+			                  pos=0;
+			                  if (tv)
+			                    pos= updateLegend ("tv", "#e51a4c", pos, svg, newWidth);
+			                  if (uv)
+			                    pos= updateLegend ("uv", "#bc0f3a", pos, svg, newWidth);
+			                  if (td)
+			                    pos= updateLegend ("td", "black", pos, svg, newWidth);
+			                  if (ud)
+			                    pos= updateLegend ("ud", "#666666", pos, svg, newWidth);
+					} 
+				        
+					// Dates to be represented in the calendar
+				        const initDate=#{DatasetPage.dataset.getDatasetMetricsByMonth().getInitDate()};
+				        const endDate=#{DatasetPage.dataset.getDatasetMetricsByMonth().getEndDate()};
+				        const minYear=initDate.substring(0,4);
+				        const maxYear=endDate.substring(0,4);
+				        const minMonth=initDate.substring(5,7);
+				        const maxMonth=endDate.substring(5,7);
+					// Dates to be represented in the graph ant table
+				        let currentMinDate=getDate (initDate, true);
+				        let currentMaxDate=getDate (endDate, false);
+				        let currentMinYear=currentMinDate.substring(0,4);
+				        let currentMaxYear=currentMaxDate.substring(0,4);
+				        let currentMinMonth=currentMinDate.substring(5,7);
+				        let currentMaxMonth=currentMaxDate.substring(5,7);
+					// Data from the server
+				        let uniqueViews=#{DatasetPage.dataset.getDatasetMetricsByMonth().getViewsUniqueByMonth()};
+				        let uniqueDownloads=#{DatasetPage.dataset.getDatasetMetricsByMonth().getDownloadsUniqueByMonth()};
+				        let totalViews=#{DatasetPage.dataset.getDatasetMetricsByMonth().getViewsTotalByMonth()};
+				        let totalDownloads=#{DatasetPage.dataset.getDatasetMetricsByMonth().getDownloadsTotalByMonth()};
+				        let downloadsByCountryArray=#{DatasetPage.dataset.getDatasetMetricsByMonth().getDownloadsUniqueByMonthAndCountry()};
+				        let viewsByCountryArray=#{DatasetPage.dataset.getDatasetMetricsByMonth().getViewsUniqueByMonthAndCountry()};
+				        let monthsList=#{DatasetPage.dataset.getDatasetMetricsByMonth().getMonthsList()};
+				        let data=[];
+				        let index= 0;
+				        let downloadsByCountryMap=getCountryMap (downloadsByCountryArray, monthsList);
+				        let viewsByCountryMap=new Map ([...getCountryMap (viewsByCountryArray, monthsList).entries()].sort((a, b) => b[1] - a[1]));
+				        monthsList.forEach(function (elemento, indice, array) {
+				          data.push ({month: monthsList [index], tViews: totalViews [index], uViews: uniqueViews [index], tDownloads: totalDownloads [index], uDownloads: uniqueDownloads [index]});
+			                  index ++;
+                                        });
+
+					// Message to be shown when there are no data
+				        const countryNameMap= getCountryNameMap();
+				        if (endDate=="0000") {
+                                          document.getElementById("datasetCitationActionSummaryBlock").style.display="none";
+					  document.getElementById("title-block").innerHTML += "<p><br/><br/><h3>#{bundle['metrics.noData']}</h3></p>";
+					}
+
+					// Draw calendars
+					let dpMin, dpMax;
+					dpMin = new AirDatepicker('#el1', {
+					  locale: localeEs,
+		                          view: 'months',
+                                          minView: 'months',
+					  minDate: initDate + "-01",
+					  maxDate: endDate + "-01",
+                                          onSelect: (date) => {
+					    let monthCal=date.date.getMonth();
+					    monthCal++;
+					    const yearCal=date.date.getFullYear();
+					    let separator="-";
+					    if (monthCal <10)
+					      separator="-0"
+                                            currentMinDate= yearCal+separator+monthCal;
+					    updateChar();
+					    dpMax.update({
+					      minDate: date.date
+					    })
+                                          }
+					})
+
+					dpMax = new AirDatepicker('#el2', {
+					  locale: localeEs,
+		                          view: 'months',
+                                          minView: 'months',
+					  minDate: initDate + "-01",
+					  maxDate: endDate + "-01",
+                                          onSelect: (date) => {
+					    let monthCal=date.date.getMonth();
+					    monthCal++;
+					    const yearCal=date.date.getFullYear();
+					    let separator="-";
+					    if (monthCal <10)
+					      separator="-0"
+                                            currentMaxDate= yearCal+separator+monthCal;
+					    updateChar();
+					          dpMin.update({
+					              maxDate: date.date
+					    })
+                                          }
+				        })
+
+				        // Countries table
+                                        const tbody = d3.select("tbody");
+					    
+				        // set the dimensions and margins of the graph
+	                                const margin = {top: 30, right: 30, bottom: 70, left: 60},
+	                                width = document.getElementById("graphics").offsetWidth - margin.left - margin.right,
+	                                height = 400 - margin.top - margin.bottom;
+
+	                                // append the svg object to the body of the page
+	                                const svg = d3.select("#my_dataviz")
+	                                  .append("svg")
+	                                    .attr("id", "svgGraphic")
+	                                    .attr("width", width + margin.left + margin.right)
+	                                    .attr("height", height + margin.top + margin.bottom)
+	                                  .append("g")
+		                            .attr("transform", "translate("+margin.left + "," + margin.top + ")");
+
+			                // X axis
+	                                const x = d3.scaleBand()
+                                          .domain(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.month))
+	                                  .range([ 0, width ])
+	                                  .padding(0.2);
+	                                const xAxis= svg.append("g")
+	                                  .attr("transform", "translate(0, " + height + ")")
+                      
+	                                // Add Y axis
+	                                const y = d3.scaleLinear()
+	                                  .range([ height, 0]);
+	                                const yAxis= svg.append("g");
+
+                                        window.addEventListener('resize', function(event) {
+	                                  updateChar();
+                                        }, true);      
+	                                updateChar();
+				    // ]]>
+				    </script>
+                                </div>
+                                <!-- END: NEW RESPONSIVE ABOVE FOLD BLOCK -->
+                            </div>
+                        </div>
+                    </p:fragment>
+                    <!-- END Top Button/Citation Blocks -->
+                    <!-- END View infoMode -->
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

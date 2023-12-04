@@ -35,6 +35,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import edu.harvard.iq.dataverse.util.BundleUtil;
 import edu.harvard.iq.dataverse.util.StringUtil;
+import es.consorciomadrono.DatasetMetricsByMonth;
+import es.consorciomadrono.StatisticsByDataset;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -667,7 +672,7 @@ public class Dataset extends DvObjectContainer {
     
     public String getCitationDateFormattedYYYYMMDD() {
         if (getCitationDate() != null){
-                   return new SimpleDateFormat("yyyy-MM-dd").format(getCitationDate()); 
+            return new SimpleDateFormat("yyyy-MM-dd").format(getCitationDate()); 
         }
         return null;
     }
@@ -691,6 +696,12 @@ public class Dataset extends DvObjectContainer {
     public List<DatasetMetrics> getDatasetMetrics() {
         return datasetMetrics;
     }
+
+    // MADROÑO BEGIN
+    public DatasetMetricsByMonth getDatasetMetricsByMonth() {
+        return StatisticsByDataset.getDatasetMetricsByMonth(this);
+    }
+    // MADROÑO END
 
     public void setDatasetMetrics(List<DatasetMetrics> datasetMetrics) {
         this.datasetMetrics = datasetMetrics;
