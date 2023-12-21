@@ -134,7 +134,7 @@
                                                 </ui:fragment>
                                             </div>
                                             <div id="metrics-body">
-					      <label class="stats" id="views"><input type="checkbox" style="accent-color:#e51a4c" checked="true" id="cboxViews" onclick="updateChar ()"/> #{bundle['metrics.visits']}</label>
+					      <label class="stats" id="views"><input type="checkbox" style="accent-color:#e51a4c" id="cboxViews" onclick="updateChar ()"/> #{bundle['metrics.visits']}</label>
                                               <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span><br/>
 					      <label class="stats" id="uniqueViews"><input type="checkbox" style="accent-color:orange" id="cboxUniqViews" onclick="updateChar ()"/> #{bundle['metrics.uniqVisits']}</label>
                                               <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span><br/>
@@ -668,6 +668,12 @@
                                           }
 				        })
 
+                                        const metricsType="#{param['type']}";
+					if (metricsType=="download")
+                                          document.getElementById("cboxDownloads").checked=true;
+					else
+                                          document.getElementById("cboxViews").checked=true;
+					
 				        // Countries table
                                         const tbody = d3.select("tbody");
 					    
@@ -700,7 +706,6 @@
 	                                const y = d3.scaleLinear()
 	                                  .range([ height, 0]);
 	                                const yAxis= svg.append("g");
-
                                         window.addEventListener('resize', function(event) {
 	                                  updateChar();
                                         }, true);      

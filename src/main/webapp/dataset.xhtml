@@ -515,19 +515,21 @@
                                                 </ui:fragment>
                                             </div>
                                             <div id="metrics-body">
-                                                <!-- MADROÑO: Access to full dataset statistics -->
-					      <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}">
+                                              <!-- MADROÑO: Access to full dataset statistics -->
                                               <div class="btn-group btn-group-justified">
-						  <p class="btn btn-default btn-xs">
+					        <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}">
+						  <p style="width:49%" class="btn btn-default btn-xs">
 						    #{bundle['metrics.visits']}<br/>
 						    <spam style="font-size:2em">#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getViewsTotal()}</spam>
 						  </p>
-						  <p class="btn btn-default btn-xs btn-share"> 
+					        </a>
+					        <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}&amp;type=download">
+						  <p style="width:49%" class="btn btn-default btn-xs btn-share">
 						    #{bundle['metrics.downloads']}<br/>
 						    <spam style="font-size:2em">#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getDownloadsTotal()}</spam>
 						  </p>
+					        </a>
                                               </div>
-					      </a>
                                                 <!-- Classic downloads -->
                                                 <!-- <div class="metrics-count-block" jsf:rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
