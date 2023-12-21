@@ -504,7 +504,7 @@
                                         <!-- Metrics -->
                                         <div id="metrics-block">
                                             <div id="metrics-heading">
-                                                #{bundle['metrics.dataset.title']}
+					        <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}">#{bundle['metrics.fullDataset']}</a> <!-- MADROÑO: Access to full dataset statistics -->
                                                 <ui:fragment rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" 
                                                           data-trigger="hover" data-original-title="#{bundle['metrics.dataset.tip.default']}"></span>
@@ -515,30 +515,44 @@
                                                 </ui:fragment>
                                             </div>
                                             <div id="metrics-body">
+                                                <!-- MADROÑO: Access to full dataset statistics -->
+					      <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}">
+                                              <div class="btn-group btn-group-justified">
+						  <p class="btn btn-default btn-xs">
+						    #{bundle['metrics.visits']}<br/>
+						    <spam style="font-size:2em">#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getViewsTotal()}</spam>
+						  </p>
+						  <p class="btn btn-default btn-xs btn-share"> 
+						    #{bundle['metrics.downloads']}<br/>
+						    <spam style="font-size:2em">#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getDownloadsTotal()}</spam>
+						  </p>
+                                              </div>
+					      </a>
                                                 <!-- Classic downloads -->
-                                                <div class="metrics-count-block" jsf:rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
+                                                <!-- <div class="metrics-count-block" jsf:rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
                                                         <f:param value="#{guestbookResponseServiceBean.getCountGuestbookResponsesByDatasetId(DatasetPage.dataset.id)}"/>
                                                     </h:outputFormat>
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.default.tip']}"></span>
-                                                </div>
+						</div>-->
                                                 <!-- Make Data Count views -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
+                                                <!-- <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.views']}">
                                                         <f:param value="#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getViewsTotal()}"/>
                                                     </h:outputFormat>
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span>
-                                                </div>
+						</div>-->
                                                 <!-- Make Data Count downloads -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
+                                                <!-- <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
                                                         <f:param value="#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getDownloadsTotal()}"/>
                                                     </h:outputFormat>
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.makedatacount.tip']}"></span>
-                                                </div>
+						</div>-->
+                                                <!-- END MADROÑO: Access to full dataset statistics -->
                                                 <!-- Make Data Count citations (DOIs only, not Handles) -->
                                                 <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled and settingsWrapper.doiInstallation}">
                                                     <p:commandLink oncomplete="PF('citationsDialog').show();">
@@ -549,9 +563,9 @@
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.citations.tip']}"></span>
                                                 </div>
-						<!-- MADRONO almetric stats-->
+						<!-- MADRONO altmetric stats-->
                                                         <div class='altmetric-embed' data-hide-no-mentions='true' data-badge-type='donut' data-doi="#{DatasetPage.persistentId}"></div>
-                                                <!-- MADRONO almetric stats-->
+                                                <!-- MADRONO altmetric stats-->
                                             </div>
                                         </div>
                                         <!-- END: Metrics -->

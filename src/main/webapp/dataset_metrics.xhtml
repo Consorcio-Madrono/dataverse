@@ -120,13 +120,28 @@
                                     </div>
 
 				    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pull-right margin-bottom"> <!-- Check buttons to select graphics type to be shown -->
-					<label class="stats" id="views"><input type="checkbox" style="accent-color:#e51a4c" checked="true" id="cboxViews" onclick="updateChar ()"/> #{bundle['metrics.visits']}</label><br/>
-					<label class="stats" id="uniqueViews"><input type="checkbox" style="accent-color:#bc0f3a" id="cboxUniqViews" onclick="updateChar ()"/> #{bundle['metrics.uniqVisits']}</label><br/>
-					<label class="stats" id="downloads"><input type="checkbox" style="accent-color:#000" id="cboxDownloads" onclick="updateChar ()"/> #{bundle['metrics.downloads']}</label><br/>
-				        <label class="stats" id="uniqueDownloads"><input type="checkbox" style="accent-color:#666666" id="cboxUniqDownloads" onclick="updateChar ()"/> #{bundle['metrics.uniqDownloads']}</label>
                                         <!-- Metrics -->
                                         <div id="metrics-block">
+                                            <div id="metrics-heading">
+					        #{bundle['metrics.dataset.title']}
+                                                <ui:fragment rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
+                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" 
+                                                          data-trigger="hover" data-original-title="#{bundle['metrics.dataset.tip.default']}"></span>
+                                                </ui:fragment>
+                                                <ui:fragment rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
+                                                    <a tabindex="0" role="button" class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="popover" data-placement="auto top" 
+                                                       data-trigger="focus" data-html="true" data-content="#{bundle['metrics.dataset.tip.makedatacount']}"></a>
+                                                </ui:fragment>
+                                            </div>
                                             <div id="metrics-body">
+					      <label class="stats" id="views"><input type="checkbox" style="accent-color:#e51a4c" checked="true" id="cboxViews" onclick="updateChar ()"/> #{bundle['metrics.visits']}</label>
+                                              <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span><br/>
+					      <label class="stats" id="uniqueViews"><input type="checkbox" style="accent-color:orange" id="cboxUniqViews" onclick="updateChar ()"/> #{bundle['metrics.uniqVisits']}</label>
+                                              <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span><br/>
+					      <label class="stats" id="downloads"><input type="checkbox" style="accent-color:#000" id="cboxDownloads" onclick="updateChar ()"/> #{bundle['metrics.downloads']}</label>
+                                              <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.makedatacount.tip']}"></span><br/>
+				              <label class="stats" id="uniqueDownloads"><input type="checkbox" style="accent-color:#6666FF" id="cboxUniqDownloads" onclick="updateChar ()"/> #{bundle['metrics.uniqDownloads']}</label>
+                                              <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.makedatacount.tip']}"></span>
                                                 <!-- Make Data Count citations (DOIs only, not Handles) -->
                                                 <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled and settingsWrapper.doiInstallation}">
                                                     <p:commandLink oncomplete="PF('citationsDialog').show();">
@@ -137,9 +152,10 @@
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.citations.tip']}"></span>
                                                 </div>
-						<!-- MADRONO almetric stats-->
-                                                <div class='altmetric-embed' data-hide-no-mentions='true' data-badge-type='donut' data-doi="#{DatasetPage.persistentId}"></div> <!-- Altimetric plugin -->
-                                                <!-- MADRONO almetric stats-->
+						<!-- MADRONO altmetric stats-->
+                                                        <div class='altmetric-embed' data-hide-no-mentions='true' data-badge-type='donut' data-doi="#{DatasetPage.persistentId}"></div>
+                                                <!-- MADRONO altmetric stats-->
+  
 						<div id='statsByCountry'> <!-- Table with usage statistics by country-->
                                                    <table class="table table-striped">
                                                      <thead>
@@ -366,19 +382,58 @@
 					  return returnDateString;
 				        }
                       
-					// Draw the bars for the selected date and type of data
-	                                function updateBar (u, cd, color, count, pos, barClass) {
-			                  u
-			                    .join("rect")
-                                            .attr("class", barClass)
-			                    .transition() // and apply changes to all of them
+					// Draw the circles for the selected date and type of data
+	                                function updateBar (u, v, cd, color, count, pos, nClass, tv, uv, td, ud) {
+                                          let tooltipDiv = d3.select("body").append("div")
+                                            .attr("class", "tooltip")
+                                            .style("opacity", 0);
+
+                                          let linej = d3.line()
+                                            .x(d => x(d.month))
+                                            .y(d => y(cd=="tv"?d.tViews:(cd=="uv"?d.uViews:(cd=="td"?d.tDownloads:(cd=="ud"?d.uDownloads:[]))))).curve(d3.curveMonotoneX);
+                                          v
+                                            .transition() // and apply changes to all of them
                                             .duration(1000)
-			                    .attr("x", d => x(d.month)+(x.bandwidth()/count*pos))
-			                    .attr("y", d => y(cd=="tv"?d.tViews:(cd=="uv"?d.uViews:(cd=="td"?d.tDownloads:(cd=="ud"?d.uDownloads:[])))))
-			                    .attr("width", x.bandwidth()/count)
-			                    .attr("height", d => height - y(cd=="tv"?d.tViews:(cd=="uv"?d.uViews:(cd=="td"?d.tDownloads:(cd=="ud"?d.uDownloads:[])))))
-		                            .attr("stroke", "yellow")
-			                    .attr("fill", color);
+                                            .attr("style","display:inline")
+                                            .attr("d", d=> linej(d))
+                                            .attr("stroke", color)
+                                            .attr("stroke-width", "2.0")
+                                            .attr("fill", "none");
+                                          u
+                                            .attr("style","display:inline")
+                                            .attr("class", "cir"+nClass)
+                                            .transition() // and apply changes to all of them
+                                            .duration(1000)
+                                            .style("stroke","transparent")
+                                            .style("stroke-width","35px")
+                                            .attr("cx", d => x(d.month))
+                                            .attr("cy", d => y(cd=="tv"?d.tViews:(cd=="uv"?d.uViews:(cd=="td"?d.tDownloads:(cd=="ud"?d.uDownloads:[])))))
+                                            .attr("r", "4.5")
+                                            .attr("stroke", "yellow")
+                                            .attr("fill", color);
+		                                      
+                                          u.on('mouseover', function(ev, obj) {
+                                            tooltipDiv.transition()
+                                              .duration(200)
+                                              .style("opacity", .9);
+	                                    let text= "";
+                                            if (tv)
+	                                      text="#{bundle['metrics.visits']}: " + obj.tViews + "<br/>";
+                                            if (uv)
+	                                      text+="#{bundle['metrics.uniqVisits']}: " + obj.uViews + "<br/>";
+                                            if (td)
+	                                      text+="#{bundle['metrics.downloads']}: " + obj.tDownloads + "<br/>";
+                                            if (ud)
+	                                      text+="#{bundle['metrics.uniqDownloads']}: " + obj.uDownloads + "<br/>"
+                                            tooltipDiv.html(text)
+                                              .style("left", (ev.pageX) + "px")
+                                              .style("top", (ev.pageY - 28) + "px");
+                                          })
+                                          .on("mouseout", function(obj) {
+                                            tooltipDiv.transition()
+                                              .duration(500)
+                                              .style("opacity", 0);
+                                          });
 		                        }
 
 					// Draw the Legend with the selected type of data
@@ -469,51 +524,47 @@
                                           yAxis.transition().duration(1000).call(d3.axisLeft(y));
                        
 			                  let pos=0;
-		                          const u_out=svg.selectAll(".bar0")
-			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
-		                          const u2_out=svg.selectAll(".bar1")
-			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
-		                          const u3_out=svg.selectAll(".bar2")
-			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
-		                          const u4_out=svg.selectAll(".bar3")
-			                    .data(data.filter((d) => d.month < currentMinDate && d.month > currentMaxDate))
-			                  u_out.remove().exit();
-			                  u2_out.remove().exit();
-			                  u3_out.remove().exit();
-			                  u4_out.remove().exit();
-		                          const u=svg.selectAll(".bar0")
-		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
-		                          const u2=svg.selectAll(".bar1")
-		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
-		                          const u3=svg.selectAll(".bar2")
-		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
-		                          const u4=svg.selectAll(".bar3")
-		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate))
+		                          const u=svg.selectAll(".cir0")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)).join("circle");
+		                          const u2=svg.selectAll(".cir1")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)).join("circle");
+		                          const u3=svg.selectAll(".cir2")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)).join("circle");
+		                          const u4=svg.selectAll(".cir3")
+		                            .data(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)).join("circle");
+                                          v.data([data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)]);
+                                          v2.data([data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)]);
+                                          v3.data([data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)]);
+                                          v4.data([data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate)]);
                                           svg.selectAll('.legendText').remove().exit();
                                           svg.selectAll('.legend').remove().exit();
 		                          // Bars
 			                  if (tv) {
-			                    updateBar (u, "tv", "#e51a4c", count, pos, "bar0");
+			                    updateBar (u, v, "tv", "#e51a4c", count, pos, "0", tv, uv, td, ud);
 			                    pos ++;
 		                          } else {
-			                    u.remove().exit();
+                                            u.attr("style","display:none");
+                                            v.attr("style","display:none");
 			                  }
 			                  if (uv) {
-			                    updateBar (u2, "uv", "#bc0f3a", count, pos, "bar1");
+			                    updateBar (u2, v2, "uv", "orange", count, pos, "1", tv, uv, td, ud);
 			                    pos ++;
 		                          } else {
-			                    u2.remove().exit();
+                                            u2.attr("style","display:none");
+                                            v2.attr("style","display:none");
 			                  }
 			                  if (td) {
-			                    updateBar (u3, "td", "#000", count, pos, "bar2");
+			                    updateBar (u3, v3, "td", "#000", count, pos, "2", tv, uv, td, ud);
 			                    pos ++;
 		                          } else {
-			                    u3.remove().exit();
+                                            u3.attr("style","display:none");
+                                            v3.attr("style","display:none");
 			                  }
 			                  if (ud) {
-			                    updateBar (u4, "ud", "#666666", count, pos, "bar3");
+			                    updateBar (u4, v4, "ud", "#6666FF", count, pos, "3", tv, uv, td, ud);
 		                          } else {
-			                    u4.remove().exit();
+                                            u4.attr("style","display:none");
+                                            v4.attr("style","display:none");
 			                  }	
                                           svg.append('rect')
                                             .attr('class', 'legend')
@@ -528,11 +579,11 @@
 			                  if (tv)
 			                    pos= updateLegend ("tv", "#e51a4c", pos, svg, newWidth);
 			                  if (uv)
-			                    pos= updateLegend ("uv", "#bc0f3a", pos, svg, newWidth);
+			                    pos= updateLegend ("uv", "orange", pos, svg, newWidth);
 			                  if (td)
-			                    pos= updateLegend ("td", "black", pos, svg, newWidth);
+			                    pos= updateLegend ("td", "#000", pos, svg, newWidth);
 			                  if (ud)
-			                    pos= updateLegend ("ud", "#666666", pos, svg, newWidth);
+			                    pos= updateLegend ("ud", "#6666FF", pos, svg, newWidth);
 					} 
 				        
 					// Dates to be represented in the calendar
@@ -633,9 +684,12 @@
 	                                    .attr("height", height + margin.top + margin.bottom)
 	                                  .append("g")
 		                            .attr("transform", "translate("+margin.left + "," + margin.top + ")");
-
+                                        const v=svg.append("path")
+                                        const v2=svg.append("path")
+                                        const v3=svg.append("path")
+                                        const v4=svg.append("path")
 			                // X axis
-	                                const x = d3.scaleBand()
+	                                const x = d3.scalePoint()
                                           .domain(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.month))
 	                                  .range([ 0, width ])
 	                                  .padding(0.2);
