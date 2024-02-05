@@ -140,7 +140,7 @@
                                               <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span><br/>
 					      <label class="stats" id="downloads"><input type="checkbox" style="accent-color:#000" id="cboxDownloads" onclick="updateChar ()"/> #{bundle['metrics.downloads']}</label>
                                               <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.makedatacount.tip']}"></span><br/>
-				              <label class="stats" id="uniqueDownloads"><input type="checkbox" style="accent-color:#6666FF" id="cboxUniqDownloads" onclick="updateChar ()"/> #{bundle['metrics.uniqDownloads']}</label>
+				              <label class="stats" id="uniqueDownloads"><input type="checkbox" style="accent-color:#339" id="cboxUniqDownloads" onclick="updateChar ()"/> #{bundle['metrics.uniqDownloads']}</label>
                                               <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.makedatacount.tip']}"></span>
                                                 <!-- Make Data Count citations (DOIs only, not Handles) -->
                                                 <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled and settingsWrapper.doiInstallation}">
@@ -383,7 +383,7 @@
 				        }
                       
 					// Draw the circles for the selected date and type of data
-	                                function updateBar (u, v, cd, color, count, pos, nClass, tv, uv, td, ud) {
+	                                function updateLines (u, v, cd, color, count, pos, nClass, tv, uv, td, ud) {
                                           let tooltipDiv = d3.select("body").append("div")
                                             .attr("class", "tooltip")
                                             .style("opacity", 0);
@@ -488,7 +488,7 @@
                                             d3.selectAll('.air-datepicker').style("width","245px");
 			                          
 	                                  document.getElementById("svgGraphic").setAttribute ("width", newWidth + margin.left + margin.right);
-	                                  x.range ([0, newWidth-60]).padding(0.2);
+	                                  x.range ([0, newWidth-60]);
 			    
 	                                  // Update the X axis
 	                                  let tv= document.getElementById("cboxViews").checked;
@@ -540,28 +540,28 @@
                                           svg.selectAll('.legend').remove().exit();
 		                          // Bars
 			                  if (tv) {
-			                    updateBar (u, v, "tv", "#e51a4c", count, pos, "0", tv, uv, td, ud);
+			                    updateLines (u, v, "tv", "#e51a4c", count, pos, "0", tv, uv, td, ud);
 			                    pos ++;
 		                          } else {
                                             u.attr("style","display:none");
                                             v.attr("style","display:none");
 			                  }
 			                  if (uv) {
-			                    updateBar (u2, v2, "uv", "orange", count, pos, "1", tv, uv, td, ud);
+			                    updateLines (u2, v2, "uv", "orange", count, pos, "1", tv, uv, td, ud);
 			                    pos ++;
 		                          } else {
                                             u2.attr("style","display:none");
                                             v2.attr("style","display:none");
 			                  }
 			                  if (td) {
-			                    updateBar (u3, v3, "td", "#000", count, pos, "2", tv, uv, td, ud);
+			                    updateLines (u3, v3, "td", "#000", count, pos, "2", tv, uv, td, ud);
 			                    pos ++;
 		                          } else {
                                             u3.attr("style","display:none");
                                             v3.attr("style","display:none");
 			                  }
 			                  if (ud) {
-			                    updateBar (u4, v4, "ud", "#6666FF", count, pos, "3", tv, uv, td, ud);
+			                    updateLines (u4, v4, "ud", "#339", count, pos, "3", tv, uv, td, ud);
 		                          } else {
                                             u4.attr("style","display:none");
                                             v4.attr("style","display:none");
@@ -583,7 +583,7 @@
 			                  if (td)
 			                    pos= updateLegend ("td", "#000", pos, svg, newWidth);
 			                  if (ud)
-			                    pos= updateLegend ("ud", "#6666FF", pos, svg, newWidth);
+			                    pos= updateLegend ("ud", "#339", pos, svg, newWidth);
 					} 
 				        
 					// Dates to be represented in the calendar
@@ -697,8 +697,7 @@
 			                // X axis
 	                                const x = d3.scalePoint()
                                           .domain(data.filter((d) => d.month >= currentMinDate && d.month <= currentMaxDate).map(d => d.month))
-	                                  .range([ 0, width ])
-	                                  .padding(0.2);
+	                                  .range([ 0, width ]);
 	                                const xAxis= svg.append("g")
 	                                  .attr("transform", "translate(0, " + height + ")")
                       
