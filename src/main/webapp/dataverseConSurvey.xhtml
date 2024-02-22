@@ -50,6 +50,7 @@
                     <f:viewAction action="#{SearchIncludeFragment.search()}" />
                 </f:metadata>
 	<!-- INIT MADROÑO: SURVEY -->
+
 	<div id="float_survey">
 	  <div id="survey">
 	    <div class="in">
@@ -62,6 +63,7 @@
 	    </div>
 	  </div>
         </div>
+
 	<!-- END MADROÑO: SURVEY -->
 
                 <h:form id="dataverseForm">
@@ -487,7 +489,7 @@
                                         </p:commandLink>
                                     	<!-- BEGIN: MADROÑO Statistics -->
                                         <h:outputLink type="button" styleClass="text-button btn-statistics bootstrap-button-tooltip"
-						value="https://piwik.consorciomadrono.es/piwik/index.php?module=CoreHome&amp;action=index&amp;idSite=#{dv4}&amp;period=week&amp;date=today&amp;category=Dashboard_Dashboard&amp;subcategory=1" 
+						value="https://piwik.consorciomadrono.es/piwik/index.php?module=idSite=#{dv4}&amp;period=month&amp;date=today&amp;category=Dashboard_Dashboard&amp;subcategory=1" 
 						target="_blank" title="#{bundle['madrono.metrics.short']}">
                                             <span class="glyphicon glyphicon-stats"/> #{bundle['madrono.metrics.short']}
                                         </h:outputLink>
@@ -617,7 +619,7 @@
                             <!-- END: ActionButtonBlock -->
                         </div>
                         <!-- BEGIN: MADROÑO Statistics -->
-			<!--			<div id="widgetIframe"><iframe width="100%" height="280px" src="https://piwik.consorciomadrono.es/piwik/index.php?module=Widgetize&amp;action=iframe&amp;disableLink=1&amp;widget=1&amp;moduleToWidgetize=UserCountryMap&amp;actionToWidgetize=visitorMap&amp;idSite=#{dv4}&amp;period=range&amp;date=2018-01-08,today" scrolling="yes" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>-->
+			<!--			<div id="widgetIframe"><iframe width="100%" height="280px" src="https://piwik.consorciomadrono.es/piwik/index.php?module=Widgetize&amp;action=iframe&amp;disableLink=1&amp;widget=1&amp;moduleToWidgetize=UserCountryMapMadrono&amp;actionToWidgetize=visitorMap&amp;idSite=#{dv4}&amp;period=range&amp;date=2018-01-08,today" scrolling="yes" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>-->
                         <!-- END: MADROÑO Statistics -->
                         <ui:fragment rendered="#{SearchIncludeFragment.filterQueries.size() == 0 and SearchIncludeFragment.mode != SearchIncludeFragment.searchModeString}">
                             <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
@@ -865,6 +867,7 @@
                     $(document).ready(function () {
                         initCarousel();
                         popoverHTML('#{bundle.htmlAllowedTitle}','#{bundle.htmlAllowedTags}');
+ 	    // END MADROÑO statistics
 			// INIT MADROÑO: SURVEY
 			var el_container = document.getElementById("dataverse-header-block"); 
 			el_container.addEventListener("click", hideSurvey, false);
