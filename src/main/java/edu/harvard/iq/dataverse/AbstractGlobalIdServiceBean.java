@@ -1,6 +1,8 @@
 package edu.harvard.iq.dataverse;
 
+import edu.harvard.iq.dataverse.license.License;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
+import edu.harvard.iq.dataverse.util.MarkupChecker;
 import edu.harvard.iq.dataverse.util.SystemConfig;
 import java.io.InputStream;
 
@@ -8,6 +10,7 @@ import javax.ejb.EJB;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -295,6 +298,45 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
 
         String relIdentifiers = generateRelatedIdentifiers(dvObject);
 
+        // MADROÑO BEGIN: Send rights to DataCite
+        StringBuilder rightsElement=  new StringBuilder();
+        Dataset dataset;
+
+        if (dvObject instanceof Dataset) {
+            dataset = (Dataset) dvObject;
+        } else {
+            dataset = (Dataset) dvObject.getOwner();
+        }
+
+        TermsOfUseAndAccess termsOfUse;
+        if (dataset!= null) {
+            termsOfUse= dataset.getLatestVersion().getTermsOfUseAndAccess();
+            if (termsOfUse!= null) {
+                License license= termsOfUse.getLicense();
+                if  (license != null) {
+                    String licenseName= license.getName();
+                    String licenseURI= license.getUri().toString();
+                    if (licenseName!= null) {
+                        if (licenseURI!= null)
+                            rightsElement.append("<rights rightsURI=\"").append(licenseURI).append("\">").append(licenseName).append("</rights>");
+                        else
+                            rightsElement.append("<rights>").append(licenseName).append("</rights>");
+                    }
+                } else if (termsOfUse.getTermsOfAccess()!= null) {
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getTermsOfAccess()))).append("</rights>");
+                } else if (termsOfUse.getTermsOfUse()!= null) {
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getTermsOfUse()))).append("</rights>");
+                } else if (termsOfUse.getConditions()!= null) {
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getConditions()))).append("</rights>");
+                } else if (termsOfUse.getRestrictions()!= null) {
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getRestrictions()))).append("</rights>");
+                }
+            }
+        }
+        xmlMetadata = xmlMetadata.replace("${MADROÑO_rightsList}", rightsElement);
+        // MADROÑO END: Send rights to DataCite
+        
+     
         xmlMetadata = xmlMetadata.replace("${relatedIdentifiers}", relIdentifiers);
 
         xmlMetadata = xmlMetadata.replace("{$contributors}", contributorsElement.toString());
