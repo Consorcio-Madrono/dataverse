@@ -548,14 +548,15 @@ class DataCiteMetadataTemplate {
                     else
                         rightsElement.append("<rights>").append(licenseName).append("</rights>");
                 }
-            } else if (getTermsOfUse().getTermsOfAccess()!= null) {
-                rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getTermsOfAccess()))).append("</rights>");
-            } else if (getTermsOfUse().getTermsOfUse()!= null) {
-                rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getTermsOfUse()))).append("</rights>");
-            } else if (getTermsOfUse().getConditions()!= null) {
-                rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getConditions()))).append("</rights>");
-            } else if (getTermsOfUse().getRestrictions()!= null) {
-                rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getRestrictions()))).append("</rights>");
+            } else {
+                if (getTermsOfUse().getTermsOfAccess()!= null)
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getTermsOfAccess()))).append("</rights>");
+                if (getTermsOfUse().getTermsOfUse()!= null)
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getTermsOfUse()))).append("</rights>");
+                if (getTermsOfUse().getConditions()!= null)
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getConditions()))).append("</rights>");
+                if (getTermsOfUse().getRestrictions()!= null)
+                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getRestrictions()))).append("</rights>");
             }
         }
         xmlMetadata = xmlMetadata.replace("${MADROÑO_rightsList}", rightsElement.toString());

@@ -322,14 +322,15 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
                         else
                             rightsElement.append("<rights>").append(licenseName).append("</rights>");
                     }
-                } else if (termsOfUse.getTermsOfAccess()!= null) {
-                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getTermsOfAccess()))).append("</rights>");
-                } else if (termsOfUse.getTermsOfUse()!= null) {
-                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getTermsOfUse()))).append("</rights>");
-                } else if (termsOfUse.getConditions()!= null) {
-                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getConditions()))).append("</rights>");
-                } else if (termsOfUse.getRestrictions()!= null) {
-                    rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getRestrictions()))).append("</rights>");
+                } else {
+                    if (termsOfUse.getTermsOfAccess()!= null)
+                        rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getTermsOfAccess()))).append("</rights>");
+                    if (termsOfUse.getTermsOfUse()!= null)
+                        rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getTermsOfUse()))).append("</rights>");
+                    if (termsOfUse.getConditions()!= null)
+                        rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getConditions()))).append("</rights>");
+                    if (termsOfUse.getRestrictions()!= null)
+                        rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(termsOfUse.getRestrictions()))).append("</rights>");
                 }
             }
         }
