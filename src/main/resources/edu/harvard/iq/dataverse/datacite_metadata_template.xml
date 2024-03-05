@@ -14,8 +14,7 @@
     <descriptions>
         <description descriptionType="Abstract">${description}</description>
     </descriptions>
+    <subjects>${MADROÑO_subjectsList}</subjects>
     <contributors>{$contributors}</contributors>
     <rightsList>${MADROÑO_rightsList}</rightsList>
-    <subjectsList>${MADROÑO_subjectsList}</subjectsList>
-    <language>${MADROÑO_language}</language>
 </resource>
