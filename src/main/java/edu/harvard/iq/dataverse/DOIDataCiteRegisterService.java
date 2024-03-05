@@ -175,7 +175,11 @@ public class DOIDataCiteRegisterService {
         metadataTemplate.setIdentifier(identifier.substring(identifier.indexOf(':') + 1));
         metadataTemplate.setCreators(Util.getListFromStr(metadata.get("datacite.creator")));
         metadataTemplate.setAuthors(dataset.getLatestVersion().getDatasetAuthors());
-        metadataTemplate.setTermsOfUse(dataset.getLatestVersion().getTermsOfUseAndAccess()); // Madroño. Send rights to DataCite
+        // MADROÑO BEGIN. Send rights, subjects and languages to DataCite
+        metadataTemplate.setSubjects(dataset.getLatestVersion().getDatasetSubjects());
+        metadataTemplate.setTermsOfUse(dataset.getLatestVersion().getTermsOfUseAndAccess());
+        metadataTemplate.setLanguages(dataset.getLatestVersion().getLanguages());
+        // MADROÑO END. Send rights, subjects and languages to DataCite
         if (dvObject.isInstanceofDataset()) {
             //While getDescriptionPlainText strips < and > from HTML, it leaves '&' (at least so we need to xml escape as well
             String description = StringEscapeUtils.escapeXml10(dataset.getLatestVersion().getDescriptionPlainText());
@@ -392,7 +396,12 @@ class DataCiteMetadataTemplate {
     private String publisherYear;
     private List<DatasetAuthor> authors;
     private String description;
-    private TermsOfUseAndAccess termsOfUse; // Madroño. Send rights to DataCite
+    // MADROÑO BEGIN. Send rights, subjects and languages to DataCite
+    private List <String> languages;
+    private List <String> subjects;
+    private TermsOfUseAndAccess termsOfUse;
+    // MADROÑO END. Send rights, subjects and languages to DataCite
+
     private List<String[]> contacts;
     private List<String[]> producers;
 
@@ -535,8 +544,21 @@ class DataCiteMetadataTemplate {
 
         String relIdentifiers = generateRelatedIdentifiers(dvObject);
 
-        // MADROÑO BEGIN: Send rights to DataCite
-        StringBuilder rightsElement=  new StringBuilder();
+        // MADROÑO BEGIN. Send rights, subject and language to DataCite
+        StringBuilder subjectsElements= new StringBuilder();
+        List <String> subjectElementList= getSubjects();
+        for (String subject: subjectElementList) {
+            subjectsElements.append("<subject>").append(subject).append("</subject>");
+        }
+        
+        StringBuilder languageElements= new StringBuilder();
+        List <String> languageElementList= getLanguages();
+        if (languageElementList!= null && !languageElementList.isEmpty())
+            languageElements.append(languageElementList.get(0));
+        else 
+            languageElements.append("Not applicable");
+        
+        StringBuilder rightsElement= new StringBuilder();
         if (getTermsOfUse()!= null) {
             License license= getTermsOfUse().getLicense();
             if  (license != null) {
@@ -559,6 +581,8 @@ class DataCiteMetadataTemplate {
                     rightsElement.append("<rights>").append(StringEscapeUtils.escapeXml10(MarkupChecker.stripAllTags(getTermsOfUse().getRestrictions()))).append("</rights>");
             }
         }
+        xmlMetadata = xmlMetadata.replace("${MADROÑO_subjectsList}", subjectsElements.toString());
+        xmlMetadata = xmlMetadata.replace("${MADROÑO_language}", languageElements.toString());
         xmlMetadata = xmlMetadata.replace("${MADROÑO_rightsList}", rightsElement.toString());
         // MADROÑO END: Send rights to DataCite
         
@@ -662,9 +686,31 @@ class DataCiteMetadataTemplate {
         return publisher;
     }
 
-    public TermsOfUseAndAccess getTermsOfUse() {  // Madroño. Send rights to DataCite
+    // MADROÑO BEGIN. Send rights, subject and language to DataCite
+    public TermsOfUseAndAccess getTermsOfUse() {
         return termsOfUse;
     }
+
+    public List <String> getLanguages() {
+        return languages;
+    }
+
+    public List <String> getSubjects() {
+        return subjects;
+    }
+
+    void setTermsOfUse(TermsOfUseAndAccess termsOfUse) {
+        this.termsOfUse= termsOfUse;
+    }
+
+    void setSubjects (List <String> subjects) {
+        this.subjects= subjects;
+    }
+
+    void setLanguages (List <String> languages) {
+        this.languages= languages;
+    }
+    // MADROÑO END. Send rights, subject and language to DataCite
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
@@ -676,10 +722,6 @@ class DataCiteMetadataTemplate {
 
     public void setPublisherYear(String publisherYear) {
         this.publisherYear = publisherYear;
-    }
-
-    void setTermsOfUse(TermsOfUseAndAccess termsOfUse) { // Madroño. Send rights to DataCite
-        this.termsOfUse= termsOfUse;
     }
 }
 

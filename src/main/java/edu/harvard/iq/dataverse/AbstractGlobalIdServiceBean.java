@@ -299,8 +299,8 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
         String relIdentifiers = generateRelatedIdentifiers(dvObject);
 
         // MADROÑO BEGIN: Send rights to DataCite
-        StringBuilder rightsElement=  new StringBuilder();
         Dataset dataset;
+        DatasetVersion dvVersion;
 
         if (dvObject instanceof Dataset) {
             dataset = (Dataset) dvObject;
@@ -309,7 +309,23 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
         }
 
         TermsOfUseAndAccess termsOfUse;
+        StringBuilder subjectsElements= new StringBuilder();
+        StringBuilder languageElements= new StringBuilder();
+        StringBuilder rightsElement=  new StringBuilder();
         if (dataset!= null) {
+            dvVersion= dataset.getLatestVersion();
+
+            List <String> subjectElementList= dvVersion.getDatasetSubjects();
+            for (String subject: subjectElementList) {
+                subjectsElements.append("<subject>").append(subject).append("</subject>");
+            }
+
+            List <String> languageElementList= dvVersion.getLanguages();
+            if (languageElementList!= null && !languageElementList.isEmpty())
+                languageElements.append(languageElementList.get(0));
+            else 
+                languageElements.append("Not applicable");
+        
             termsOfUse= dataset.getLatestVersion().getTermsOfUseAndAccess();
             if (termsOfUse!= null) {
                 License license= termsOfUse.getLicense();
@@ -334,7 +350,9 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
                 }
             }
         }
-        xmlMetadata = xmlMetadata.replace("${MADROÑO_rightsList}", rightsElement);
+        xmlMetadata = xmlMetadata.replace("${MADROÑO_subjectsList}", subjectsElements.toString());
+        xmlMetadata = xmlMetadata.replace("${MADROÑO_language}", languageElements.toString());
+        xmlMetadata = xmlMetadata.replace("${MADROÑO_rightsList}", rightsElement.toString());
         // MADROÑO END: Send rights to DataCite
         
      

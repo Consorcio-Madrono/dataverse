@@ -206,7 +206,7 @@ public class DublinCoreExportUtil {
             }
         }
         // MADROÑO BEGIN
-        if (restrict && closed) {
+        if (restrict) {
             writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/restrictedAccess"); 
         } else if (!restrict && closed) {
             writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/closedAccess"); 
