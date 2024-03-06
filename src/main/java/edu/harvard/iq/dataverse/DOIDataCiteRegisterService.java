@@ -176,7 +176,7 @@ public class DOIDataCiteRegisterService {
         metadataTemplate.setCreators(Util.getListFromStr(metadata.get("datacite.creator")));
         metadataTemplate.setAuthors(dataset.getLatestVersion().getDatasetAuthors());
         // MADROÑO BEGIN. Send rights, subjects and languages to DataCite
-        metadataTemplate.setSubjects(dataset.getLatestVersion().getDatasetSubjects());
+        metadataTemplate.setSubjects(dataset.getLatestVersion().getOrigDatasetSubjects());
         metadataTemplate.setTermsOfUse(dataset.getLatestVersion().getTermsOfUseAndAccess());
         metadataTemplate.setLanguages(dataset.getLatestVersion().getOrigLanguages());
         // MADROÑO END. Send rights, subjects and languages to DataCite

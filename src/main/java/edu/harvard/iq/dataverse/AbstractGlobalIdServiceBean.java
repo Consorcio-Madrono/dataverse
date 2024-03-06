@@ -316,7 +316,7 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
         if (dataset!= null) {
             dvVersion= dataset.getLatestVersion();
 
-            List <String> subjectElementList= dvVersion.getDatasetSubjects();
+            List <String> subjectElementList= dvVersion.getOrigDatasetSubjects();
             for (String subject: subjectElementList) {
                 subjectsElements.append("<subject>").append(subject).append("</subject>");
             }
