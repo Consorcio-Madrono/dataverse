@@ -1,5 +1,6 @@
 package edu.harvard.iq.dataverse;
 
+import static edu.harvard.iq.dataverse.DataCiteMetadataTemplate.getLanguageCode;
 import edu.harvard.iq.dataverse.license.License;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
 import edu.harvard.iq.dataverse.util.MarkupChecker;
@@ -320,11 +321,12 @@ public abstract class AbstractGlobalIdServiceBean implements GlobalIdServiceBean
                 subjectsElements.append("<subject>").append(subject).append("</subject>");
             }
 
-            List <String> languageElementList= dvVersion.getLanguages();
-            if (languageElementList!= null && !languageElementList.isEmpty())
-                languageElements.append(languageElementList.get(0));
-            else 
-                languageElements.append("Not applicable");
+            List <String> languageElementList= dvVersion.getOrigLanguages();
+            if (languageElementList!= null && !languageElementList.isEmpty())  {
+            String languageName= getLanguageCode(languageElementList.get(0));
+            if (languageName!= null && !languageName.equals("null"))
+                languageElements.append("<language>").append(languageName).append("</language>");
+            }
         
             termsOfUse= dataset.getLatestVersion().getTermsOfUseAndAccess();
             if (termsOfUse!= null) {

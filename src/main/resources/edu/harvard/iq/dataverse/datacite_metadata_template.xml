@@ -16,5 +16,6 @@
     </descriptions>
     <subjects>${MADROÑO_subjectsList}</subjects>
     <contributors>{$contributors}</contributors>
+    ${MADROÑO_language}
     <rightsList>${MADROÑO_rightsList}</rightsList>
 </resource>

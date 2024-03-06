@@ -1059,6 +1059,34 @@ public class DatasetVersion implements Serializable {
         }
         return languages;
     }
+
+   // MADROÑO BEGIN. Send rights, subjects and languages to DataCite. We need the original English language name to transform it to the ISO 639-1 code
+    /**
+     * @return List of Strings containing the version's language entries
+     */
+    public List<String> getOrigLanguages() {
+        List<String> languages = new ArrayList<>();
+        for (DatasetField dsf : this.getDatasetFields()) {
+            if (dsf.getDatasetFieldType().getName().equals(DatasetFieldConstant.language)) {
+                languages.addAll(dsf.getValues("en"));
+            }
+        }
+        return languages;
+    }
+    
+    public List<String> getOrigDatasetSubjects() {
+        List<String> subjects = new ArrayList<>();
+        for (DatasetField dsf : this.getDatasetFields()) {
+            if (dsf.getDatasetFieldType().getName().equals(DatasetFieldConstant.subject)) {
+                subjects.addAll(dsf.getValues("en"));
+            }
+        }
+        return subjects;
+    }
+    
+
+    // MADROÑO END. Send rights, subjects and languages to DataCite
+
     
         // TODO: consider calling the newer getSpatialCoverages method below with the commaSeparated boolean set to true.
     public List<String> getSpatialCoverages() {
