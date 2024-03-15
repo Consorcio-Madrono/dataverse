@@ -1,6 +1,6 @@
 package edu.harvard.iq.dataverse;
 
-import static edu.harvard.iq.dataverse.DataCiteMetadataTemplate.getLanguageCode;
+import static edu.harvard.iq.dataverse.DOIDataCiteRegisterService.getLanguageCode;
 import edu.harvard.iq.dataverse.license.License;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
 import edu.harvard.iq.dataverse.util.MarkupChecker;

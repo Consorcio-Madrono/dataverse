@@ -6,6 +6,7 @@
 package edu.harvard.iq.dataverse.export.dublincore;
 
 import com.google.gson.Gson;
+import static edu.harvard.iq.dataverse.DOIDataCiteRegisterService.getLanguageCode;
 import edu.harvard.iq.dataverse.DatasetFieldConstant;
 import edu.harvard.iq.dataverse.GlobalId;
 import edu.harvard.iq.dataverse.api.dto.DatasetDTO;
@@ -16,6 +17,7 @@ import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
 import edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean;
 import edu.harvard.iq.dataverse.util.json.JsonUtil;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,7 +57,8 @@ public class DublinCoreExportUtil {
     protected static HashMap <String, String> recolectaAcronymsMap;
     protected static HashSet <String> recolectaAcronymsSet;
 
-        
+    protected static Map<String, String> langIsoCodes; // Madroño. Get the lang codes in the iso format
+
     public static void datasetJson2dublincore(JsonObject datasetDtoAsJson, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
         logger.fine(JsonUtil.prettyPrint(datasetDtoAsJson.toString()));
         Gson gson = new Gson();
@@ -175,9 +178,14 @@ public class DublinCoreExportUtil {
         writeAbstractElement(xmlw, version, dcFlavor); // Description
         writeSubjectElement(xmlw, version, dcFlavor);   //Subjects and Key Words
         
-        writeFullElementList(xmlw, dcFlavor+":"+"language", dto2PrimitiveList(version, DatasetFieldConstant.language));        
+        // MADROÑO BEGIN 
+        List<String> languages= dto2PrimitiveList(version, DatasetFieldConstant.language);
         
-        writeFullElement(xmlw, dcFlavor+":"+"date", dto2Primitive(version, DatasetFieldConstant.productionDate));  
+        List<String> isoLanguages= getIsoLanguages (languages); 
+        writeFullElementList(xmlw, dcFlavor+":"+"language", isoLanguages);
+        
+        writeFullElement(xmlw, dcFlavor+":"+"date", dto2Primitive(version, DatasetFieldConstant.dateOfDeposit)); // MADROÑO. For us, the deposit date is more important one
+        // MADROÑO END
         
         writeFullElement(xmlw, dcFlavor+":"+"contributor", dto2Primitive(version, DatasetFieldConstant.depositor));  
         
@@ -423,6 +431,27 @@ public class DublinCoreExportUtil {
             }
         }
     }
+    
+    private static List <String> getIsoLanguages (List <String> origLanguages) {
+        List <String> isoLanguagesList= new ArrayList <>();
+        if (origLanguages== null) {
+                isoLanguagesList.add ("und");
+        } else{ 
+            for (String origLanguage: origLanguages) {
+                isoLanguagesList.add(getLangIsoCode (origLanguage));
+            }
+            if (isoLanguagesList.isEmpty())
+                isoLanguagesList.add ("und");
+        }
+        return isoLanguagesList;
+    }
+        
+    public static String getLangIsoCode (String langName) {
+        String isoCode= getLanguageCode (langName);
+        if (isoCode== null || isoCode.equals("null"))
+            isoCode="mis";
+        return isoCode;
+    }
     // MADROÑO END
 
 
@@ -561,7 +590,6 @@ public class DublinCoreExportUtil {
     }
     
     private static List<String> dto2PrimitiveList(DatasetVersionDTO datasetVersionDTO, String datasetFieldTypeName) {
-//                    logger.log(Level.SEVERE, "Juan:SEVERE " + datasetFieldTypeName);
         for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
             MetadataBlockDTO value = entry.getValue();
             for (FieldDTO fieldDTO : value.getFields()) {
@@ -575,13 +603,16 @@ public class DublinCoreExportUtil {
     
     private static void writeFullElementList(XMLStreamWriter xmlw, String name, List<String> values) throws XMLStreamException {
         //For the simplest Elements we can 
-        ///MADROÑO BEGIN
+        // MADROÑO BEGIN
         if (name.equals("dc:type")) {
                 xmlw.writeStartElement(name);
                 xmlw.writeCharacters("info:eu-repo/semantics/dataset");
                 xmlw.writeEndElement(); // labl
-        }
-        ///MADROÑO END
+                xmlw.writeStartElement(name);
+                xmlw.writeCharacters("info:eu-repo/semantics/publishedVersion");
+                xmlw.writeEndElement(); // labl
+        } else // RECOLECTA and LaReferencia compatibility. Only set the primary type 
+        // MADROÑO END
         if (values != null && !values.isEmpty()) {
             for (String value : values) {
                 xmlw.writeStartElement(name);
@@ -589,7 +620,7 @@ public class DublinCoreExportUtil {
                 xmlw.writeEndElement(); // labl
             }
         }
-//                          logger.log(Level.SEVERE, "Juan:SEVERE writeFullElementList" + name);
+        
     }
     
     
