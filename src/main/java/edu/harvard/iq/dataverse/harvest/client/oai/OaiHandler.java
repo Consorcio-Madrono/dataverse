@@ -17,6 +17,7 @@ import com.lyncode.xoai.serviceprovider.exceptions.InvalidOAIResponse;
 import com.lyncode.xoai.serviceprovider.exceptions.NoSetHierarchyException;
 import com.lyncode.xoai.serviceprovider.model.Context;
 import com.lyncode.xoai.serviceprovider.parameters.ListIdentifiersParameters;
+import edu.harvard.iq.dataverse.export.openaire.OpenAireExportUtil;
 import edu.harvard.iq.dataverse.harvest.client.FastGetRecord;
 import edu.harvard.iq.dataverse.harvest.client.HarvestingClient;
 import java.io.IOException;
@@ -32,13 +33,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
  * @author Leonid Andreev
  */
 public class OaiHandler implements Serializable {
-    
+    private static final Logger logger = Logger.getLogger(OaiHandler.class.getCanonicalName());
+
     public OaiHandler() {
         
     }
@@ -222,10 +227,15 @@ public class OaiHandler implements Serializable {
     
     public Iterator<Header> runListIdentifiers() throws OaiHandlerException {
         ListIdentifiersParameters parameters = buildListIdentifiersParams();
+        String trace= "valid:" + parameters.areValid() + "; prefix:" + parameters.getMetadataPrefix() + 
+                    "; set:" + parameters.getSetSpec()+ "; from:" + parameters.getFrom() + "; until:" + parameters.getUntil() + "; granularity:" + parameters.getGranularity();
         try {
+            logger.log(Level.ALL, trace);
+            System.err.println (trace);
             return getServiceProvider().listIdentifiers(parameters);
         } catch (BadArgumentException bae) {
-            throw new OaiHandlerException("BadArgumentException thrown when attempted to run ListIdentifiers");
+            bae.printStackTrace();
+            throw new OaiHandlerException(trace + " BadArgumentException thrown when attempted to run ListIdentifiers");
         }
                 
     }
@@ -260,9 +270,10 @@ public class OaiHandler implements Serializable {
         }
         mip.withMetadataPrefix(metadataPrefix);
 
+/*      MADROÑO, We need to do always complete havester
         if (this.fromDate != null) {
             mip.withFrom(this.fromDate);
-        }
+        }*/
 
         if (!StringUtils.isEmpty(this.setName)) {
             mip.withSetSpec(this.setName);
