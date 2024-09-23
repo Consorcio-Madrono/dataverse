@@ -12,6 +12,7 @@ import edu.harvard.iq.dataverse.GlobalId;
 import edu.harvard.iq.dataverse.api.dto.DatasetDTO;
 import edu.harvard.iq.dataverse.api.dto.DatasetVersionDTO;
 import edu.harvard.iq.dataverse.api.dto.FieldDTO;
+import edu.harvard.iq.dataverse.api.dto.FileDTO;
 import edu.harvard.iq.dataverse.api.dto.LicenseDTO;
 import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
 import edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean;
@@ -185,6 +186,12 @@ public class DublinCoreExportUtil {
         writeFullElementList(xmlw, dcFlavor+":"+"language", isoLanguages);
         
         writeFullElement(xmlw, dcFlavor+":"+"date", dto2Primitive(version, DatasetFieldConstant.dateOfDeposit)); // MADROÑO. For us, the deposit date is more important one
+            List <FileDTO> files= version.getFiles();
+        for (FileDTO file: files) {
+            String format= file.getDataFile().getContentType();
+            writeFullElement(xmlw, dcFlavor+":"+"format", format); 
+        }
+
         // MADROÑO END
         
         writeFullElement(xmlw, dcFlavor+":"+"contributor", dto2Primitive(version, DatasetFieldConstant.depositor));  
