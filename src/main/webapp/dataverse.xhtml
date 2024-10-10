@@ -625,13 +625,7 @@
                             <o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
                             <div class="row margin-bottom" jsf:rendered="#{!empty DataversePage.dataverse.description and !widgetWrapper.widgetView}">
                                 <div id="dataverseDesc" class="col-xs-12">
-                                    <h:outputText value="#{MarkupChecker:sanitizeBasicHTML(DataversePage.dataverse.description)}" escape="false"/>
-                                    <!-- MADROÑO: Add link to affiliation home page (www.consorciomadrono.es) -->
-                                    <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
-                                    <h:outputLink value="http://#{dataverse.affiliation}" target="_blank" rendered="#{!empty dataverse.affiliation}">
-                                        <h:outputText value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
-                                    </h:outputLink>
-				    
+                                      <h:outputText value="#{MarkupChecker:sanitizeBasicHTML(DataversePage.dataverse.description)}" escape="false"/> 
                                 </div>
                             </div>
                             <!-- Featured Dataverses Carousel -->

@@ -8,6 +8,7 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
 }
+
 #statsByCountry {
   margin-top: 10px;
 }
@@ -138,12 +139,18 @@ div span.glyphicon-question-sign.tooltip-icon, tr span.glyphicon-question-sign.t
  margin-left:auto
 }
 @media (min-width:768px) {
+  body #dataverseHeader {
+    margin-top: 70px;
+  }
  #survey .in {
   width:750px
   top: 0;
  }
 }
 @media (min-width:992px) {
+  body #dataverseHeader {
+    margin-top: 20px;
+  }
  #survey .in {
   width:970px
  }
@@ -199,6 +206,9 @@ form.lang {
 
 body .text-danger {
   color: orange;
+}
+body footer {
+  padding-bottom: 150px;
 }
 #dvfooter {
   display: none;

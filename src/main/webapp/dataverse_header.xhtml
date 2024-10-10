@@ -90,13 +90,13 @@
                                 #{bundle['madrono.metrics.short']}
                             </h:outputLink>
                         </li>
- <!--
                         <li>
                             <h:outputLink value="/survey.xhtml">
                                 #{bundle['madrono.survey.header']}
                             </h:outputLink>
                         </li>
 
+ <!--
                         <li>
                             <h:outputLink value="/readme.xhtml">
                                 #{bundle['readmeTxt.title']}
@@ -113,7 +113,7 @@
                                     </h:outputLink>
                                 </li>
                                 <li>
-				    <h:outputLink value="http://www.consorciomadrono.es/docs/guia_gestion_datos_investigacion_2022-01-04.pdf" target="_blank">
+				    <h:outputLink value="http://www.consorciomadrono.es/investigam/depositar-datos/" target="_blank">
                                         <h:outputText value="#{bundle['madrono.dataDeposit']}"/>
                                     </h:outputLink>
                                 </li>
@@ -298,13 +298,8 @@
                     <h:outputText styleClass="dataverseHeaderDataverseName" value="#{bundle.newDataverse}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderName" jsf:rendered="#{editModeDataverse != 'CREATE'}">
-                    <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : 'e51a4c'};">#{dataverse.name}</a>
-                    <!-- MADROÑO: Make the affiliation linkable -->
-                    <h:outputText value=" | " styleClass="breadcrumbCarrot" rendered="#{!status.first}"/>
-                    <h:outputLink value="http://#{dataverse.affiliation}" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : ''};" target="_blank" rendered="#{!empty dataverse.affiliation}">
-                      <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '888888'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
-                    </h:outputLink>
-
+                    <a href="/dataverse/#{dataverse.alias}" class="dataverseHeaderDataverseName" style="color:##{!empty dataverse.dataverseTheme.linkColor ? dataverse.dataverseTheme.linkColor : '428bca'};"><h1>#{dataverse.name}</h1></a>
+                    <h:outputText style="color:##{!empty dataverse.dataverseTheme.textColor ? dataverse.dataverseTheme.textColor : '666666'};" value=" (#{dataverse.affiliation})" rendered="#{!empty dataverse.affiliation}"/>
                     <h:outputText value="#{bundle.unpublished}" styleClass="label label-warning label-unpublished" rendered="#{!dataverse.released}"/>
                 </div>
                 <div class="dataverseHeaderCell dataverseHeaderTagline" jsf:rendered="#{!empty dataverse.dataverseTheme.tagline and empty dataverse.dataverseTheme.linkUrl}">
