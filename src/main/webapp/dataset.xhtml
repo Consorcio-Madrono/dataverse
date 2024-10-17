@@ -297,7 +297,8 @@
                                             <!-- MADROÑO BEGIN -->
                                             <c:if test="#{!DatasetPage.dataset.released}">
                                                 <div>
-                                                    <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense">#{bundle['madrono.grantedLicense']}</label>
+						    <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
+
                                                 </div>
                                             </c:if>
                                             <!-- MADROÑO END -->
