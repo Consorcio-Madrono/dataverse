@@ -658,7 +658,7 @@
                                         data-clipboard-action="copy"
                                         data-clipboard-text="#{result.fileChecksumValue}" title="#{bundle['file.metaData.checksum.copy']}&lt;br/&gt;#{result.fileChecksumValue}"></span>
                             </span>
-                            <!-- if tabular data file, display number of variables and observations, and unf -->
+                            <!-- if tabular data file, display number of variables and observations, and unf  MADROÑO. Do not show file UNF
                             <span class="unf-block" jsf:rendered="#{!empty SearchIncludeFragment.tabularDataDisplayInfo(result.entity)}">
                                 <h:outputText value=" - #{SearchIncludeFragment.tabularDataDisplayInfo(result.entity)}"/>
                                 <h:outputText value=" - " rendered="#{!empty SearchIncludeFragment.tabularDataUnfDisplay(result.entity)}"/>
@@ -671,7 +671,7 @@
                                         data-toggle="tooltip" data-placement="top" data-html="true"
                                         data-clipboard-action="copy"
                                         data-clipboard-text="#{SearchIncludeFragment.tabularDataUnfDisplay(result.entity)}" title="#{bundle['file.metaData.checksum.copy']}&lt;br/&gt;#{SearchIncludeFragment.tabularDataUnfDisplay(result.entity)}"></span>
-                            </span>
+                            </span> -->
                         </div>
 
                         <div class="file-tags-block" jsf:rendered="#{(!empty result.fileCategories) or (!empty result.tabularDataTags)}">
