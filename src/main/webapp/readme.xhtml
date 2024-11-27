@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="dataverseId" value="#{dataverseServiceBean.findRootDataverse().id}"/>
+            <f:viewAction action="#{dataverseHeaderFragment.initBreadcrumbs(dataverseServiceBean.findRootDataverse())}"/>
+            <f:viewAction action="#{dataverseHeaderFragment.addBreadcrumb('/readme.xhtml?dataverseId='.concat(dataverse.id), bundle['dashboard.title'])}"/>
+            <f:viewAction action="#{dataverseHeaderFragment.addBreadcrumb(bundle['readmeTxt.title'])}"/>
+        </f:metadata>
+        <ui:composition template="/dataverse_template.xhtml">
+            <ui:param name="pageTitle" value="#{bundle['readmeTxt.title']}"/>
+            <ui:param name="showDataverseHeader" value="false"/>
+            <ui:define name="body">
+
+
+                    <p:fragment id="emptyClientsTable" rendered="#{empty harvestingClientsPage.configuredHarvestingClients}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="no-clients-message" class="panel panel-default">
+                                    <div class="panel-body">
+                                        <span class="help-block h3">#{bundle['readmeTxt.title']}</span>
+                                        <p><h:outputText value="#{bundle['readmeTxt.text1']}" escape="false"/></p>
+                                        <p><h:outputText value="#{bundle['readmeTxt.text2']}" escape="false"/></p>
+                                        <p><h:outputText value="#{bundle['readmeTxt.text3']}" escape="false"/></p>
+					<ul>
+						<li><h:outputText value="#{bundle['readmeTxt.text4']}" escape="false"/></li>
+						<li><h:outputText value="#{bundle['readmeTxt.text5']}" escape="false"/></li>
+					</ul>
+	                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p:fragment>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

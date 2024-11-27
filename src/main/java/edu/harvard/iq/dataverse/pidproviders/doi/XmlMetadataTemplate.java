@@ -58,6 +58,7 @@ import edu.harvard.iq.dataverse.util.xml.XmlPrinter;
 import edu.harvard.iq.dataverse.util.xml.XmlWriterUtil;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.json.JsonObject;
+import static edu.harvard.iq.dataverse.pidproviders.doi.datacite.DOIDataCiteRegisterService.getLanguageCode; // MADROÑO. Get the lang iso code
 
 public class XmlMetadataTemplate {
 
@@ -103,7 +104,7 @@ public class XmlMetadataTemplate {
         pid = dvObject.getGlobalId();
         if ((pid == null) && (dvObject instanceof DataFile df)) {
                 pid = df.getOwner().getGlobalId();
-            }
+        }
         pidProvider = PidUtil.getPidProvider(pid.getProviderId());
         XMLStreamWriter xmlw = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
         xmlw.writeStartElement("resource");
@@ -829,6 +830,13 @@ public class XmlMetadataTemplate {
         // Currently not supported. Spec indicates one 'primary' language. Could send
         // the first entry in DatasetFieldConstant.language or send iff there is only
         // one entry, and/or default to the machine's default lang, or the dataverse metadatalang?
+        // MADROÑO BEGIN. Include Language in DataCite Metadata.
+        if (dvObject instanceof Dataset dataset) {
+            List<String> languageList= dataset.getLatestVersion().getOrigLanguages();
+            if (languageList!= null && !languageList.isEmpty())
+                XmlWriterUtil.writeFullElement(xmlw, "language", getLanguageCode (languageList.get(0)));
+        }
+        // MADROÑO END
         return;
     }
 

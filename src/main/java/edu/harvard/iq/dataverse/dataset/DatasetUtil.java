@@ -107,6 +107,21 @@ public class DatasetUtil {
         return thumbnails;
     }
 
+    // MADROÑO BEGIN
+    /**
+     * There are tags written in upper case in English that should be written in lower case in Spanish
+     *
+     * @param text
+     * @return
+     */
+    public static String toLowerCaseInSpanish (String text) {
+        if (BundleUtil.getCurrentLocale().getLanguage().equals("es")) {
+            text= text.toLowerCase();
+        }
+        return text;
+    }
+    // MADROÑO END
+ 
     /**
      * Note "datasetVersionId" can be null. If needed, it helps the "efficiency"
      * of "attemptToAutomaticallySelectThumbnailFromDataFiles"

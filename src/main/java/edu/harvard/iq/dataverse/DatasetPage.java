@@ -161,6 +161,15 @@ import edu.harvard.iq.dataverse.settings.JvmSettings;
 import edu.harvard.iq.dataverse.util.SignpostingResources;
 import edu.harvard.iq.dataverse.util.FileMetadataUtil;
 import java.util.Comparator;
+// MADROÑO NEW IMPORTS BEGIN        
+import es.consorciomadrono.DatasetMetricsByMonth;
+import java.util.Vector;
+import java.util.stream.Collectors;
+import jakarta.ejb.TransactionAttribute;
+import static jakarta.ejb.TransactionAttributeType.REQUIRES_NEW;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+// MADROÑO NEW IMPORTS END
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -191,6 +200,12 @@ public class DatasetPage implements java.io.Serializable {
         INIT, SAVE
     };
 
+    // MADROÑO BEGIN
+    @PersistenceContext(unitName = "VDCNet-ejbPU")
+    protected EntityManager em;
+    private static HashMap <String, String> countriesMap;
+    private static ArrayList <String> countriesList;
+    // MADROÑO END
 
     @EJB
     DatasetServiceBean datasetService;
@@ -1927,7 +1942,7 @@ public class DatasetPage implements java.io.Serializable {
         return init(true);
     }
 
-    public String initCitation() {
+        public String initCitation() {
         return init(false);
     }
 
@@ -1976,6 +1991,12 @@ public class DatasetPage implements java.io.Serializable {
     }
 
     private String init(boolean initFull) {
+        // MADROÑO BEGIN
+        if (countriesMap == null) {
+            initCountriesMapList ();
+        }
+        // MADROÑO END
+
         // Check for rate limit exceeded. Must be done before anything else to prevent unnecessary processing.
         if (!cacheFactory.checkRate(session.getUser(), new CheckRateLimitForDatasetPageCommand(null,null))) {
             return navigationWrapper.tooManyRequests();
@@ -6738,4 +6759,29 @@ public class DatasetPage implements java.io.Serializable {
         return AbstractDOIProvider.DOI_PROTOCOL.equals(dataset.getGlobalId().getProtocol());
     }
 
+    // MADROÑO BEGIN
+    @TransactionAttribute(REQUIRES_NEW)
+    private void initCountriesMapList () {
+        if (countriesMap== null) {
+            if (em== null)
+                Logger.getLogger(DatasetMetricsByMonth.class.getName()).log(Level.SEVERE, "*************#####*****######********* createDatasetMetricsByMonth: em is NULL");
+
+            Vector <CountriesMap> countriesMapList = (Vector) em.createNamedQuery("CountriesMap.findAll", CountriesMap.class).getResultList();
+            countriesMap= (HashMap) countriesMapList.stream().collect(Collectors.toMap(CountriesMap::getId, CountriesMap::getName));
+            countriesList= new ArrayList<>();
+        }
+    }
+
+
+    public static ArrayList <String> getCountriesList () {
+        for (String id: countriesMap.keySet()) {
+            String country= countriesMap.get(id);
+            String bundle="country." + id;
+            String translatedCountry= BundleUtil.getStringFromBundle(bundle);
+            //Logger.getLogger(DatasetPage.class.getName()).log(Level.SEVERE, "#####*****###### createDatasetMetricsByMonth country: {0}; bundle: {1} ; translatedCountry {2}", new Object[]{country, bundle, translatedCountry});
+            countriesList.add("\"" + id+";"+ translatedCountry + "\"");
+        }
+        return countriesList;
+    }
+    // MADROÑO END
 }

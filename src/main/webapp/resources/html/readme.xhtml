@@ -1,0 +1,516 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+            <title>e-cienciaDatos</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <meta http-equiv="Content-Language" content="en" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="description" content="e-cienciaDatos es un portal basado en el software libre Dataverse para compartir, citar y archivar datos. e-cienciaDatos proporciona a los administradores de datos una infraestructura robusta para administrar, alojar y archivar datos, a la vez que ofrece a los investigadores una forma sencilla de compartir y obtener reconocimiento por sus datos." /><link type="text/css" rel="stylesheet" href="/javax.faces.resource/theme.css.xhtml?ln=primefaces-bootstrap" /><script type="text/javascript" src="/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=5.3"></script><script type="text/javascript" src="/javax.faces.resource/jquery/jquery-plugins.js.xhtml?ln=primefaces&amp;v=5.3"></script><script type="text/javascript" src="/javax.faces.resource/primefaces.js.xhtml?ln=primefaces&amp;v=5.3"></script><link type="text/css" rel="stylesheet" href="/javax.faces.resource/primefaces.css.xhtml?ln=primefaces&amp;v=5.3" /><script type="text/javascript" src="/javax.faces.resource/jsf.js.xhtml?ln=javax.faces"></script><link type="text/css" rel="stylesheet" href="/javax.faces.resource/watermark/watermark.css.xhtml?ln=primefaces&amp;v=5.3" /><script type="text/javascript" src="/javax.faces.resource/watermark/watermark.js.xhtml?ln=primefaces&amp;v=5.3"></script><script type="text/javascript">if(window.PrimeFaces){}</script>
+        <link type="image/png" rel="icon" href="/javax.faces.resource/images/favicondataverse.png.xhtml" />
+        <link type="image/png" rel="image_src" href="/javax.faces.resource/images/dataverseproject.png.xhtml" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/bs/css/bootstrap.min.css.xhtml?version=4.8.4" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/bs/css/bootstrap-theme.min.css.xhtml?version=4.8.4" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/css/ie-compat.css.xhtml?version=4.8.4" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/css/owl.carousel.css.xhtml?version=4.8.4" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/css/fontcustom.css.xhtml?version=4.8.4" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/css/socicon.css.xhtml?version=4.8.4" />
+        <link type="text/css" rel="stylesheet" href="/javax.faces.resource/css/structure.css.xhtml?version=4.8.4" />
+            <script>
+                // Break out of iframe
+                if (window !== top) top.location = window.location;
+            </script>
+            <style>
+                /* Custom CSS */
+                /* Add any CSS necessary for your custom content */
+
+body li.map a{
+  position: absolute;
+  font-weight: bold;
+  margin-top: 42px;
+  right: 0;
+  width: 164px;
+}
+
+.navbar-default .container {
+  border-top: 25px solid #bc0f3a;
+  border-bottom: 25px solid #bc0f3a;
+  background-color: #e51a4c;
+}
+
+body div.panel-heading.text-info[data-toggle="collapse"], .navbar-default .container .navbar-nav > li > a:focus, .navbar-default .container .navbar-nav > li > a:hover, .navbar-default .container .navbar-nav > li > form > a:hover, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink:hover {
+  color: black;
+}
+.navbar-default .container .navbar-nav > li > form > a, .navbar-default .container .navbar-nav > li > a, #navbarFixed .container form.navbar-form-link a.ui-commandlink {
+  color: white;
+}
+form.lang {
+  position: absolute;
+  font-weight: bold;
+  margin-top: -27px;
+  right: 5px;
+  width: 150px;
+}
+.navbar-default .container .nav > .open > a {
+  background-color: #bc0f3a;
+  background-image: none;
+}
+.navbar-nav {
+  padding-top: 5px;
+}
+#navbarFixed img {
+  margin-left:5px;
+}
+
+body .text-danger {
+  color: orange;
+}
+#footer {
+  display: none;
+}
+#custom-footer .container {
+  margin-top: 10px;
+  padding-top: 15px;
+  background-color: black;
+  color: white;
+}
+#custom-footer .col-sm-8 {
+  padding-top: 30px;
+  width: 30%
+}
+#custom-footer .col-sm-4 {
+  width: 70%
+}
+body a:hover, #dv-sidebar form[id$="facetType"] > div.clearfix a.facetTypeLink:hover, a.dataverseHeaderDataverseName, body .ui-widget-content a:hover, body .ui-widget-content a:focus {
+ color: #e51a4c;
+}
+body a, #dv-sidebar form[id$="facetType"] > div.clearfix a.facetTypeLink, body .ui-widget-content a {
+  color: #333;
+  text-decoration: underline;
+}
+#topNavBar a {
+  text-decoration: none;
+}
+body .ui-button, body .btn,body .btn.btn-default.btn-access:focus, body .btn.btn-default.btn-access {
+  text-shadow: none;
+  text-decoration: none;
+  background-color: #e51a4c;
+  background-image: none;
+  color: white;
+}
+body .ui-button:hover, body .btn:hover, body .btn.btn-default.btn-access:hover {
+  text-shadow: none;
+  text-decoration: none;
+  background-color: #a4052d;
+  color: white;
+}
+body .text-info {
+    color:#666;
+}
+body .alert-info {
+  color: #a4052d;
+  background-image: linear-gradient(to bottom,#fff 0,#eae8ed 100%);
+  border-color: #a4052d;
+}
+.navbar-nav > li > .dropdown-menu, .btn-group .dropdown-menu > li > a, .btn-group .dropdown-menu {
+  text-decoration: none;
+  background-color: #e51a4c;
+  color: white;
+}
+.navbar-nav > li > .dropdown-menu > li > a, #navbarFixed .dropdown.accountName.open .logout a {
+  color: white;
+}
+li.dropdown > .dropdown-menu > li > a:focus,li.dropdown > .dropdown-menu > li > a:hover, #navbarFixed .dropdown.accountName.open .logout a:focus, #navbarFixed .dropdown.accountName.open .logout a:hover, .btn-group .dropdown-menu > li > a:hover {
+  background-color: #a4052d;
+  background-image: none;
+}
+body .ui-picklist-buttons-cell .ui-button, body .button-block .ui-button, body .ui-widget-content .ui-fileupload-buttonbar .ui-state-default, body .ui-widget-header .ui-fileupload-buttonbar .ui-state-default, body .ui-widget-content a.btn-default {
+    color: white;
+    background-color: #e51a4c;
+    background-image: none;
+    border: 1px solid #a4052d;
+    text-shadow:none;
+    text-decoration: none;
+}
+body .ui-picklist-buttons-cell .ui-button:hover, body .button-block .ui-button:hover, body .ui-widget-content .ui-fileupload-buttonbar .ui-state-default:hover, body .ui-widget-header .ui-fileupload-buttonbar .ui-state-default:hover, body .ui-widget-content a.btn-default:hover {
+    background-color: #a4052d;
+}
+
+body .ui-tabs .ui-tabs-nav.ui-widget-header li a {
+    color: #e51a4c;
+}
+
+body .pagination>li>a, body .pagination>li>span {
+  color: #e51a4c;
+}
+.pagination>.active>a, body .pagination>.active>a:focus, body .pagination>.active>a:hover, body .pagination>.active>span, body .pagination>.active>span:focus, body .pagination>.active>span:hover {
+  background-color: #e51a4c;
+  border-color: #e51a4c;
+}
+.customNavigation a{
+  background: none;
+}
+body .owl-carousel .item {
+  background-color: #eae8ed;
+  border: 1px solid #eae8ed;
+}
+
+body table[id$='resultsTable'] td > div.dataverseResult {
+  border-color: #e51a4c;
+}
+body table[id$='resultsTable'] td > div.datasetResult {
+  border-color: #a4052d;
+}
+
+#metrics-block .col-xs-8 {
+  width: 46%;
+}
+
+#metrics-block .col-xs-4 {
+  width: 54%;
+}
+
+[id$='title-block'] div.title-preview-icon-block {
+  color: #a4052d;
+}
+
+@media (max-width: 767px) {
+  .navbar-collapse .navbar-nav {
+    border: 1px solid #eae8ed;
+    margin: 0;
+  }
+  .navbar-collapse .navbar-form-link {
+    border: 1px solid #eae8ed;
+    padding: 0;
+  }
+  div#topNavBar.navbar-collapse.collapse.in {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    left: 0px;
+    z-index: 99930;
+    background-image: linear-gradient(to bottom,#fff 0,#eae8ed 100%);
+  }
+  #topNavBar>ul.nav.navbar-nav.navbar-right>li {
+    margin-left:10px;
+  }
+  #topNavBar .nav > li > a {
+    padding:0 0 5px 0;
+  }
+  #topNavBar form {
+    padding-left: 25px;
+  }
+  #topNavBar li.dropdown > .dropdown-menu > li > a {
+    background-color: white;
+    color: black;
+  }
+  #topNavBar li.dropdown > .dropdown-menu > li > a:hover {
+    color: #a4052d;
+  }
+  form.lang {
+    position: absolute;
+    font-weight: bold;
+    right: 5px;
+    width: 150px;
+    z-index: 99940;
+  }
+  body #dataverseHeader {
+    margin-top: 70px;
+  }
+  body #content {
+    margin-top: 45px;
+  }
+  body #login-container {
+    margin-top: 30px;
+  }
+  body .lang {
+    top:30px;
+    right:0;
+  }
+  body .lang a:hover, body .lang a:focus{
+    color:black;
+  }
+  #metrics-block.col-xs-3 {
+	  width: 45%;
+  }
+  #metrics-block .small {
+	  padding:5px;
+  }
+}
+
+            </style>
+         <!-- Piwik -->
+         <script type="text/javascript">
+         var _paq = _paq || [];
+         _paq.push(['addDownloadExtensions', "xlsx|sav|tab"]);
+         _paq.push(['trackPageView']);
+         _paq.push(['enableLinkTracking']);
+         (function() {
+             var u="//piwik.consorciomadrono.es/piwik/";
+             _paq.push(['setTrackerUrl', u+'piwik.php']);
+             _paq.push(['setSiteId', '1']);
+             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+             g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+         })();
+         </script>
+         <!-- End Piwik Code --></head><body>
+	<a href="#content" class="sr-only">Ir al contenido principal</a>
+
+				<form id="j_idt100" name="j_idt100" class="lang" method="post" action="/" enctype="application/x-www-form-urlencoded">
+					<input name="j_idt100" value="j_idt100" type="hidden"/>
+					<a id="j_idt100:langSpanish" href="#" onclick="mojarra.jsfcljs(document.getElementById('j_idt100'),{'j_idt100:langSpanish':'j_idt100:langSpanish'},'');return false">ESPAÑOL</a> | <a id="j_idt100:langEnglish" href="#" onclick="mojarra.jsfcljs(document.getElementById('j_idt100'),{'j_idt100:langEnglish':'j_idt100:langEnglish'},'');return false">ENGLISH</a><input name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="-3039485756960544980:-3776933169516834780" autocomplete="off" type="hidden"/>
+				</form>
+    <div id="custom-header">
+        <div class="container">
+                <div class="collapse navbar-collapse" id="topNavBar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a id="navbar-search-toggle" title="Buscar en todos los dataverses...">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+                        </li>
+                        <form class="navbar-form navbar-left" role="search" style="display:none;">
+                            <div class="form-group">
+                                <label class="sr-only" for="navbarsearch">Buscar</label>
+                                <input id="navbarsearch" class="search-input ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" size="28" value="" placeholder="Buscar en todos los dataverses..." type="text" />
+                            </div>
+                            <button type="submit" class="btn btn-default" onclick="window.location = '/?q=' + document.getElementById('navbarsearch').value;                                     return false;">
+                                <span class="glyphicon glyphicon-search"></span> Buscar
+                            </button>
+                    </form>
+                        <li><a href="http://www.consorciomadrono.es/investigam" target="_blank">
+                                Acerca de
+                            </a>
+                        </li>
+			<li>
+                        <li class="dropdown">
+                            <span id="dataverseSupportLink" class="dropdown-toggle" data-toggle="dropdown">
+                                Guías <b class="caret"></b>
+                            </span>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://guides.dataverse.org/en/4.6/user" target="_blank">
+                                        Guía de Usuario
+                                    </a>
+                                </li>
+                                <li><a href="http://guides.dataverse.org/en/latest/developers" target="_blank">Guía del Desarrollador</a>
+                                </li>
+                                <li><a href="http://guides.dataverse.org/en/latest/installation" target="_blank">Guía de Instalación</a>
+                                </li>
+                                <li><a href="http://guides.dataverse.org/en/4.6/api" target="_blank">Guía del API</a>
+                                </li>
+                            </ul>
+                        </li>
+                            <li><a href="/loginpage.xhtml?redirectPage=%2Fdataverse.xhtml">
+                                    Iniciar Sesión
+                                </a>
+                            </li>
+                        </li>
+                    </ul>
+<form id="j_idt62" name="j_idt62" method="post" action="/" class="navbar-form navbar-left navbar-form-link">
+<input name="j_idt62" value="j_idt62" type="hidden"/>
+<a id="j_idt62:j_idt63" href="#" class="ui-commandlink ui-widget" onclick="PrimeFaces.ab({s:&quot;j_idt62:j_idt63&quot;,u:&quot;contactDialog&quot;,onco:function(xhr,status,args){PF('contactForm').show();}});return false;">Soporte</a><input name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="2854557572582603208:-8090141679714151675" autocomplete="off" type="hidden"/>
+</form>
+                </div>
+            </div>
+    </div>
+    <div id="dataverse-header-block">
+        <!-- Navbar Panel --><nav role="navigation" id="navbarFixed" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar" aria-pressed="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>                       
+                    <a href="/"><img src="/resources/images/logo-ecienciaDatosv2.png" class="navbar-brand custom-logo" />
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="topNavBar">
+                    <ul class="nav navbar-nav navbar-right">
+                         <!--&lt;li&gt;
+                            &lt;a href="#" id="navbar-search-toggle" title="Buscar en todos los dataverses..."&gt;
+                                &lt;span class="glyphicon glyphicon-search"&gt;&lt;/span&gt;
+                            &lt;/a&gt;
+                        &lt;form class="navbar-form navbar-left" role="search" style="display:none;"&gt;
+                            &lt;div class="form-group"&gt;
+                                &lt;label class="sr-only" for="navbarsearch"&gt;Buscar&lt;/label&gt;
+                                &lt;input id="navbarsearch" type="text" class="search-input ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" size="28" value="" placeholder="Buscar en todos los dataverses..."/&gt;            
+                            &lt;/div&gt;                            
+                            &lt;button type="submit" class="btn btn-default" onclick="window.location = '/dataverse/Madrono&amp;#63;q=' + document.getElementById('navbarsearch').value;
+                                    return false;"&gt;
+                                &lt;span class="glyphicon glyphicon-search"/&gt; Buscar
+                            &lt;/button&gt;
+                        &lt;/form&gt;
+			 &lt;/li&gt;-->
+
+                        <li><a href="http://guides.dataverse.org/en/4.8.4/user" target="_blank">
+                                Guía de Usuario
+                            </a>
+                        </li>
+<form id="j_idt63" name="j_idt63" method="post" action="/dataverse.xhtml" class="navbar-form navbar-left navbar-form-link">
+<input type="hidden" name="j_idt63" value="j_idt63" />
+<a id="j_idt63:j_idt64" href="#" class="ui-commandlink ui-widget" onclick="PrimeFaces.ab({s:&quot;j_idt63:j_idt64&quot;,u:&quot;contactDialog&quot;,onco:function(xhr,status,args){PF('contactForm').show();}});return false;">Soporte</a><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="8819543948564317493:364375141800385851" autocomplete="off" />
+</form>
+			   <!--
+                            &lt;li&gt;
+                                &lt;h:outputLink rendered="true"
+                                              value="/dataverseuser.xhtml?editMode=CREATE&amp;redirectPage=%2Fdataverse.xhtml"&gt;
+                                    Crear Cuenta
+                                &lt;/h:outputLink&gt;
+                            &lt;/li&gt;
+			   -->
+                            <li><a href="/loginpage.xhtml?redirectPage=%2Fdataverse.xhtml">
+                                    Iniciar Sesión
+                                </a>
+                            </li>
+			<li>
+<form id="j_idt100" name="j_idt100" method="post" action="/" class="lang" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt100" value="j_idt100" />
+<a id="j_idt100:langSpanish" href="#" onclick="mojarra.jsfcljs(document.getElementById('j_idt100'),{'j_idt100:langSpanish':'j_idt100:langSpanish'},'');return false">ESPAÑOL</a> | <a id="j_idt100:langEnglish" href="#" onclick="mojarra.jsfcljs(document.getElementById('j_idt100'),{'j_idt100:langEnglish':'j_idt100:langEnglish'},'');return false">ENGLISH</a><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="8819543948564317493:364375141800385851" autocomplete="off" />
+</form>
+                        </li>
+                    </ul>
+                </div>
+            </div></nav>
+        <!-- Header Panel -->
+        <!-- FIXME: Rather than hard-coding "FFFFFF", get it from the backend (ThemeWidgetFragment.DEFAULT_BACKGROUND_COLOR). -->
+
+        
+
+        <!-- Message Panel --><div id="messagePanel">
+            <div class="container messagePanel">
+            </div></div>
+    </div>
+
+    <div id="content" class="container">
+	    <div class="panel panel-default">
+		    <div class="panel-body">
+			    <span class="help-block h3">¿Por qué crear un fichero readme.txt?</span>
+			    <img style="width:600px" src="../images/documentacionDataset.png" />
+			    <ul>
+				    <li>Es una buena práctica que los investigadores documenten sus datos de investigación a lo largo del ciclo de vida de los mismos.</li>
+				    <li>Al depositar los datos finales en e-cienciaDatos, es fundamental que estén documentados. Para ello, solicitaremos al investigador/a que rellene esta <strong><a target="_blank" href="../txt/readme-es.txt">plantilla</a></strong>.</li>
+				    <li>La función de este documento es describir la información necesaria para usar y comprender los datos. Contribuye por tanto a conseguir que nuestros datos sean FAIR</li>
+			    </ul>
+			    <span class="help-block h3">Buenas prácticas al rellenar el readme.txt</span>
+			    <ul>
+				<li>Mínimo un documento por cada registro de e-cienciaDatos.</li>
+				<li>Puede haber versiones del documento en varios idiomas (por ejemplo, si los datos están en dos idiomas).</li>
+				<li>Tiene que haber una correspondencia de idioma entre nombres de los campos y contenido de los mismos.</li>
+				<li>Preferiblemente en formato .txt  (Texto plano), separando los bloques de información con líneas en blanco.</li>
+				<li>Excepcionalmente en formato pdf/A, formato de preservación.</li>
+				<li>Si el fichero tiene formato pdf/A, no hay que disponer la información en forma de tabla</li>
+				<li>Hay que seguir las recomendaciones de nomenclatura de ficheros de datos para todo el dataset y añadir este fichero con el nombre readme.txt o readme_IDIOMA_.txt en el caso de haber readme en varios idiomas.</li>
+				<li>Indicar todos los ficheros incluidos en el dataset: Estructura, tipo de fichero, breve descripción, etc. En esta relación hay que incluir el fichero readme.txt</li>
+				<li>Procurar incluir la información de forma normalizada: Taxonomías y vocabularios estandarizados según las disciplinas científicas, etc.</li>
+				<li>Incluir el DOI del registro en e-cienciaDatos.</li>
+			    </ul>
+		    </div>
+	    </div>
+    </div>
+
+
+    <div id="custom-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 small">
+                    <p>Copyright © 2017 Consorcio Madroño</p>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <div class="poweredbylogo" style="margin-bottom:25px">
+			<a href="https://www.openaire.eu/search/data-providers#text:e-cienciaDatos"><img src="/resources/images/openAIRECompliant.png" style="max-width:20%"/></a>
+			<a href="http://www.re3data.org/repository/r3d100012316"><img src="/resources/images/logoRe3data.png" style="max-width:35%"/></a>
+                        <span>Powered by</span>
+                        <a href="http://dataverse.org/" title="The Dataverse Project" target="_blank"><img src="/resources/images/dataverseproject_logo.jpg" style="max-width:25%" alt="The Dataverse Project"/></a>
+                        <!--&lt;h:outputText class="version" value="v. 4.6 build 62-c913662" rendered="true"/&gt;-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ajaxStatusPanel"><div id="ajaxStatusPanel_start" style="display:none"><img src="/resources/images/ajax-loading.gif" alt="Loading" /></div><div id="ajaxStatusPanel_complete" style="display:none">
+                <!-- DO NOTHING --></div></div><script id="ajaxStatusPanel_s" type="text/javascript">$(function(){PrimeFaces.cw("AjaxStatus","widget_ajaxStatusPanel",{id:"ajaxStatusPanel"});});</script>
+    <!-- Dialog Contact Form --><div id="contactDialog" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"><div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="contactDialog_title" class="ui-dialog-title">Contact e-cienciaDatos Support</span><a href="#" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all"><span class="ui-icon ui-icon-closethick"></span></a></div><div class="ui-dialog-content ui-widget-content"><div id="j_idt950">
+<form id="emailForm" name="emailForm" method="post" action="/" class="form-horizontal" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="emailForm" value="emailForm" />
+
+                <!-- to: Support -->
+                <div class="form-group">
+                    <label for="messageTo" class="col-sm-3 control-label">Para</label>
+                    <div class="col-sm-9">
+                        <p id="messageTo" class="form-control-static">e-cienciaDatos Support</p>
+                    </div>
+                </div>
+                <!-- from email (not logged in) -->
+                    <div class="form-group">
+                        <label for="userEmail" class="col-sm-3 control-label">De <span class="glyphicon glyphicon-asterisk text-danger" title="Campo obligatorio"></span></label>
+                        <div class="col-sm-9"><input id="emailForm:userEmail" name="emailForm:userEmail" type="text" value="" size="30" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" /><script id="emailForm:userEmail_s" type="text/javascript">PrimeFaces.cw("InputText","widget_emailForm_userEmail",{id:"emailForm:userEmail"});</script>
+                        </div>
+                    </div>
+                <!-- subject -->
+                <div class="form-group">
+                    <label for="messageSubject" class="col-sm-3 control-label">Asunto <span class="glyphicon glyphicon-asterisk text-danger" title="Campo obligatorio"></span></label>
+                    <div class="col-sm-9"><input id="emailForm:messageSubject" name="emailForm:messageSubject" type="text" value="" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all form-control" /><script id="emailForm:messageSubject_s" type="text/javascript">PrimeFaces.cw("InputText","widget_emailForm_messageSubject",{id:"emailForm:messageSubject"});</script>
+                    </div>
+                </div>
+                <!-- message -->
+                <div class="form-group">
+                    <label for="userMessage" class="col-sm-3 control-label">Mensaje <span class="glyphicon glyphicon-asterisk text-danger" title="Campo obligatorio"></span></label>
+                    <div class="col-sm-9"><textarea id="emailForm:userMessage" name="emailForm:userMessage" cols="20" rows="10" maxlength="2147483647" class="ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all form-control"></textarea><script id="emailForm:userMessage_s" type="text/javascript">$(function(){PrimeFaces.cw("InputTextarea","widget_emailForm_userMessage",{id:"emailForm:userMessage",autoResize:false});});</script>
+                    </div>
+                </div>
+                <!-- validation -->
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <p><span class="highlightBold">Por favor, rellena este campo para demostrar que no eres un robot.</span> <span class="glyphicon glyphicon-asterisk text-danger" title="Campo obligatorio"></span>
+                        </p> +  = <input id="emailForm:messageSum" name="emailForm:messageSum" type="text" size="4" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" /><script id="emailForm:messageSum_s" type="text/javascript">PrimeFaces.cw("InputText","widget_emailForm_messageSum",{id:"emailForm:messageSum"});</script>
+                    </div>
+                </div>
+                <!-- send | cancel buttons -->
+                <div class="button-block"><a id="emailForm:j_idt968" href="#" class="ui-commandlink ui-widget btn btn-default" onclick="PrimeFaces.ab({s:&quot;emailForm:j_idt968&quot;,u:&quot;emailForm&quot;,onco:function(xhr,status,args){if (args &amp;&amp; !args.validationFailed) PF('contactForm').hide();;},pa:[{name:&quot;DO_VALIDATION&quot;,value:&quot;true&quot;}],fi:&quot;j_idt950&quot;});return false;">Enviar Mensaje</a>
+                    <button type="button" onclick="PF('contactForm').hide()" class="btn btn-default" value="Cancelar">
+                        Cancelar
+                    </button>
+                </div><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="-5991945476631748116:5471174721961471153" autocomplete="off" />
+</form></div></div></div><script id="contactDialog_s" type="text/javascript">$(function(){PrimeFaces.cw("Dialog","contactForm",{id:"contactDialog",modal:true});});</script><div id="statusInfo" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"><div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="statusInfo_title" class="ui-dialog-title"></span><a href="#" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all"><span class="ui-icon ui-icon-closethick"></span></a></div><div class="ui-dialog-content ui-widget-content">
+            <p></p>
+            <div class="button-block">
+                <button type="button" onclick="PF('statusInfo').hide()" class="btn btn-default" value="Cerrar">
+                    Cerrar
+                </button>
+            </div></div></div><script id="statusInfo_s" type="text/javascript">$(function(){PrimeFaces.cw("Dialog","statusInfo",{id:"statusInfo",modal:true});});</script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/bs/js/bootstrap.min.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/bs/js/bootstrap-hover-dropdown.min.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/js/ie-compat.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/js/dv_rebind_bootstrap_ui.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/js/owl.carousel.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/js/jquery.matchHeight.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/js/jquery.sharrre.js.xhtml?version=4.8.4"></script>
+        <script type="text/javascript" defer="defer" src="/javax.faces.resource/js/clipboard.min.js.xhtml?version=4.8.4"></script>
+        <script>
+            //<![CDATA[
+            $(document).ready(function () {
+                // Navbar Search Toggle
+                $(document).on('click', '#navbar-search-toggle', function (e) {
+                    $(this).parent("li").hide();
+                    $("form.navbar-form[role='search']").show();
+                });
+                $('body').click(function (e) {
+                    if (!$(e.target).closest("form.navbar-form[role='search']").length) {
+                        $("form.navbar-form[role='search']").hide();
+                        $("#navbar-search-toggle").parent("li").show();
+                    }
+                    ;
+                });
+
+                // Rebind bootstrap UI components
+                bind_bsui_components();
+            });
+
+
+            //]]>
+        </script>
+    <script><!-- Google Analytics Snippet -->
+	</script></body>
+</html>

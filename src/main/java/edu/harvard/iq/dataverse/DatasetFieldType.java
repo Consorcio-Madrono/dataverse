@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import java.util.MissingResourceException;
 import jakarta.faces.model.SelectItem;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 
 /**
  * Defines the meaning and constraints of a metadata field and its values.
@@ -332,7 +333,12 @@ public class DatasetFieldType implements Serializable, Comparable<DatasetFieldTy
     private Collection<ControlledVocabularyValue> controlledVocabularyValues;
 
     public Collection<ControlledVocabularyValue> getControlledVocabularyValues() {
-        return this.controlledVocabularyValues;
+        // MADROÑO BEGIN. Return ControlledVacabularyValue in translated order
+        ArrayList al= new ArrayList <       > (controlledVocabularyValues);
+        al.sort(ControlledVocabularyValue.DisplayOrder);
+        return al;
+        // MADROÑO END
+        //return this.controlledVocabularyValues;
     }
 
     public void setControlledVocabularyValues(Collection<ControlledVocabularyValue> controlledVocabularyValues) {

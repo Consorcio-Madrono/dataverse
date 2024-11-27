@@ -266,7 +266,7 @@ public class GuestbookPage implements java.io.Serializable {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, BundleUtil.getStringFromBundle("guestbook.save.fail"), BundleUtil.getStringFromBundle("guestbook.option.msg") ));
                         return null;
                     }
-                    if (cq.getCustomQuestionValues().size() == 1){
+                    if (cq.getCustomQuestionValues().size() == /*1*/ 0){// MADROÑO: Allow 1 options to accomplish GPRD
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, BundleUtil.getStringFromBundle("guestbook.save.fail"), BundleUtil.getStringFromBundle("guestbook.option.msg") ));
                         return null; 
                     }

@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  *
  * @author Leonid Andreev
  */
-public class OaiHandler implements Serializable {
+    public class OaiHandler implements Serializable {
     private static final Logger logger = Logger.getLogger("edu.harvard.iq.dataverse.harvest.client.oai.OaiHandler");
     
     public OaiHandler() {
@@ -288,9 +288,10 @@ public class OaiHandler implements Serializable {
         }
         mip.withMetadataPrefix(metadataPrefix);
 
+/*      MADROÑO, We need to do always complete havester
         if (this.fromDate != null) {
             mip.withFrom(this.fromDate.toInstant());
-        }
+        }*/
 
         if (!StringUtils.isEmpty(this.setName)) {
             mip.withSetSpec(this.setName);
