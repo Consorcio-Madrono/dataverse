@@ -1,4 +1,9 @@
 /* Add any CSS necessary for your custom content */
+body #navbarFixed .navbar-brand.custom-logo {
+  height: 59px;
+  padding: 0;
+}
+
 #datasetForm\:publishButton {
   display:none;
 }
