@@ -328,7 +328,7 @@
                                             <!-- END: DOWNLOAD/ACCESS DATASET -->
 
                                             <!-- PUBLISH DATASET -->
-                                            <!-- MADROÑO BEGIN -->
+                                            <!-- MADROÑO BEGIN. Show License -->
                                             <c:if test="#{!DatasetPage.dataset.released}">
                                                 <div>
 						    <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
@@ -889,6 +889,7 @@
                                 // javascript for refreshing page when locks
                                 $(this).ready(function () {
                                     refreshIfStillLocked();
+                                    showEnabled(); // MADROÑO Show license
                                 });
                                 function refreshIfStillLocked() {
                                     if ($('input[id$="datasetLockedForAnyReasonVariable"]').val() === 'true') {

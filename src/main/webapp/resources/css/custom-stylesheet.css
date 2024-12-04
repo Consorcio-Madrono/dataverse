@@ -4,9 +4,9 @@ body #navbarFixed .navbar-brand.custom-logo {
   padding: 0;
 }
 
-#datasetForm\:publishButton {
+/*#datasetForm\:publishButton {
   display:none;
-}
+}*/
 
 div.tooltip {
   position: absolute;

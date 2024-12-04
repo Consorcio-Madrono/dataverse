@@ -164,13 +164,13 @@
                                 <h:outputText value="#{bundle['header.guides.user']}"/>
                             </h:outputLink>
                         </li>
--->
-			<!-- MADROÑO END Header entries customization -->
                         <li jsf:rendered="#{!empty settingsWrapper.get(':NavbarSupportUrl')}">
                             <h:outputLink value="#{settingsWrapper.get(':NavbarSupportUrl')}" target="_blank" rel="noopener">
                                 <h:outputText value="#{bundle['header.support']}"/>
                             </h:outputLink>
                         </li>
+-->
+			<!-- MADROÑO END Header entries customization -->
                         <ui:fragment rendered="#{empty settingsWrapper.get(':NavbarSupportUrl')}">
                             <li>
                                 <o:form useRequestURI="true" class="navbar-form navbar-left navbar-form-link">
