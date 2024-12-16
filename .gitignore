@@ -1,3 +1,4 @@
+metadata
 nb-configuration.xml
 target
 infer-out
@@ -45,6 +46,7 @@ scripts/installer/default.config
 # do not track IntelliJ IDEA files
 .idea
 **/*.iml
+**/*.old
 /bin/
 
 # do not track Visual Studio Code files

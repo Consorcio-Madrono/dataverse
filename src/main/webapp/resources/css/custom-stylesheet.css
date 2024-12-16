@@ -1,4 +1,18 @@
 /* Add any CSS necessary for your custom content */
+#actionButtonBlock .btn-primary:focus {
+  background-color: #a4052d;
+  color: white;
+}
+body .btn-default:active:focus, body .btn-default:active:hover, body .btn-default:active, body .btn-default:hover, body .btn-default:focus {
+  background-color: #a4052d;
+  color: white;
+}
+
+body .dropdown-header {
+    font-size: 14px;
+    padding: 9px 20px 3px 20px;
+}
+
 body #navbarFixed .navbar-brand.custom-logo {
   height: 59px;
   padding: 0;
@@ -291,6 +305,10 @@ body .alert-info {
   text-decoration: none;
   background-color: #e51a4c;
   color: white;
+}
+#actionButtonBlock .btn-group .dropdown-menu > li > a, #datasetForm\:tabView\:filesTable_data .btn-group .dropdown-menu > li > a {
+	margin-left: 25px;
+	font-weight: bold;
 }
 .navbar-nav > li > .dropdown-menu > .form-inline > li:hover  {
   background-color: #bc0f3a;
