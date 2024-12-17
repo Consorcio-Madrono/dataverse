@@ -64,7 +64,7 @@ public class DublinCoreExportUtil {
     // MADROÑO BEGIN Recolecta and LA Referencia compliance
     protected static HashMap <String, String> recolectaAcronymsMap;
     protected static HashSet <String> recolectaAcronymsSet;
-    protected static Map<String, String> langIsoCodes; // Madroño. Get the lang codes in the iso format
+    protected static Map<String, String> langIsoCodes; // MADROÑO. Get the lang codes in the iso format
     // MADROÑO END
     public static void datasetJson2dublincore(JsonObject datasetDtoAsJson, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
         logger.fine(JsonUtil.prettyPrint(datasetDtoAsJson.toString()));
@@ -80,7 +80,7 @@ public class DublinCoreExportUtil {
     private static void dto2dublincore(DatasetDTO datasetDto, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
         XMLStreamWriter xmlw = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
         if (DC_FLAVOR_DCTERMS.equals(dcFlavor)) {
-		xmlw.writeStartDocument();
+            xmlw.writeStartDocument();
             xmlw.writeStartElement("metadata");
             xmlw.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             xmlw.writeAttribute("xmlns:dc", DC_XML_NAMESPACE);
