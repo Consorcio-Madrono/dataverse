@@ -1,4 +1,7 @@
 /* Add any CSS necessary for your custom content */
+#dataverse-header-block{
+  min-height:100px;
+}
 #actionButtonBlock .btn-primary:focus {
   background-color: #a4052d;
   color: white;
@@ -80,6 +83,9 @@ div.tooltip {
   padding:2em 1em 1em 0em;
 }
 
+body #dataverseHeader {
+  margin-top: 70px;
+}
 
 #navbarFixed .dropdown-menu.navbar-language li a.language-menu-link {
   color:#ffffcc;
@@ -162,18 +168,12 @@ div span.glyphicon-question-sign.tooltip-icon, tr span.glyphicon-question-sign.t
  margin-left:auto
 }
 @media (min-width:768px) {
-  body #dataverseHeader {
-    margin-top: 70px;
-  }
  #survey .in {
   width:750px
   top: 0;
  }
 }
 @media (min-width:992px) {
-  body #dataverseHeader {
-    margin-top: 20px;
-  }
  #survey .in {
   width:970px
  }
@@ -414,9 +414,6 @@ body table[id$='resultsTable'] td > div.datasetResult {
     right: 5px;
     width: 150px;
     z-index: 99940;
-  }
-  body #dataverseHeader {
-    margin-top: 70px;
   }
   body #content {
     margin-top: 10px;
