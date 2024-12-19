@@ -369,6 +369,9 @@ body table[id$='resultsTable'] td > div.datasetResult {
 }
 
 @media (max-width: 768px) {
+  body .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: white;
+  }
   .navbar-nav {
     margin:100px 0 0 0;
   }
@@ -387,6 +390,7 @@ body table[id$='resultsTable'] td > div.datasetResult {
     right: 0;
     left: 0px;
     z-index: 99930;
+    background-image: linear-gradient(to bottom,#bc0f3a 0,#bc0f3a 100%);
   }
   #topNavBar>ul.nav.navbar-nav.navbar-right>li {
     margin-left:10px;
@@ -396,13 +400,6 @@ body table[id$='resultsTable'] td > div.datasetResult {
   }
   #topNavBar form {
     padding-left: 25px;
-  }
-  #topNavBar li.dropdown > .dropdown-menu > li > a {
-    background-color: white;
-    color: black;
-  }
-  #topNavBar li.dropdown > .dropdown-menu > li > a:hover {
-    color: #a4052d;
   }
   .navbar-nav  ul.dropdown-menu li > a:hover {
     color: white;
