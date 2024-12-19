@@ -407,3 +407,16 @@ function addMenuDelays() {
         });
     });
 }
+
+// MADROÑO BEGIN
+function showEnabled () {
+    var publishButton= document.getElementById("datasetForm:publishButton");
+    if (publishButton!== null) {
+        if (document.getElementById("grantedLicense").checked=== true) {
+            publishButton.style.display= "block";
+        } else {
+            publishButton.style.display= "none";
+        }
+    }
+}
+// MADROÑO END

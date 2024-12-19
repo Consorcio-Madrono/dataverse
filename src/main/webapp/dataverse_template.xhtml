@@ -9,11 +9,62 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       lang="#{dataverseSession.localeCode}"
-      xml:lang="#{dataverseSession.localeCode}">
+      xml:lang="#{dataverseSession.localeCode}"
+      xmlns:of="http://omnifaces.org/functions"> 					<!-- MADROÑO: Matomo statistics -->
+
     <f:view locale="#{dataverseSession.localeCode}">
     <h:head>
 	<o:importFunctions type="edu.harvard.iq.dataverse.util.MarkupChecker" />
         <f:facet name="first">
+					<!-- INIT MADROÑO: Matomo statistics -->
+          <ui:param name="dv2" value="1"/>
+          <ui:param name="dv3" value=""/>
+          <ui:param name="dv4" value="1"/>
+          <ui:param name="websiteIdTemplate" value="var websiteIdDuplicate = __ID__; _paq2.push(['addTracker', u+'piwik.php', websiteIdDuplicate]);"/>
+
+          <c:if test="${not empty dataverse}" var="dataverseCheck">
+             <ui:param name="dv3" value="#{empty dataverse ? [] : dataverse.alias}"/>
+             <ui:param name="dv2" value="#{dv3 == 'URJC' ? [36] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UPM' ? [35] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UNED' ? [34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UC3M' ? [33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UAM' ? [32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'UAH' ? [31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'FRONTESPO' ? [30,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'federico-tena' ? [29,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'empatia' ? [28,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'nonlinear_solid_mechanics' ? [27,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'ESA' ? [26,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'RMP' ? [25,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'catalogos_barrios_vulnerables' ? [24,35] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'evaluacion_transparencia' ? [23,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'GCOM' ? [22,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'derecho' ? [21,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'YLDI' ? [20,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'BARD' ? [19,26,31] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'federico-tena-population' ? [18,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'XChem' ? [17,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'bodyintransit' ? [16,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'humanidades_digitales' ? [15,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'vedymec' ? [37,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'artext' ? [38,34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'maaes' ? [39,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'Absell-Federico-Tena-WTHD' ? [40,33] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'dwarc' ? [41,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'MapCom' ? [42,36] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'rey' ? [44,34] : dv2}"/>
+
+             <ui:param name="dv5" value="#{of:replaceAll(dv2,'[\\[\\]]','')}" escape="false"/>
+             <ui:param name="dv4" value="#{of:replaceAll(dv5,',.*','')}" escape="false"/>
+
+             <h:outputText value="#{FilePage.initPiwikCode}" escape="false" />
+             <ui:repeat value="#{dv2}" var="i" varStatus="loop">
+                  <h:outputText value="#{of:replaceAll(websiteIdTemplate,'__ID__',i)}" escape="false" />
+             </ui:repeat>
+             <h:outputText value="#{FilePage.endPiwikCode}" escape="false" />
+	        </c:if>
+					<!-- END MADROÑO: Matomo statistics -->
+
             <o:resourceInclude path="/CustomizationFilesServlet?customFileType=analytics" />
             <title><h:outputText value="#{pageTitle}"/></title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>

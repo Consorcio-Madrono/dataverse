@@ -183,7 +183,7 @@
                                                         <!-- DOWNLOAD -->
                                                         <ui:fragment rendered="#{DatasetPage.canDownloadFiles()}">
                                                             <ui:fragment rendered="#{!DatasetPage.tooLargeToDownload}">
-                                                                <li class="dropdown-header">#{bundle['dataset.accessBtn.header.download']} <span class="glyphicon glyphicon-download-alt"/></li>
+                                                                <li class="dropdown-header">#{bundle['dataset.accessBtn.header.download']} <!--MADROÑO: Change the download icon situation <span class="glyphicon glyphicon-download-alt"/>--></li>
                                                                 <!-- NORMAL DOWNLOAD BUTTON (NO TABULAR FILES) -->
                                                                 <li jsf:rendered="#{!DatasetPage.versionHasTabular}">                 
                                                                     <p:commandLink update="@form" actionListener="#{DatasetPage.startDownloadAllOriginal()}" styleClass="btn-download" 
@@ -193,7 +193,7 @@
                                                                             <f:param value="#{DatasetPage.sizeOfDataset}" />
                                                                         </h:outputFormat>
                                                                         <f:actionListener binding="#{DatasetPage.setTermsGuestbookPopupAction(bundle.download)}"/>
-                                                                    </p:commandLink>
+                                                                    <span class="glyphicon glyphicon-download-alt"/><!--MADROÑO: Change the download icon situation --></p:commandLink>
                                                                 </li>
 
                                                                 <!-- DOWNLOAD Options (TABULAR FILES PRESENT) -->
@@ -208,7 +208,7 @@
                                                                                 <f:param value="#{DatasetPage.sizeOfDatasetOrig}" />
                                                                             </h:outputFormat>
                                                                             <f:actionListener binding="#{DatasetPage.setTermsGuestbookPopupAction(bundle.download)}"/>
-                                                                        </p:commandLink>
+                                                                        <span class="glyphicon glyphicon-download-alt"/><!--MADROÑO: Change the download icon situation --></p:commandLink>
                                                                     </li>
                                                                     <!-- Original Format too big -->
                                                                     <ui:fragment rendered="#{DatasetPage.tooLargeToDownloadOriginal}">                                                                                                                               
@@ -223,7 +223,7 @@
                                                                             <h:outputFormat value="#{bundle['dataset.accessBtn.download.size']}">
                                                                                 <f:param value="#{DatasetPage.sizeOfDataset}" />
                                                                             </h:outputFormat>
-                                                                        </p:commandLink>
+                                                                        <span class="glyphicon glyphicon-download-alt"/><!--MADROÑO: Change the download icon situation --></p:commandLink>
                                                                     </li>
                                                                     <!-- Archival Format too big -->
                                                                     <ui:fragment rendered="#{DatasetPage.tooLargeToDownloadArchival}">                                                                                                                               
@@ -329,10 +329,20 @@
                                             <!-- END: DOWNLOAD/ACCESS DATASET -->
 
                                             <!-- PUBLISH DATASET -->
+                                            <!-- MADROÑO BEGIN. Show License -->
+                                            <c:if test="#{!DatasetPage.dataset.released}">
+                                                <div>
+						                                      <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
+                                                </div>
+                                            </c:if>
+                                            <!-- MADROÑO END -->
                                             <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
                                                 <div class="btn-group">
                                                     <!-- Publish BTN -->
-                                                    <h:outputLink value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid}">
+<!-- MADROÑO BEGIN -->
+                                                    <h:outputLink id="publishButton" value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid}">
+<!--                                                <h:outputLink value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid}">-->
+<!-- MADROÑO END -->
                                                         <c:if test="#{!((showSubmitForReviewLink or showReturnToAuthorLink or not empty DatasetPage.allowedExternalStatuses) and showPublishLink)}">
                                                             <f:passThroughAttribute name="class" value="btn btn-default btn-access btn-publish #{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid ? 'disabled' : ''}"/>
                                                             <f:passThroughAttribute name="onclick" value="$(this).parent().find( 'li > a' ).trigger( 'click' );"/>
@@ -560,6 +570,7 @@
                                         <!-- Metrics -->
                                         <div id="metrics-block">
                                             <div id="metrics-heading">
+					                                      <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}">#{bundle['metrics.fullDataset']}</a> <!-- MADROÑO: Access to full dataset statistics -->
                                                 #{settingsWrapper.makeDataCountDisplayEnabled ? bundle['metrics.dataset.makedatacount.title'] : bundle['metrics.dataset.title']}
                                                 <ui:fragment rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" 
@@ -573,24 +584,39 @@
                                                 
                                             </div>
                                             <div id="metrics-body">
+<!-- MADROÑO BEGIN: Access to full dataset statistics -->
+                                              <div class="btn-group btn-group-justified">
+					        <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}">
+						  <p style="width:49%" class="btn btn-default btn-xs">
+						    #{bundle['metrics.visits']}<br/>
+						    <spam style="font-size:2em">#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getViewsTotal()}</spam>
+						  </p>
+					        </a>
+					        <a href="#{DatasetPage.dataverseSiteUrl}/dataset_metrics.xhtml?persistentId=#{dataset.globalId}&amp;type=download">
+						  <p style="width:49%" class="btn btn-default btn-xs btn-share">
+						    #{bundle['metrics.downloads']}<br/>
+						    <spam style="font-size:2em">#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getDownloadsTotal()}</spam>
+						  </p>
+					        </a>
+                                              </div>
                                                 <!-- Classic downloads -->
-                                                <div class="metrics-count-block" jsf:rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
+                                                <!--<div class="metrics-count-block" jsf:rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
                                                         <f:param value="#{guestbookResponseServiceBean.getDownloadCountByDatasetId(DatasetPage.dataset.id)}"/>
                                                     </h:outputFormat>
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.default.tip']}"></span>
-                                                </div>
+                                                </div>-->
                                                 <!-- Make Data Count views -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
+                                                <!--<div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.views']}">
                                                         <f:param value="#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getViewsTotal()}"/>
                                                     </h:outputFormat>
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span>
-                                                </div>
+                                                </div>-->
                                                 <!-- Make Data Count downloads -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
+                                                <!--<div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
                                                     <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
                                                         <f:param value="#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getDownloadsTotal()}"/>
                                                     </h:outputFormat>
@@ -603,7 +629,8 @@
                                                         <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                             data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.premakedatacount.tip']}"></span>)
                                                     </span>
-                                                </div>
+                                                </div>-->
+                                                <!-- END MADROÑO: Access to full dataset statistics -->
                                                 <!-- Make Data Count citations (DOIs only, not Handles) -->
                                                 <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled and DatasetPage.DOI}">
                                                     <p:commandLink oncomplete="PF('citationsDialog').show();">
@@ -614,6 +641,7 @@
                                                     <span class="glyphicon glyphicon-question-sign tooltip-icon"
                                                           data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.citations.tip']}"></span>
                                                 </div>
+                                                <div class='altmetric-embed' data-hide-no-mentions='true' data-badge-type='donut' data-doi="#{DatasetPage.persistentId}"></div>  <!-- MADROÑO altmetric stats-->
                                             </div>
                                         </div>
                                         <!-- END: Metrics -->
@@ -857,6 +885,7 @@
                                 // javascript for refreshing page when locks
                                 $(this).ready(function () {
                                     refreshIfStillLocked();
+                                    showEnabled(); // MADROÑO Show license
                                 });
                                 function refreshIfStillLocked() {
                                     if ($('input[id$="datasetLockedForAnyReasonVariable"]').val() === 'true') {
@@ -2063,10 +2092,16 @@
                         // add summary desc row id to pass as selector param
                         var descId = 'dsDescription td > div';
                         // add metadata dynamic label text, tooltip text from bundle as param
-                        var truncMoreBtn = '#{of:format1(bundle.truncateMoreBtn, descriptionText)}';
+// MADROÑO BEGIN. These tags should be in lower case in Spanish
+                        var truncMoreBtn = '#{of:format1(bundle.truncateMoreBtn, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        var truncMoreTip = '#{of:format1(bundle.truncateMoreTip, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        var truncLessBtn = '#{of:format1(bundle.truncateLessBtn, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        var truncLessTip = '#{of:format1(bundle.truncateLessTip, DatasetUtil:toLowerCaseInSpanish(DatasetPage.datasetVersionUI.description.datasetFieldType.localeTitle))}';
+                        /*var truncMoreBtn = '#{of:format1(bundle.truncateMoreBtn, descriptionText)}';
                         var truncMoreTip = '#{of:format1(bundle.truncateMoreTip, descriptionText)}';
                         var truncLessBtn = '#{of:format1(bundle.truncateLessBtn, descriptionText)}';
-                        var truncLessTip = '#{of:format1(bundle.truncateLessTip, descriptionText)}';
+                        var truncLessTip = '#{of:format1(bundle.truncateLessTip, descriptionText)}';*/
+			                  // MADROÑO END. These tags should be in lower case in Spanish
 
                         // pass bundle text variabls as params to function
                         contentTruncate(descId, truncMoreBtn, truncMoreTip, truncLessBtn, truncLessTip);

@@ -1117,7 +1117,42 @@ public class FilePage implements java.io.Serializable {
     private Boolean lockedFromEditsVar;
     private Boolean lockedFromDownloadVar; 
     
-    /**
+     // INIT MADROÑO: Matomo Statistics
+    private final String piwikInitCodeVar="<!-- Matomo -->" +
+"<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>\n" +
+"<script>\n" +
+"  var _paq2 = window._paq = window._paq || [];\n" +
+"  /* tracker methods like 'setCustomDimension' should be called before 'trackPageView' */\n" +
+"  _paq2.push(['setDownloadClasses', 'btn-download']);\n" +
+"  _paq2.push(['trackPageView']);\n" +
+"  _paq2.push(['enableLinkTracking']);\n" +
+"  (function() {\n" +
+"    var u='https://piwik.consorciomadrono.es/piwik/';\n" +
+"    // We will also collect the website data into Website ID = XX\n";
+
+  private final String piwikEndCodeVar=
+"    _paq2.push(['setTrackerUrl', u+'piwik.php']);\n" +
+"    _paq2.push(['setSiteId', '1']);\n" +
+"    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n" +
+"    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\n" +
+"  })();\n" +
+"</script>\n" +
+"<noscript>\n" +
+"      <p><img src=\"//piwik.consorciomadrono.es/piwik/piwik.php?idsite=1\" style=\"border:0;\" alt=\"\" /></p>\n" +
+"</noscript>\n" +
+"<!-- End Matomo Code -->\n";
+
+
+    public String getInitPiwikCode() {
+        return piwikInitCodeVar;
+    }
+
+    public String getEndPiwikCode() {
+        return piwikEndCodeVar;
+    }
+    // END MADROÑO: Matomo Statistics
+
+   /**
      * Authors are not allowed to edit but curators are allowed - when Dataset is inReview
      * For all other locks edit should be locked for all editors.
      */

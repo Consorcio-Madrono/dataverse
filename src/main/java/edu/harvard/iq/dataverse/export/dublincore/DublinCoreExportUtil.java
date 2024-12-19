@@ -13,10 +13,13 @@ import edu.harvard.iq.dataverse.GlobalId;
 import edu.harvard.iq.dataverse.api.dto.DatasetDTO;
 import edu.harvard.iq.dataverse.api.dto.DatasetVersionDTO;
 import edu.harvard.iq.dataverse.api.dto.FieldDTO;
+import edu.harvard.iq.dataverse.api.dto.FileDTO;
 import edu.harvard.iq.dataverse.api.dto.LicenseDTO;
 import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
 import edu.harvard.iq.dataverse.export.ddi.DdiExportUtil;
+import edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean;
 import edu.harvard.iq.dataverse.pidproviders.PidUtil;
+import edu.harvard.iq.dataverse.pidproviders.doi.datacite.DOIDataCiteRegisterService;
 import edu.harvard.iq.dataverse.util.json.JsonUtil;
 
 import java.io.OutputStream;
@@ -26,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import jakarta.json.JsonObject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -55,8 +61,12 @@ public class DublinCoreExportUtil {
     
     public static String DEFAULT_DC_FLAVOR = DC_FLAVOR_DCTERMS;
 
-        
-    public static void datasetJson2dublincore(JsonObject datasetDtoAsJson, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
+    // MADROÑO BEGIN Recolecta and LA Referencia compliance
+    protected static HashMap <String, String> recolectaAcronymsMap;
+    protected static HashSet <String> recolectaAcronymsSet;
+    protected static Map<String, String> langIsoCodes; // MADROÑO. Get the lang codes in the iso format
+    // MADROÑO END
+     public static void datasetJson2dublincore(JsonObject datasetDtoAsJson, OutputStream outputStream, String dcFlavor) throws XMLStreamException {
         logger.fine(JsonUtil.prettyPrint(datasetDtoAsJson.toString()));
         Gson gson = new Gson();
         DatasetDTO datasetDto = gson.fromJson(datasetDtoAsJson.toString(), DatasetDTO.class);
@@ -141,6 +151,8 @@ public class DublinCoreExportUtil {
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
         
+        writeFunderElement(xmlw, version); // MADROÑO. LA Referencia compliance
+
         writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
         
         writeFullElementList(xmlw, dcFlavor+":"+"source", dto2PrimitiveList(version, DatasetFieldConstant.dataSources));
@@ -180,6 +192,19 @@ public class DublinCoreExportUtil {
         
         writeFullElementList(xmlw, dcFlavor+":"+"language", dto2PrimitiveList(version, DatasetFieldConstant.language));        
         
+        // MADROÑO BEGIN . LA Referencia compliance
+        List<String> languages= dto2PrimitiveList(version, DatasetFieldConstant.language);
+        List<String> isoLanguages= getIsoLanguages (languages); 
+        writeFullElementList(xmlw, dcFlavor+":"+"language", isoLanguages);
+        
+        List <FileDTO> files= version.getFiles();
+        for (FileDTO file: files) {
+            String format= file.getDataFile().getContentType();
+            writeFullElement(xmlw, dcFlavor+":"+"format", format); 
+        }
+        // writeFullElementList(xmlw, dcFlavor+":"+"language", dto2PrimitiveList(version, DatasetFieldConstant.language));        
+        // MADROÑO END
+ 
         /**
          * dc:date. "I suggest changing the Dataverse / DC Element (oai_dc)
          * mapping, so that dc:date is mapped with Publication Date. This is
@@ -205,6 +230,8 @@ public class DublinCoreExportUtil {
         
         writeFullElementList(xmlw, dcFlavor+":"+"relation", dto2PrimitiveList(version, DatasetFieldConstant.relatedDatasets));
         
+        writeFunderElement(xmlw, version); // MADROÑO LA Referencia compliance
+
         /**
          * dc:type. "Dublin Core (see
          * https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#http://purl.org/dc/terms/type
@@ -212,10 +239,45 @@ public class DublinCoreExportUtil {
          * Vocabulary” for dc:type." So we hard-coded it to "Dataset". See
          * https://github.com/IQSS/dataverse/issues/8129
          */
-        writeFullElement(xmlw, dcFlavor+":"+"type", "Dataset");
-        
+        // MADROÑO BEGIN . LA Referencia compliance
+        writeFullElementList(xmlw, dcFlavor+":"+"type", dto2PrimitiveList(version, DatasetFieldConstant.kindOfData));
+        //writeFullElement(xmlw, dcFlavor+":"+"type", "Dataset");
+         // MADROÑO END . LA Referencia compliance
+       
         writeFullElementList(xmlw, dcFlavor+":"+"source", dto2PrimitiveList(version, DatasetFieldConstant.dataSources));
 
+        // MADROÑO BEGIN . LA Referencia compliance
+        boolean restrict = false;
+        boolean closed = false;
+
+        if (version.isFileAccessRequest()) {
+            restrict = true;
+        }
+        if (version.getFiles() != null) {
+            for (int i = 0; i < version.getFiles().size(); i++) {
+                if (version.getFiles().get(i).isRestricted()) {
+                    closed = true;
+                    break;
+                }
+            }
+        }
+
+        if (restrict) {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/restrictedAccess"); 
+        } else if (!restrict && closed) {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/closedAccess"); 
+        } else {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", "info:eu-repo/semantics/openAccess"); 
+        }
+        
+        //License and Terms
+        LicenseDTO licDTO = version.getLicense();
+        if(licDTO != null) {
+            writeFullElement(xmlw, dcFlavor+":"+"rights", licDTO.getName());
+        }
+        writeFullElement(xmlw, dcFlavor+":"+"rights", version.getTermsOfUse()); 
+        writeFullElement(xmlw, dcFlavor+":"+"rights", version.getRestrictions()); 
+        // MADROÑO END
     }
     
     private static void writeAuthorsElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
@@ -363,6 +425,92 @@ public class DublinCoreExportUtil {
         }
     }
     
+    // MADROÑO BEGIN
+    private static void writeFunderElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO) throws XMLStreamException {
+        if (recolectaAcronymsMap== null) {
+            recolectaAcronymsSet= new HashSet<> (Arrays.asList("AEI","CDTI","FECYT", "ISCIII", "MAAMA", "MICINN", "MICYT", "MINECO", "MINECO", "MECD", "MFOM", "MINETUR", "MARM", "MSSSI"));
+            recolectaAcronymsMap= new HashMap<>();
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100011033", "AEI");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100001872", "CDTI");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100011100", "FECYT");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100004587", "ISCIII");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100004336", "MAAMA");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100004837", "MICINN");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100006280", "MICYT");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100003329", "MINECO");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100010198", "MINECO");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100003176", "MECD");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100008409", "MFOM");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100006591", "MINETUR");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100014211", "MARM");
+            recolectaAcronymsMap.put ("http://dx.doi.org/10.13039/501100003751", "MSSSI");
+        }
+        for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
+            String key = entry.getKey();
+            MetadataBlockDTO value = entry.getValue();
+            if ("citation".equals(key)) {
+                for (FieldDTO fieldDTO : value.getFields()) {
+                    if (DatasetFieldConstant.grantNumber.equals(fieldDTO.getTypeName())) {
+                        for (HashSet<FieldDTO> fieldDTOs : fieldDTO.getMultipleCompound()) {
+                            String awardNumber = null;
+                            String funderName = null;
+
+                            for (FieldDTO next : fieldDTOs) {
+                                if (DatasetFieldConstant.grantNumberValue.equals(next.getTypeName())) {
+                                    awardNumber = next.getSinglePrimitive().replaceAll("\\/", "%2F");
+                                }
+                                if (DatasetFieldConstant.grantNumberAgency.equals(next.getTypeName())) {
+                                    funderName = next.getSinglePrimitive();
+
+                                    if (StringUtils.isNotBlank(funderName)) {
+                                        String funderDoi= OAIRecordServiceBean.getFunderDOI(funderName);
+                                        if (funderDoi!= null) {
+                                            String recolectaAcronym= recolectaAcronymsMap.get(funderDoi);
+                                            if (recolectaAcronym!= null) {
+                                                funderName= recolectaAcronym;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (StringUtils.isNotBlank(funderName) && StringUtils.isNotBlank(awardNumber)) {
+                                xmlw.writeStartElement("dc:relation");
+                                if (recolectaAcronymsSet.contains(funderName))
+                                    xmlw.writeCharacters("info:eu-repo/grantAgreement/" + funderName + "//" + awardNumber);
+                                else
+                                    xmlw.writeCharacters("info:eu-repo/grantAgreement/" + funderName + "/" + awardNumber);
+                                xmlw.writeEndElement(); // labl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private static List <String> getIsoLanguages (List <String> origLanguages) {
+        List <String> isoLanguagesList= new ArrayList<>();
+        if (origLanguages== null) {
+                isoLanguagesList.add ("und");
+        } else{ 
+            for (String origLanguage: origLanguages) {
+                isoLanguagesList.add(getLangIsoCode (origLanguage));
+            }
+            if (isoLanguagesList.isEmpty())
+                isoLanguagesList.add ("und");
+        }
+        return isoLanguagesList;
+    }
+        
+    public static String getLangIsoCode (String langName) {
+        String isoCode= DOIDataCiteRegisterService.getLanguageCode(langName);
+        if (isoCode== null || isoCode.equals("null"))
+            isoCode="mis";
+        return isoCode;
+    }
+    // MADROÑO END
+
     private static void writeContributorElement(XMLStreamWriter xmlw, DatasetVersionDTO datasetVersionDTO, String dcFlavor) throws XMLStreamException {
         for (Map.Entry<String, MetadataBlockDTO> entry : datasetVersionDTO.getMetadataBlocks().entrySet()) {
             String key = entry.getKey();
@@ -511,7 +659,17 @@ public class DublinCoreExportUtil {
     
     private static void writeFullElementList(XMLStreamWriter xmlw, String name, List<String> values) throws XMLStreamException {
         //For the simplest Elements we can 
-        if (values != null && !values.isEmpty()) {
+        //For the simplest Elements we can 
+        // MADROÑO BEGIN RECOLECTA and LA Referencia compatibility. Only set the primary type 
+        if (name.equals("dc:type")) {
+                xmlw.writeStartElement(name);
+                xmlw.writeCharacters("info:eu-repo/semantics/dataset");
+                xmlw.writeEndElement(); // labl
+                xmlw.writeStartElement(name);
+                xmlw.writeCharacters("info:eu-repo/semantics/publishedVersion");
+                xmlw.writeEndElement(); // labl
+        } else // MADROÑO END   
+         if (values != null && !values.isEmpty()) {
             for (String value : values) {
                 xmlw.writeStartElement(name);
                 xmlw.writeCharacters(value);

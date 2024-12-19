@@ -8,6 +8,7 @@ package edu.harvard.iq.dataverse.harvest.server;
 import edu.harvard.iq.dataverse.Dataset;
 import edu.harvard.iq.dataverse.DatasetServiceBean;
 import edu.harvard.iq.dataverse.DatasetVersion;
+import edu.harvard.iq.dataverse.FundersMap;
 import edu.harvard.iq.dataverse.export.ExportService;
 import io.gdcc.spi.export.ExportException;
 import edu.harvard.iq.dataverse.search.IndexServiceBean;
@@ -29,6 +30,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.TemporalType;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -52,7 +55,14 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     
     private static final Logger logger = Logger.getLogger("edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean");
     
-    /**
+// BEGIN CONSORCIO MADROÑO Get Funders's DOI
+    private static HashMap <String, String> fundersMap;
+        public static String getFunderDOI(String funderName) {
+        return fundersMap.get (funderName);
+    }
+// END CONSORCIO MADROÑO 
+        
+     /**
      * Updates the OAI records for the set specified
      * @param setName    name of the OAI set
      * @param datasetIds ids of the datasets that are candidates for this OAI set
@@ -239,6 +249,17 @@ public class OAIRecordServiceBean implements java.io.Serializable {
        
     }
     
+    // BEGIN CONSORCIO MADROÑO Get Funders's DOI
+    public void initFundersMap () {
+        if (fundersMap == null) {
+            Vector   <FundersMap> fundersMapList = null;
+            fundersMapList = (Vector) em.createNamedQuery("FundersMap.findAll", FundersMap.class).getResultList();
+
+            fundersMap= (HashMap) fundersMapList.stream().collect(Collectors.toMap(FundersMap::getId, FundersMap::getDoi));
+        }
+    }    
+    // END CONSORCIO MADROÑO
+     
     // TODO: 
     // Export functionality probably deserves its own EJB ServiceBean - 
     // so maybe create ExportServiceBean, and move these methods there? 
@@ -248,7 +269,10 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     // @EJB context is convenient. 
     
     public void exportAllFormats(Dataset dataset) {
-        try {
+        // BEGIN CONSORCIO MADROÑO Get Funders's DOI
+        initFundersMap ();
+        // END CONSORCIO MADROÑO
+         try {
             ExportService exportServiceInstance = ExportService.getInstance();
             logger.log(Level.FINE, "Attempting to run export on dataset {0}", dataset.getGlobalId());
             exportServiceInstance.exportAllFormats(dataset);
@@ -259,6 +283,9 @@ public class OAIRecordServiceBean implements java.io.Serializable {
     
     @TransactionAttribute(REQUIRES_NEW)
     public void exportAllFormatsInNewTransaction(Dataset dataset) throws ExportException {
+        // BEGIN CONSORCIO MADROÑO Get Funders's DOI
+        initFundersMap ();
+        // END CONSORCIO MADROÑO
         try {
             ExportService exportServiceInstance = ExportService.getInstance();
             exportServiceInstance.exportAllFormats(dataset);

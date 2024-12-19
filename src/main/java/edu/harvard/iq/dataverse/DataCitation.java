@@ -84,7 +84,8 @@ public class DataCitation {
         persistentId = getPIDFrom(dsv, dsv.getDataset());
 
         // UNF
-        UNF = dsv.getUNF();
+        // UNF MADROÑO. Don't display UNF
+        UNF = null; // UNF = dsv.getUNF();
 
         // optional values
         for (DatasetFieldType dsfType : dsv.getDataset().getOwner().getCitationDatasetFieldTypes()) {
@@ -119,10 +120,10 @@ public class DataCitation {
         // The Global Identifier of the Datafile (if published and isDirect==true) or Dataset as appropriate
         persistentId = getPIDFrom(dsv, df);
 
-        // UNF
-        if (df.isTabularData() && df.getUnf() != null && !df.getUnf().isEmpty()) {
+        // UNF MADROÑO. Don't display UNF
+        /*if (df.isTabularData() && df.getUnf() != null && !df.getUnf().isEmpty()) {
             UNF = df.getUnf();
-        }
+        }*/
     }
 
     private void getCommonValuesFrom(DatasetVersion dsv) {
@@ -174,7 +175,8 @@ public class DataCitation {
     }
 
     public String getUNF() {
-        return UNF;
+        return null; // MADROÑO. Don't display UNF
+        //return UNF;
     }
 
     public String getPublisher() {
@@ -220,9 +222,10 @@ public class DataCitation {
             citation.append("; " + formatString(fileTitle, html, "") + " [fileName]");
         }
         // append UNF
+        /* MADROÑO. Don't display UNF
         if (!StringUtils.isEmpty(UNF)) {
             citation.append(separator).append(UNF).append(" [fileUNF]");
-        }
+        }*/
 
         for (DatasetField dsf : optionalValues) {
             String displayName = dsf.getDatasetFieldType().getDisplayName();
@@ -282,11 +285,12 @@ public class DataCitation {
             out.write(title.replaceFirst(doubleQ, doubleTick).replaceFirst(doubleQ, doubleAp));
             out.write("}},\r\n");
         }
+        /* MADROÑO. Don't display UNF
         if(UNF != null){
             out.write("UNF = {");
             out.write(UNF);
             out.write("},\r\n");
-        }
+        }*/
         out.write("year = {");
         out.write(year);
         out.write("},\r\n");
@@ -397,10 +401,10 @@ public class DataCitation {
         if (getFileTitle() != null) {
             if(!isDirect()) {
                 out.write("C1  - " + getFileTitle() + "\r\n");
-            }
+            }/* MADROÑO. Don't display UNF
             if (getUNF() != null) {
                 out.write("C2  - " + getUNF() + "\r\n");
-            }
+            }*/
         }
         // closing element:
         out.write("ER  - \r\n");
@@ -610,12 +614,12 @@ public class DataCitation {
             xmlw.writeStartElement("custom1");
             xmlw.writeCharacters(fileTitle);
             xmlw.writeEndElement(); // custom1
-            
-                if (getUNF() != null) {
+             /* MADROÑO. Don't display UNF           
+             if (getUNF() != null) {
                     xmlw.writeStartElement("custom2");
                     xmlw.writeCharacters(getUNF());
                     xmlw.writeEndElement(); // custom2
-            }
+            }*/
         }
         if (persistentId != null) {
             xmlw.writeStartElement("electronic-resource-num");

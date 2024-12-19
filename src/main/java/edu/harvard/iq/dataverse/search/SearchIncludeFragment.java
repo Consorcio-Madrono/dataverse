@@ -1385,6 +1385,7 @@ public class SearchIncludeFragment implements java.io.Serializable {
     }
     
     public String tabularDataUnfDisplay(DataFile datafile) {
+        return ""; /* MADROÑO. Do not Display unf
         String tabUnf = "";
 
         if (datafile == null) {
@@ -1399,7 +1400,7 @@ public class SearchIncludeFragment implements java.io.Serializable {
             }
         }
 
-        return tabUnf;
+        return tabUnf;*/
     }
 
     public String dataFileSizeDisplay(DataFile datafile) {
