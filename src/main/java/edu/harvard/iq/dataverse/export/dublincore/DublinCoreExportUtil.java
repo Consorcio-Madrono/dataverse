@@ -190,8 +190,6 @@ public class DublinCoreExportUtil {
         writeAbstractElement(xmlw, version, dcFlavor); // Description
         writeSubjectElement(xmlw, version, dcFlavor);   //Subjects and Key Words
         
-        writeFullElementList(xmlw, dcFlavor+":"+"language", dto2PrimitiveList(version, DatasetFieldConstant.language));        
-        
         // MADROÑO BEGIN . LA Referencia compliance
         List<String> languages= dto2PrimitiveList(version, DatasetFieldConstant.language);
         List<String> isoLanguages= getIsoLanguages (languages); 
