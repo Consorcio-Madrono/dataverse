@@ -164,12 +164,12 @@ import edu.harvard.iq.dataverse.util.FileMetadataUtil;
 import java.util.Comparator;
 // MADROÑO NEW IMPORTS BEGIN        
 import es.consorciomadrono.DatasetMetricsByMonth;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import jakarta.ejb.TransactionAttribute;
 import static jakarta.ejb.TransactionAttributeType.REQUIRES_NEW;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.Vector;
 // MADROÑO NEW IMPORTS END
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -2006,6 +2006,7 @@ public class DatasetPage implements java.io.Serializable {
         setDataverseSiteUrl(systemConfig.getDataverseSiteUrl());
 
         guestbookResponse = new GuestbookResponse();
+        anonymizedAccess = null; // MADROÑO. This change is implemented in Dataverse v6.6. 
 
         String sortOrder = getSortOrder();
         if(sortOrder != null) {
@@ -5716,7 +5717,7 @@ public class DatasetPage implements java.io.Serializable {
 
     public boolean isAnonymizedAccess() {
         if (anonymizedAccess == null) {
-            if (session.getUser() instanceof PrivateUrlUser) {
+            if (session.getUser() instanceof PrivateUrlUser && workingVersion.isDraft()) { // MADROÑO. This change is implemented in Dataverse v6.6. 
                 anonymizedAccess = ((PrivateUrlUser) session.getUser()).hasAnonymizedAccess();
             } else {
                 anonymizedAccess = false;
@@ -5740,6 +5741,24 @@ public class DatasetPage implements java.io.Serializable {
             return false;
         }
     }
+
+     // MADROÑO BEGIN. This change is implemented in Dataverse v6.6. 
+    String anonymizedFieldTypeNames = null;
+    
+    public String getAnonymizedFieldTypeNames() {
+        if (anonymizedFieldTypeNames != null) {
+            return anonymizedFieldTypeNames;
+        }
+        if (settingsWrapper.getValueForKey(SettingsServiceBean.Key.AnonymizedFieldTypeNames) != null) {
+            anonymizedFieldTypeNames = settingsWrapper.getValueForKey(SettingsServiceBean.Key.AnonymizedFieldTypeNames);
+
+        } else {
+            anonymizedFieldTypeNames = "";
+
+        }
+        return anonymizedFieldTypeNames;
+    }
+     // MADROÑO END. This change is implemented in Dataverse v6.6. 
 
     // todo: we should be able to remove - this is passed in the html pages to other fragments, but they could just access this service bean directly.
     public FileDownloadServiceBean getFileDownloadService() {
