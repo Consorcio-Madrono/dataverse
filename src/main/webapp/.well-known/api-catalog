@@ -1,0 +1,40 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://edatos.consorciomadrono.es/oai",
+      "service-doc": [
+        {
+          "href": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm",
+          "type": "text/html",
+          "title": "Specification for an OAI Static Repository and an OAI Static Repository Gateway"
+        }
+      ],
+      "service-meta": [
+        {
+          "href": "https://edatos.consorciomadrono.es/oai",
+          "type": "application/xml"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/api",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/sitemap.xml",
+      "service-doc": [
+        {
+          "href": "https://www.sitemaps.org/protocol.html",
+          "type": "text/html",
+          "title": "sitemaps.org - Protocol"
+        }
+      ]
+    }
+  ]
+}

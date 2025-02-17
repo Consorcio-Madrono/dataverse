@@ -1,0 +1,108 @@
+{
+  "@context": {
+    "dc": "http://purl.org/dc/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "vcard": "http://www.w3.org/2006/vcard/ns#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "premis" : "http://www.loc.gov/premis/rdf/v3/"
+  },
+  "@type": [
+    "schema:DataCatalog",
+    "schema:Project"
+  ],
+  "@id": "https://edatos.consorciomadrono.es",
+  "schema:url": "https://edatos.consorciomadrono.es",
+  "schema:name": "e-cienciaDatos",
+  "schema:description": " e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.",
+  "schema:contactPoint": "eciencia@consorciomadrono.es",
+  "schema:keywords": [
+    "generic"
+  ],
+  "schema:conditionsOfAccess": "open access",
+  "schema:license": "https://creativecommons.org/licenses/by/4.0/",
+  "schema:hasCertification" : {
+    "@type": "schema:Certification",
+    "schema:url": "https://amt.coretrustseal.org/certificates",
+    "schema:certificationStatus": "schema:CertificationActive",
+    "schema:issuedBy": {
+      "@type": "schema:Organization",
+      "schema:name": "CoreTrustSeal",
+      "schema:url": "https://www.coretrustseal.org"
+    },
+    "schema:auditDate": "2023-04-18",
+    "schema:expires": "2026-04-17"
+  },
+  "schema:publishingPrinciples": [
+    {
+      "@type": "schema:CreativeWork",
+      "schema:url": "https://www.consorciomadrono.es/en/investigam/licencias/",
+      "schema:additionalType": "dct:Policy"
+    },
+    {
+      "@type": "schema:CreativeWork",
+      "schema:url": "https://www.consorciomadrono.es/docs/PreservationPlan.pdf",
+      "schema:additionalType": "premis:PreservationPolicy"
+    }
+  ],
+  "schema:publisher": {
+    "@type": "schema:Organization",
+    "schema:name": "Consorcio Madroño",
+    "schema:address": {
+      "@type": "schema:PostalAddress",
+      "schema:addressCountry": "Spain"
+    }
+  },
+  "schema:inLanguage": "esp",
+  "schema:offers": [
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatos.consorciomadrono.es/.well-known/api-catalog",
+        "schema:documentation": "https://signposting.org/FAIRiCat/"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatos.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatos.consorciomadrono.es/oai",
+        "schema:documentation": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatos.consorciomadrono.es/sitemap.xml",
+        "schema:documentation": "https://www.sitemaps.org/protocol.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://w3id.org",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Identifier-service"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    }
+  ]
+}
