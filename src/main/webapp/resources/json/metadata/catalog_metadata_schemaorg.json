@@ -20,8 +20,8 @@
   "schema:keywords": [
     "generic"
   ],
-  "schema:conditionsOfAccess": "open access",
-  "schema:license": "https://creativecommons.org/licenses/by/4.0/",
+  "schema:conditionsOfAccess": "http://www.consorciomadrono.es/en/investigam/licencia-de-uso",
+  "schema:license": "https://www.consorciomadrono.es/en/investigam/licencias/",
   "schema:hasCertification" : {
     "@type": "schema:Certification",
     "schema:url": "https://amt.coretrustseal.org/certificates",
@@ -37,7 +37,7 @@
   "schema:publishingPrinciples": [
     {
       "@type": "schema:CreativeWork",
-      "schema:url": "https://www.consorciomadrono.es/en/investigam/licencias/",
+      "schema:url": "http://www.consorciomadrono.es/en/investigam/politicas",
       "schema:additionalType": "dct:Policy"
     },
     {
@@ -54,7 +54,7 @@
       "schema:addressCountry": "Spain"
     }
   },
-  "schema:inLanguage": "esp",
+  "schema:inLanguage": "spa",
   "schema:offers": [
     {
       "@type": "schema:Offer",
@@ -92,7 +92,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://w3id.org",
+        "schema:documentation": "https://doi.datacite.org",
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Identifier-service"
       }
     },
@@ -101,6 +101,78 @@
       "schema:itemOffered": {
         "@type": "schema:Service",
         "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.openarchives.org/ore",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://schema.datacite.org/",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://json-ld.org",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://ddialliance.org/ddi_codebook_v2.1",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://144531336.fs1.hubspotusercontent-eu1.net/hubfs/144531336/sites/default/files/codebook2-0.xml",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.json.org/",
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     }

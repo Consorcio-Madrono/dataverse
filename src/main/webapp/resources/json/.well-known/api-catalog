@@ -21,7 +21,7 @@
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/api",
-          "type": "application/html"
+          "type": "application/html",
           "title": "API Rest"
         }
       ]
