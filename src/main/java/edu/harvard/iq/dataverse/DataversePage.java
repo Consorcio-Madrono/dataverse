@@ -4,6 +4,7 @@ import edu.harvard.iq.dataverse.UserNotification.Type;
 import edu.harvard.iq.dataverse.authorization.Permission;
 import edu.harvard.iq.dataverse.authorization.users.AuthenticatedUser;
 import edu.harvard.iq.dataverse.authorization.users.User;
+import edu.harvard.iq.dataverse.branding.BrandingUtil;
 import edu.harvard.iq.dataverse.dataaccess.DataAccess;
 import edu.harvard.iq.dataverse.dataset.DatasetUtil;
 import edu.harvard.iq.dataverse.dataverse.DataverseUtil;
@@ -57,6 +58,8 @@ import org.primefaces.model.DualListModel;
 import jakarta.ejb.EJBException;
 import jakarta.faces.event.ValueChangeEvent;
 import jakarta.faces.model.SelectItem;
+import jakarta.json.JsonObject;
+import jakarta.json.Json;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.PrimeFaces;
@@ -136,6 +139,8 @@ public class DataversePage implements java.io.Serializable {
     private Long ownerId = null;    
     private EditMode editMode;
     private LinkMode linkMode;
+    private String jsonDcat= null;
+    private String jsonSchemaOrg= null;
 
     private DualListModel<DatasetFieldType> facets = new DualListModel<>(new ArrayList<>(), new ArrayList<>());
     private DualListModel<Dataverse> featuredDataverses = new DualListModel<>(new ArrayList<>(), new ArrayList<>());
@@ -285,6 +290,216 @@ public class DataversePage implements java.io.Serializable {
         return dataverse;
     }
 
+    public String getDcatJson () {
+        String repositoryURL= SystemConfig.getDataverseSiteUrlStatic();
+        String repositoryName   = BrandingUtil.getInstallationBrandName();
+        String repositoryContact= settingsWrapper.getSupportTeamEmail();
+        JsonObject model = Json.createObjectBuilder()
+                .add("@context", Json.createObjectBuilder()
+                    .add("dcat", "http://www.w3.org/ns/dcat#")
+                    .add("dct", "http://purl.org/dc/terms/")
+                    .add("foaf", "http://xmlns.com/foaf/0.1/")
+                    .add("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                    .add("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
+                    .add("vcard", "http://www.w3.org/2006/vcard/ns#")
+                    .add("xsd", "http://www.w3.org/2001/XMLSchema#")
+                    .add("dqv", "http://www.w3.org/ns/dqv#")
+                    .add("oa", "http://www.w3.org/ns/oa#")
+                    .add("premis", "http://www.loc.gov/premis/rdf/v3/"))
+                .add("@type", Json.createArrayBuilder()
+                    .add("dcat:Catalog")
+                    .add("foaf:Project"))
+                .add("@id", repositoryURL)
+                .add("foaf:homepage", repositoryURL)
+                .add("dct:identifier", repositoryURL)
+                .add("foaf:name", repositoryName)
+                .add("dct:title", repositoryName)
+                .add("dct:description", "e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.")
+                .add("dcat:contactPoint", repositoryContact)
+                .add("dcat:theme", Json.createArrayBuilder()
+                        .add("generic"))
+                .add("dct:accessRights", "http://www.consorciomadrono.es/en/investigam/licencia-de-uso")
+                .add("dct:license", "https://www.consorciomadrono.es/en/investigam/licencias")
+                .add("dqv:hasQualityAnnotation", Json.createObjectBuilder()
+                    .add("@type", "dqv:QualityCertificate")
+                    .add("oa:hasTarget", repositoryURL)
+                    .add("oa:hasBody", "https://amt.coretrustseal.org/certificates")
+                    .add("oa:motivatedBy", "dqv:qualityAssessment")
+                    .add("dct:creator", "CoreTrustSeal"))
+                .add("dct:conformsTo", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:accrualPolicy")
+                        .add("@id", "https://www.consorciomadrono.es/en/investigam/politicas"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Policy")
+                        .add("@id", "https://www.consorciomadrono.es/en/investigam/licencias"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "premis:PreservationPolicy")
+                        .add("@id", "https://www.consorciomadrono.es/docs/PreservationPlan.pdf")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-preservation-policy"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://www.openarchives.org/ore")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://schema.datacite.org/")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://json-ld.org")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://ddialliance.org/ddi_codebook_v2.1")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://www.dublincore.org/specifications/dublin-core/dcmi-terms")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://144531336.fs1.hubspotusercontent-eu1.net/hubfs/144531336/sites/default/files/codebook2-0.xml")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://www.json.org")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-schema"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dct:Standard")
+                        .add("@id", "https://doi.datacite.org")
+                        .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Identifier-service")))
+                .add("dct:publisher", Json.createObjectBuilder()
+                    .add("@type", Json.createArrayBuilder()
+                        .add("foaf:Agent")
+                        .add("vcard:Kind"))
+                    .add("foaf:name", repositoryName)
+                    .add("vcard:fn", repositoryName)
+                    .add("vcard:country-name", "Spain"))
+                .add("dct:language", "spa")
+                .add("dcat:service", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dcat:DataService")
+                        .add("dcat:endpointURL", repositoryURL + "/.well-known/api-catalog")
+                        .add("dct:conformsTo", "https://signposting.org/FAIRiCat/"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dcat:DataService")
+                        .add("dcat:endpointURL", repositoryURL + "/api")
+                        .add("dct:conformsTo", "https://guides.dataverse.org/en/latest/api/"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dcat:DataService")
+                        .add("dcat:endpointURL", repositoryURL + "oai")
+                        .add("dct:conformsTo", "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "dcat:DataService")
+                        .add("dcat:endpointURL", repositoryURL + "/sitemap.xml")
+                        .add("dct:conformsTo", "https://www.sitemaps.org/protocol.html")))
+                .build();
+            
+        return model.toString();
+    }
+    
+    
+    public String getSchemaOrgJson () {
+        String repositoryURL    = SystemConfig.getDataverseSiteUrlStatic();
+        String repositoryName   = BrandingUtil.getInstallationBrandName();
+        String repositoryContact= settingsWrapper.getSupportTeamEmail();
+        JsonObject model = Json.createObjectBuilder()
+                .add("@context", Json.createObjectBuilder()
+                    .add("dct", "http://purl.org/dc/terms/")
+                    .add("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                    .add("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
+                    .add("schema", "http://schema.org/")
+                    .add("vcard", "http://www.w3.org/2006/vcard/ns#")
+                    .add("xsd", "http://www.w3.org/2001/XMLSchema#")
+                    .add("premis", "http://www.loc.gov/premis/rdf/v3/"))
+                .add("@type", Json.createArrayBuilder()
+                    .add("schema:DataCatalog")
+                    .add("schema:Project"))
+                .add("@id",repositoryURL)
+                .add("schema:url",repositoryURL)
+                .add("schema:name",repositoryName)
+                .add("schema:description","e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.")
+                .add("schema:contactPoint",repositoryContact)
+                .add("schema:keywords", Json.createArrayBuilder()
+                    .add("generic"))
+                .add("schema:conditionsOfAccess", "http://www.consorciomadrono.es/en/investigam/licencia-de-uso")
+                .add("schema:hasCertification", Json.createObjectBuilder()
+                    .add("@type", "schema:Certification")
+                    .add("schema:url", "https://amt.coretrustseal.org/certificates")
+                    .add("schema:certificationStatus", "schema:CertificationActive")
+                    .add("schema:issuedBy", Json.createObjectBuilder()
+                        .add("@type", "schema:Organization")
+                        .add("schema:name", "CoreTrustSeal")
+                        .add("schema:url", "https://www.coretrustseal.org"))
+                    .add("schema:auditDate", "2023-04-18")
+                    .add("schema:expires", "2026-04-17"))
+                .add("schema:publishingPrinciples", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:CreativeWork")
+                        .add("schema:url", "https://www.consorciomadrono.es/en/investigam/politicas")
+                        .add("schema:additionalType", "dct:Policy"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:CreativeWork")
+                        .add("schema:url", "https://www.consorciomadrono.es/docs/PreservationPlan.pdf")
+                        .add("schema:additionalType", "premis:PreservationPolicy")))
+                .add("schema:publisher", Json.createObjectBuilder()
+                    .add("@type", "schema:Organization")
+                    .add("schema:name", "Consorcio Madroño")
+                    .add("schema:address", Json.createObjectBuilder()
+                        .add("@type", "schema:PostalAddress")
+                        .add("schema:addressCountry", "Spain")))
+                .add("schema:inLanguage", "spa")
+                .add("schema:publishingPrinciples", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder())
+                            .add("@type", "schema:WebAPI")
+                            .add("schema:url", repositoryURL + "/.well-known/api-catalog")
+                            .add("schema:documentation", "https://signposting.org/FAIRiCat"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder())
+                            .add("@type", "schema:WebAPI")
+                            .add("schema:url", repositoryURL + "/api")
+                            .add("schema:documentation", "https://guides.dataverse.org/en/latest/api/"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder())
+                            .add("@type", "schema:WebAPI")
+                            .add("schema:url", repositoryURL + "/oai")
+                            .add("schema:documentation", "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder())
+                            .add("@type", "schema:WebAPI")
+                            .add("schema:url", repositoryURL + "/sitemap.xml")
+                            .add("schema:documentation", "https://www.sitemaps.org/protocol.html"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder())
+                            .add("@type", "schema:Service")
+                            .add("schema:documentation", "https://doi.datacite.org")
+                            .add("schema:serviceType", "https://w3id.org/fair/fip/latest/Identifier-service"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder())
+                            .add("@type", "schema:Service")
+                            .add("schema:documentation", "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary")
+                            .add("schema:serviceType", "https://w3id.org/fair/fip/latest/Metadata-schema")))
+                .build();
+                
+        return model.toString();
+    }
+    
     public void setDataverse(Dataverse dataverse) {
         this.dataverse = dataverse;
     }
@@ -301,6 +516,22 @@ public class DataversePage implements java.io.Serializable {
 
     public void setEditMode(EditMode editMode) {
         this.editMode = editMode;
+    }
+
+    public String getJsonDcat() {
+        return jsonDcat;
+    }
+
+    public void setJsonDcat(String jsonDcat) {
+        this.jsonDcat = jsonDcat;
+    }
+
+    public String getJsonSchemaOrg() {
+        return jsonSchemaOrg;
+    }
+
+    public void setJsonSchemaOrg(String jsonSchemaOrg) {
+        this.jsonSchemaOrg = jsonSchemaOrg;
     }
 
     public Long getOwnerId() {
@@ -324,6 +555,8 @@ public class DataversePage implements java.io.Serializable {
     }
     
     public String init() {
+        jsonDcat= getJsonDcat();
+        jsonSchemaOrg= getJsonSchemaOrg();
         //System.out.println("_YE_OLDE_QUERY_COUNTER_");  // for debug purposes
         // Check for rate limit exceeded. Must be done before anything else to prevent unnecessary processing.
         if (!cacheFactory.checkRate(session.getUser(), new CheckRateLimitForCollectionPageCommand(null,null))) {

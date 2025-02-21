@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -18,6 +18,15 @@
             <ui:define name="meta_header">
             <meta name="description" content="#{MarkupChecker:stripAllTags(DataversePage.dataverse.description)}"/>
             </ui:define>
+            <ui:define name="jsonld_header">
+                <link rel="api-catalog" type="application/linkset+json" href="https://www.consorciomadrono.es/resources/json/.well-known/api-catalog"/>
+                <script type="application/ld+json">
+                    #{DataversePage.getDcatJson ()}
+                </script>
+                <script type="application/ld+json">
+                    #{DataversePage.getSchemaOrgJson ()}
+                </script>
+        </ui:define>
             <ui:define name="body">
                 <f:loadBundle basename="ValidationMessages" var="valMsg"/>
                 <f:metadata>
