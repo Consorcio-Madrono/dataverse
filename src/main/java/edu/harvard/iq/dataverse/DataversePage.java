@@ -670,7 +670,7 @@ public class DataversePage implements java.io.Serializable {
                         .add("@type", "schema:Offer")
                         .add("schema:itemOffered", Json.createObjectBuilder()
                             .add("@type", "schema:Service")
-                            .add("schema:documentation", "ttps://guidelines.openaire.eu/en/latest/data/use_of_datacite.html")
+                            .add("schema:documentation", "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html")
                             .add("schema:serviceType", "https://w3id.org/fair/fip/latest/Metadata-schema")))
                     .add(Json.createObjectBuilder()
                         .add("@type", "schema:Offer")
