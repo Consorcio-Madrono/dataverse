@@ -1,12 +1,12 @@
 {
   "@context": {
-    "dct": "http://purl.org/dc/terms/",
+    "dct": "http://purl.org/dc/terms",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "schema": "http://schema.org/",
+    "schema": "http://schema.org",
     "vcard": "http://www.w3.org/2006/vcard/ns#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "premis" : "http://www.loc.gov/premis/rdf/v3/"
+    "premis" : "http://www.loc.gov/premis/rdf/v3"
   },
   "@type": [
     "schema:DataCatalog",
@@ -21,7 +21,7 @@
     "generic"
   ],
   "schema:conditionsOfAccess": "http://www.consorciomadrono.es/en/investigam/licencia-de-uso",
-  "schema:license": "https://www.consorciomadrono.es/en/investigam/licencias/",
+  "schema:license": "https://www.consorciomadrono.es/en/investigam/licencias",
   "schema:hasCertification" : {
     "@type": "schema:Certification",
     "schema:url": "https://amt.coretrustseal.org/certificates",
@@ -61,7 +61,7 @@
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
         "schema:url": "https://edatos.consorciomadrono.es/.well-known/api-catalog",
-        "schema:documentation": "https://signposting.org/FAIRiCat/"
+        "schema:documentation": "https://signposting.org/FAIRiCat"
       }
     },
     {
@@ -69,7 +69,7 @@
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
         "schema:url": "https://edatos.consorciomadrono.es/api",
-        "schema:documentation": "https://guides.dataverse.org/en/latest/api/"
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api"
       }
     },
     {
@@ -116,7 +116,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://schema.datacite.org/",
+        "schema:documentation": "https://schema.datacite.org",
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -148,15 +148,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
+        "schema:documentation": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms",
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -172,7 +164,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://www.json.org/",
+        "schema:documentation": "https://www.json.org",
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     }
