@@ -1,12 +1,12 @@
 {
   "@context": {
-    "dct": "http://purl.org/dc/terms",
+    "dct": "http://purl.org/dc/terms/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "schema": "http://schema.org",
+    "schema": "http://schema.org/",
     "vcard": "http://www.w3.org/2006/vcard/ns#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "premis" : "http://www.loc.gov/premis/rdf/v3"
+    "premis" : "http://www.loc.gov/premis/rdf/v3/"
   },
   "@type": [
     "schema:DataCatalog",
@@ -60,7 +60,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
-        "schema:url": "https://edatossandbox.consorciomadrono.es/resources/json/.well-known/api-catalog",
+        "schema:url": "/resources/json/.well-known/api-catalog",
         "schema:documentation": "https://signposting.org/FAIRiCat"
       }
     },
@@ -68,7 +68,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
-        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:url": "/api",
         "schema:documentation": "https://guides.dataverse.org/en/latest/api"
       }
     },
@@ -76,7 +76,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
-        "schema:url": "https://edatossandbox.consorciomadrono.es/oai",
+        "schema:url": "/oai",
         "schema:documentation": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
       }
     },
@@ -84,7 +84,7 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
-        "schema:url": "https://edatossandbox.consorciomadrono.es/sitemap.xml",
+        "schema:url": "/sitemap/sitemap.xml",
         "schema:documentation": "https://www.sitemaps.org/protocol.html"
       }
     },

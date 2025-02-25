@@ -21,8 +21,8 @@
             </ui:define>
            <ui:define name="jsonld_header">
                 <ui:fragment rendered="#{!DatasetPage.anonymizedAccess}">
-    <link rel="describedby" type="application/ld+json" href="https://www.consorciomadrono.es/resources/json/metadata/catalog_metadata_schemaorg.json"/>
-    <link rel="api-catalog" type="application/linkset+json" href="https://www.consorciomadrono.es/resources/json/.well-known/api-catalog"/>
+    <link rel="describedby" type="application/ld+json" href="/resources/json/metadata/catalog_metadata_schemaorg.json"/>
+    <link rel="api-catalog" type="application/linkset+json" href="/resources/json/.well-known/api-catalog"/>
 
     <script type="application/ld+json">
         {
@@ -42,9 +42,9 @@
                 "dcat:Catalog",
                 "foaf:Project"
             ],
-            "@id": "https://edatos.consorciomadrono.es",
-            "foaf:homepage": "https://edatos.consorciomadrono.es",
-            "dct:identifier": "https://edatos.consorciomadrono.es",
+            "@id": "https://edatossandbox.consorciomadrono.es",
+            "foaf:homepage": "https://edatossandbox.consorciomadrono.es",
+            "dct:identifier": "https://edatossandbox.consorciomadrono.es",
             "foaf:name": "e-cienciaDatos",
             "dct:title": "e-cienciaDatos",
             "dct:description": "e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.",
@@ -52,7 +52,7 @@
             "dcat:theme": [
                 "generic"
             ],
-            "dct:accessRights": "http://www.consorciomadrono.es/en/investigam/licencia-de-uso",
+            "dct:accessRights": "https://www.consorciomadrono.es/en/investigam/licencia-de-uso",
             "dct:license": "https://www.consorciomadrono.es/en/investigam/licencias",
             "dqv:hasQualityAnnotation": {
                 "@type": "dqv:QualityCertificate",
@@ -88,7 +88,7 @@
                 },
                 {
                     "@type": "dct:Standard",
-                    "@id": "https://schema.datacite.org/",
+                    "@id": "https://schema.datacite.org",
                     "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
                 },
                 {
@@ -145,22 +145,22 @@
             "dcat:service": [
                 {
                     "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatos.consorciomadrono.es/.well-known/api-catalog",
-                    "dct:conformsTo": "https://signposting.org/FAIRiCat/"
+                    "dcat:endpointURL": "/.well-known/api-catalog",
+                    "dct:conformsTo": "https://signposting.org/FAIRiCat"
                 },
                 {
                     "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatos.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/"
+                    "dcat:endpointURL": "/api",
+                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/api"
                 },
                 {
                     "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatos.consorciomadrono.es/oai",
+                    "dcat:endpointURL": "/oai",
                     "dct:conformsTo": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
                 },
                 {
                     "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatos.consorciomadrono.es/sitemap.xml",
+                    "dcat:endpointURL": "/sitemap.xml",
                     "dct:conformsTo": "https://www.sitemaps.org/protocol.html"
                 }
             ]
