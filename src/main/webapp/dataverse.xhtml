@@ -22,8 +22,8 @@
                 <link rel="api-catalog" type="application/linkset+json" href="https://www.consorciomadrono.es/resources/json/.well-known/api-catalog"/>
                 <script type="application/ld+json">
                     #{DataversePage.getDcatJson ()}
-                </script>
-                <script type="application/ld+json">
+                </script>   
+                <script rel="describedby" type="application/ld+json">
                     #{DataversePage.getSchemaOrgJson ()}
                 </script>
         </ui:define>
