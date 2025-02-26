@@ -1,7 +1,7 @@
 {
   "linkset": [
     {
-      "anchor": "https://edatos.consorciomadrono.es/oai",
+      "anchor": "https://edatossandbox.consorciomadrono.es/oai",
       "service-doc": [
         {
           "href": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm",
@@ -11,13 +11,13 @@
       ],
       "service-meta": [
         {
-          "href": "https://edatos.consorciomadrono.es/oai",
+          "href": "https://edatossandbox.consorciomadrono.es/oai",
           "type": "application/xml"
         }
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/api/search.html",
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/api/dataaccess.html",
@@ -37,7 +37,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/api/native-api.html",
@@ -47,7 +47,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/developers/dataset-semantic-metadata-api.html",
@@ -57,7 +57,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/developers/dataset-migration-api.html",
@@ -67,7 +67,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/developers/s3-direct-upload-api.html",
@@ -77,7 +77,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/developers/globus-api.html",
@@ -87,7 +87,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "https://guides.dataverse.org/en/latest/api/metrics.html",
@@ -97,7 +97,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/api",
+      "anchor": "https://edatossandbox.consorciomadrono.es/api",
       "service-doc": [
         {
           "href": "http://swordapp.org/",
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "anchor": "https://edatos.consorciomadrono.es/sitemap.xml",
+      "anchor": "https://edatossandbox.consorciomadrono.es/sitemap.xml",
       "service-doc": [
         {
           "href": "https://www.sitemaps.org/protocol.html",
