@@ -68,8 +68,64 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:WebAPI",
-        "schema:url": "/api",
-        "schema:documentation": "https://guides.dataverse.org/en/latest/api"
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/search.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/dataaccess.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/native-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/dataset-semantic-metadata-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/s3-direct-upload-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/globus-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/metrics.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "http://swordapp.org/"
       }
     },
     {
