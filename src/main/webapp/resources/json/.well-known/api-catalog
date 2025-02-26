@@ -20,7 +20,87 @@
       "anchor": "https://edatos.consorciomadrono.es/api",
       "service-doc": [
         {
-          "href": "https://guides.dataverse.org/en/latest/api",
+          "href": "https://guides.dataverse.org/en/latest/api/search.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/api/dataaccess.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/api/native-api.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/developers/dataset-semantic-metadata-api.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/developers/dataset-migration-api.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/developers/s3-direct-upload-api.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/developers/globus-api.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "https://guides.dataverse.org/en/latest/api/metrics.html",
+          "type": "application/html"
+          "title": "API Rest"
+        }
+      ]
+    },
+    {
+      "anchor": "https://edatos.consorciomadrono.es/api",
+      "service-doc": [
+        {
+          "href": "http://swordapp.org/",
           "type": "application/html"
           "title": "API Rest"
         }
