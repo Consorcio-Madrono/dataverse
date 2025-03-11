@@ -25,181 +25,394 @@
     <link rel="api-catalog" type="application/linkset+json" href="https://edatossandbox.consorciomadrono.es/resources/json/.well-known/api-catalog"/>
 
     <script type="application/ld+json">
-        {
-            "@context": {
-                "dcat": "http://www.w3.org/ns/dcat#",
-                "dct": "http://purl.org/dc/terms/",
-                "foaf": "http://xmlns.com/foaf/0.1/",
-                "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-                "vcard": "http://www.w3.org/2006/vcard/ns#",
-                "xsd": "http://www.w3.org/2001/XMLSchema#",
-                "dqv": "http://www.w3.org/ns/dqv#",
-                "oa": "http://www.w3.org/ns/oa#",
-                "premis" : "http://www.loc.gov/premis/rdf/v3/"
-            },
-            "@type": [
-                "dcat:Catalog",
-                "foaf:Project"
-            ],
-            "@id": "https://edatossandbox.consorciomadrono.es",
-            "foaf:homepage": "https://edatossandbox.consorciomadrono.es",
-            "dct:identifier": "https://edatossandbox.consorciomadrono.es",
-            "foaf:name": "e-cienciaDatos",
-            "dct:title": "e-cienciaDatos",
-            "dct:description": "e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.",
-            "dcat:contactPoint": "eciencia@consorciomadrono.es",
-            "dcat:theme": [
-                "generic"
-            ],
-            "dct:accessRights": "https://www.consorciomadrono.es/en/investigam/licencia-de-uso",
-            "dct:license": "https://www.consorciomadrono.es/en/investigam/licencias",
-            "dqv:hasQualityAnnotation": {
-                "@type": "dqv:QualityCertificate",
-                "oa:hasTarget": "https://edatos.consorciomadrono.es",
-                "oa:hasBody": "https://amt.coretrustseal.org/certificates",
-                "oa:motivatedBy": "dqv:qualityAssessment",
-                "dct:creator": "CoreTrustSeal"
-            },
-            "dct:conformsTo": [
-                {
-                    "@type": "dct:accrualPolicy",
-                    "@id": "https://www.consorciomadrono.es/en/investigam/politicas"
-                },
-    	
-                {
-                    "@type": "dct:Policy",
-                    "@id": "https://www.consorciomadrono.es/en/investigam/politicas"
-                },
-                {
-                    "@type": "premis:PreservationPolicy",
-                    "@id": "https://www.consorciomadrono.es/docs/PreservationPlan.pdf",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-preservation-policy"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://www.openarchives.org/ore",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://schema.datacite.org",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://json-ld.org",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://ddialliance.org/ddi_codebook_v2.1",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://144531336.fs1.hubspotusercontent-eu1.net/hubfs/144531336/sites/default/files/codebook2-0.xml",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://www.json.org",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
-                },
-                {
-                    "@type": "dct:Standard",
-                    "@id": "https://doi.datacite.org",
-                    "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Identifier-service"
-                }
-            ],
-            "dct:publisher": {
-                "@type": [
-                    "foaf:Agent",
-                    "vcard:Kind"
-                ],
-                "foaf:name": "e-cienciaDatos",
-                "vcard:fn": "e-cienciaDatos",
-                "vcard:country-name": "Spain"
-            },
-            "dct:language": "spa",
-            "dcat:service": [
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/.well-known/api-catalog",
-                    "dct:conformsTo": "https://signposting.org/FAIRiCat"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/search.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/dataaccess.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/native-api.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/developers/dataset-semantic-metadata-api.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/developers/s3-direct-upload-api.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/developers/globus-api.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/metrics.html"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
-                    "dct:conformsTo": "http://swordapp.org/"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "/oai",
-                    "dct:conformsTo": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
-                },
-                {
-                    "@type": "dcat:DataService",
-                    "dcat:endpointURL": "/sitemap.xml",
-                    "dct:conformsTo": "https://www.sitemaps.org/protocol.html"
-                }
-            ]
-        }
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "vcard": "http://www.w3.org/2006/vcard/ns#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dqv": "http://www.w3.org/ns/dqv#",
+    "oa": "http://www.w3.org/ns/oa#",
+    "premis": "http://www.loc.gov/premis/rdf/v3/"
+  },
+  "@type": [
+    "dcat:Catalog",
+    "foaf:Project",
+    "schema:DataCatalog",
+    "schema:Project"
+  ],
+  "@id": "https://edatossandbox.consorciomadrono.es",
+  "foaf:homepage": "https://edatossandbox.consorciomadrono.es",
+  "dct:identifier": "https://edatossandbox.consorciomadrono.es",
+  "schema:url": "https://edatossandbox.consorciomadrono.es",
+  "foaf:name": "e-cienciaDatos",
+  "dct:title": "e-cienciaDatos",
+  "dct:description": "e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.",
+  "dcat:contactPoint": "eciencia@consorciomadrono.es",
+  "dcat:theme": [
+    "generic"
+  ],
+  "dct:accessRights": "https://www.consorciomadrono.es/en/investigam/licencia-de-uso",
+  "dct:license": "https://www.consorciomadrono.es/en/investigam/licencias",
+  "dqv:hasQualityAnnotation": {
+    "@type": "dqv:QualityCertificate",
+    "oa:hasTarget": "https://edatossandbox.consorciomadrono.es",
+    "oa:hasBody": "https://amt.coretrustseal.org/certificates",
+    "oa:motivatedBy": "dqv:qualityAssessment",
+    "dct:creator": "CoreTrustSeal"
+  },
+  "schema:name": "e-cienciaDatos",
+  "schema:description": "e-cienciaDatos is a multidisciplinary data repository that houses the scientific datasets of researchers from the public universities of the Community of Madrid and the UNED, members of the Consorcio Madroño, in order to give visibility to these data, to ensure its preservation And facilitate their access and reuse. e-cienciaDatos is structured as a system constituted by different communities that collects datasets of each of the individual universities. e-cienciaDatos offers the deposit and publication of datasets, assigning a digital object identifier DOI to each of them. The association of a dataset with a DOI will facilitate data verification, dissemination, reuse, impact and long-term access. In addition, the repository provides a standardized citation for each dataset, which contains sufficient information so that it can be identified and located, including the DOI.",
+  "schema:contactPoint": "eciencia@consorciomadrono.es",
+  "schema:keywords": [
+    "generic"
+  ],
+  "schema:conditionsOfAccess": "https://www.consorciomadrono.es/en/investigam/licencia-de-uso",
+  "schema:license": "https://www.consorciomadrono.es/en/investigam/licencias",
+  "schema:hasCertification": {
+    "@type": "schema:Certification",
+    "schema:url": "https://amt.coretrustseal.org/certificates",
+    "schema:certificationStatus": "schema:CertificationActive",
+    "schema:issuedBy": {
+      "@type": "schema:Organization",
+      "schema:name": "CoreTrustSeal",
+      "schema:url": "https://www.coretrustseal.org"
+    },
+    "schema:auditDate": "2023-04-18",
+    "schema:expires": "2026-04-17"
+  },
+  "schema:publishingPrinciples": [
+    {
+      "@type": "schema:CreativeWork",
+      "schema:url": "https://www.consorciomadrono.es/en/investigam/politicas",
+      "schema:additionalType": "dct:Policy"
+    },
+    {
+      "@type": "schema:CreativeWork",
+      "schema:url": "https://www.consorciomadrono.es/docs/PreservationPlan.pdf",
+      "schema:additionalType": "premis:PreservationPolicy"
+    }
+  ],
+  "schema:publisher": {
+    "@type": "schema:Organization",
+    "schema:name": "Consorcio Madroño",
+    "schema:address": {
+      "@type": "schema:PostalAddress",
+      "schema:addressCountry": "Spain"
+    }
+  },
+  "schema:inLanguage": "spa",
+  "dct:conformsTo": [
+    {
+      "@type": "dct:accrualPolicy",
+      "@id": "https://www.consorciomadrono.es/en/investigam/politicas"
+    },
+    {
+      "@type": "dct:Policy",
+      "@id": "https://www.consorciomadrono.es/en/investigam/licencias"
+    },
+    {
+      "@type": "premis:PreservationPolicy",
+      "@id": "https://www.consorciomadrono.es/docs/PreservationPlan.pdf",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-preservation-policy"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://json-ld.org",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://ddialliance.org/Specification/DDI-Codebook/2.5/",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://www.json.org",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Metadata-schema"
+    },
+    {
+      "@type": "dct:Standard",
+      "@id": "https://doi.datacite.org",
+      "rdfs:seeAlso": "https://w3id.org/fair/fip/latest/Identifier-service"
+    }
+  ],
+  "dct:publisher": {
+    "@type": [
+      "foaf:Agent",
+      "vcard:Kind"
+    ],
+    "foaf:name": "Consorcio Madroño",
+    "vcard:fn": "Consorcio Madroño",
+    "vcard:country-name": "Spain"
+  },
+  "dct:language": "spa",
+  "dcat:service": [
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/resources/json/.well-known/api-catalog",
+      "dct:conformsTo": "https://signposting.org/FAIRiCat"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/search.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/dataaccess.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/native-api.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/developers/dataset-semantic-metadata-api.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/developers/s3-direct-upload-api.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/developers/globus-api.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "https://guides.dataverse.org/en/latest/api/metrics.html"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.es/api",
+      "dct:conformsTo": "http://swordapp.org/"
+    },
+    {
+      "@type": "dcat:DataService",
+      "dcat:endpointURL": "https://edatossandbox.consorciomadrono.esoai",
+      "dct:conformsTo": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
+    },
+    {}
+  ],
+  "schema:offers": [
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/resources/json/.well-known/api-catalog",
+        "schema:documentation": "https://signposting.org/FAIRiCat"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/search.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/dataaccess.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/native-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/dataset-semantic-metadata-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/dataset-migration-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/s3-direct-upload-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/developers/globus-api.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "https://guides.dataverse.org/en/latest/api/metrics.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/api",
+        "schema:documentation": "http://swordapp.org/"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/oai",
+        "schema:documentation": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:WebAPI",
+        "schema:url": "https://edatossandbox.consorciomadrono.es/sitemap.xml",
+        "schema:documentation": "https://www.sitemaps.org/protocol.html"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://doi.datacite.org",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Identifier-service"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://json-ld.org",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://ddialliance.org/Specification/DDI-Codebook/2.5/",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    },
+    {
+      "@type": "schema:Offer",
+      "schema:itemOffered": {
+        "@type": "schema:Service",
+        "schema:documentation": "https://www.json.org",
+        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+      }
+    }
+  ]
+}
     </script>
                 </ui:fragment>
             </ui:define>
