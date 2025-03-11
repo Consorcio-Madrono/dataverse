@@ -294,8 +294,9 @@ public class DataversePage implements java.io.Serializable {
     public Dataverse getDataverse() {
         return dataverse;
     }
-
-    public String getDcatJson () {
+    
+                
+    public String getSchemaOrgDcatJson () {
         String repositoryURL    = SystemConfig.getDataverseSiteUrlStatic();
         String repositoryName   = BrandingUtil.getInstallationBrandName();
         String repositoryContact= settingsWrapper.getSupportTeamEmail();
@@ -307,13 +308,43 @@ public class DataversePage implements java.io.Serializable {
         String terms            = settingsWrapper.get(":dcat_repository_terms");
         String license          = settingsWrapper.get(":dcat_repository_license");
         String orgName          = settingsWrapper.get(":dcat_repository_org_name");
-        String access_terms     = settingsWrapper.get(":dcat_repository_access_terms");
+        String access_terms     = settingsWrapper.get(":dcat_repository_access_terms"); 
         String certification    = settingsWrapper.get(":dcat_repository_certification");
-        JsonObject oaiJson      = JsonObject.EMPTY_JSON_OBJECT;
-        JsonObject licenseJson  = JsonObject.EMPTY_JSON_OBJECT;
-        JsonObject termsJson    = JsonObject.EMPTY_JSON_OBJECT;
-        JsonObject preservJson  = JsonObject.EMPTY_JSON_OBJECT;
-        JsonObject siteMapJson  = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject oaiSchJson       = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject siteMapSchJson   = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject oaiDcatJson      = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject licenseDcatJson  = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject termsDcatJson    = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject preservDcatJson  = JsonObject.EMPTY_JSON_OBJECT;
+        JsonObject siteMapDcatJson  = JsonObject.EMPTY_JSON_OBJECT;
+        
+
+        if (systemConfig.isOAIServerEnabled ()) {
+            JsonObjectBuilder oaiBuilder= Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder()
+                            .add("@type", "schema:WebAPI")
+                            .add("schema:url", repositoryURL + "/oai")
+                            .add("schema:documentation", "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"));
+            oaiSchJson= oaiBuilder.build();
+        }
+        try {
+            URL url = new URL(repositoryURL + "/sitemap/sitemap.xml");
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            int responseCode = huc.getResponseCode();
+            if (responseCode== 200) {
+                JsonObjectBuilder siteMapBuilder= Json.createObjectBuilder()
+                        .add("@type", "schema:Offer")
+                        .add("schema:itemOffered", Json.createObjectBuilder()
+                            .add("@type", "schema:WebAPI")
+                            .add("schema:url", repositoryURL + "/sitemap.xml")
+                            .add("schema:documentation", "https://www.sitemaps.org/protocol.html"));
+                siteMapSchJson= siteMapBuilder.build();
+            }
+        } catch (IOException iOException) {
+            // Nothing to do 
+        }
+
         JsonObjectBuilder builder = Json.createObjectBuilder()
                 .add("@context", Json.createObjectBuilder()
                     .add("dcat", "http://www.w3.org/ns/dcat#")
@@ -321,6 +352,7 @@ public class DataversePage implements java.io.Serializable {
                     .add("foaf", "http://xmlns.com/foaf/0.1/")
                     .add("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                     .add("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
+                    .add("schema", "http://schema.org/")
                     .add("vcard", "http://www.w3.org/2006/vcard/ns#")
                     .add("xsd", "http://www.w3.org/2001/XMLSchema#")
                     .add("dqv", "http://www.w3.org/ns/dqv#")
@@ -328,12 +360,15 @@ public class DataversePage implements java.io.Serializable {
                     .add("premis", "http://www.loc.gov/premis/rdf/v3/"))
                 .add("@type", Json.createArrayBuilder()
                     .add("dcat:Catalog")
-                    .add("foaf:Project"));
+                    .add("foaf:Project")
+                    .add("schema:DataCatalog")
+                    .add("schema:Project"));
         if (!StringUtils.isEmpty(repositoryURL)) {
             builder= builder
-                .add("@id", repositoryURL)
+                .add("@id",repositoryURL)
                 .add("foaf:homepage", repositoryURL)
-                .add("dct:identifier", repositoryURL);
+                .add("dct:identifier", repositoryURL)    
+                .add("schema:url",repositoryURL);
         }
         if (!StringUtils.isEmpty(repositoryName)) {
             builder= builder
@@ -363,7 +398,7 @@ public class DataversePage implements java.io.Serializable {
             JsonObjectBuilder licBuilder= Json.createObjectBuilder()
                         .add("@type", "dct:Policy")
                         .add("@id", license);
-            licenseJson= licBuilder.build();
+            licenseDcatJson= licBuilder.build();
         }
         if (!StringUtils.isEmpty(certification) && !StringUtils.isEmpty(repositoryURL) ) {
             String [] certificationParts= certification.split("\\|");
@@ -382,40 +417,105 @@ public class DataversePage implements java.io.Serializable {
                         .add("@type", "dcat:DataService")
                         .add("dcat:endpointURL", repositoryURL + "oai")
                         .add("dct:conformsTo", "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm");
-            oaiJson= oaiBuilder.build();
+            oaiDcatJson= oaiBuilder.build();
         }
         if (!StringUtils.isEmpty(terms)) {
             JsonObjectBuilder termsBuilder= Json.createObjectBuilder()
                         .add("@type", "dct:accrualPolicy")
                         .add("@id", terms);
-            termsJson= termsBuilder.build();
+            termsDcatJson= termsBuilder.build();
         }
         if (!StringUtils.isEmpty(prev_policy)) {
             JsonObjectBuilder preservBuilder= Json.createObjectBuilder()
                         .add("@type", "premis:PreservationPolicy")
                         .add("@id", prev_policy)
                         .add("rdfs:seeAlso", "https://w3id.org/fair/fip/latest/Metadata-preservation-policy");
-            preservJson= preservBuilder.build();
-        }		
-        try {
-            URL url = new URL(repositoryURL + "/sitemap/sitemap.xml");
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            int responseCode = huc.getResponseCode();
-            if (responseCode== 200) {
-                JsonObjectBuilder siteMapBuilder= Json.createObjectBuilder()
-                        .add("@type", "dcat:DataService")
-                        .add("dcat:endpointURL", repositoryURL + "/sitemap.xml")
-                        .add("dct:conformsTo", "https://www.sitemaps.org/protocol.html");
-                siteMapJson= siteMapBuilder.build();
-            }
-        } catch (IOException iOException) {
-            // Nothing to do 
+            preservDcatJson= preservBuilder.build();
+        }
+        if (!StringUtils.isEmpty(repositoryName)) {
+            builder= builder
+                .add("schema:name",repositoryName);
+        }
+        if (!StringUtils.isEmpty(description)) {
+            builder= builder
+                .add("schema:description",description);
+        }
+        if (!StringUtils.isEmpty(repositoryContact)) {
+            builder= builder
+                .add("schema:contactPoint",repositoryContact);
+        }
+        if (!StringUtils.isEmpty(reserarchArea)) {
+            builder= builder
+                .add("schema:keywords", Json.createArrayBuilder()
+                    .add(reserarchArea));
+        }
+        if (!StringUtils.isEmpty(access_terms)) {
+            builder= builder
+                .add("schema:conditionsOfAccess", access_terms);
+        }
+        if (!StringUtils.isEmpty(license)) {
+            builder= builder
+                .add("schema:license", license);
+        }
+        if (!StringUtils.isEmpty(certification)) {
+            String [] certificationParts= certification.split("\\|");
+            if (certificationParts.length== 3 && certificationParts[0].equals("CoreTrustSeal"))
+                builder= builder
+                .add("schema:hasCertification", Json.createObjectBuilder()
+                    .add("@type", "schema:Certification")
+                    .add("schema:url", "https://amt.coretrustseal.org/certificates")
+                    .add("schema:certificationStatus", "schema:CertificationActive")
+                    .add("schema:issuedBy", Json.createObjectBuilder()
+                        .add("@type", "schema:Organization")
+                        .add("schema:name", "CoreTrustSeal")
+                        .add("schema:url", "https://www.coretrustseal.org"))
+                    .add("schema:auditDate", "2023-04-18")
+                    .add("schema:expires", "2026-04-17"));
+        }
+        if (!StringUtils.isEmpty(terms) && !StringUtils.isEmpty(prev_policy)) {
+            builder=builder
+                .add("schema:publishingPrinciples", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:CreativeWork")
+                        .add("schema:url", terms)
+                        .add("schema:additionalType", "dct:Policy"))
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:CreativeWork")
+                        .add("schema:url", prev_policy)
+                        .add("schema:additionalType", "premis:PreservationPolicy")));
+        } else if (!StringUtils.isEmpty(terms)) {
+            builder=builder
+                        .add("schema:publishingPrinciples", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:CreativeWork")
+                        .add("schema:url", terms)
+                        .add("schema:additionalType", "dct:Policy")));            
+        } else if (!StringUtils.isEmpty(prev_policy)) {
+            builder=builder
+                .add("schema:publishingPrinciples", Json.createArrayBuilder()
+                    .add(Json.createObjectBuilder()
+                        .add("@type", "schema:CreativeWork")
+                        .add("schema:url", prev_policy)
+                        .add("schema:additionalType", "premis:PreservationPolicy")));
+        }
+        if (!StringUtils.isEmpty(orgName) && !StringUtils.isEmpty(country)) {
+            builder= builder
+                .add("schema:publisher", Json.createObjectBuilder()
+                    .add("@type", "schema:Organization")
+                    .add("schema:name", orgName)
+                    .add("schema:address", Json.createObjectBuilder()
+                        .add("@type", "schema:PostalAddress")
+                        .add("schema:addressCountry", country)));
+        }
+        if (!StringUtils.isEmpty(language)) {
+            builder= builder
+                .add("schema:inLanguage", language);
         }
         builder= builder
                 .add("dct:conformsTo", Json.createArrayBuilder()
-                    .add(termsJson)
-                    .add(licenseJson)
-                    .add(preservJson)
+                    .add(termsDcatJson)
+                    .add(licenseDcatJson)
+                    .add(preservDcatJson)
                     .add(Json.createObjectBuilder()
                         .add("@type", "dct:Standard")
                         .add("@id", "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary")
@@ -508,152 +608,8 @@ public class DataversePage implements java.io.Serializable {
                         .add("@type", "dcat:DataService")
                         .add("dcat:endpointURL", repositoryURL + "/api")
                                 .add("dct:conformsTo", "http://swordapp.org/"))
-                    .add(oaiJson)
-                    .add(siteMapJson));
-            
-        return builder.build().toString();
-    }                       
-    
-                
-    public String getSchemaOrgJson () {
-        String repositoryURL    = SystemConfig.getDataverseSiteUrlStatic();
-        String repositoryName   = BrandingUtil.getInstallationBrandName();
-        String repositoryContact= settingsWrapper.getSupportTeamEmail();
-        String description      = settingsWrapper.get(":dcat_repositoryDescription");
-        String language         = settingsWrapper.get(":dcat_repository_language");
-        String country          = settingsWrapper.get(":dcat_repository_country");
-        String reserarchArea    = settingsWrapper.get(":dcat_repository_research_area");
-        String prev_policy      = settingsWrapper.get(":dcat_repository_prev_policy");
-        String terms            = settingsWrapper.get(":dcat_repository_terms");
-        String license          = settingsWrapper.get(":dcat_repository_license");
-        String orgName          = settingsWrapper.get(":dcat_repository_org_name");
-        String access_terms     = settingsWrapper.get(":dcat_repository_access_terms"); 
-        String certification    = settingsWrapper.get(":dcat_repository_certification");
-        JsonObject oaiJson      = JsonObject.EMPTY_JSON_OBJECT;
-        JsonObject siteMapJson  = JsonObject.EMPTY_JSON_OBJECT;
-
-        if (systemConfig.isOAIServerEnabled ()) {
-            JsonObjectBuilder oaiBuilder= Json.createObjectBuilder()
-                        .add("@type", "schema:Offer")
-                        .add("schema:itemOffered", Json.createObjectBuilder()
-                            .add("@type", "schema:WebAPI")
-                            .add("schema:url", repositoryURL + "/oai")
-                            .add("schema:documentation", "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"));
-            oaiJson= oaiBuilder.build();
-        }
-        try {
-            URL url = new URL(repositoryURL + "/sitemap/sitemap.xml");
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            int responseCode = huc.getResponseCode();
-            if (responseCode== 200) {
-                JsonObjectBuilder siteMapBuilder= Json.createObjectBuilder()
-                        .add("@type", "schema:Offer")
-                        .add("schema:itemOffered", Json.createObjectBuilder()
-                            .add("@type", "schema:WebAPI")
-                            .add("schema:url", repositoryURL + "/sitemap.xml")
-                            .add("schema:documentation", "https://www.sitemaps.org/protocol.html"));
-                siteMapJson= siteMapBuilder.build();
-            }
-        } catch (IOException iOException) {
-            // Nothing to do 
-        }
-
-        JsonObjectBuilder builder = Json.createObjectBuilder()
-                .add("@context", Json.createObjectBuilder()
-                    .add("dct", "http://purl.org/dc/terms/")
-                    .add("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-                    .add("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
-                    .add("schema", "http://schema.org/")
-                    .add("vcard", "http://www.w3.org/2006/vcard/ns#")
-                    .add("xsd", "http://www.w3.org/2001/XMLSchema#")
-                    .add("premis", "http://www.loc.gov/premis/rdf/v3/"))
-                .add("@type", Json.createArrayBuilder()
-                    .add("schema:DataCatalog")
-                    .add("schema:Project"));
-        if (!StringUtils.isEmpty(repositoryURL)) {
-            builder= builder
-                .add("@id",repositoryURL)
-                .add("schema:url",repositoryURL);
-        }
-        if (!StringUtils.isEmpty(repositoryName)) {
-            builder= builder
-                .add("schema:name",repositoryName);
-        }
-        if (!StringUtils.isEmpty(description)) {
-            builder= builder
-                .add("schema:description",description);
-        }
-        if (!StringUtils.isEmpty(repositoryContact)) {
-            builder= builder
-                .add("schema:contactPoint",repositoryContact);
-        }
-        if (!StringUtils.isEmpty(reserarchArea)) {
-            builder= builder
-                .add("schema:keywords", Json.createArrayBuilder()
-                    .add(reserarchArea));
-        }
-        if (!StringUtils.isEmpty(access_terms)) {
-            builder= builder
-                .add("schema:conditionsOfAccess", access_terms);
-        }
-        if (!StringUtils.isEmpty(license)) {
-            builder= builder
-                .add("schema:license", license);
-        }
-        if (!StringUtils.isEmpty(certification)) {
-            String [] certificationParts= certification.split("\\|");
-            if (certificationParts.length== 3 && certificationParts[0].equals("CoreTrustSeal"))
-                builder= builder
-                .add("schema:hasCertification", Json.createObjectBuilder()
-                    .add("@type", "schema:Certification")
-                    .add("schema:url", "https://amt.coretrustseal.org/certificates")
-                    .add("schema:certificationStatus", "schema:CertificationActive")
-                    .add("schema:issuedBy", Json.createObjectBuilder()
-                        .add("@type", "schema:Organization")
-                        .add("schema:name", "CoreTrustSeal")
-                        .add("schema:url", "https://www.coretrustseal.org"))
-                    .add("schema:auditDate", "2023-04-18")
-                    .add("schema:expires", "2026-04-17"));
-        }
-        if (!StringUtils.isEmpty(terms) && !StringUtils.isEmpty(prev_policy)) {
-            builder=builder
-                .add("schema:publishingPrinciples", Json.createArrayBuilder()
-                    .add(Json.createObjectBuilder()
-                        .add("@type", "schema:CreativeWork")
-                        .add("schema:url", terms)
-                        .add("schema:additionalType", "dct:Policy"))
-                    .add(Json.createObjectBuilder()
-                        .add("@type", "schema:CreativeWork")
-                        .add("schema:url", prev_policy)
-                        .add("schema:additionalType", "premis:PreservationPolicy")));
-        } else if (!StringUtils.isEmpty(terms)) {
-            builder=builder
-                        .add("schema:publishingPrinciples", Json.createArrayBuilder()
-                    .add(Json.createObjectBuilder()
-                        .add("@type", "schema:CreativeWork")
-                        .add("schema:url", terms)
-                        .add("schema:additionalType", "dct:Policy")));            
-        } else if (!StringUtils.isEmpty(prev_policy)) {
-            builder=builder
-                .add("schema:publishingPrinciples", Json.createArrayBuilder()
-                    .add(Json.createObjectBuilder()
-                        .add("@type", "schema:CreativeWork")
-                        .add("schema:url", prev_policy)
-                        .add("schema:additionalType", "premis:PreservationPolicy")));
-        }
-        if (!StringUtils.isEmpty(orgName) && !StringUtils.isEmpty(country)) {
-            builder= builder
-                .add("schema:publisher", Json.createObjectBuilder()
-                    .add("@type", "schema:Organization")
-                    .add("schema:name", orgName)
-                    .add("schema:address", Json.createObjectBuilder()
-                        .add("@type", "schema:PostalAddress")
-                        .add("schema:addressCountry", country)));
-        }
-        if (!StringUtils.isEmpty(language)) {
-            builder= builder
-                .add("schema:inLanguage", language);
-        }
+                    .add(oaiDcatJson)
+                    .add(siteMapDcatJson));
         builder= builder
                 .add("schema:offers", Json.createArrayBuilder()   
                     .add(Json.createObjectBuilder()
@@ -716,8 +672,8 @@ public class DataversePage implements java.io.Serializable {
                             .add("@type", "schema:WebAPI")
                             .add("schema:url", repositoryURL + "/api")
                             .add("schema:documentation", "http://swordapp.org/")))
-                    .add(oaiJson)
-                    .add(siteMapJson)
+                    .add(oaiSchJson)
+                    .add(siteMapSchJson)
                     .add(Json.createObjectBuilder()
                         .add("@type", "schema:Offer")
                         .add("schema:itemOffered", Json.createObjectBuilder()
