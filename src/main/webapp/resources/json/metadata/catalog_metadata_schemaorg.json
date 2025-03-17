@@ -290,7 +290,7 @@
     },
     {
       "@type": "schema:Offer",
-      "schema:itemOffered": {
+      "schema:itemOffered": {   
         "@type": "schema:WebAPI",
         "schema:url": "https://edatossandbox.consorciomadrono.es/oai",
         "schema:documentation": "https://www.openarchives.org/OAI/2.0/guidelines-static-repository.htm"
@@ -308,7 +308,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://doi.datacite.org",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://doi.datacite.org"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Identifier-service"
       }
     },
@@ -316,7 +318,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
+        "schema:serviceOutput": {
+          "schema:identifier": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -324,7 +328,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -332,7 +338,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -340,7 +348,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -348,7 +358,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://json-ld.org",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://json-ld.org"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -356,7 +368,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -364,7 +378,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -372,7 +388,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://ddialliance.org/Specification/DDI-Codebook/2.5/",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://ddialliance.org/Specification/DDI-Codebook/2.5/"
+        },
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     },
@@ -380,7 +398,9 @@
       "@type": "schema:Offer",
       "schema:itemOffered": {
         "@type": "schema:Service",
-        "schema:documentation": "https://www.json.org",
+        "schema:serviceOutput": {
+          "schema:identifier": "https://www.json.org"
+        },    
         "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
       }
     }

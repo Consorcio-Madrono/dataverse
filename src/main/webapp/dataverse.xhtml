@@ -20,7 +20,7 @@
             <meta name="description" content="#{MarkupChecker:stripAllTags(DataversePage.dataverse.description)}"/>
             </ui:define>
            <ui:define name="jsonld_header">
-                <ui:fragment rendered="#{!DatasetPage.anonymizedAccess}">
+                <ui:fragment rendered="#{DataversePage.isRootDataverse()}">
     <link rel="describedby" type="application/ld+json" href="https://edatossandbox.consorciomadrono.es/resources/json/metadata/catalog_metadata_schemaorg.json"/>
     <link rel="api-catalog" type="application/linkset+json" href="https://edatossandbox.consorciomadrono.es/resources/json/.well-known/api-catalog"/>
 
@@ -331,86 +331,106 @@
         "schema:documentation": "https://www.sitemaps.org/protocol.html"
       }
     },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://doi.datacite.org",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Identifier-service"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://json-ld.org",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://ddialliance.org/Specification/DDI-Codebook/2.5/",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    },
-    {
-      "@type": "schema:Offer",
-      "schema:itemOffered": {
-        "@type": "schema:Service",
-        "schema:documentation": "https://www.json.org",
-        "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
-      }
-    }
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://doi.datacite.org"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Identifier-service"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://guidelines.openaire.eu/en/latest/data/use_of_datacite.html"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://json-ld.org"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://ddialliance.org/Specification/DDI-Codebook/2.5/"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        },
+        {
+          "@type": "schema:Offer",
+          "schema:itemOffered": {
+            "@type": "schema:Service",
+            "schema:serviceOutput": {
+              "schema:identifier": "https://www.json.org"
+            },
+            "schema:serviceType": "https://w3id.org/fair/fip/latest/Metadata-schema"
+          }
+        }
   ]
 }
     </script>
