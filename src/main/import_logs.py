@@ -2308,6 +2308,7 @@ class Parser:
         return True
 
     def check_download(self, hit):
+        # if hit.extension in config.options.download_extensions MADROÑO DSpace hits
         if ("content" in hit.path and "bitstreams" in hit.path) or hit.extension in config.options.download_extensions:
             stats.count_lines_downloads.increment()
             hit.is_download = True
