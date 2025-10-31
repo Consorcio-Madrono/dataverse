@@ -332,7 +332,7 @@
                                             <!-- MADROÑO BEGIN. Show License -->
                                             <c:if test="#{!DatasetPage.dataset.released}">
                                                 <div>
-						                                      <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
+                                                      <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
                                                 </div>
                                             </c:if>
                                             <!-- MADROÑO END -->
@@ -361,7 +361,7 @@
                                                             <!-- Publish LINK -->
                                                             <p:commandLink styleClass="#{!DatasetPage.hasValidTermsOfAccess or (DatasetPage.locked and !DatasetPage.dataset.latestVersion.inReview) ? 'disabled' : ''}" 
                                                                            disabled="#{!DatasetPage.hasValidTermsOfAccess or (DatasetPage.locked and !DatasetPage.dataset.latestVersion.inReview)}"
-                                                                           action="#{DatasetPage.processPublishButton()}">
+                                                                           action="#{DatasetPage.processPublishButton(ApiTokenPage.getApiTokenGenIsNeeded())}"> <!-- CSUC / MADROÑO. Adding the api token to the call  -->
                                                                 #{bundle['dataset.publish.btn']}
                                                             </p:commandLink>
                                                         </li>
@@ -564,7 +564,7 @@
                                         </div>
                                         <!-- END: ActionButtonBlock -->
                                     </div>
-
+                                    
                                     <div style="clear:right;" class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pull-right margin-bottom" 
                                          jsf:rendered="#{!(settingsWrapper.rsyncDownload or DatasetPage.workingVersion.deaccessioned)}">
                                         <!-- Metrics -->
@@ -1918,7 +1918,7 @@
                         <div class="button-block">
                             <p:commandButton rendered="#{DatasetPage.validOrCanReviewIncomplete}" styleClass="btn btn-default" value="#{bundle.submit}" 
                                              onclick="PF('inreview').hide();
-                                                     PF('blockDatasetForm').hide();" action="#{DatasetPage.submitDataset}" immediate="true"/>
+                                                     PF('blockDatasetForm').hide();" action="#{DatasetPage.submitDataset(ApiTokenPage.getApiTokenGenIsNeeded())}" immediate="true"/>
                             <button class="btn btn-link" onclick="PF('inreview').hide();PF('blockDatasetForm').hide();" type="button">
                                 #{bundle.cancel}
                             </button>

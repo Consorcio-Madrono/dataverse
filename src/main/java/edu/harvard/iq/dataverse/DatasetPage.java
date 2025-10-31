@@ -503,6 +503,72 @@ public class DatasetPage implements java.io.Serializable {
         return isHasValidTermsOfAccess(); //HasValidTermsOfAccess
     }
     
+    // CSUC / MADROÑO BEGIN
+    public boolean uploadReadme (String token) {
+      String uploadFileExec = System.getProperty("dataverse.path.uploadFile");
+      String uploadFileDir  = System.getProperty("dataverse.files.directory") + "/temp/";
+      String fqdn           = System.getProperty("dataverse.fqdn");
+      String siteUrl        = System.getProperty("dataverse.siteUrl");
+      String resUrl         = siteUrl.replaceAll (java.util.regex.Pattern.quote("${dataverse.fqdn}"), fqdn); 
+      String identifier     = dataset.getIdentifier();
+ 
+      logger.warning("Warning, uploading Readme "  + token + " " + persistentId + " ");
+      
+      if (uploadFileExec==null || uploadFileExec.isEmpty()) {
+          logger.warning("Warning, uploadFileExec null");
+          return false;
+      }
+      else if (new File(uploadFileExec).exists()) {
+          String uploadFileCmd []= {uploadFileExec, token, persistentId, uploadFileDir, resUrl, identifier};
+          int exitValue;
+          try {
+              // Uploading readme.txt to the temp directory in the dataverse filesystem.
+              Runtime runtime = Runtime.getRuntime();
+              Process process = runtime.exec(uploadFileCmd);
+              exitValue = process.waitFor();
+
+              // Searching for the readme.txt file.
+              Long fileId= null;
+              for (FileMetadata fMetadata: getFileMetadatasSearch()) {
+                if (fileId==null) {
+                    String name= fMetadata.getLabel();
+                    if (name.equals("readme.txt")) {
+                      fileId= fMetadata.getDataFile().getId();
+                    }
+                }
+              }
+              String [] curlCommand= {"curl", "-H", "X-Dataverse-key:" + token, 
+                  "-X", "POST", "-F", "file=@" + uploadFileDir + identifier + "/readme.txt",
+                  "-F", "jsonData={\"description\":\"ReadmeFile\",\"categories\":[\"Documentation\"]}",
+                  resUrl + "/api/datasets/:persistentId/add?persistentId="+ persistentId
+              }; // The curl comand is intended to create a new readme.txt file, but it cannot replace an existing one.
+              if (fileId!= null)
+                  curlCommand[9]= "http://localhost:8080/api/files/"+fileId+"/replace"; // If the readme.txt file exists, the command will replace it.
+
+              process = runtime.exec(curlCommand);
+              exitValue = process.waitFor();
+
+              if (exitValue== 0)
+                  init(); // Important. We will init the DatasetPage to get the configuration of the files and avoid failures.
+
+          } catch (IOException | InterruptedException e) {
+              logger.warning("Warning, IOException");
+              return false;
+          }
+
+          if (exitValue == 0) {
+              logger.warning("Success adding Readme.txt");
+
+            return true;
+          }
+          logger.warning("Warning, Bad exit value. Failure adding Readme.txt");
+          return false;
+      }
+      logger.warning("Warning, Executable don't exist");
+      return false;
+    }
+    // CSUC / MADROÑO END
+    
     public void setHasValidTermsOfAccess(boolean value){
         //dummy for ui
     }
@@ -2774,8 +2840,9 @@ public class DatasetPage implements java.io.Serializable {
         return  returnToLatestVersion();
     }
 
-    public String submitDataset() {
+    public String submitDataset(String token) { // CSUC / MADROÑO Add the API token to generate the readme.txt
         try {
+            uploadReadme(token);  // CSUC / MADROÑO Call Function to generate and upload the Readme file.
             Command<Dataset> cmd = new SubmitDatasetForReviewCommand( dvRequestService.getDataverseRequest(), dataset);
             dataset = commandEngine.submit(cmd);
             //JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataset.submit.success"));
@@ -4406,7 +4473,8 @@ public class DatasetPage implements java.io.Serializable {
         return false;
     }
 
-    public void processPublishButton() {
+    public void processPublishButton(String token) { // CSUC / MADROÑO Add the API token to generate the readme.txt
+        uploadReadme(token);  // CSUC / MADROÑO Call Function to generate and upload the Readme file.
         if (dataset.isReleased()) {
             PrimeFaces.current().executeScript("PF('publishDataset').show()");
         }
@@ -5891,7 +5959,7 @@ public class DatasetPage implements java.io.Serializable {
         return previewTools.size() > 0;
     }
     
-    public boolean isShowQueryButton(Long fileId) { 
+    public boolean isShowQueryButton(Long fileId) {
         DataFile dataFile = datafileService.find(fileId);
 
         if(dataFile.isRestricted()
