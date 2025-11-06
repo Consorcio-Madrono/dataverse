@@ -549,7 +549,12 @@ public class DatasetPage implements java.io.Serializable {
               exitValue = process.waitFor();
 
               if (exitValue== 0)
-                  init(); // Important. We will init the DatasetPage to get the configuration of the files and avoid failures.
+                JsfHelper.addSuccessMessage("Readme creado con éxito");
+              else
+                JsfHelper.addErrorMessage("No se ha podido crear el readme");
+
+                PrimeFaces.current().executeScript("location.reload(true)");
+                //refresh();
 
           } catch (IOException | InterruptedException e) {
               logger.warning("Warning, IOException");
@@ -2840,9 +2845,8 @@ public class DatasetPage implements java.io.Serializable {
         return  returnToLatestVersion();
     }
 
-    public String submitDataset(String token) { // CSUC / MADROÑO Add the API token to generate the readme.txt
+    public String submitDataset() {
         try {
-            uploadReadme(token);  // CSUC / MADROÑO Call Function to generate and upload the Readme file.
             Command<Dataset> cmd = new SubmitDatasetForReviewCommand( dvRequestService.getDataverseRequest(), dataset);
             dataset = commandEngine.submit(cmd);
             //JsfHelper.addSuccessMessage(BundleUtil.getStringFromBundle("dataset.submit.success"));
@@ -4473,8 +4477,7 @@ public class DatasetPage implements java.io.Serializable {
         return false;
     }
 
-    public void processPublishButton(String token) { // CSUC / MADROÑO Add the API token to generate the readme.txt
-        uploadReadme(token);  // CSUC / MADROÑO Call Function to generate and upload the Readme file.
+    public void processPublishButton() {
         if (dataset.isReleased()) {
             PrimeFaces.current().executeScript("PF('publishDataset').show()");
         }

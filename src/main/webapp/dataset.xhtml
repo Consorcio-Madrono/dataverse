@@ -338,6 +338,13 @@
                                             <!-- MADROÑO END -->
                                             <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
                                                 <div class="btn-group">
+                                                    <!-- CSUC / MADROÑO. Button to Create Readme file  Begin -->
+                                                    <p:commandLink styleClass="btn btn-default btn-access btn-publish"
+                                                                   action="#{DatasetPage.uploadReadme(ApiTokenPage.getApiTokenGenIsNeeded())}">
+                                                        #{bundle['dataset.createReadme.btn']}
+                                                    </p:commandLink>
+                                                    <!-- CSUC / MADROÑO. Button to Create Readme file  END -->
+
                                                     <!-- Publish BTN -->
 <!-- MADROÑO BEGIN -->
                                                     <h:outputLink id="publishButton" value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid}">
@@ -361,7 +368,7 @@
                                                             <!-- Publish LINK -->
                                                             <p:commandLink styleClass="#{!DatasetPage.hasValidTermsOfAccess or (DatasetPage.locked and !DatasetPage.dataset.latestVersion.inReview) ? 'disabled' : ''}" 
                                                                            disabled="#{!DatasetPage.hasValidTermsOfAccess or (DatasetPage.locked and !DatasetPage.dataset.latestVersion.inReview)}"
-                                                                           action="#{DatasetPage.processPublishButton(ApiTokenPage.getApiTokenGenIsNeeded())}"> <!-- CSUC / MADROÑO. Adding the api token to the call  -->
+                                                                           action="#{DatasetPage.processPublishButton()}">
                                                                 #{bundle['dataset.publish.btn']}
                                                             </p:commandLink>
                                                         </li>
@@ -1918,7 +1925,7 @@
                         <div class="button-block">
                             <p:commandButton rendered="#{DatasetPage.validOrCanReviewIncomplete}" styleClass="btn btn-default" value="#{bundle.submit}" 
                                              onclick="PF('inreview').hide();
-                                                     PF('blockDatasetForm').hide();" action="#{DatasetPage.submitDataset(ApiTokenPage.getApiTokenGenIsNeeded())}" immediate="true"/>
+                                                     PF('blockDatasetForm').hide();" action="#{DatasetPage.submitDataset()}" immediate="true"/>
                             <button class="btn btn-link" onclick="PF('inreview').hide();PF('blockDatasetForm').hide();" type="button">
                                 #{bundle.cancel}
                             </button>
