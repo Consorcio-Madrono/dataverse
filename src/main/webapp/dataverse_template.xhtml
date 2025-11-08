@@ -53,6 +53,15 @@
              <ui:param name="dv2" value="#{dv3 == 'dwarc' ? [41,32] : dv2}"/>
              <ui:param name="dv2" value="#{dv3 == 'MapCom' ? [42,36] : dv2}"/>
              <ui:param name="dv2" value="#{dv3 == 'rey' ? [44,34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'bimo' ? [45,34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'DIGITENDER' ? [46,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'CLARA-FINT' ? [47,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'GEAC' ? [50,36] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'MujerRural-IAHu' ? [51,34] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'GRESEL-UAM' ? [52,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'BIOWASTETOH2' ? [53,36] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'EnEAp' ? [54,32] : dv2}"/>
+             <ui:param name="dv2" value="#{dv3 == 'Effort' ? [55,33] : dv2}"/>
 
              <ui:param name="dv5" value="#{of:replaceAll(dv2,'[\\[\\]]','')}" escape="false"/>
              <ui:param name="dv4" value="#{of:replaceAll(dv5,',.*','')}" escape="false"/>
@@ -90,6 +99,8 @@
         <link type="text/css" rel="stylesheet" href="#{resource['css/fontcustom.css']}?version=#{settingsWrapper.appVersion}" />
         <link type="text/css" rel="stylesheet" href="#{resource['css/socicon.css']}?version=#{settingsWrapper.appVersion}" />
         <link type="text/css" rel="stylesheet" href="#{resource['css/structure.css']}?version=#{settingsWrapper.appVersion}" />
+
+
 	<ui:fragment rendered="#{!empty settingsWrapper.get(':StyleCustomizationFile')}">
             <style>
                 /* Custom CSS */
