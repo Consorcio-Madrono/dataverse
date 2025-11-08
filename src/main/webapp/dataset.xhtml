@@ -1914,7 +1914,8 @@
                     </p:dialog>
                     <p:dialog id="inreview" header="#{bundle['dataset.submitBtn']}" widgetVar="inreview" modal="true">
                         <p class="text-warning">
-                            <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataset.submitMessage']}
+                            <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataset.submitMessage']}<br/>
+                            <span class="glyphicon glyphicon-warning-sign" /> <strong>#{bundle['dataset.submit.tip']}</strong>
                         </p>
                         <p jsf:rendered="#{!valid}" class="text-warning">
                             <span class="glyphicon glyphicon-warning-sign"/><b style="color:red;"> #{bundle['dataset.message.incomplete.warning']}</b>
@@ -1935,7 +1936,9 @@
                     <p:dialog id="publishDataset" width="70%" header="#{bundle['dataset.publish.header']}" widgetVar="publishDataset" modal="true">
                         <ui:fragment rendered="#{publishDataset}">
                             <div class="form-group">
-                                <p jsf:rendered="#{valid}" class="col-sm-12 text-warning">#{bundle['dataset.publish.tip']}</p>
+                                <p jsf:rendered="#{valid}" class="col-sm-12 text-warning">#{bundle['dataset.publish.tip']}<br/>
+                                    <span class="glyphicon glyphicon-warning-sign" /> <strong>#{bundle['dataset.publish.tip2']}</strong>
+                                </p>
                                 <p jsf:rendered="#{!valid}" class="col-sm-12 text-warning"><b style="color:red;">#{bundle['dataset.message.incomplete.warning']}</b></p>
                                 <p class="col-sm-12 help-block">#{bundle['dataset.publish.terms.tip']}</p>
                             </div>
@@ -1956,12 +1959,15 @@
                             <p:focus for="options"/>
                             <p class="text-warning">
                                 <span class="glyphicon glyphicon-warning-sign" /> #{bundle['dataset.republish.tip']} <br/>
-                                <strong>#{bundle['dataset.republish.tip2']}</strong>
+                                <strong>#{bundle['dataset.publish.tip2']}</strong>
                             </p>
                         </ui:fragment>
                         <ui:fragment rendered="#{releaseBoth}">
                             <div class="form-group">
                                 <p class="help-block">
+                                    <p class="text-warning">
+                                        <span class="glyphicon glyphicon-warning-sign" /> <strong>#{bundle['dataset.publish.tip2']}</strong>
+                                    </p>
                                     #{bundle['dataset.publishBoth.tip']}
                                 </p>
                             </div>
