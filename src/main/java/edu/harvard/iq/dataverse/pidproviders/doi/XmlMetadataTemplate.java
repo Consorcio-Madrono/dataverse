@@ -58,6 +58,10 @@ import edu.harvard.iq.dataverse.util.xml.XmlPrinter;
 import edu.harvard.iq.dataverse.util.xml.XmlWriterUtil;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
+import jakarta.json.JsonValue.ValueType;
+
 import static edu.harvard.iq.dataverse.pidproviders.doi.datacite.DOIDataCiteRegisterService.getLanguageCode; // MADROÑO. Get the lang iso code
 
 public class XmlMetadataTemplate {
@@ -631,8 +635,14 @@ public class XmlMetadataTemplate {
             if (externalIdentifier.isValidIdentifier(orgName)) {
                 isROR = true;
                 JsonObject jo = getExternalVocabularyValue(orgName);
-                if (jo != null) {
-                    orgName = jo.getString("termName");
+                // Some ext. cvv configs store a JsonArray of multiple objects/values. In such cases, we'll leave orgName blank 
+                if (jo != null && jo.containsKey("termName")) {
+                    JsonValue termName = jo.get("termName");
+                    if (termName.getValueType() == ValueType.STRING) {
+                        orgName = ((JsonString) termName).getString();
+                    }
+//                if (jo != null) {
+//                    orgName = jo.getString("termName");
                 }
             }
           
