@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# <a href="https://colab.research.google.com/github/CSUC/RDR-scripts/blob/main/create_Readme/create_Readme_script.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # # Script to create a Readme file for a dataset in Dataverse
 # ### OBSERVATION:
@@ -10,10 +9,7 @@
 # The main objective of this script is to automatically create the README file for a dataset.
 # 
 
-# In[1]:
-
-
-# @title First click the &#x25B6; button to execute the script. </p> Then, enter the token (If you don't have your API token, you can get it from the following link <a href='http://localhost:8080/dataverseuser.xhtml?selectTab=apiTokenTab' target='_blank'>Get API Token</a>).</p> After that, enter the LAST DIGITS of the DOI (for example, if the DOI ends in <strong>dataXYZ</strong>, only write the number <strong>XYZ</strong> ).</p> Finally click <strong>Download Readme</strong> to download the file.
+Mirar si es posible usar jproperties como en esta pagina https://www.geeksforgeeks.org/python/read-properties-file-using-jproperties-in-python/
 import os
 import subprocess
 import sys
@@ -29,7 +25,6 @@ def install_packages():
     # Install the required libraries
     subprocess.check_call([sys.executable, "-m", "pip", "install", "pyDataverse", "-q"])
 
-
     print("Libraries have been downloaded or updated.")
 
 # Install libraries if they are not installed already
@@ -39,17 +34,12 @@ except ImportError:
     print("Installing libraries...")
     install_packages()
 
-import ipywidgets as widgets
-from IPython.display import display, FileLink
 # Proceed with the rest of the code
-from IPython.display import display, HTML
-# Once they have the token, ask for it
-#token = input("Please enter your API token:")
+# Get the user token
 token = sys.argv[1];
 print ("Token: " + token);
 
-# Prompt user to provide the DOI identifier (only the last three digits)
-#doi_input = input("Please enter the LAST DIGIT of the DOI (only numbers): ")
+# Get the doi or identifier
 doi = sys.argv[2];
 print ("doi: " + doi);
 
@@ -58,11 +48,13 @@ dest_dir = sys.argv[3];
 print ("dest_dir: " + dest_dir);
 
 # The base URL is always fixed, no need to ask the user
-#base_url = "http://localhost:8080/"
 base_url = sys.argv[4];
 
 # The identifier without the doi / handle part
 identifier = sys.argv[5];
+
+# The path to the properties file
+properties_path = sys.argv[6];
 
 # You can now initialize the Dataverse API using the provided details
 from pyDataverse.api import NativeApi
@@ -71,7 +63,6 @@ from pyDataverse.api import NativeApi
 native_api = NativeApi(base_url, token)
 
 # Further operations like searching or getting metadata can be done below using the API
-
 
 def extract_value(data_dict):
     """
@@ -156,13 +147,11 @@ def exportmetadata(base_url, token, doi,
     Returns:
     - None. Updates the provided lists with extracted metadata.
     """
-    from pyDataverse.api import NativeApi, DataAccessApi
-    from pyDataverse.models import Dataverse
+    from pyDataverse.api import NativeApi
     import os
 
     # Instantiate API objects for accessing Dataverse
     api = NativeApi(base_url, token)
-    data_api = DataAccessApi(base_url, token)
 
     try:
         # Retrieve dataset metadata
@@ -287,12 +276,10 @@ def filemetadata(base_url, token, doi, filemetadata_keys, filemetadata_values):
     Returns:
     - None. Updates the provided lists with extracted file metadata.
     """
-    from pyDataverse.api import NativeApi, DataAccessApi
-    from pyDataverse.models import Dataverse
+    from pyDataverse.api import NativeApi
 
     # Instantiate API objects for accessing Dataverse
     api = NativeApi(base_url, token)
-    data_api = DataAccessApi(base_url, token)
 
     try:
         # Retrieve dataset metadata
@@ -421,13 +408,12 @@ def createreadme(base_url, token, doi,
     """
 
     # Import necessary libraries
-    from pyDataverse.api import NativeApi, DataAccessApi
-    from pyDataverse.models import Dataverse
+    from jproperties import Properties
+    from pyDataverse.api import NativeApi
     import os
 
     # Instantiate API objects for accessing Dataverse
     api = NativeApi(base_url, token)
-    data_api = DataAccessApi(base_url, token)
 
     # Retrieve dataset metadata
     dataset = api.get_dataset(doi)
@@ -1286,27 +1272,3 @@ else:
                  journal_keys, journal_values, computationalworkflow_keys, computationalworkflow_values,
                  LocalContextsCVoc_keys, LocalContextsCVoc_values, darwincore_keys, darwincore_values,
                  filemetadata_keys, filemetadata_values)
-
-    # Construct the correct file path
-#file_path = os.path.join(dest_dir,f'{doi.replace("doi:10.21950/", "")}', 'readme.txt')
-
-#if IN_COLAB:
-#    # Running in Google Colab
-#    # Provide a download button
-#    download_button = widgets.Button(description="Download Readme")
-#    display(download_button)
-#
-#    # Function to be executed when the download button is clicked
-#    def on_download_button_click(b):
-#        # Download the readme.txt file in Google Colab
-#        files.download(file_path)
-#
-#    # Event handler for the download button
-#    download_button.on_click(on_download_button_click)
-#
-#else:
-# Running in Jupyter Notebook
-# Provide a download link
-#download_link = FileLink(file_path, result_html_prefix="Click to view the Readme: ")
-#display(download_link)
-
