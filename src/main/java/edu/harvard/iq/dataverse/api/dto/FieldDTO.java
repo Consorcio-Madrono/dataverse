@@ -113,8 +113,11 @@ public class FieldDTO {
     }
 
     public String getSinglePrimitive() {
-        
-        return value==null? "": value.getAsString();
+        try {
+            return value==null? "": value.getAsString();
+        } catch (IllegalStateException e) {
+            return "";
+        }
     }
     
     String getSingleVocab() {

@@ -61,7 +61,6 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonString;
 import jakarta.json.JsonValue;
 import jakarta.json.JsonValue.ValueType;
-
 import static edu.harvard.iq.dataverse.pidproviders.doi.datacite.DOIDataCiteRegisterService.getLanguageCode; // MADROÑO. Get the lang iso code
 
 public class XmlMetadataTemplate {
@@ -74,8 +73,6 @@ public class XmlMetadataTemplate {
     public static final String XML_SCHEMA_VERSION = "4.5";
 
     private DoiMetadata doiMetadata;
-    //QDR - used to get ROR name from ExternalVocabularyValue via pidProvider.get
-    private PidProvider pidProvider = null;
 
     public XmlMetadataTemplate() {
     }
@@ -103,13 +100,6 @@ public class XmlMetadataTemplate {
         String language = null; // machine locale? e.g. for Publisher which is global
         String metadataLanguage = null; // when set, otherwise = language?
         
-        //QDR - used to get ROR name from ExternalVocabularyValue via pidProvider.get
-        GlobalId pid = null;
-        pid = dvObject.getGlobalId();
-        if ((pid == null) && (dvObject instanceof DataFile df)) {
-                pid = df.getOwner().getGlobalId();
-            }
-        pidProvider = PidUtil.getPidProvider(pid.getProviderId());
         XMLStreamWriter xmlw = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream);
         xmlw.writeStartElement("resource");
         boolean deaccessioned=false;
@@ -641,8 +631,6 @@ public class XmlMetadataTemplate {
                     if (termName.getValueType() == ValueType.STRING) {
                         orgName = ((JsonString) termName).getString();
                     }
-//                if (jo != null) {
-//                    orgName = jo.getString("termName");
                 }
             }
           
@@ -650,7 +638,7 @@ public class XmlMetadataTemplate {
 
                 attributeMap.put("schemeURI", "https://ror.org");
                 attributeMap.put("affiliationIdentifierScheme", "ROR");
-                attributeMap.put("affiliationIdentifier", orgName);
+                attributeMap.put("affiliationIdentifier", affiliation);
             }
 
             XmlWriterUtil.writeFullElementWithAttributes(xmlw, "affiliation", attributeMap, StringEscapeUtils.escapeXml10(orgName));
@@ -706,7 +694,7 @@ public class XmlMetadataTemplate {
         } else if (dvObject instanceof Dataset d) {
             DatasetVersion dv = d.getLatestVersionForCopy();
             Long versionNumber = dv.getVersionNumber();
-            if (versionNumber != null && !(versionNumber.equals(1) && dv.getMinorVersionNumber().equals(0))) {
+            if (versionNumber != null && !(versionNumber.equals(1L) && dv.getMinorVersionNumber().equals(0L))) {
                 isAnUpdate = true;
             }
             releaseDate = dv.getReleaseTime();
@@ -840,6 +828,7 @@ public class XmlMetadataTemplate {
         // Currently not supported. Spec indicates one 'primary' language. Could send
         // the first entry in DatasetFieldConstant.language or send iff there is only
         // one entry, and/or default to the machine's default lang, or the dataverse metadatalang?
+        // MADROÑO BEGIN
         if (dvObject instanceof Dataset dataset) {
             List<String> languageList= dataset.getLatestVersion().getOrigLanguages();
             if (languageList!= null && !languageList.isEmpty())
@@ -1268,7 +1257,7 @@ public class XmlMetadataTemplate {
         }
         xmlw.writeEndElement(); // </rights>
         xmlw.writeStartElement("rights"); // <rights>
-
+        
         if (license != null) {
             xmlw.writeAttribute("rightsURI", license.getUri().toString());
             xmlw.writeCharacters(license.getName());
@@ -1384,7 +1373,13 @@ public class XmlMetadataTemplate {
 
                 }
             }
-
+            String versionNote = dv.getVersionNote();
+            if(!StringUtils.isBlank(versionNote)) {
+                attributes.clear();
+                attributes.put("descriptionType", "TechnicalInfo");
+                descriptionsWritten = XmlWriterUtil.writeOpenTagIfNeeded(xmlw, "descriptions", descriptionsWritten);
+                XmlWriterUtil.writeFullElementWithAttributes(xmlw, "description", attributes, versionNote);
+            }
         }
 
         if (descriptionsWritten) {
