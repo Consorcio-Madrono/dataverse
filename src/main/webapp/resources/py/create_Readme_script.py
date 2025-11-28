@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-
 # # Script to create a Readme file for a dataset in Dataverse
 # ### OBSERVATION:
 # This script is available in the following GitHub repository: <a href='https://github.com/CSUC/RDR-scripts/tree/main/related_publication_check' target='_blank'>RDR-scripts</a>. </p> If you have questions or doubts about the code, please contact rdr-contacte@csuc.cat.
@@ -9,7 +8,6 @@
 # The main objective of this script is to automatically create the README file for a dataset.
 # 
 
-Mirar si es posible usar jproperties como en esta pagina https://www.geeksforgeeks.org/python/read-properties-file-using-jproperties-in-python/
 import os
 import subprocess
 import sys
@@ -49,12 +47,19 @@ print ("dest_dir: " + dest_dir);
 
 # The base URL is always fixed, no need to ask the user
 base_url = sys.argv[4];
+print ("base_url: " + base_url);
 
 # The identifier without the doi / handle part
 identifier = sys.argv[5];
+print ("identifier: " + identifier);
 
 # The path to the properties file
 properties_path = sys.argv[6];
+print ("properties_path: " + properties_path);
+
+# The lang of the readme file
+language = sys.argv[7];
+print ("language: " + language);
 
 # You can now initialize the Dataverse API using the provided details
 from pyDataverse.api import NativeApi
@@ -63,6 +68,33 @@ from pyDataverse.api import NativeApi
 native_api = NativeApi(base_url, token)
 
 # Further operations like searching or getting metadata can be done below using the API
+
+def translate (properties, properties_back, text, capitalize, upper):
+    """
+    Function that get a string in the selected lenguage from a given key.
+
+    Parameters:
+    - properties: The properties file with the translation in the selected language.
+    - properties_back: The original properties file with the English translation.
+
+    Returns:
+    - tr_text: The string 
+    """
+    item= properties.get(text)
+    if item is None:
+        item= properties_back.get(text)
+    if item is None:
+        tr_text= text
+    else:
+        tr_text= item.data
+
+    if capitalize:
+        tr_text= tr_text.capitalize()
+    if upper:
+        tr_text= tr_text.upper()
+
+    return tr_text
+        
 
 def extract_value(data_dict):
     """
@@ -349,6 +381,7 @@ def find_keys(keys, specified_keys, values):
                 found_keys.clear()  # Clear found keys set for next entry
     return extracted_values
 
+'''
 def format_key(key):
     """
     Function to format a key by splitting camel case and capitalizing the first letter of each word.
@@ -372,6 +405,7 @@ def format_key(key):
 
     formatted_key = ' '.join(words)
     return formatted_key.capitalize()
+'''
 
 def createreadme(base_url, token, doi,
                  citation_keys, citation_values,
@@ -415,6 +449,91 @@ def createreadme(base_url, token, doi,
     # Instantiate API objects for accessing Dataverse
     api = NativeApi(base_url, token)
 
+    # Read the properties files
+    bundleProperties = Properties()
+    citationProperties = Properties()
+    journalProperties = Properties()
+    geoProperties = Properties()
+    socialProperties = Properties()
+    astroProperties = Properties()
+    bioProperties = Properties()
+    journalProperties = Properties()
+    computationalProperties = Properties()
+    citationPropertiesBack = Properties()
+    bundlePropertiesBack = Properties()
+    journalPropertiesBack = Properties()
+    geoPropertiesBack = Properties()
+    socialPropertiesBack = Properties()
+    astroPropertiesBack = Properties()
+    bioPropertiesBack = Properties()
+    journalPropertiesBack = Properties()
+    computationalPropertiesBack = Properties()
+    if os.path.exists(properties_path + 'Bundle_' + language + '.properties'):
+        with open(properties_path + 'Bundle_' + language + '.properties', 'rb') as read_prop: 
+            bundleProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'Bundle.properties', 'rb') as read_prop: 
+            bundleProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'citation_' + language + '.properties'):
+        with open(properties_path + 'citation_' + language + '.properties', 'rb') as read_prop: 
+            citationProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'citation.properties', 'rb') as read_prop: 
+            citationProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'journal_' + language + '.properties'):
+        with open(properties_path + 'journal_' + language + '.properties', 'rb') as read_prop: 
+            journalProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'journal.properties', 'rb') as read_prop: 
+            journalProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'geospatial_' + language + '.properties'):
+        with open(properties_path + 'geospatial_' + language + '.properties', 'rb') as read_prop: 
+            geoProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'geospatial.properties', 'rb') as read_prop: 
+            geoProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'socialscience_' + language + '.properties'):
+        with open(properties_path + 'socialscience_' + language + '.properties', 'rb') as read_prop: 
+            socialProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'socialscience.properties', 'rb') as read_prop: 
+            socialProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'astrophysics_' + language + '.properties'):
+        with open(properties_path + 'astrophysics_' + language + '.properties', 'rb') as read_prop: 
+            astroProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'astrophysics.properties', 'rb') as read_prop: 
+            astroProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'biomedical_' + language + '.properties'):
+        with open(properties_path + 'biomedical_' + language + '.properties', 'rb') as read_prop: 
+            bioProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'biomedical.properties', 'rb') as read_prop: 
+            bioProperties.load(read_prop,"utf-8")
+    if os.path.exists(properties_path + 'computationalworkflow_' + language + '.properties'):
+        with open(properties_path + 'computationalworkflow_' + language + '.properties', 'rb') as read_prop: 
+            computationalProperties.load(read_prop,"utf-8")
+    else:
+        with open(properties_path + 'computationalworkflow.properties', 'rb') as read_prop: 
+            computationalProperties.load(read_prop,"utf-8")
+
+    with open(properties_path + 'Bundle.properties', 'rb') as read_prop: 
+        bundlePropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'citation.properties', 'rb') as read_prop: 
+        citationPropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'journal.properties', 'rb') as read_prop: 
+        journalPropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'geospatial.properties', 'rb') as read_prop: 
+        geoPropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'socialscience.properties', 'rb') as read_prop: 
+        socialPropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'astrophysics.properties', 'rb') as read_prop: 
+        astroPropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'biomedical.properties', 'rb') as read_prop: 
+        bioPropertiesBack.load(read_prop,"utf-8")
+    with open(properties_path + 'computationalworkflow.properties', 'rb') as read_prop: 
+        computationalPropertiesBack.load(read_prop,"utf-8")
+
     # Retrieve dataset metadata
     dataset = api.get_dataset(doi)
 
@@ -428,14 +547,16 @@ def createreadme(base_url, token, doi,
     except OSError:
         print("Directory " + path + ' already exists. The Readme will be saved in this directory.')
 
-    with open(path + '/' + 'readme.txt', 'w', encoding='utf-8') as f:
-        f.write('GENERAL INFORMATION\n------------------\n')
+    with open(path + '/' + 'readme_' + language + '.txt', 'w', encoding='utf-8') as f:
+        text = translate (bundleProperties, bundlePropertiesBack, 'dataverse.option.generalInfo', False, True);
+        f.write(text + '\n------------------\n')
         cont = 0
 
         # Write metadata to Readme file
         if 'PreviousDatasetPersistentID' in citation_keys:
             cont += 1
-            f.write(str(cont) + '.  Previous Dataset Persistent ID:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'dataset.metadata.alternativePersistentId', False, False);
+            f.write(str(cont) + '.' +  text +':\n')
             auxiliar = []
             auxiliar.append(list_duplicates_of(citation_keys, 'PreviousDatasetPersistentID'))
             for i in auxiliar[0]:
@@ -447,47 +568,54 @@ def createreadme(base_url, token, doi,
 
         if 'title' in citation_keys:
             cont += 1
-            f.write(str(cont) + '.  Dataset title:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.datasetTitle', False, False);
+            f.write(str(cont) + '.  ' + text +':\n')
             f.write('\t' + citation_values[citation_keys.index('title')] + '\n\n')  # Write the title
 
         if 'authorName' in citation_keys or 'authorAffiliation' in citation_keys or 'authorIdentifierScheme' in citation_keys or 'authorIdentifier' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Authorship:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.authorship', False, False);
+            f.write(str(cont)+'.  ' + text  + ':\n')
             keys=['authorName','authorAffiliation','authorIdentifierScheme','authorIdentifier' ]
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'datasetContactName' in citation_keys or 'datasetContactAffiliation' in citation_keys or 'datasetContactEmail' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Dataset contact:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.datasetContact', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['datasetContactName','datasetContactAffiliation','datasetContactEmail' ]
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
-        f.write('DESCRIPTION\n----------\n')
+        text = translate (bundleProperties, bundlePropertiesBack, 'description', False, True);
+        f.write(text + '\n----------\n')
         cont=0
         if 'language' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Dataset language:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.datasetLanguage', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'language'))
             for i in auxiliar[0]:
                 f.write('\t')
-                f.write(citation_values[i])
+                text = translate (citationProperties, citationPropertiesBack, 'controlledvocabulary.language.' + citation_values[i].lower().replace(' ', '_'), False, False);
+                f.write(text)
                 if i != auxiliar[0][-1]:
                     f.write('\n ')
             f.write('\n\n')
         if 'dsDescriptionValue' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Abstract:\n')
+            text = translate (journalProperties, journalPropertiesBack, 'controlledvocabulary.journalArticleType.abstract', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'dsDescriptionValue'))
             for i in auxiliar[0]:
@@ -498,136 +626,154 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'subject' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Subject:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'dataset.subjectDisplay.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'subject'))
             for i in auxiliar[0]:
                 f.write('\t')
-                f.write(citation_values[i])
+                tr_subject= translate (citationProperties, citationPropertiesBack, 'controlledvocabulary.subject.' + citation_values[i].lower().replace(' ', '_'), False, False)
+                f.write(tr_subject)
+                #f.write(citation_values[i])
                 if i != auxiliar[0][-1]:
                     f.write('\n ')
             f.write('\n\n')
         if 'keywordValue' in citation_keys or 'keywordVocabulary' in citation_keys or 'keywordVocabularyURI' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Keyword:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'dataset.keywordDisplay.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['keywordValue','keywordVocabulary','keywordVocabularyURI' ]
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'topicClassValue' in citation_keys or 'topicClassVocab' in citation_keys or 'topicClassVocabURI' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Topic classification:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'dataset.topicClassification.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['topicClassValue','topicClassVocab','topicClassVocabURI' ]
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'notesText' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Notes:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.notesText.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+citation_values[citation_keys.index('notesText')]+'\n\n')
         if 'producerName' in citation_keys or 'producerAffiliation' in citation_keys or 'producerAbbreviation' in citation_keys or 'producerURL' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Producer:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.producer.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['producerName','producerAffiliation','producerAbbreviation','producerURL' ]
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'productionDate' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Production date:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.productionDate.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+citation_values[citation_keys.index('productionDate')]+'\n\n')
         if 'Production place' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Production place:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.productionPlace.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+citation_values[citation_keys.index('productionPlace')]+'\n\n')
         if 'contributorType' in citation_keys or 'contributorName' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Contributor:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.contributor.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['contributorType','contributorName']
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'grantNumberAgency' in citation_keys or 'grantNumberValue' in citation_keys:
             cont+=1
-            f.write(str(cont)+'. Grant information:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.grantInformation', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['grantNumberAgency','grantNumberValue']
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'distributorName' in citation_keys or 'distributorAffiliation' in citation_keys or 'distributorAbbreviation' in citation_keys or 'distributorURL' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Distributor:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.distributor.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['distributorName','distributorAffiliation','distributorAbbreviation','distributorURL' ]
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
-                    f.write('\t'+f'{formatted_key}: {value}\n')
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                 f.write('\n')
         if 'distributionDate' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Distribution date:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.distributionDate.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+citation_values[citation_keys.index('distributionDate')]+'\n\n')
         if 'depositor' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Depositor:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.depositor.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+citation_values[citation_keys.index('depositor')]+'\n\n')
         if 'dateOfDeposit' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Date of deposit:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'file.metadataTab.fileMetadata.depositDate.label', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+citation_values[citation_keys.index('dateOfDeposit')]+'\n\n')
         if 'timePeriodCoveredStart' in citation_keys or 'timePeriodCoveredEnd' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Time period covered (single date or date range):\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.timePeriodCovered', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['timePeriodCoveredStart','timePeriodCoveredEnd']
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'dateOfCollectionStart' in citation_keys or 'dateOfCollectionEnd' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Date of data collection (single date or date range):\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.dateOfCollection', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['dateOfCollectionStart','dateOfCollectionEnd']
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'publicationDate' in dataset.json()['data']:
             cont+=1
-            f.write(str(cont)+'.  Publication Date:\n')
+            text = translate (journalProperties, journalPropertiesBack, 'datasetfieldtype.journalPubDate.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+dataset.json()['data']['publicationDate']+'\n\n')
         if 'dateOfCollectionStart' not in citation_keys and 'publicationDate' not in dataset.json()['data']:
             f.write('\n')
         if 'kindOfData' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Kind of Data:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.kindOfData.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'kindOfData'))
             for i in auxiliar[0]:
@@ -638,7 +784,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'seriesName' in citation_keys or 'seriesInformation' in citation_keys:
             cont+=1
-            f.write(str(cont)+'. Series:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.series.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             index=[]
             keys=['seriesName','seriesInformation']
             specified_keys=[]
@@ -646,23 +793,25 @@ def createreadme(base_url, token, doi,
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'softwareName' in citation_keys or 'softwareVersion' in citation_keys:
             cont+=1
-            f.write(str(cont)+'. Software:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.software.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             keys=['softwareName','softwareVersion']
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if 'relatedMaterial' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Related material:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.relatedMaterial.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'relatedMaterial'))
             for i in auxiliar[0]:
@@ -673,7 +822,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'relatedDatasets' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Related datasets:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.relatedDatasets.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'relatedDatasets'))
             for i in auxiliar[0]:
@@ -684,7 +834,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'otherReferences' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Other references:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.otherReferences', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'otherReferences'))
             for i in auxiliar[0]:
@@ -695,7 +846,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'dataSources' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Data sources:\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.dataSources', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'dataSources'))
             for i in auxiliar[0]:
@@ -706,7 +858,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'originOfSources' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Origin of sources:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.originOfSources.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'originOfSources'))
             for i in auxiliar[0]:
@@ -717,7 +870,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'characteristicOfSources' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Characteristic of sources:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.characteristicOfSources.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'characteristicOfSources'))
             for i in auxiliar[0]:
@@ -728,7 +882,8 @@ def createreadme(base_url, token, doi,
             f.write('\n\n')
         if 'accessToSources' in citation_keys:
             cont+=1
-            f.write(str(cont)+'.  Access to sources:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.accessToSources.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'accessToSources'))
             for i in auxiliar[0]:
@@ -737,46 +892,60 @@ def createreadme(base_url, token, doi,
                 if i != auxiliar[0][-1]:
                     f.write('\n ')
             f.write('\n\n')
-        f.write('ACCESS INFORMATION\n------------------------\n')
+        text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.accessInformation', False, False);
+        f.write(text + '\n------------------------\n')
         cont=0
         if 'license' in dataset.json()['data']['latestVersion']:
             cont+=1
-            f.write(str(cont)+'. Creative Commons License of the dataset: \n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.datasetLicense', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+dataset.json()['data']['latestVersion']['license']['name']+'\n\n')
+        if 'termsOfUse' in dataset.json()['data']['latestVersion']:
+            cont+=1
+            text = translate (bundleProperties, bundlePropertiesBack, 'file.dataFilesTab.terms.list.termsOfUse.termsOfUse', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
+            f.write('\t'+dataset.json()['data']['latestVersion']['termsOfUse']+'\n\n')
         if 'persistentUrl' in dataset.json()['data']:
             cont+=1
-            f.write(str(cont)+'. Dataset DOI: \n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.datasetDoi', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             f.write('\t'+dataset.json()['data']['persistentUrl']+'\n\n')
         if 'publicationCitation' in citation_keys or 'publicationIDType'in citation_keys or 'publicationIDNumber' in citation_keys or 'publicationURL' in citation_keys:
             cont+=1
-            f.write(str(cont)+'. Related publication:\n')
+            text = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.publication.title', False, False);
+            f.write(str(cont)+'.  ' + text + ':\n')
             index=[]
             keys=["publicationRelationType",'publicationCitation','publicationIDType','publicationIDNumber','publicationURL']
             specified_keys = [element for element in keys if element in citation_keys]
             extracted_values = find_keys(citation_keys, specified_keys, citation_values)
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = format_key(key)
+                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                     f.write('\t'+f'{formatted_key}: {value}\n')
                 f.write('\n')
         if len(geo_keys) != 0:
-            f.write('Geospatial Metadata \n--------------------------------------\n')
+            text = translate (geoProperties, geoPropertiesBack, 'metadatablock.displayName', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'country' in geo_keys or 'state' in geo_keys or 'city' in geo_keys or 'otherGeographicCoverage' in geo_keys:
                 cont+=1
-                f.write(str(cont)+'. Geographical location/s of data collection:\n')
+                text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.geoLocation', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 keys=['country','state','city','otherGeographicCoverage']
                 specified_keys=[]
                 specified_keys = [element for element in keys if element in geo_keys]
                 extracted_values = find_keys(geo_keys, specified_keys, geo_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (geoProperties, geoPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
+                        if key == 'country':
+                            value= translate (geoProperties, geoPropertiesBack, 'controlledvocabulary.country.' + value.lower().replace (' ', '_'), False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
             if 'geographicUnit' in geo_keys:
                 cont+=1
-                f.write(str(cont)+'.  Geographic Unit:\n')
+                text = translate (geoProperties, geoPropertiesBack, 'datasetfieldtype.geographicUnit.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(geo_keys, 'geographicUnit'))
                 for i in auxiliar[0]:
@@ -792,15 +961,17 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(geo_keys, specified_keys, geo_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (geoProperties, geoPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
         if len(social_keys) != 0:
-            f.write('Social Science and Humanities Metadata \n--------------------------------------\n')
+            text = translate (socialProperties, socialPropertiesBack, 'metadatablock.displayName', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'unitOfAnalysis' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Unit of Analysis:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.unitOfAnalysis.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(social_keys, 'unitOfAnalysis'))
                 for i in auxiliar[0]:
@@ -811,7 +982,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'universe' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Universe:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.universe.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(social_keys, 'universe'))
                 for i in auxiliar[0]:
@@ -822,27 +994,33 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'timeMethod' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Time method:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.timeMethod.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('timeMethod')]+'\n\n')
             if 'dataCollector' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Data Collector:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.dataCollector.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('dataCollector')]+'\n\n')
             if 'collectorTraining' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Collector Training:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.collectorTraining.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('collectorTraining')]+'\n\n')
             if 'frequencyOfDataCollection' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Frequency:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.frequencyOfDataCollection.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('frequencyOfDataCollection')]+'\n\n')
             if 'samplingProcedure' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Sampling Procedure:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.samplingProcedure.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('samplingProcedure')]+'\n\n')
             if 'targetSampleActualSize' in social_keys or 'targetSampleSizeFormula' in social_keys:
                 cont+=1
-                f.write(str(cont)+'. Target Sample Size:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.targetSampleSize.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 index=[]
                 keys=['targetSampleActualSize','targetSampleSizeFormula']
                 specified_keys=[]
@@ -850,16 +1028,18 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(social_keys, specified_keys, social_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
             if 'deviationsFromSampleDesign' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Major Deviations for Sample Design:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.deviationsFromSampleDesign.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('deviationsFromSampleDesign')]+'\n\n')
             if 'collectionMode' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Collection Mode:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.collectionMode.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(social_keys, 'collectionMode'))
                 for i in auxiliar[0]:
@@ -870,47 +1050,58 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'researchInstrument' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Type of Research Instrument:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.researchInstrument.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('researchInstrument')]+'\n\n')
             if 'dataCollectionSituation' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Characteristics of Data Collection Situation:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.dataCollectionSituation.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('dataCollectionSituation')]+'\n\n')
             if 'actionsToMinimizeLoss' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Actions to Minimize Losses:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.actionsToMinimizeLoss.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('actionsToMinimizeLoss')]+'\n\n')
             if 'controlOperations' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Control Operations:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.controlOperations.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('controlOperations')]+'\n\n')
             if 'weighting' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Weighting:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.weighting.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('weighting')]+'\n\n')
             if 'cleaningOperations' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Cleaning Operations:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.cleaningOperations.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('cleaningOperations')]+'\n\n')
             if 'datasetLevelErrorNotes' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Study Level Error Notes:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.datasetLevelErrorNotes.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('datasetLevelErrorNotes')]+'\n\n')
             if 'responseRate' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Response Rate:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.responseRate.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('responseRate')]+'\n\n')
             if 'samplingErrorEstimates' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Estimates of Sampling Error:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.samplingErrorEstimates.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('samplingErrorEstimates')]+'\n\n')
             if 'otherDataAppraisal' in social_keys:
                 cont+=1
-                f.write(str(cont)+'.  Other Forms of Data Appraisal:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.otherDataAppraisal.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+social_values[social_keys.index('otherDataAppraisal')]+'\n\n')
             if 'socialScienceNotesType' in social_keys or 'socialScienceNotesSubject' in social_keys or 'socialScienceNotesText' in social_keys :
                 cont+=1
-                f.write(str(cont)+'. Notes:\n')
+                text = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.socialScienceNotes.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 index=[]
                 keys=['socialScienceNotesType','socialScienceNotesSubject','socialScienceNotesText']
                 specified_keys=[]
@@ -918,15 +1109,17 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(social_keys, specified_keys, social_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (socialProperties, socialPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
         if len(astronomy_keys) != 0:
-            f.write('Astronomy and Astrophysics Metadata  \n--------------------------------------\n')
+            text = translate (astroProperties, astroPropertiesBack, 'metadatablock.displayName', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'astroType' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Type:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.astroType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'astroType'))
                 for i in auxiliar[0]:
@@ -937,7 +1130,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'astroFacility' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Facility:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.astroFacility.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'astroFacility'))
                 for i in auxiliar[0]:
@@ -948,7 +1142,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'astroInstrument' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Instrument:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.astroInstrument.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'astroInstrument'))
                 for i in auxiliar[0]:
@@ -959,7 +1154,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'astroObject' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Object:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.astroObject.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'astroObject'))
                 for i in auxiliar[0]:
@@ -970,19 +1166,23 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'resolution.Spatial' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Spatial Resolution:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.resolution.Spatial.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('resolution.Spatial')]+'\n\n')
             if 'resolution.Spectral' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Spectral Resolution:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.esolution.Spectral.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('resolution.Spectral')]+'\n\n')
             if 'resolution.Temporal' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Temporal Resolution:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.resolution.Temporal.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('resolution.Temporal')]+'\n\n')
             if 'coverage.Spectral.Bandpass' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Bandpass:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.Spectral.Bandpass.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'coverage.Spectral.Bandpass'))
                 for i in auxiliar[0]:
@@ -993,7 +1193,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'coverage.Spectral.CentralWavelength' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Central Wavelength (m):\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.CentralWavelength.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'coverage.Spectral.CentralWavelength'))
                 for i in auxiliar[0]:
@@ -1004,7 +1205,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'coverage.Spectral.MinimumWavelength' in astronomy_keys or 'coverage.Spectral.MaximumWavelength' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'. Wavelength Range:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.Spectral.Wavelength.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 index=[]
                 keys=['coverage.Spectral.MinimumWavelength','coverage.Spectral.MaximumWavelength']
                 specified_keys=[]
@@ -1012,12 +1214,13 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(astronomy_keys, specified_keys, astronomy_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
-            if  'coverage.Temporal.StartTime' in astronomy_keys or  'coverage.Temporal.StartTime' in astronomy_keys:
+            if  'coverage.Temporal.StartTime' in astronomy_keys or  'coverage.Temporal.StopTime' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'. Dataset Date Range:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.Temporal.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 index=[]
                 keys=['coverage.Temporal.StartTime', 'coverage.Temporal.StartTime']
                 specified_keys=[]
@@ -1025,12 +1228,13 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(astronomy_keys, specified_keys, astronomy_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
             if 'coverage.Spatial' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Sky Coverage:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.Spatial.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(astronomy_keys, 'coverage.Spatial'))
                 for i in auxiliar[0]:
@@ -1041,35 +1245,43 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'coverage.Depth' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Depth Coverage:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.Depth.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('coverage.Depth')]+'\n\n')
             if 'coverage.ObjectDensity' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Object Density:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.ObjectDensity.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('coverage.ObjectDensity')]+'\n\n')
             if 'coverage.ObjectCount' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Object Count:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.ObjectCount.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('coverage.ObjectCount')]+'\n\n')
             if 'coverage.SkyFraction' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Fraction of Sky :\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.SkyFraction.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('coverage.SkyFraction')]+'\n\n')
             if 'coverage.Polarization' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Polarization:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.Polarization.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('coverage.Polarization')]+'\n\n')
             if 'redshiftType' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  RedshiftType:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.redshiftType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('redshiftType')]+'\n\n')
             if 'resolution.Redshift' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'.  Redshift Resolution:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.resolution.Redshift.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+astronomy_values[astronomy_keys.index('resolution.Redshift')]+'\n\n')
             if  'coverage.Redshift.MinimumValue' in astronomy_keys or  'coverage.Redshift.MaximumValue' in astronomy_keys:
                 cont+=1
-                f.write(str(cont)+'. Redshift Value:\n')
+                text = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.coverage.RedshiftValue.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 index=[]
                 keys=['coverage.Redshift.MinimumValue','coverage.Redshift.MaximumValue']
                 specified_keys=[]
@@ -1077,15 +1289,17 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(astronomy_keys, specified_keys, astronomy_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (astroProperties, astroPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
         if len(biomedical_keys) != 0:
-            f.write('Life Sciences Metadata \n-------------------------\n')
+            text = translate (bioProperties, bioPropertiesBack, 'metadatablock.displayName', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'studyDesignType' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Design Type:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyDesignType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyDesignType'))
                 for i in auxiliar[0]:
@@ -1096,7 +1310,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyFactorType' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Factor Type:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyFactorType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyFactorType'))
                 for i in auxiliar[0]:
@@ -1107,7 +1322,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayOrganism' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Organism:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayOrganism.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayOrganism'))
                 for i in auxiliar[0]:
@@ -1118,7 +1334,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayOtherOrganism' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Other Organism:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayOtherOrganism.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayOtherOrganism'))
                 for i in auxiliar[0]:
@@ -1129,7 +1346,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayMeasurementType' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Measurement Type:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayMeasurementType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayMeasurementType'))
                 for i in auxiliar[0]:
@@ -1140,7 +1358,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayOtherMeasurmentType' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Other Measurement Type:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayOtherMeasurmentType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayOtherMeasurmentType'))
                 for i in auxiliar[0]:
@@ -1151,7 +1370,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayTechnologyType' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Technology Type:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayTechnologyType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayTechnologyType'))
                 for i in auxiliar[0]:
@@ -1162,7 +1382,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayPlatform' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Technology Platform:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayPlatform.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayPlatform'))
                 for i in auxiliar[0]:
@@ -1173,7 +1394,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'studyAssayCellType' in biomedical_keys:
                 cont+=1
-                f.write(str(cont)+'.  Cell Type:\n')
+                text = translate (bioProperties, bioPropertiesBack, 'datasetfieldtype.studyAssayCellType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(biomedical_keys, 'studyAssayCellType'))
                 for i in auxiliar[0]:
@@ -1183,11 +1405,13 @@ def createreadme(base_url, token, doi,
                         f.write('\n ')
                 f.write('\n\n')
         if len(journal_keys) != 0:
-            f.write('Journal Metadata \n-------------------------\n')
+            text = translate (journalProperties, journalPropertiesBack, 'metadatablock.displayName', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'journalVolume' in journal_keys or 'journalIssue' in journal_keys or 'journalPubDate' in journal_keys:
                 cont+=1
-                f.write(str(cont)+'. Journal:\n')
+                text = translate (journalProperties, journalPropertiesBack, 'datasetfieldtype.journalVolumeIssue.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 index=[]
                 keys=['journalVolume', 'journalIssue','journalPubDate']
                 specified_keys=[]
@@ -1195,24 +1419,28 @@ def createreadme(base_url, token, doi,
                 extracted_values = find_keys(journal_keys, specified_keys, journal_values)
                 for entry in extracted_values:
                     for key, value in entry.items():
-                        formatted_key = format_key(key)
+                        formatted_key = translate (journalProperties, journalPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
                         f.write('\t'+f'{formatted_key}: {value}\n')
                     f.write('\n')
             if 'journalArticleType' in journal_keys:
                 cont+=1
-                f.write(str(cont)+'.  Type of Article:\n')
+                text = translate (journalProperties, journalPropertiesBack, 'datasetfieldtype.journalArticleType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+journal_values[journal_keys.index('journalArticleType')]+'\n\n')
 
         if len(computationalworkflow_keys) != 0:
-            f.write('Computational Workflow Metadata \n-------------------------\n')
+            text = translate (computationalProperties, computationalPropertiesBack, 'metadatablock.displayName', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'workflowType' in computationalworkflow_keys:
                 cont+=1
-                f.write(str(cont)+'.  Workflow Type:\n')
+                text = translate (computationalProperties, computationalPropertiesBack, 'datasetfieldtype.workflowType.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+computationalworkflow_values[computationalworkflow_keys.index('workflowType')]+'\n\n')
             if 'workflowCodeRepository' in computationalworkflow_keys:
                 cont+=1
-                f.write(str(cont)+'.  Workflow Code Repository:\n')
+                text = translate (computationalProperties, computationalPropertiesBack, 'datasetfieldtype.workflowCodeRepository.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(computationalworkflow_keys, 'workflowCodeRepository'))
                 for i in auxiliar[0]:
@@ -1223,7 +1451,8 @@ def createreadme(base_url, token, doi,
                 f.write('\n\n')
             if 'workflowCodeRepository' in computationalworkflow_keys:
                 cont+=1
-                f.write(str(cont)+'.  Workflow Documentation:\n')
+                text = translate (computationalProperties, computationalPropertiesBack, 'datasetfieldtype.workflowDocumentation.title', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 auxiliar=[]
                 auxiliar.append(list_duplicates_of(computationalworkflow_keys, 'workflowDocumentation'))
                 for i in auxiliar[0]:
@@ -1233,24 +1462,30 @@ def createreadme(base_url, token, doi,
                         f.write('\n ')
                 f.write('\n\n')
         if len(LocalContextsCVoc_keys) != 0:
-            f.write('Local Contexts Metadata \n-------------------------\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.localContextsMetadata', False, False);
+            f.write(text + '\n--------------------------------------\n')
             cont=0
             if 'LCProjectUrl' in LocalContextsCVoc_keys:
                 cont+=1
-                f.write(str(cont)+'.  Local Contexts Project URL:\n')
+                text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.localContextsURL', False, False);
+                f.write(str(cont)+'.  ' + text + ':\n')
                 f.write('\t'+LocalContextsCVoc_values[LocalContextsCVoc_keys.index('LCProjectUrl')]+'\n\n')
 
-        f.write('FILE OVERVIEW\n----------------------\n')
+        text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.fileOverview', False, False);
+        f.write(text + '\n----------------------\n')
         for i in range(0,len(filemetadata_keys)):
-            f.write('\t'+'File name: '+filemetadata_values[i][filemetadata_keys[i].index('filename')]+'\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'file.fileName', False, False);
+            f.write('\t' + text + ': '+filemetadata_values[i][filemetadata_keys[i].index('filename')]+'\n')
             if 'description' in filemetadata_keys[i]:
-                f.write('\t'+'Decription: '+filemetadata_values[i][filemetadata_keys[i].index('description')]+'\n')
-            f.write('\t'+'File format: '+filemetadata_values[i][filemetadata_keys[i].index('contentType')]+'\n\n')
+                text = translate (bundleProperties, bundlePropertiesBack, 'file.description.label', False, False);
+                f.write('\t'+ text +': '+filemetadata_values[i][filemetadata_keys[i].index('description')]+'\n')
+            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.fileFormat', False, False);
+            f.write('\t'+ text + ': '+filemetadata_values[i][filemetadata_keys[i].index('contentType')]+'\n\n')
         print('The Readme has been created in the directory ' + path +'.')
 
 # Checking if both inputs are provided
-if not doi or not token:
-    print("Please enter DOI, Token and URL of the repository correctly.")
+if not doi or not token or not dest_dir or not base_url or not identifier or not properties_path or not language:
+    print("Please enter DOI, Token, URL, destination, identifier, properties_path and language of the repository correctly.")
 else:
     api = NativeApi(base_url, token)
     dataset = api.get_dataset(doi)

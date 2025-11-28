@@ -504,10 +504,11 @@ public class DatasetPage implements java.io.Serializable {
     }
     
     // CSUC / MADROÑO BEGIN
-    public boolean uploadReadme (String token) {
+    public boolean uploadReadme (String token, String lang) {
       String uploadFileExec = System.getProperty("dataverse.path.uploadFile");
       String uploadFileDir  = System.getProperty("dataverse.files.directory") + "/temp/";
       String fqdn           = System.getProperty("dataverse.fqdn");
+      String langDirectory  = System.getProperty("dataverse.lang.directory");
       String siteUrl        = System.getProperty("dataverse.siteUrl");
       String resUrl         = siteUrl.replaceAll (java.util.regex.Pattern.quote("${dataverse.fqdn}"), fqdn); 
       String identifier     = dataset.getIdentifier();
@@ -517,9 +518,21 @@ public class DatasetPage implements java.io.Serializable {
       if (uploadFileExec==null || uploadFileExec.isEmpty()) {
           logger.warning("Warning, uploadFileExec null");
           return false;
+      } else if (uploadFileDir==null || uploadFileDir.isEmpty()) {
+          logger.warning("Warning, uploadFileDir null");
+          return false;
+      } else if (langDirectory==null || langDirectory.isEmpty()) {
+          logger.warning("Warning, langDirectory null");
+          return false;
+      } else if (fqdn==null || fqdn.isEmpty()) {
+          logger.warning("Warning, fqdn null");
+          return false;
+      } else if (siteUrl==null || siteUrl.isEmpty()) {
+          logger.warning("Warning, siteUrl null");
+          return false;
       }
       else if (new File(uploadFileExec).exists()) {
-          String uploadFileCmd []= {uploadFileExec, token, persistentId, uploadFileDir, resUrl, identifier};
+          String uploadFileCmd []= {uploadFileExec, token, persistentId, uploadFileDir, resUrl, identifier, langDirectory, lang};
           int exitValue;
           try {
               // Uploading readme.txt to the temp directory in the dataverse filesystem.
@@ -532,13 +545,13 @@ public class DatasetPage implements java.io.Serializable {
               for (FileMetadata fMetadata: getFileMetadatasSearch()) {
                 if (fileId==null) {
                     String name= fMetadata.getLabel();
-                    if (name.equals("readme.txt")) {
+                    if (name.equals("readme_"+ lang + ".txt")) {
                       fileId= fMetadata.getDataFile().getId();
                     }
                 }
               }
               String [] curlCommand= {"curl", "-H", "X-Dataverse-key:" + token, 
-                  "-X", "POST", "-F", "file=@" + uploadFileDir + identifier + "/readme.txt",
+                  "-X", "POST", "-F", "file=@" + uploadFileDir + identifier + "/readme_"+ lang + ".txt",
                   "-F", "jsonData={\"description\":\"ReadmeFile\",\"categories\":[\"Documentation\"]}",
                   resUrl + "/api/datasets/:persistentId/add?persistentId="+ persistentId
               }; // The curl comand is intended to create a new readme.txt file, but it cannot replace an existing one.
@@ -548,13 +561,12 @@ public class DatasetPage implements java.io.Serializable {
               process = runtime.exec(curlCommand);
               exitValue = process.waitFor();
 
+              PrimeFaces.current().executeScript("location.reload(true)");
+
               if (exitValue== 0)
                 JsfHelper.addSuccessMessage("Readme creado con éxito");
               else
                 JsfHelper.addErrorMessage("No se ha podido crear el readme");
-
-                PrimeFaces.current().executeScript("location.reload(true)");
-                //refresh();
 
           } catch (IOException | InterruptedException e) {
               logger.warning("Warning, IOException");
