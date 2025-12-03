@@ -563,11 +563,6 @@ public class DatasetPage implements java.io.Serializable {
 
               PrimeFaces.current().executeScript("location.reload(true)");
 
-              if (exitValue== 0)
-                JsfHelper.addSuccessMessage("Readme creado con éxito");
-              else
-                JsfHelper.addErrorMessage("No se ha podido crear el readme");
-
           } catch (IOException | InterruptedException e) {
               logger.warning("Warning, IOException");
               return false;
