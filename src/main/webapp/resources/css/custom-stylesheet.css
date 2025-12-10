@@ -440,6 +440,6 @@ body table[id$='resultsTable'] td > div.datasetResult {
   }
 
   body footer {
-    height 132px;
+    height: 132px;
   }
 }  
