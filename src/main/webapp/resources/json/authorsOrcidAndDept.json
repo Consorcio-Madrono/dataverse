@@ -2,15 +2,15 @@
   {
     "field-name": "authorAffiliation",
     "term-uri-field": "authorAffiliation",
-    "js-url": ["./resources/js/dept.js","https://gdcc.github.io/dataverse-external-vocab-support/scripts/cvocutils.js"],
+    "js-url": ["/resources/js/dept.js","https://gdcc.github.io/dataverse-external-vocab-support/scripts/cvocutils.js"],
     "protocol": "deptMadrono",
     "retrieval-uri": "https://eciencia.consorciomadrono.es/department/{0}",
     "allow-free-text": true,
-    "prefix": "https://eciencia.consorciomadrono.es/",
+    "prefix": "deptMadrono",
     "managed-fields": {},
-    "languages":"es",
+    "languages":"en",
     "vocabs": {
-      "dept": {
+      "deptMadrono": {
         "uriSpace": "https://eciencia.consorciomadrono.es/"
       }
     },
@@ -46,7 +46,7 @@
       "personName":"authorName",
       "idType":"authorIdentifierScheme"
     },
-    "languages":"es",
+    "languages":"en",
     "vocabs": {
       "orcid": {
         "uriSpace": "https://orcid.org/"

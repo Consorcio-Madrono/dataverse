@@ -2,7 +2,7 @@ console.log("dept.js..");
 var deptSelector = "span[data-cvoc-protocol='deptMadrono']";
 var deptInputSelector = "input[data-cvoc-protocol='deptMadrono']";
 var deptRetrievalUrl = "https://eciencia.consorciomadrono.es/department";
-var deptIdStem = "https://eciencia.consorciomadrono.es/";
+var deptIdStem = "deptMadrono";
 var deptPrefix = "deptMadrono";
 //Max chars that displays well for a child field
 var deptMaxLength = 63;
