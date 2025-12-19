@@ -190,6 +190,7 @@ import org.primefaces.model.TreeNode;
 public class DatasetPage implements java.io.Serializable {
 
     private static final Logger logger = Logger.getLogger(DatasetPage.class.getCanonicalName());
+    private String readmeLanguage; // CSUC / MADROÑO
 
     public enum EditMode {
 
@@ -504,12 +505,24 @@ public class DatasetPage implements java.io.Serializable {
     }
     
     // CSUC / MADROÑO BEGIN
-    public boolean uploadReadme (String token, String lang) {
+    /**
+     *
+     * @param lang
+     */
+    public void setLanguage (String lang) {
+        this.readmeLanguage=lang;
+    }
+    
+    public boolean uploadReadme (String token) {
       String uploadFileExec = System.getProperty("dataverse.path.uploadFile");
       String uploadFileDir  = System.getProperty("dataverse.files.directory") + "/temp/";
       String fqdn           = System.getProperty("dataverse.fqdn");
       String langDirectory  = System.getProperty("dataverse.lang.directory");
       String siteUrl        = System.getProperty("dataverse.siteUrl");
+      if (siteUrl==null || siteUrl.isEmpty()) {
+          logger.warning("Warning, siteUrl null");
+          return false;
+      }      
       String resUrl         = siteUrl.replaceAll (java.util.regex.Pattern.quote("${dataverse.fqdn}"), fqdn); 
       String identifier     = dataset.getIdentifier();
  
@@ -527,12 +540,8 @@ public class DatasetPage implements java.io.Serializable {
       } else if (fqdn==null || fqdn.isEmpty()) {
           logger.warning("Warning, fqdn null");
           return false;
-      } else if (siteUrl==null || siteUrl.isEmpty()) {
-          logger.warning("Warning, siteUrl null");
-          return false;
-      }
-      else if (new File(uploadFileExec).exists()) {
-          String uploadFileCmd []= {uploadFileExec, token, persistentId, uploadFileDir, resUrl, identifier, langDirectory, lang};
+      } else if (new File(uploadFileExec).exists()) {
+          String uploadFileCmd []= {uploadFileExec, token, persistentId, uploadFileDir, resUrl, identifier, langDirectory, readmeLanguage};
           int exitValue;
           try {
               // Uploading readme.txt to the temp directory in the dataverse filesystem.
@@ -545,13 +554,13 @@ public class DatasetPage implements java.io.Serializable {
               for (FileMetadata fMetadata: getFileMetadatasSearch()) {
                 if (fileId==null) {
                     String name= fMetadata.getLabel();
-                    if (name.equals("readme_"+ lang + ".txt")) {
+                    if (name.equals("readme_"+ readmeLanguage + ".txt")) {
                       fileId= fMetadata.getDataFile().getId();
                     }
                 }
               }
               String [] curlCommand= {"curl", "-H", "X-Dataverse-key:" + token, 
-                  "-X", "POST", "-F", "file=@" + uploadFileDir + identifier + "/readme_"+ lang + ".txt",
+                  "-X", "POST", "-F", "file=@" + uploadFileDir + identifier + "/readme_"+ readmeLanguage + ".txt",
                   "-F", "jsonData={\"description\":\"ReadmeFile\",\"categories\":[\"Documentation\"]}",
                   resUrl + "/api/datasets/:persistentId/add?persistentId="+ persistentId
               }; // The curl comand is intended to create a new readme.txt file, but it cannot replace an existing one.
