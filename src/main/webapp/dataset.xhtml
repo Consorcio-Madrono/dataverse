@@ -367,11 +367,11 @@
                                                 </div>
                                             </div>
                                             <!-- CSUC / MADROÑO. Button to Create Readme file  END -->
-                                            <div class="btn-group btn-group-justified">
+                                            <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
                                                 <div class="btn-group">
                                                     <!-- Publish BTN -->
 <!-- MADROÑO BEGIN -->
-                                                    <h:outputLink id="publishButton" value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid or !showPublishLink or !showSubmitForReviewLink}">
+                                                    <h:outputLink id="publishButton" value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid}">
 <!--                                                <h:outputLink value="#" disabled="#{DatasetPage.lockedFromPublishing or !DatasetPage.hasValidTermsOfAccess or !valid}">-->
 <!-- MADROÑO END -->
                                                         <c:if test="#{!((showSubmitForReviewLink or showReturnToAuthorLink or not empty DatasetPage.allowedExternalStatuses) and showPublishLink)}">
