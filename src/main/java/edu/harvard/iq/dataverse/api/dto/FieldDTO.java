@@ -112,7 +112,8 @@ public class FieldDTO {
         this.typeClass = typeClass;
     }
 
-    public String getSinglePrimitive() {
+    public String getSinglePrimitive() { // MADROÑO. Avoid some null pointer exceptions
+        // return value==null? "": value.getAsString();
         try {
             return value==null? "": value.getAsString();
         } catch (IllegalStateException e) {
