@@ -190,6 +190,7 @@ import org.primefaces.model.TreeNode;
 public class DatasetPage implements java.io.Serializable {
 
     private static final Logger logger = Logger.getLogger(DatasetPage.class.getCanonicalName());
+    private String readmeLanguage; // CSUC / MADROÑO
 
     public enum EditMode {
 
@@ -502,6 +503,92 @@ public class DatasetPage implements java.io.Serializable {
     public boolean getHasValidTermsOfAccess(){
         return isHasValidTermsOfAccess(); //HasValidTermsOfAccess
     }
+    
+    // CSUC / MADROÑO BEGIN
+    /**
+     *
+     * @param lang
+     */
+    public void setLanguage (String lang) {
+        this.readmeLanguage=lang;
+    }
+    
+    public boolean uploadReadme (String token) {
+      String uploadFileExec = System.getProperty("dataverse.path.uploadFile");
+      String uploadFileDir  = System.getProperty("dataverse.files.directory") + "/temp/";
+      String fqdn           = System.getProperty("dataverse.fqdn");
+      String langDirectory  = System.getProperty("dataverse.lang.directory");
+      String siteUrl        = System.getProperty("dataverse.siteUrl");
+      if (siteUrl==null || siteUrl.isEmpty()) {
+          logger.warning("Warning, siteUrl null");
+          return false;
+      }      
+      String resUrl         = siteUrl.replaceAll (java.util.regex.Pattern.quote("${dataverse.fqdn}"), fqdn); 
+      String identifier     = dataset.getIdentifier();
+ 
+      logger.warning("Warning, uploading Readme "  + token + " " + persistentId + " ");
+      
+      if (uploadFileExec==null || uploadFileExec.isEmpty()) {
+          logger.warning("Warning, uploadFileExec null");
+          return false;
+      } else if (uploadFileDir==null || uploadFileDir.isEmpty()) {
+          logger.warning("Warning, uploadFileDir null");
+          return false;
+      } else if (langDirectory==null || langDirectory.isEmpty()) {
+          logger.warning("Warning, langDirectory null");
+          return false;
+      } else if (fqdn==null || fqdn.isEmpty()) {
+          logger.warning("Warning, fqdn null");
+          return false;
+      } else if (new File(uploadFileExec).exists()) {
+          String uploadFileCmd []= {uploadFileExec, token, persistentId, uploadFileDir, resUrl, identifier, langDirectory, readmeLanguage};
+          int exitValue;
+          try {
+              // Uploading readme.txt to the temp directory in the dataverse filesystem.
+              Runtime runtime = Runtime.getRuntime();
+              Process process = runtime.exec(uploadFileCmd);
+              exitValue = process.waitFor();
+
+              // Searching for the readme.txt file.
+              Long fileId= null;
+              for (FileMetadata fMetadata: getFileMetadatasSearch()) {
+                if (fileId==null) {
+                    String name= fMetadata.getLabel();
+                    if (name.equals("readme_"+ readmeLanguage + ".txt")) {
+                      fileId= fMetadata.getDataFile().getId();
+                    }
+                }
+              }
+              String [] curlCommand= {"curl", "-H", "X-Dataverse-key:" + token, 
+                  "-X", "POST", "-F", "file=@" + uploadFileDir + identifier + "/readme_"+ readmeLanguage + ".txt",
+                  "-F", "jsonData={\"description\":\"ReadmeFile\",\"categories\":[\"Documentation\"]}",
+                  resUrl + "/api/datasets/:persistentId/add?persistentId="+ persistentId
+              }; // The curl comand is intended to create a new readme.txt file, but it cannot replace an existing one.
+              if (fileId!= null)
+                  curlCommand[9]= "http://localhost:8080/api/files/"+fileId+"/replace"; // If the readme.txt file exists, the command will replace it.
+
+              process = runtime.exec(curlCommand);
+              exitValue = process.waitFor();
+
+              PrimeFaces.current().executeScript("location.reload(true)");
+
+          } catch (IOException | InterruptedException e) {
+              logger.warning("Warning, IOException");
+              return false;
+          }
+
+          if (exitValue == 0) {
+              logger.warning("Success adding Readme.txt");
+
+            return true;
+          }
+          logger.warning("Warning, Bad exit value. Failure adding Readme.txt");
+          return false;
+      }
+      logger.warning("Warning, Executable don't exist");
+      return false;
+    }
+    // CSUC / MADROÑO END
     
     public void setHasValidTermsOfAccess(boolean value){
         //dummy for ui
@@ -5891,7 +5978,7 @@ public class DatasetPage implements java.io.Serializable {
         return previewTools.size() > 0;
     }
     
-    public boolean isShowQueryButton(Long fileId) { 
+    public boolean isShowQueryButton(Long fileId) {
         DataFile dataFile = datafileService.find(fileId);
 
         if(dataFile.isRestricted()

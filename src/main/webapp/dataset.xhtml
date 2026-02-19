@@ -172,6 +172,13 @@
                                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pull-right margin-bottom">
                                         <!-- ActionButtonBlock -->
                                         <div id="actionButtonBlock" jsf:rendered="#{!widgetWrapper.widgetView}">
+                                            <!-- MADROÑO BEGIN. Show License -->
+                                            <c:if test="#{!DatasetPage.dataset.released}">
+                                                <div class="margin-bottom">
+                                                      <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
+                                                </div>
+                                            </c:if>
+                                            <!-- MADROÑO END -->
                                             <!-- DOWNLOAD/ACCESS DATASET -->
                                             <div class="btn-group btn-group-justified" 
                                                  jsf:rendered="#{showAccessDatasetButtonGroup}">
@@ -329,13 +336,37 @@
                                             <!-- END: DOWNLOAD/ACCESS DATASET -->
 
                                             <!-- PUBLISH DATASET -->
-                                            <!-- MADROÑO BEGIN. Show License -->
-                                            <c:if test="#{!DatasetPage.dataset.released}">
-                                                <div>
-						                                      <input type="checkbox" id="grantedLicense" onclick="javascript:showEnabled();" value="second_checkbox"/> <label for="grantedLicense"><h:outputText value="#{bundle['madrono.grantedLicense']}" escape="false" /></label>
+                                            <!-- CSUC / MADROÑO. BEGIN Button to Create Readme file -->
+                                            <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
+                                                <div class="btn-group">
+                                                    <button type="button" id="createReadme" class="btn btn-default btn-access btn-edit dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        #{bundle['createReadme.createBtn']} <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right text-left">
+                                                        <li style="margin-left:5px;">
+                                                            <p:commandLink id="crEs" action='#{DatasetPage.setLanguage("es")}' onclick='PF("deleteReadmeConfirmation").show()'>
+                                                                <h:outputText value="#{bundle['createReadme.spanish']}" />
+                                                            </p:commandLink>
+                                                        </li> 
+                                                        <li style="margin-left:5px;">
+                                                            <p:commandLink id="crCat" action='#{DatasetPage.setLanguage("cat")}' onclick='PF("deleteReadmeConfirmation").show()'>
+                                                                <h:outputText value="#{bundle['createReadme.catalan']}" />
+                                                            </p:commandLink>
+                                                        </li> 
+                                                        <li style="margin-left:5px;">
+                                                            <p:commandLink id="crEn" action='#{DatasetPage.setLanguage("en")}' onclick='PF("deleteReadmeConfirmation").show()'>
+                                                                <h:outputText value="#{bundle['createReadme.english']}" />
+                                                            </p:commandLink>
+                                                        </li> 
+                                                        <li style="margin-left:5px;">
+                                                            <p:commandLink id="crFr" action='#{DatasetPage.setLanguage("fr")}' onclick='PF("deleteReadmeConfirmation").show()'>
+                                                                <h:outputText value="#{bundle['createReadme.french']}" />
+                                                            </p:commandLink>
+                                                        </li> 
+                                                    </ul> 
                                                 </div>
-                                            </c:if>
-                                            <!-- MADROÑO END -->
+                                            </div>
+                                            <!-- CSUC / MADROÑO. Button to Create Readme file  END -->
                                             <div class="btn-group btn-group-justified" jsf:rendered="#{showPublishLink or showSubmitForReviewLink}">
                                                 <div class="btn-group">
                                                     <!-- Publish BTN -->
@@ -406,6 +437,7 @@
                                                 </div>
                                             </div>
                                             <!-- END: Publish -->
+
 
                                             <!-- Edit Dataset -->
                                             <div class="btn-group btn-group-justified" jsf:rendered="#{DatasetPage.sessionUserAuthenticated
@@ -564,7 +596,7 @@
                                         </div>
                                         <!-- END: ActionButtonBlock -->
                                     </div>
-
+                                    
                                     <div style="clear:right;" class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pull-right margin-bottom" 
                                          jsf:rendered="#{!(settingsWrapper.rsyncDownload or DatasetPage.workingVersion.deaccessioned)}">
                                         <!-- Metrics -->
@@ -1194,6 +1226,17 @@
                             </button>
                         </div>
                     </p:dialog>
+                    <!-- CSUC / MADROÑO. BEGIN Button to Create Readme file -->
+                    <p:dialog id="deleteReadmeConfirmation" styleClass="smallPopUp" header="#{bundle['file.deleteReadmeDialog.header']}" widgetVar="deleteReadmeConfirmation" modal="true">
+                        <p class="text-warning"><span class="glyphicon glyphicon-warning-sign"/> #{bundle['file.deleteReadmeDialog.tip']}</p>
+                        <div class="button-block">
+                            <p:commandButton styleClass="btn btn-default" value="#{bundle.continue}" onclick="PF('deleteReadmeConfirmation').hide()" action="#{DatasetPage.uploadReadme(ApiTokenPage.getApiTokenGenIsNeeded())}"/>
+                            <button class="btn btn-link" onclick="PF('deleteReadmeConfirmation').hide();PF('blockDatasetForm').hide();" type="button">
+                                #{bundle.cancel}
+                            </button>
+                        </div>
+                    </p:dialog>
+                    <!-- CSUC / MADROÑO. END Button to Create Readme file -->
                     <p:dialog id="deleteVersionConfirmation" styleClass="smallPopUp" header="#{bundle['file.deleteDraftDialog.header']}" widgetVar="deleteVersionConfirmation" modal="true">
                         <p class="text-warning"><span class="glyphicon glyphicon-warning-sign"/> #{bundle['file.deleteDraftDialog.tip']}</p>
                         <div class="button-block">
@@ -1907,7 +1950,8 @@
                     </p:dialog>
                     <p:dialog id="inreview" header="#{bundle['dataset.submitBtn']}" widgetVar="inreview" modal="true">
                         <p class="text-warning">
-                            <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataset.submitMessage']}
+                            <span class="glyphicon glyphicon-warning-sign"/> #{bundle['dataset.submitMessage']}<br/>
+                            <span class="glyphicon glyphicon-warning-sign" /> <strong>#{bundle['dataset.submit.tip']}</strong>
                         </p>
                         <p jsf:rendered="#{!valid}" class="text-warning">
                             <span class="glyphicon glyphicon-warning-sign"/><b style="color:red;"> #{bundle['dataset.message.incomplete.warning']}</b>
@@ -1918,7 +1962,7 @@
                         <div class="button-block">
                             <p:commandButton rendered="#{DatasetPage.validOrCanReviewIncomplete}" styleClass="btn btn-default" value="#{bundle.submit}" 
                                              onclick="PF('inreview').hide();
-                                                     PF('blockDatasetForm').hide();" action="#{DatasetPage.submitDataset}" immediate="true"/>
+                                                     PF('blockDatasetForm').hide();" action="#{DatasetPage.submitDataset()}" immediate="true"/>
                             <button class="btn btn-link" onclick="PF('inreview').hide();PF('blockDatasetForm').hide();" type="button">
                                 #{bundle.cancel}
                             </button>
@@ -1928,7 +1972,9 @@
                     <p:dialog id="publishDataset" width="70%" header="#{bundle['dataset.publish.header']}" widgetVar="publishDataset" modal="true">
                         <ui:fragment rendered="#{publishDataset}">
                             <div class="form-group">
-                                <p jsf:rendered="#{valid}" class="col-sm-12 text-warning">#{bundle['dataset.publish.tip']}</p>
+                                <p jsf:rendered="#{valid}" class="col-sm-12 text-warning">#{bundle['dataset.publish.tip']}<br/>
+                                    <span class="glyphicon glyphicon-warning-sign" /> <strong>#{bundle['dataset.publish.tip2']}</strong>
+                                </p>
                                 <p jsf:rendered="#{!valid}" class="col-sm-12 text-warning"><b style="color:red;">#{bundle['dataset.message.incomplete.warning']}</b></p>
                                 <p class="col-sm-12 help-block">#{bundle['dataset.publish.terms.tip']}</p>
                             </div>
@@ -1948,12 +1994,16 @@
                         <ui:fragment rendered="#{releaseDraft}">
                             <p:focus for="options"/>
                             <p class="text-warning">
-                                <span class="glyphicon glyphicon-warning-sign" /> #{bundle['dataset.republish.tip']}
+                                <span class="glyphicon glyphicon-warning-sign" /> #{bundle['dataset.republish.tip']} <br/>
+                                <strong>#{bundle['dataset.publish.tip2']}</strong>
                             </p>
                         </ui:fragment>
                         <ui:fragment rendered="#{releaseBoth}">
                             <div class="form-group">
                                 <p class="help-block">
+                                    <p class="text-warning">
+                                        <span class="glyphicon glyphicon-warning-sign" /> <strong>#{bundle['dataset.publish.tip2']}</strong>
+                                    </p>
                                     #{bundle['dataset.publishBoth.tip']}
                                 </p>
                             </div>
