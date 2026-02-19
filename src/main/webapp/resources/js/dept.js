@@ -2,8 +2,8 @@ console.log("dept.js..");
 var deptSelector = "span[data-cvoc-protocol='deptMadrono']";
 var deptInputSelector = "input[data-cvoc-protocol='deptMadrono']";
 var deptRetrievalUrl = "https://eciencia.consorciomadrono.es/department";
-var deptIdStem = "deptMadrono";
-var deptPrefix = "deptMadrono";
+var deptIdStem = "Department";
+var deptPrefix = "deptMadrono:";
 //Max chars that displays well for a child field
 var deptMaxLength = 63;
 
@@ -30,28 +30,28 @@ function expandDepts() {
             // Mark it as processed
             $(deptElement).addClass('expanded');
             var id = deptElement.textContent;
-            if (!id.startsWith(deptIdStem)) {
+            if (!id.startsWith(deptPrefix)) {
                 $(deptElement).html(getDeptDisplayHtml(id, null, ['No Entry'], false, true));
             } else {
                 //Remove the URL prefix - "https://eciencia.consorciomadrono.es/".length = 36
-                id = id.substring(deptIdStem.length);
+                id = id.substring(deptPrefix.length);
                 //Check for cached entry
                 let value = getValue(deptPrefix, id);
-                if(value.name !=null) {
-                    $(deptElement).html(getDeptDisplayHtml(value.name, deptIdStem + id, value.altNames, false, true));
+                if(value.name !==null) {
+                    $(deptElement).html(getDeptDisplayHtml(value.name, deptRetrievalUrl + "/id/" + deptPrefix + id, value.altNames, false, true));
                 } else {
                     // Try it as an department of the Consorcio Madroño entry (could validate that it has the right form or can just let the GET fail)
                     $.ajax({
                         type: "GET",
-                        url: deptRetrievalUrl + "/" + id,
+                        url: deptRetrievalUrl + "/id/" + deptPrefix + id,
                         dataType: 'json',
                         headers: {
-                            'Accept': 'application/json',
+                            'Accept': 'application/json'
                         },
                         success: function(dept, status) {
                             // If found, construct the HTML for display
-                            var name = dept.name;
-                            var altNames= dept.acronyms;
+                            var name = dept.Department;
+                            var altNames= dept.UnivInitials;
 
                             $(deptElement).html(getDeptDisplayHtml(name, deptIdStem + id, altNames, false, true));
                             //Store values in localStorage to avoid repeating calls to CrossRef
@@ -60,7 +60,7 @@ function expandDepts() {
                         failure: function(jqXHR, textStatus, errorThrown) {
                             // Generic logging - don't need to do anything if 404 (leave
                             // display as is)
-                            if (jqXHR.status != 404) {
+                            if (jqXHR.status !== 404) {
                                 console.error("The following error occurred: " + textStatus, errorThrown);
                             }
                         }
@@ -72,7 +72,7 @@ function expandDepts() {
 }
 
 function getDeptDisplayHtml(name, url, altNames, truncate=true, addParens=false) {
-    if(typeof(altNames) == 'undefined') {
+    if(typeof(altNames) === 'undefined') {
         altNames=[];
     }
     if (truncate && (name.length >= deptMaxLength)) {
@@ -81,7 +81,7 @@ function getDeptDisplayHtml(name, url, altNames, truncate=true, addParens=false)
         altNames.unshift(name);
         name=name.substring(0,deptMaxLength) + "…";
     }
-    if(url != null) {
+    if(url !== null) {
       name =  name + '<a href="' + url + '" target="_blank" rel="nofollow" >' +'<img alt="Consorcio Madroño logo" src="https://raw.githubusercontent.com/Consorcio-Madrono/dataverse/refs/heads/v6.5Madrono/src/main/webapp/resources/images/fav/favicon-32x32.png" height="20" class="ror"/></a>';
     }
     if(addParens) {
@@ -105,7 +105,7 @@ function updateDeptInputs() {
             // select 2 with a non-zero width
             // Add a select2 element to allow search and provide a list of
             // choices
-            var selectId = "deptAddSelect_" + num;
+            var selectId = "deptMadronoAddSelect_" + num;
             $(deptInput).after(
                 '<select id=' + selectId + ' class="form-control add-resource select2" tabindex="0" >');
             $("#" + selectId).select2({
@@ -158,8 +158,8 @@ function updateDeptInputs() {
                             term = "";
                         }
                         var query = {
-                            query: term,
-                        }
+                            query: term
+                        };
                         return query;
                     },
                     // request json
@@ -171,20 +171,15 @@ function updateDeptInputs() {
                         //console.log(data);
                         //console.log("Data dump END");
                         return {
-                            results: data['items']
+                            results: data
                                 // Sort the list
-                                // Prioritize active orgs
-                                .sort((a, b) => Number(b.status === 'active') - Number(a.status === 'active'))
-                                // Prioritize those with this acronym
-                                .sort((a, b) => Number(b.acronyms.includes(params.term)) - Number(a.acronyms.includes(params.term)))
                                 // Prioritize previously used entries
-                                .sort((a, b) => Number(getValue(deptPrefix, b['id'].replace(deptIdStem,'')).name != null) - Number(getValue(deptPrefix, a['id'].replace(deptIdStem,'')).name != null))
+                                .sort((a, b) => Number(getValue(deptPrefix, b['ID'].replace(deptIdStem,'')).name !== null) - Number(getValue(deptPrefix, a['ID'].replace(deptIdStem,'')).name !== null))
                                 .map(
                                     function(x) {
                                         return {
-                                            text: x.name +", " + x.id.replace(deptIdStem,'') + ', ' + x.acronyms,
-                                            id: x.id
-                                        }
+                                            text: x.Department +", " + x.ID.replace(deptPrefix,'') + ', ' + x.UnivInitials, id: x.ID
+                                        };
                                     })
                         };
                     }
@@ -196,7 +191,7 @@ function updateDeptInputs() {
             console.log("BL : " + button.length);
             button.attr("tabindex","0");
             button.on('keydown',function(e) {
-              if(e.which == 13) {
+              if(e.which === 13) {
                 $('#' + selectId).val(null).trigger('change');
               }
             });
@@ -211,10 +206,10 @@ function updateDeptInputs() {
             // were a new selection
             var id = $(deptInput).val();
             if (id.startsWith(deptIdStem)) {
-                id = id.substring(deptIdStem.length);
+                //id = id.substring(deptIdStem.length);
                 $.ajax({
                     type: "GET",
-                    url: deptRetrievalUrl + "/" + id,
+                    url: deptRetrievalUrl + "/id/" + id,
                     dataType: 'json',
                     headers: {
                         'Accept': 'application/json'
@@ -227,7 +222,7 @@ function updateDeptInputs() {
                         $('#' + selectId).append(newOption).trigger('change');
                     },
                     failure: function(jqXHR, textStatus, errorThrown) {
-                        if (jqXHR.status != 404) {
+                        if (jqXHR.status !== 404) {
                             console.error("The following error occurred: " + textStatus, errorThrown);
                         }
                     }
@@ -245,7 +240,7 @@ function updateDeptInputs() {
                 var data = e.params.data;
                 // For entries from the Consorcio Madroño departments, the id and text are different
                 //For plain text entries (legacy or if tags are allowed), they are the same
-                if (data.id != data.text) {
+                if (data.id !== data.text) {
                     // we want just the dept url
                     $("input[data-dept='" + num + "']").val(data.id);
                 } else {
@@ -259,8 +254,8 @@ function updateDeptInputs() {
             });
             //When the field is selected via keyboard, move the focus and cursor to the new input
             $('#' + selectId).on('select2:open', function(e) {
-              $(".select2-search__field").focus()
-              $(".select2-search__field").attr("id",selectId + "_input")
+              $(".select2-search__field").focus();
+              $(".select2-search__field").attr("id",selectId + "_input");
               document.getElementById(selectId + "_input").select();
 
             });
