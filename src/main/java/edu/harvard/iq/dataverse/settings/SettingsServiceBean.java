@@ -684,9 +684,34 @@ public class SettingsServiceBean {
          * When ingesting tabular data files, store the generated tab-delimited 
          * files *with* the variable names line up top. 
          */
-        StoreIngestedTabularFilesWithVarHeaders
-        ;
+        StoreIngestedTabularFilesWithVarHeaders,
 
+        // CSUC / MADROÑO F-UJI
+        /**
+         * F-UJI FAIR Assessment Service URL.
+         * The endpoint URL for the F-UJI service (e.g., http://localhost:1071/fuji/api/v1/evaluate)
+         */
+        FujiServiceUrl,
+        
+        /**
+         * F-UJI Service Username for Basic Auth (if authentication is enabled).
+         */
+        FujiUsername,
+        
+        /**
+         * F-UJI Service Password for Basic Auth (if authentication is enabled).
+         */
+        FujiPassword,
+        
+        /**
+         * F-UJI Metric Version to use for assessments (e.g., "0.5", "0.7", "0.8").
+         * Default is "0.8" if not configured.
+         */
+        FujiMetricVersion
+       
+        ;
+        // CSUC / MADROÑO F-UJI END
+  
         @Override
         public String toString() {
             return ":" + name();
