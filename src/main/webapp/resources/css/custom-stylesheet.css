@@ -1,10 +1,4 @@
 /* Add any CSS necessary for your custom content */
-#messagePanel div.messagePanel {
-  margin-top: 4em;
-  position: fixed;
-  margin-right: auto;
-  margin-left: auto;
-}
 #dataverse-header-block{
   min-height:130px;
 }
@@ -440,6 +434,6 @@ body table[id$='resultsTable'] td > div.datasetResult {
   }
 
   body footer {
-    height: 132px;
+    height 132px;
   }
 }  
