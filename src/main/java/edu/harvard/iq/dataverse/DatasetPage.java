@@ -6916,4 +6916,47 @@ public class DatasetPage implements java.io.Serializable {
         return countriesList;
     }
     // MADROÑO END
+
+    // CSUC / MADROÑO FUJI INTEGRATION
+    /**
+     * Determines whether the F-UJI widget should be displayed on the dataset page.
+     * The widget is only shown if:
+     * - F-UJI is enabled in the configuration
+     * - The dataset is published (released)
+     * - The version is not deaccessioned
+     * - It is not anonymized access
+     * - The dataset has a PID assigned
+     * - Rsync download is not enabled
+     * 
+     * @return true if the widget should be displayed, false otherwise
+     */
+    public boolean isFujiWidgetVisible() {
+        if (!settingsWrapper.isFujiEnabled()) {
+            return false;
+        }
+        
+        if (dataset == null || !dataset.isReleased()) {
+            return false;
+        }
+        
+        if (workingVersion != null && workingVersion.isDeaccessioned()) {
+            return false;
+        }
+        
+        if (isAnonymizedAccess()) {
+            return false;
+        }
+        
+        if (persistentId == null || persistentId.isEmpty()) {
+            return false;
+        }
+        
+        if (settingsWrapper.isRsyncDownload()) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    // CSUC / MADROÑO FUJI INTEGRATION END
 }

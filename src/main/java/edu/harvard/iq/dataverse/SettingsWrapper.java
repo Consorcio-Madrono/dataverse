@@ -136,6 +136,12 @@ public class SettingsWrapper implements java.io.Serializable {
 
     private Set<Type> neverMuted = null;
     
+    // FUJI FAIR Assessment Service settings
+    private String fujiServiceUrl = null;
+    private String fujiUsername = null;
+    private String fujiPassword = null;
+    private String fujiMetricVersion = null;
+    
     public String get(String settingKey) {
         if (settingsMap == null) {
             initSettingsMap();
@@ -854,6 +860,44 @@ public class SettingsWrapper implements java.io.Serializable {
         }
         return customLicenseAllowed;
     }
+
+    // CSUC / MADROÑO FUJI INTEGRATION 
+    public String getFujiServiceUrl() {
+        if (fujiServiceUrl == null) {
+            String value = getValueForKey(SettingsServiceBean.Key.FujiServiceUrl);
+            fujiServiceUrl = (value != null) ? value : "";
+        }
+        return fujiServiceUrl;
+    }
+    
+    public boolean isFujiEnabled() {
+        return !getFujiServiceUrl().isEmpty();
+    }
+    
+    public String getFujiUsername() {
+        if (fujiUsername == null) {
+            String value = getValueForKey(SettingsServiceBean.Key.FujiUsername);
+            fujiUsername = (value != null) ? value : "";
+        }
+        return fujiUsername;
+    }
+    
+    public String getFujiPassword() {
+        if (fujiPassword == null) {
+            String value = getValueForKey(SettingsServiceBean.Key.FujiPassword);
+            fujiPassword = (value != null) ? value : "";
+        }
+        return fujiPassword;
+    }
+    
+    public String getFujiMetricVersion() {
+        if (fujiMetricVersion == null) {
+            String value = getValueForKey(SettingsServiceBean.Key.FujiMetricVersion);
+            fujiMetricVersion = (value != null) ? value : "";
+        }
+        return fujiMetricVersion;
+    }
+    // END CSUC / MADROÑO FUJI INTEGRATION 
 
     public List<MetadataBlock> getSystemMetadataBlocks() {
 

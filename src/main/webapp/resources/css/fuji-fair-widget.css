@@ -1,0 +1,152 @@
+/**
+ * FUJI FAIR Assessment Widget Styles
+ * Styles for the FAIR assessment widget integrated with F-UJI service
+ */
+
+ #fuji-heading {
+    font-size: 14px;
+    color: black;
+    margin-bottom: 1em;
+}
+
+#fuji-heading .glyphicon-certificate {
+    color: black;
+    margin-right: 5px;
+}
+
+#fuji-body {
+    min-height: 200px;
+}
+
+/* Score Circle Animation */
+#fuji-score-circle-fill {
+    transition: stroke-dashoffset 1s ease-in-out, stroke 0.5s ease;
+}
+
+/* Principle Bars */
+.fuji-principle-item {
+    margin-bottom: 10px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.fuji-principle-item > div:first-child {
+    font-size: 14px;
+    min-width: 25px;
+}
+
+.fuji-principle-item > div:nth-child(2) {
+    margin: 0 10px;
+}
+
+
+.fuji-principle-item > div:nth-child(2) > div {
+    transition: width 1s ease-out;
+}
+
+.fuji-principle-item > div:last-child {
+    font-size: 11px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Loading Spinner */
+#fuji-loading .fa-spinner {
+    color: #2A7886;
+}
+
+/* Error State */
+#fuji-error {
+    color: #F44336;
+}
+
+#fuji-error .glyphicon {
+    font-size: 20px;
+}
+
+/* Details Dialog */
+.fuji-principle-section {
+    border-left: 4px solid #e0e0e0;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.fuji-principle-section h5 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.fuji-test-item {
+    transition: all 0.3s ease;
+}
+
+.fuji-test-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.fuji-test-item .badge {
+    font-size: 11px;
+    padding: 4px 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #fuji-fair-block {
+        margin-top: 20px;
+    }
+    
+    #fuji-score-circle {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    
+    #fuji-score-circle svg {
+        width: 60px;
+        height: 60px;
+    }
+    
+    #fuji-score-circle-fill,
+    #fuji-score-circle svg circle:first-child {
+        cx: 30;
+        cy: 30;
+        r: 26;
+    }
+    
+    #fuji-score-text {
+        font-size: 16px !important;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Print styles */
+@media print {
+    #fuji-fair-block {
+        page-break-inside: avoid;
+        border: 1px solid #000;
+    }
+    
+    #fuji-loading {
+        display: none !important;
+    }
+    
+    .fuji-principle-item > div:nth-child(2) > div {
+        background: #000 !important;
+    }
+}
+
+#fuji-results {
+    border: 1px solid #EEE;
+    padding: 8px 10px;
+    margin-bottom: 1em;
+}
