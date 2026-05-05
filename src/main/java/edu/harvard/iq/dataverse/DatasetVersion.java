@@ -1132,7 +1132,22 @@ public class DatasetVersion implements Serializable {
         return getCompoundChildFieldValues(DatasetFieldConstant.topicClassification,
                 DatasetFieldConstant.topicClassValue);
     }
-    
+  
+    // MADROÑO BEGIN. Send languages to DataCite. We need the original English language name to transform it to the ISO 639-1 code
+    /**
+     * @return List of Strings containing the version's language entries
+     */
+    public List<String> getOrigLanguages() {
+        List<String> languages = new ArrayList<>();
+        for (DatasetField dsf : this.getDatasetFields()) {
+            if (dsf.getDatasetFieldType().getName().equals(DatasetFieldConstant.language)) {
+                languages.addAll(dsf.getValues("en"));
+            }
+        }
+        return languages;
+    }
+    // MADROÑO END. Send language to DataCite
+      
     /**
      * @return List of Strings containing the version's Kind Of Data entries
      */

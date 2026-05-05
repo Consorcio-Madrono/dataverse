@@ -15,6 +15,7 @@ public class DoiMetadata {
 
     private String identifier;
     private List<String> creators;
+    private List <String> lang; // MADROÑO. Send language to DataCite
     private String title;
     private String publisher;
     private String publisherYear;
@@ -76,6 +77,16 @@ public class DoiMetadata {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    // MADROÑO BEGIN. Send language to DataCite
+    public List <String> getLanguage() {
+        return lang;
+    }
+
+    public void setLanguages(List <String> lang) {
+        this.lang = lang;
+    }
+    // MADROÑO END. Send language to DataCite
 
     public String getPublisher() {
         return publisher;

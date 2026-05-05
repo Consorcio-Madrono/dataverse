@@ -310,11 +310,12 @@ public class OaiHandler implements Serializable {
         }
         mip.withMetadataPrefix(metadataPrefix);
 
+/*      MADROÑO, We need to do always complete havester
         if (this.fromDate != null) {
             Identify identify = runIdentify();
             mip.withGranularity(identify.getGranularity().toString());
             mip.withFrom(this.fromDate.toInstant());
-        }
+        }*/
 
         if (!StringUtils.isEmpty(this.setName)) {
             mip.withSetSpec(this.setName);

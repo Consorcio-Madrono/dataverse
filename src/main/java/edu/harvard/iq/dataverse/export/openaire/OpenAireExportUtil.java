@@ -20,6 +20,7 @@ import edu.harvard.iq.dataverse.api.dto.DatasetDTO;
 import edu.harvard.iq.dataverse.api.dto.DatasetVersionDTO;
 import edu.harvard.iq.dataverse.api.dto.FieldDTO;
 import edu.harvard.iq.dataverse.api.dto.MetadataBlockDTO;
+import edu.harvard.iq.dataverse.harvest.server.OAIRecordServiceBean;
 import edu.harvard.iq.dataverse.util.PersonOrOrgUtil;
 import edu.harvard.iq.dataverse.pidproviders.PidUtil;
 import edu.harvard.iq.dataverse.pidproviders.doi.AbstractDOIProvider;
@@ -1420,6 +1421,15 @@ public class OpenAireExportUtil {
                             if (StringUtils.isNotBlank(funderName)) {
                                 fundingReference_check = writeOpenTag(xmlw, "fundingReferences", fundingReference_check);
                                 xmlw.writeStartElement("fundingReference"); // <fundingReference>
+                                // BEGIN CONSORCIO MADROÑO Get Funders's DOI
+                                String funderDoi= OAIRecordServiceBean.getFunderDOI(funderName);
+                                if (funderDoi!= null) {
+                                    Map<String, String> funderDoi_map = null;
+                                    funderDoi_map= new HashMap<>();
+                                    funderDoi_map.put ("funderIdentifierType","Crossref Funder ID");
+                                    writeFullElement(xmlw, null, "funderIdentifier", funderDoi_map, funderDoi, language);
+                                }
+                                // END CONSORCIO MADROÑO
                                 writeFullElement(xmlw, null, "funderName", null, funderName, language);
 
                                 if (StringUtils.isNotBlank(awardNumber)) {

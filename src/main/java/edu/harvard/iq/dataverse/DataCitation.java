@@ -115,7 +115,8 @@ public class DataCitation {
         persistentId = getPIDFrom(dsv, dsv.getDataset());
 
         // UNF
-        UNF = dsv.getUNF();
+        // UNF MADROÑO. Don't display UNF
+        UNF = null; // UNF = dsv.getUNF();
 
         // optional values
         for (DatasetFieldType dsfType : dsv.getDataset().getOwner().getCitationDatasetFieldTypes()) {
@@ -150,10 +151,10 @@ public class DataCitation {
         // The Global Identifier of the Datafile (if published and isDirect==true) or Dataset as appropriate
         persistentId = getPIDFrom(dsv, df);
 
-        // UNF
-        if (df.isTabularData() && df.getUnf() != null && !df.getUnf().isEmpty()) {
+        // UNF MADROÑO. Don't display UNF
+        /*        if (df.isTabularData() && df.getUnf() != null && !df.getUnf().isEmpty()) {
             UNF = df.getUnf();
-        }
+        }*/
     }
 
     private void getCommonValuesFrom(DatasetVersion dsv) {
@@ -211,7 +212,8 @@ public class DataCitation {
     }
 
     public String getUNF() {
-        return UNF;
+        return null; // MADROÑO. Don't display UNF
+        // return UNF;
     }
 
     public String getPublisher() {
@@ -475,9 +477,10 @@ public class DataCitation {
             if(!isDirect()) {
                 out.write("C1  - " + getFileTitle() + "\r\n");
             }
+            /* MADROÑO. Don't display UNF
             if (getUNF() != null) {
                 out.write("C2  - " + getUNF() + "\r\n");
-            }
+            }*/
         }
         // closing element:
         out.write("ER  - \r\n");
@@ -698,11 +701,12 @@ public class DataCitation {
             xmlw.writeCharacters(fileTitle);
             xmlw.writeEndElement(); // custom1
             
+            /* MADROÑO. Don't display UNF
                 if (getUNF() != null) {
                     xmlw.writeStartElement("custom2");
                     xmlw.writeCharacters(getUNF());
                     xmlw.writeEndElement(); // custom2
-            }
+            }*/
         }
         if (persistentId != null && "doi".equals(persistentId.getProtocol())) {
             xmlw.writeStartElement("electronic-resource-num");
