@@ -841,10 +841,43 @@
                                                 data-r1-1-01m="#{bundle['fuji.metric.FsF-R1.1-01M']}"
                                                 data-r1-2-01m="#{bundle['fuji.metric.FsF-R1.2-01M']}"
                                                 data-r1-3-01m="#{bundle['fuji.metric.FsF-R1.3-01M']}"
-                                                data-r1-3-02d="#{bundle['fuji.metric.FsF-R1.3-02D']}">
+                                                data-r1-3-02d="#{bundle['fuji.metric.FsF-R1.3-02D']}"
+                                                data-subtests="#{bundle['fuji.fair.subtests']}"
+                                                data-sub-f1-01md-1="#{bundle['fuji.subtest.FsF-F1-01MD-1']}"
+                                                data-sub-f1-01md-2="#{bundle['fuji.subtest.FsF-F1-01MD-2']}"
+                                                data-sub-f1-02md-1="#{bundle['fuji.subtest.FsF-F1-02MD-1']}"
+                                                data-sub-f1-02md-2="#{bundle['fuji.subtest.FsF-F1-02MD-2']}"
+                                                data-sub-f1-02md-4="#{bundle['fuji.subtest.FsF-F1-02MD-4']}"
+                                                data-sub-f1-02md-5="#{bundle['fuji.subtest.FsF-F1-02MD-5']}"
+                                                data-sub-f2-01m-2="#{bundle['fuji.subtest.FsF-F2-01M-2']}"
+                                                data-sub-f2-01m-3="#{bundle['fuji.subtest.FsF-F2-01M-3']}"
+                                                data-sub-f3-01m-2="#{bundle['fuji.subtest.FsF-F3-01M-2']}"
+                                                data-sub-f4-01m-1="#{bundle['fuji.subtest.FsF-F4-01M-1']}"
+                                                data-sub-a1-01m-1="#{bundle['fuji.subtest.FsF-A1-01M-1']}"
+                                                data-sub-a1-02md-1="#{bundle['fuji.subtest.FsF-A1-02MD-1']}"
+                                                data-sub-a1-02md-2="#{bundle['fuji.subtest.FsF-A1-02MD-2']}"
+                                                data-sub-a1-1-01md-1="#{bundle['fuji.subtest.FsF-A1.1-01MD-1']}"
+                                                data-sub-a1-1-01md-2="#{bundle['fuji.subtest.FsF-A1.1-01MD-2']}"
+                                                data-sub-a1-2-01md-1="#{bundle['fuji.subtest.FsF-A1.2-01MD-1']}"
+                                                data-sub-a1-2-01md-2="#{bundle['fuji.subtest.FsF-A1.2-01MD-2']}"
+                                                data-sub-i1-01m-1="#{bundle['fuji.subtest.FsF-I1-01M-1']}"
+                                                data-sub-i1-01m-2="#{bundle['fuji.subtest.FsF-I1-01M-2']}"
+                                                data-sub-i2-01m-2="#{bundle['fuji.subtest.FsF-I2-01M-2']}"
+                                                data-sub-i3-01m-1="#{bundle['fuji.subtest.FsF-I3-01M-1']}"
+                                                data-sub-i3-01m-2="#{bundle['fuji.subtest.FsF-I3-01M-2']}"
+                                                data-sub-r1-01m-1="#{bundle['fuji.subtest.FsF-R1-01M-1']}"
+                                                data-sub-r1-01m-2="#{bundle['fuji.subtest.FsF-R1-01M-2']}"
+                                                data-sub-r1-01m-3="#{bundle['fuji.subtest.FsF-R1-01M-3']}"
+                                                data-sub-r1-1-01m-1="#{bundle['fuji.subtest.FsF-R1.1-01M-1']}"
+                                                data-sub-r1-2-01m-1="#{bundle['fuji.subtest.FsF-R1.2-01M-1']}"
+                                                data-sub-r1-2-01m-2="#{bundle['fuji.subtest.FsF-R1.2-01M-2']}"
+                                                data-sub-r1-3-01m-1="#{bundle['fuji.subtest.FsF-R1.3-01M-1']}"
+                                                data-sub-r1-3-01m-3="#{bundle['fuji.subtest.FsF-R1.3-01M-3']}"
+                                                data-sub-r1-3-02d-1="#{bundle['fuji.subtest.FsF-R1.3-02D-1']}">
                                             </div>
                                             <div id="fuji-fair-block" class="fuji-fair-block"
-                                                data-dataset-pid="#{DatasetPage.persistentId}">
+                                                data-dataset-pid="#{DatasetPage.persistentId}"
+                                                data-loading-first-hint="#{bundle['fuji.fair.loading.first']}">
                                             <div id="fuji-heading">
                                                  #{bundle['fuji.fair.assessment.title']}
                                                 <a tabindex="0" role="button" class="glyphicon glyphicon-question-sign tooltip-icon" 
@@ -856,6 +889,7 @@
                                                 <div id="fuji-loading" style="text-align: center; padding: 20px;">
                                                     <i class="fa fa-spinner fa-spin" style="font-size: 24px;"></i>
                                                     <p>#{bundle['fuji.fair.loading']}</p>
+                                                    <p id="fuji-loading-first-hint" class="text-muted" style="font-size: 11px; margin-top: 6px; display: none;"></p>
                                                 </div>
                                                 <div id="fuji-results" style="display: none;">
                                                     <!-- FAIR Score Overview -->
@@ -2112,8 +2146,7 @@
                                             <p><strong>#{bundle['fuji.fair.score']}:</strong> <span id="fuji-detail-score">-</span></p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><strong>#{bundle['fuji.fair.maturity']}:</strong> <span id="fuji-detail-maturity">-</span></p>
-                                            <p><strong>#{bundle['fuji.fair.evaluation.date']}:</strong> <span id="fuji-detail-date">-</span></p>
+                                            <p style="margin-bottom: 8px;"><strong>#{bundle['fuji.fair.evaluation.date']}:</strong> <span id="fuji-detail-date">-</span></p>
                                         </div>
                                     </div>
                                     
@@ -2123,30 +2156,35 @@
                                             <tr>
                                                 <th></th>
                                                 <th style="text-align: center;">#{bundle['fuji.fair.score.earned']}</th>
-                                                <th style="text-align: center;">#{bundle['fuji.fair.level']}</th>
+                                                <th style="text-align: center;">#{bundle['fuji.fair.score.percent']}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td><strong style="color: #118ab2;">#{bundle['fuji.fair.findable']}:</strong></td>
                                                 <td id="fuji-summary-f-score" style="text-align: center;">-</td>
-                                                <td id="fuji-summary-f-level" style="text-align: center;">-</td>
+                                                <td id="fuji-summary-f-percent" style="text-align: center;">-</td>
                                             </tr>
                                             <tr>
                                                 <td><strong style="color: #06d6a0;">#{bundle['fuji.fair.accessible']}:</strong></td>
                                                 <td id="fuji-summary-a-score" style="text-align: center;">-</td>
-                                                <td id="fuji-summary-a-level" style="text-align: center;">-</td>
+                                                <td id="fuji-summary-a-percent" style="text-align: center;">-</td>
                                             </tr>
                                             <tr>
                                                 <td><strong style="color: #ffd166;">#{bundle['fuji.fair.interoperable']}:</strong></td>
                                                 <td id="fuji-summary-i-score" style="text-align: center;">-</td>
-                                                <td id="fuji-summary-i-level" style="text-align: center;">-</td>
+                                                <td id="fuji-summary-i-percent" style="text-align: center;">-</td>
                                             </tr>
                                             <tr>
                                                 <td><strong style="color: #ef476f;">#{bundle['fuji.fair.reusable']}:</strong></td>
                                                 <td id="fuji-summary-r-score" style="text-align: center;">-</td>
-                                                <td id="fuji-summary-r-level" style="text-align: center;">-</td>
+                                                <td id="fuji-summary-r-percent" style="text-align: center;">-</td>
                                             </tr>
+                                            <tr class="fuji-fair-summary-total-row">
+                                                <td><strong>#{bundle['fuji.fair.total']}:</strong></td>
+                                                <td id="fuji-summary-fair-score" style="text-align: center;">-</td>
+                                                <td id="fuji-summary-fair-percent" style="text-align: center;">-</td>
+                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -2160,42 +2198,22 @@
                                 <div class="panel-body">
                                     <!-- Findable -->
                                     <div class="fuji-principle-section" style="margin-bottom: 20px;">
-                                        <h5 style="color: #118ab2; font-weight: bold;">
-                                            <span class="glyphicon glyphicon-search"></span> #{bundle['fuji.fair.findable']} (F)
-                                        </h5>
-                                        <div id="fuji-findable-tests" class="fuji-tests-list">
-                                            <!-- Tests will be populated by JavaScript -->
-                                        </div>
+                                        <div id="fuji-findable-tests" class="fuji-tests-list"></div>
                                     </div>
                                     
                                     <!-- Accessible -->
                                     <div class="fuji-principle-section" style="margin-bottom: 20px;">
-                                        <h5 style="color: #06d6a0; font-weight: bold;">
-                                            <span class="glyphicon glyphicon-lock"></span> #{bundle['fuji.fair.accessible']} (A)
-                                        </h5>
-                                        <div id="fuji-accessible-tests" class="fuji-tests-list">
-                                            <!-- Tests will be populated by JavaScript -->
-                                        </div>
+                                        <div id="fuji-accessible-tests" class="fuji-tests-list"></div>
                                     </div>
                                     
                                     <!-- Interoperable -->
                                     <div class="fuji-principle-section" style="margin-bottom: 20px;">
-                                        <h5 style="color: #ffd166; font-weight: bold;">
-                                            <span class="glyphicon glyphicon-transfer"></span> #{bundle['fuji.fair.interoperable']} (I)
-                                        </h5>
-                                        <div id="fuji-interoperable-tests" class="fuji-tests-list">
-                                            <!-- Tests will be populated by JavaScript -->
-                                        </div>
+                                        <div id="fuji-interoperable-tests" class="fuji-tests-list"></div>
                                     </div>
                                     
                                     <!-- Reusable -->
                                     <div class="fuji-principle-section">
-                                        <h5 style="color: #ef476f; font-weight: bold;">
-                                            <span class="glyphicon glyphicon-refresh"></span> #{bundle['fuji.fair.reusable']} (R)
-                                        </h5>
-                                        <div id="fuji-reusable-tests" class="fuji-tests-list">
-                                            <!-- Tests will be populated by JavaScript -->
-                                        </div>
+                                        <div id="fuji-reusable-tests" class="fuji-tests-list"></div>
                                     </div>
                                 </div>
                             </div>
@@ -2685,12 +2703,55 @@
                         accessible: '#{bundle["fuji.fair.accessible"]}',
                         interoperable: '#{bundle["fuji.fair.interoperable"]}',
                         reusable: '#{bundle["fuji.fair.reusable"]}',
+                        scoreLabel: '#{bundle["fuji.fair.score"]}',
+                        subtestsLabel: '',
+                        subtests: {},
                         metrics: {}
                     };
                     
+                    // Mètriques v0.8 amb puntuació alternativa (PDF FAIRsFAIR)
+                    var FUJI_ALTERNATIVE_METRICS = {
+                        'FsF-F2-01M': true,
+                        'FsF-A1-01M': true,
+                        'FsF-I1-01M': true,
+                        'FsF-I3-01M': true,
+                        'FsF-R1.2-01M': true,
+                        'FsF-R1.3-01M': true,
+                        'FsF-R1.3-02D': true
+                    };
+                    
+                    var FUJI_SUBTEST_IDS = [
+                        'FsF-F1-01MD-1', 'FsF-F1-01MD-2', 'FsF-F1-02MD-1', 'FsF-F1-02MD-2', 'FsF-F1-02MD-4', 'FsF-F1-02MD-5',
+                        'FsF-F2-01M-2', 'FsF-F2-01M-3', 'FsF-F3-01M-2', 'FsF-F4-01M-1',
+                        'FsF-A1-01M-1', 'FsF-A1-02MD-1', 'FsF-A1-02MD-2', 'FsF-A1.1-01MD-1', 'FsF-A1.1-01MD-2',
+                        'FsF-A1.2-01MD-1', 'FsF-A1.2-01MD-2',
+                        'FsF-I1-01M-1', 'FsF-I1-01M-2', 'FsF-I2-01M-2', 'FsF-I3-01M-1', 'FsF-I3-01M-2',
+                        'FsF-R1-01M-1', 'FsF-R1-01M-2', 'FsF-R1-01M-3', 'FsF-R1.1-01M-1',
+                        'FsF-R1.2-01M-1', 'FsF-R1.2-01M-2', 'FsF-R1.3-01M-1', 'FsF-R1.3-01M-3', 'FsF-R1.3-02D-1'
+                    ];
+                    
+                    function fujiSubTestDataAttr(testId) {
+                        return 'sub-' + testId.replace(/^FsF-/, '').replace(/\./g, '-').toLowerCase();
+                    }
+                    
+                    function loadFujiSubTestTranslations(metricsEl) {
+                        fujiI18n.subtests = {};
+                        FUJI_SUBTEST_IDS.forEach(function(testId) {
+                            fujiI18n.subtests[testId] = metricsEl.attr('data-' + fujiSubTestDataAttr(testId)) || '';
+                        });
+                    }
+                    
+                    function getSubTestDisplayName(testId, fallbackName) {
+                        if (fujiI18n.subtests && fujiI18n.subtests[testId]) {
+                            return fujiI18n.subtests[testId];
+                        }
+                        return fallbackName || '';
+                    }
                     $(document).ready(function() {
                         var metricsData = $('#fuji-metrics-translations');
                         if (metricsData.length > 0) {
+                            fujiI18n.subtestsLabel = metricsData.data('subtests') || '';
+                            loadFujiSubTestTranslations(metricsData);
                             fujiI18n.metrics = {
                                 'FsF-F1-01MD': metricsData.data('f1-01md') || '',
                                 'FsF-F1-02MD': metricsData.data('f1-02md') || '',
@@ -2747,6 +2808,15 @@
                     function hideFUJIWidget() {
                         $('#fuji-fair-block').closest('.col-xs-12').hide();
                     }
+
+                    var fujiEvaluationStarted = false;
+                    
+                    function showFujiLoadingFirstHint() {
+                        var hint = $('#fuji-fair-block').attr('data-loading-first-hint');
+                        if (hint) {
+                            $('#fuji-loading-first-hint').text(hint).show();
+                        }
+                    }
                     
                     function callFUJIService() {
                         if (!shouldRunFUJIAssessment()) {
@@ -2756,6 +2826,11 @@
                         var fujiBlock = $('#fuji-fair-block');
                         var datasetPID = fujiBlock.attr('data-dataset-pid');
                         
+                        $('#fuji-loading').show();
+                        $('#fuji-results').hide();
+                        $('#fuji-error').hide();
+                        showFujiLoadingFirstHint();
+
                         var proxyUrl = '/api/fuji/evaluate?pid=' + encodeURIComponent(datasetPID);
                         
                         $.ajax({
@@ -2764,16 +2839,48 @@
                             dataType: 'json',
                             timeout: 120000,
                             success: function(response) {
+                                if (response && response.status === 'ERROR') {
+                                    if (response.message === 'FUJI service not configured') {
+                                        hideFUJIWidget();
+                                    } else {
+                                        showFUJIError();
+                                    }
+                                    return;
+                                }
                                 displayFUJIResults(response);
                             },
-                            error: function(xhr, status, error) {
-                                showFUJIError();
+                            error: function(xhr) {
+                                if (xhr.status === 503) {
+                                    hideFUJIWidget();
+                                } else {
+                                    showFUJIError();
+                                }
                             }
                         });
                     }
                     
+                    function isFujiWidgetInViewport(element) {
+                        if (!element) {
+                            return false;
+                        }
+                        var rect = element.getBoundingClientRect();
+                        return rect.top < (window.innerHeight + 200) && rect.bottom > -200;
+                    }
+                    
+                    function startFUJIAssessmentIfNeeded() {
+                        if (fujiEvaluationStarted) {
+                            return;
+                        }
+                        if (!shouldRunFUJIAssessment()) {
+                            return;
+                        }
+                        fujiEvaluationStarted = true;
+                        callFUJIService();
+                    }
+                    
                     function displayFUJIResults(data) {
                         $('#fuji-loading').hide();
+                        $('#fuji-loading-first-hint').hide();
                         $('#fuji-error').hide();
                         $('#fuji-results').show();
                         
@@ -2816,6 +2923,147 @@
                         window.fujiFullResults = data;
                         
                         updateFUJIDetailsDialog(data, scores, overallPercentage);
+                    }
+
+                    function formatFujiScoreValue(value) {
+                        if (typeof value !== 'number' || isNaN(value)) {
+                            return '-';
+                        }
+                        return (Math.round(value * 100) / 100).toString();
+                    }
+                    
+                    function formatFujiScorePair(earned, total) {
+                        if (typeof earned !== 'number' || typeof total !== 'number') {
+                            return '-';
+                        }
+                        return formatFujiScoreValue(earned) + ' ' + fujiI18n.of + ' ' + formatFujiScoreValue(total);
+                    }
+                    
+                    function extractFairPrinciple(metricId) {
+                        var match = /^FsF-([FAIR])/.exec(metricId || '');
+                        return match ? match[1] : '';
+                    }
+                    
+                    function getFujiMetricStatus(metric) {
+                        // Alineat amb F-UJI/PDF v0.8: la puntuació (score) determina el % FAIR,
+                        // no el test_status binari (que inclou sub-tests no puntuables).
+                        var score = metric.score || {};
+                        var earned = (typeof score.earned === 'number') ? score.earned : null;
+                        var total = (typeof score.total === 'number') ? score.total : null;
+                        if (earned !== null && total !== null && total > 0) {
+                            if (earned >= total) {
+                                return 'pass';
+                            }
+                            if (earned > 0) {
+                                return 'partial';
+                            }
+                            return 'fail';
+                        }
+                        return metric.test_status || 'unknown';
+                    }
+                    
+                    function getFujiSubTestRawStatus(subTest) {
+                        // Estat real de la prova (pass/fail) segons F-UJI, independentment de si puntua.
+                        var score = subTest.metric_test_score || {};
+                        var earned = (typeof score.earned === 'number') ? score.earned : null;
+                        var total = (typeof score.total === 'number') ? score.total : null;
+                        
+                        if (total === 0) {
+                            if (subTest.metric_test_status === 'pass') {
+                                return 'pass';
+                            }
+                            if (subTest.metric_test_status === 'fail') {
+                                return 'fail';
+                            }
+                            return 'unknown';
+                        }
+                        if (earned !== null && total !== null && total > 0) {
+                            if (earned >= total) {
+                                return 'pass';
+                            }
+                            if (earned > 0) {
+                                return 'partial';
+                            }
+                            return 'fail';
+                        }
+                        if (subTest.metric_test_status === 'pass') {
+                            return 'pass';
+                        }
+                        if (subTest.metric_test_status === 'fail') {
+                            return 'fail';
+                        }
+                        return 'unknown';
+                    }
+                    
+                    function getFujiSubTestScoreContext(subTest, metric) {
+                        // Indica si la prova no afecta la puntuació de la mètrica (però es mostra l'estat real).
+                        var score = subTest.metric_test_score || {};
+                        var total = (typeof score.total === 'number') ? score.total : null;
+                        if (total === 0) {
+                            return 'not_scored';
+                        }
+                        var rawStatus = getFujiSubTestRawStatus(subTest);
+                        if (rawStatus === 'fail' && metric && FUJI_ALTERNATIVE_METRICS[metric.metric_identifier]) {
+                            var metricScore = metric.score || {};
+                            var mEarned = metricScore.earned;
+                            var mTotal = metricScore.total;
+                            if (typeof mEarned === 'number' && typeof mTotal === 'number' && mTotal > 0 && mEarned >= mTotal) {
+                                return 'alternative_optional';
+                            }
+                        }
+                        return null;
+                    }
+                    
+                    function getFujiStatusVisual(status) {
+                        if (status === 'pass') {
+                            return {icon: 'ok-circle', rightIcon: 'ok', cssClass: 'success', color: '#4CAF50'};
+                        }
+                        if (status === 'fail') {
+                            return {icon: 'remove-circle', rightIcon: 'remove', cssClass: 'danger', color: '#F44336'};
+                        }
+                        if (status === 'partial') {
+                            return {icon: 'adjust', rightIcon: 'minus', cssClass: 'warning', color: '#FF9800'};
+                        }
+                        return {icon: 'question-sign', rightIcon: 'question-sign', cssClass: 'warning', color: '#FF9800'};
+                    }
+                    
+                    function isFujiScoredSubTest(subTest, metric) {
+                        var scoreContext = getFujiSubTestScoreContext(subTest, metric);
+                        return scoreContext !== 'not_scored' && scoreContext !== 'alternative_optional';
+                    }
+                    
+                    function renderMetricSubTestsHtml(metric) {
+                        var metricTests = metric.metric_tests;
+                        if (!metricTests || typeof metricTests !== 'object') {
+                            return '';
+                        }
+                        var testIds = Object.keys(metricTests).sort().filter(function(testId) {
+                            return isFujiScoredSubTest(metricTests[testId], metric);
+                        });
+                        if (testIds.length === 0) {
+                            return '';
+                        }
+                        var html = '<div class="fuji-subtests-list" style="margin-top: 8px; margin-left: 20px;">' +
+                            '<div class="fuji-subtests-heading" style="font-size: 11px; font-weight: 600; color: #555; margin-bottom: 4px;">' +
+                            fujiI18n.subtestsLabel + '</div>';
+                        testIds.forEach(function(testId) {
+                            var subTest = metricTests[testId];
+                            var rawStatus = getFujiSubTestRawStatus(subTest);
+                            var visual = getFujiStatusVisual(rawStatus);
+                            var subScore = subTest.metric_test_score || {};
+                            var scorePart = '';
+                            if (typeof subScore.earned === 'number' && typeof subScore.total === 'number' && subScore.total > 0) {
+                                scorePart = ' <span class="text-muted">(' + formatFujiScorePair(subScore.earned, subScore.total) + ')</span>';
+                            }
+                            var displayName = getSubTestDisplayName(testId, subTest.metric_test_name);
+                            html += '<div class="fuji-subtest-item" style="font-size: 11px; margin-bottom: 4px; padding-left: 4px; border-left: 2px solid ' + visual.color + ';">' +
+                                '<span class="glyphicon glyphicon-' + visual.icon + '" style="color: ' + visual.color + '; font-size: 10px;"></span> ' +
+                                '<span class="text-muted">' + testId + '</span> - ' +
+                                displayName + scorePart +
+                                '</div>';
+                        });
+                        html += '</div>';
+                        return html;
                     }
                     
                     function updateScoreCircle(percentage, scorePercent) {
@@ -2869,39 +3117,42 @@
                     function updateFUJIDetailsDialog(data, scores, overallPercentage) {
                         var detailPid = (data.request && data.request.object_identifier) ? data.request.object_identifier : '-';
                         $('#fuji-detail-pid').text(detailPid);
-                        $('#fuji-detail-score').text(overallPercentage + '%');
-                        var maturity = (data.summary && data.summary.maturity && data.summary.maturity.FAIR) ? data.summary.maturity.FAIR : '-';
-                        $('#fuji-detail-maturity').text(maturity);
+                        
+                        var summary = data.summary || {};
+                        var fairEarned = summary.score_earned ? summary.score_earned.FAIR : null;
+                        var fairTotal = summary.score_total ? summary.score_total.FAIR : null;
+                        var detailScoreText = overallPercentage + '%';
+                        if (typeof fairEarned === 'number' && typeof fairTotal === 'number') {
+                            detailScoreText += ' (' + formatFujiScorePair(fairEarned, fairTotal) + ')';
+                        }
+                        $('#fuji-detail-score').text(detailScoreText);
+
                         $('#fuji-detail-date').text(data.start_timestamp || new Date().toISOString());
                         
-                        if (data.summary) {
-                            updatePrincipleSummaryRow('f', 'F', scores.F, data.summary);
-                            updatePrincipleSummaryRow('a', 'A', scores.A, data.summary);
-                            updatePrincipleSummaryRow('i', 'I', scores.I, data.summary);
-                            updatePrincipleSummaryRow('r', 'R', scores.R, data.summary);
+                        if (summary.score_earned || summary.score_total) {
+                            updatePrincipleSummaryRow('f', 'F', scores.F, summary);
+                            updatePrincipleSummaryRow('a', 'A', scores.A, summary);
+                            updatePrincipleSummaryRow('i', 'I', scores.I, summary);
+                            updatePrincipleSummaryRow('r', 'R', scores.R, summary);
+                            updateFairTotalSummaryRow(summary, overallPercentage);
                         }
                         
-                        // Update principle sections
                         if (data.results && Array.isArray(data.results)) {
                             var groupedResults = {F: [], A: [], I: [], R: []};
                             
                             data.results.forEach(function(result) {
-                                var metricId = result.metric_identifier || '';
-                                // Extract FAIR principle from metric_identifier
-                                // Format is "FsF-X1-01M" where X is F, A, I, or R at position 4
-                                var principle = metricId.length > 4 ? metricId.charAt(4) : '';
+                                var principle = extractFairPrinciple(result.metric_identifier || '');
                                 if (groupedResults[principle]) {
                                     groupedResults[principle].push(result);
                                 }
                             });
                             
-                            displayPrincipleTests('findable', groupedResults.F, scores.F, data.summary);
-                            displayPrincipleTests('accessible', groupedResults.A, scores.A, data.summary);
-                            displayPrincipleTests('interoperable', groupedResults.I, scores.I, data.summary);
-                            displayPrincipleTests('reusable', groupedResults.R, scores.R, data.summary);
+                            displayPrincipleTests('findable', groupedResults.F, scores.F, summary);
+                            displayPrincipleTests('accessible', groupedResults.A, scores.A, summary);
+                            displayPrincipleTests('interoperable', groupedResults.I, scores.I, summary);
+                            displayPrincipleTests('reusable', groupedResults.R, scores.R, summary);
                         }
                         
-                        // Update report links if available
                         if (data.output_format_json_uri) {
                             $('#fuji-json-report').attr('href', data.output_format_json_uri).show();
                         }
@@ -2911,42 +3162,57 @@
                     }
                     
                     function updatePrincipleSummaryRow(rowKey, principle, score, summary) {
-                        var scoreText = score ? (score.earned + ' ' + fujiI18n.of + ' ' + score.max) : '-';
-                        $('#fuji-summary-' + rowKey + '-score').text(scoreText);
-                        
-                        var maturityLevel = summary && summary.maturity ? summary.maturity[principle] : 0;
-                        var maturityLabel = maturityLevel >= 3 ? fujiI18n.levelAdvanced : 
-                                           maturityLevel >= 2 ? fujiI18n.levelModerate : fujiI18n.levelInitial;
-                        var maturityClass = maturityLevel >= 3 ? 'success' : maturityLevel >= 2 ? 'warning' : 'danger';
-                        
-                        $('#fuji-summary-' + rowKey + '-level').html(
-                            '<span class="label label-' + maturityClass + '">' + maturityLabel + '</span>'
+                        $('#fuji-summary-' + rowKey + '-score').text(
+                            score ? formatFujiScorePair(score.earned, score.max) : '-'
                         );
+                         
+                        var percent = summary && summary.score_percent ? summary.score_percent[principle] : null;
+                        $('#fuji-summary-' + rowKey + '-percent').text(
+                            (typeof percent === 'number') ? (Math.round(percent) + '%') : '-'
+                        );
+                    }
+                    
+                    function updateFairTotalSummaryRow(summary, overallPercentage) {
+                        var fairEarned = summary.score_earned ? summary.score_earned.FAIR : null;
+                        var fairTotal = summary.score_total ? summary.score_total.FAIR : null;
+                        $('#fuji-summary-fair-score').text(
+                            (typeof fairEarned === 'number' && typeof fairTotal === 'number')
+                                ? formatFujiScorePair(fairEarned, fairTotal) : '-'
+                         );
+                        $('#fuji-summary-fair-percent').text(overallPercentage + '%');
                     }
                     
                     function displayPrincipleTests(principleKey, tests, score, summary) {
                         var container = $('#fuji-' + principleKey + '-tests');
                         container.empty();
                         
-                        var principleNames = {
-                            'findable': fujiI18n.findable,
-                            'accessible': fujiI18n.accessible,
-                            'interoperable': fujiI18n.interoperable,
-                            'reusable': fujiI18n.reusable
-                        };
-                        var principleName = principleNames[principleKey] || principleKey;
+                        var principleConfig = {
+                            'findable': { name: fujiI18n.findable, letter: 'F', color: '#118ab2', icon: 'search' },
+                            'accessible': { name: fujiI18n.accessible, letter: 'A', color: '#06d6a0', icon: 'lock' },
+                            'interoperable': { name: fujiI18n.interoperable, letter: 'I', color: '#ffd166', icon: 'transfer' },
+                            'reusable': { name: fujiI18n.reusable, letter: 'R', color: '#ef476f', icon: 'refresh' }
+                        }
+                        var config = principleConfig[principleKey] || { name: principleKey, letter: '', color: '#333', icon: 'info-sign' };
+                        var titleText = config.name + (config.letter ? ' (' + config.letter + ')' : '');
                         
-                        var principleLetter = principleKey.charAt(0).toUpperCase();
-                        var scoreText = score ? (score.earned + ' ' + fujiI18n.of + ' ' + score.max) : '-';
+                        var principleLetter = config.letter || principleKey.charAt(0).toUpperCase();
+                        var headerScoreText = score ? formatFujiScorePair(score.earned, score.max) : '-';
+                        var headerPercent = summary && summary.score_percent ? summary.score_percent[principleLetter] : null;
+                        if (typeof headerPercent === 'number') {
+                            headerScoreText += ' (' + Math.round(headerPercent) + '%)';
+                        }
+                        
                         var maturityLevel = summary && summary.maturity ? summary.maturity[principleLetter] : 0;
-                        var maturityLabel = maturityLevel >= 3 ? fujiI18n.levelAdvanced : 
+                        var maturityLabel = maturityLevel >= 3 ? fujiI18n.levelAdvanced :
                                            maturityLevel >= 2 ? fujiI18n.levelModerate : fujiI18n.levelInitial;
                         var maturityClass = maturityLevel >= 3 ? 'success' : maturityLevel >= 2 ? 'warning' : 'danger';
                         
-                        var headerHtml = '<div style="margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 4px;">' +
-                            '<strong>' + principleName + '</strong>: ' +
-                            '<span style="margin-left: 10px;">' + scoreText + '</span>' +
-                            '<span class="label label-' + maturityClass + '" style="margin-left: 10px;">' + maturityLabel + '</span>' +
+                        var headerHtml = '<div class="fuji-principle-header" style="margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 4px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">' +
+                            '<span style="color: ' + config.color + '; font-weight: bold; font-size: 14px; white-space: nowrap; padding-right: 10px; border-right: 2px solid #0000008c;">' +
+                            '<span class="glyphicon glyphicon-' + config.icon + '"></span> ' + titleText +
+                            '</span>' +
+                            '<span style="font-size: 14px;">' + fujiI18n.scoreLabel + ': ' + headerScoreText + '</span>' +
+                            '<span class="label label-' + maturityClass + '">' + maturityLabel + '</span>' +
                             '</div>';
                         container.append(headerHtml);
                         
@@ -2956,23 +3222,33 @@
                         }
                         
                         tests.forEach(function(test) {
-                            var testStatus = test.test_status || 'unknown';
-                            var statusIcon = testStatus === 'pass' ? 'ok-circle' : testStatus === 'fail' ? 'remove-circle' : 'question-sign';
-                            var statusClass = testStatus === 'pass' ? 'success' : testStatus === 'fail' ? 'danger' : 'warning';
-                            var statusColor = testStatus === 'pass' ? '#4CAF50' : testStatus === 'fail' ? '#F44336' : '#FF9800';
-                            
+                            var testStatus = getFujiMetricStatus(test);
+                            var visual = getFujiStatusVisual(testStatus);
                             var metricName = fujiI18n.metrics[test.metric_identifier] || test.metric_name;
                             
-                            var testHtml = '<div class="fuji-test-item" style="margin-bottom: 10px; padding: 10px; border-left: 3px solid ' + statusColor + '; background: #fafafa;">' +
+                            var metricScore = test.score || {};
+                            var metricScoreText = formatFujiScorePair(metricScore.earned, metricScore.total);
+                            
+                            var metaParts = [];
+                            if (metricScoreText !== '-') {
+                                metaParts.push('<strong class="fuji-test-score">' + fujiI18n.scoreLabel + ': ' + metricScoreText + '</strong>');
+                            }
+                            var metaHtml = metaParts.length > 0
+                                ? '<div class="fuji-test-meta" style="margin-top: 4px; margin-left: 20px; font-size: 11px; color: #666;">' + metaParts.join(' &#183; ') + '</div>'
+                                : '';
+                            
+                            var testHtml = '<div class="fuji-test-item" style="margin-bottom: 10px; padding: 10px; border-left: 3px solid ' + visual.color + '; background: #fafafa;">' +
                                 '<div style="display: flex; align-items: flex-start;">' +
                                 '<div style="flex: 1;">' +
-                                '<span class="glyphicon glyphicon-' + statusIcon + '" style="color: ' + statusColor + ';"></span> ' +
-                                '<strong>' + test.metric_identifier + '</strong> - ' + metricName +
+                                '<span class="glyphicon glyphicon-' + visual.icon + '" style="color: ' + visual.color + ';"></span> ' +
+                                '<strong>' + test.metric_identifier + ' - ' + metricName + '</strong>' +
                                 '</div>' +
                                 '<div style="margin-left: 10px;">' +
-                                '<span class="glyphicon glyphicon-' + (testStatus === 'pass' ? 'ok' : 'remove') + ' text-' + statusClass + '"></span>' +
+                                '<span class="glyphicon glyphicon-' + visual.rightIcon + ' text-' + visual.cssClass + '"></span>' +
                                 '</div>' +
-                                '</div>';
+                                '</div>' +
+                                metaHtml +
+                                renderMetricSubTestsHtml(test);
                             
                             testHtml += '</div>';
                             container.append(testHtml);
@@ -2985,37 +3261,28 @@
                         $('#fuji-error').show();
                     }
                     
-                    function checkFUJIServiceAvailability(callback) {
-                        $.ajax({
-                            url: '/api/fuji/status',
-                            method: 'GET',
-                            dataType: 'json',
-                            timeout: 5000,
-                            success: function(response) {
-                                if (response.data && response.data.configured) {
-                                    if (callback) callback(true);
-                                } else {
-                                    if (callback) callback(false);
-                                    hideFUJIWidget();
-                                }
-                            },
-                            error: function(xhr, status) {
-                                if (callback) callback(true);
-                            }
-                        });
-                    }
-                    
                     $(document).ready(function() {
                         var fujiBlock = $('#fuji-fair-block');
+                        if (fujiBlock.length === 0) {
+                            return;
+                        }
                         
-                        if (fujiBlock.length > 0) {
-                            setTimeout(function() {
-                                checkFUJIServiceAvailability(function(available) {
-                                    if (available) {
-                                        callFUJIService();
-                                    }
-                                });
-                            }, 1000);
+                        var fujiWrapper = fujiBlock.closest('.fuji-fair-block-wrapper')[0] || fujiBlock[0];
+                        
+                        if (isFujiWidgetInViewport(fujiWrapper)) {
+                            startFUJIAssessmentIfNeeded();
+                        } else if ('IntersectionObserver' in window) {
+                            var fujiObserver = new IntersectionObserver(function(entries) {
+                                entries.forEach(function(entry) {
+                                    if (entry.isIntersecting) {
+                                        fujiObserver.disconnect();
+                                        startFUJIAssessmentIfNeeded();
+                                     }
+                                 });
+                            }, { rootMargin: '200px' });
+                            fujiObserver.observe(fujiWrapper);
+                        } else {
+                            startFUJIAssessmentIfNeeded();
                         }
                     });
                     // END CSUC / MADROÑO

@@ -1,8 +1,11 @@
 package edu.harvard.iq.dataverse.api;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import edu.harvard.iq.dataverse.settings.SettingsServiceBean;
 import jakarta.ejb.EJB;
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.ws.rs.GET;
@@ -33,7 +36,22 @@ import java.util.Base64;
 @Tag(name = "fuji", description = "F-UJI FAIR Assessment Service integration")
 public class FujiApi extends AbstractApiBean {
 
-    private static final int TIMEOUT_SECONDS = 120;
+    private static final int CONNECT_TIMEOUT_SECONDS = 10;
+    private static final int REQUEST_TIMEOUT_SECONDS = 120;
+    private static final int CACHE_HOURS = 48;
+    private static final int CACHE_MAX_ENTRIES = 500;
+    private static final int CACHE_MAX_AGE_SECONDS = CACHE_HOURS * 3600;
+
+    private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
+            .connectTimeout(Duration.ofSeconds(CONNECT_TIMEOUT_SECONDS))
+            .build();
+
+    /** Caché en memòria de resultats F-UJI per PID i versió de mètriques (TTL 48 h). */
+    private static final Cache<String, JsonObject> EVALUATION_CACHE = Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofHours(CACHE_HOURS))
+            .maximumSize(CACHE_MAX_ENTRIES)
+            .build();
 
     @EJB
     SettingsServiceBean settingsService;
@@ -83,12 +101,7 @@ public class FujiApi extends AbstractApiBean {
             return badRequest("PID parameter is required");
         }
         
-        String normalizedPid = pid.trim();
-        if (normalizedPid.startsWith("doi:")) {
-            normalizedPid = "https://doi.org/" + normalizedPid.substring(4);
-        } else if (normalizedPid.matches("^10\\.\\d{4,9}/.*")) {
-            normalizedPid = "https://doi.org/" + normalizedPid;
-        }
+        String normalizedPid = normalizePid(pid.trim());
         
         String fujiUrl = settingsService.getValueForKey(SettingsServiceBean.Key.FujiServiceUrl);
         if (fujiUrl == null || fujiUrl.isEmpty()) {
@@ -107,6 +120,12 @@ public class FujiApi extends AbstractApiBean {
         if (metricVersion == null || metricVersion.isEmpty()) {
             metricVersion = "0.8";
         }
+
+        String cacheKey = buildCacheKey(normalizedPid, metricVersion);
+        JsonObject cachedResult = EVALUATION_CACHE.getIfPresent(cacheKey);
+        if (cachedResult != null) {
+            return buildEvaluationResponse(cachedResult, true);
+        }
         
         try {
             JsonObject requestBody = Json.createObjectBuilder()
@@ -118,14 +137,9 @@ public class FujiApi extends AbstractApiBean {
             
             String requestBodyString = requestBody.toString();
             
-            HttpClient client = HttpClient.newBuilder()
-                    .version(HttpClient.Version.HTTP_1_1)
-                    .connectTimeout(Duration.ofSeconds(TIMEOUT_SECONDS))
-                    .build();
-            
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(fujiUrl))
-                    .timeout(Duration.ofSeconds(TIMEOUT_SECONDS))
+                    .timeout(Duration.ofSeconds(REQUEST_TIMEOUT_SECONDS))
                     .header("Content-Type", "application/json")
                     .header("Accept", "application/json");
             
@@ -140,7 +154,7 @@ public class FujiApi extends AbstractApiBean {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBodyString))
                     .build();
             
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
             
             int statusCode = response.statusCode();
             String responseBody = response.body();
@@ -148,7 +162,10 @@ public class FujiApi extends AbstractApiBean {
             if (statusCode >= 200 && statusCode < 300) {
                 try (JsonReader reader = Json.createReader(new StringReader(responseBody))) {
                     JsonObject fujiResponse = reader.readObject();
-                    return Response.ok(fujiResponse).build();
+                    if (isCacheableEvaluation(fujiResponse)) {
+                        EVALUATION_CACHE.put(cacheKey, fujiResponse);
+                    }
+                    return buildEvaluationResponse(fujiResponse, false);
                 }
             } else if (statusCode == 401) {
                 return Response.status(Response.Status.BAD_GATEWAY)
@@ -194,5 +211,45 @@ public class FujiApi extends AbstractApiBean {
                             .build())
                     .build();
         }
+    }
+
+    private static String normalizePid(String pid) {
+        if (pid.startsWith("doi:")) {
+            return "https://doi.org/" + pid.substring(4);
+        }
+        if (pid.matches("^10\\.\\d{4,9}/.*")) {
+            return "https://doi.org/" + pid;
+        }
+        return pid;
+    }
+
+    private static String buildCacheKey(String normalizedPid, String metricVersion) {
+        return normalizedPid + "|" + metricVersion;
+    }
+
+    private static Response buildEvaluationResponse(JsonObject fujiResponse, boolean fromCache) {
+        return Response.ok(fujiResponse)
+                .header("X-FUJI-Cache", fromCache ? "HIT" : "MISS")
+                .header("Cache-Control", "private, max-age=" + CACHE_MAX_AGE_SECONDS)
+                .build();
+    }
+
+    /**
+     * Només es cachegen avaluacions completes (URL resolta i metadades collides).
+     * Evita guardar resultats parcials per errors de xarxa/DNS durant 48 h.
+     */
+    private static boolean isCacheableEvaluation(JsonObject fujiResponse) {
+        if (fujiResponse == null || !fujiResponse.containsKey("resolved_url")) {
+            return false;
+        }
+        String resolvedUrl = fujiResponse.getString("resolved_url");
+        if (resolvedUrl == null || resolvedUrl.isBlank() || "not defined".equalsIgnoreCase(resolvedUrl)) {
+            return false;
+        }
+        if (!fujiResponse.containsKey("harvested_metadata")) {
+            return false;
+        }
+        JsonArray harvested = fujiResponse.getJsonArray("harvested_metadata");
+        return harvested != null && !harvested.isEmpty();
     }
 }

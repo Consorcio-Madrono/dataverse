@@ -2,11 +2,25 @@
  * FUJI FAIR Assessment Widget Styles
  * Styles for the FAIR assessment widget integrated with F-UJI service
  */
+.fuji-fair-block-wrapper {
+    float: none;
+    clear: both;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
 
- #fuji-heading {
+@media (min-width: 992px) {
+    .fuji-fair-block-wrapper.pull-right {
+        float: right !important;
+    }
+}
+
+#fuji-heading {
     font-size: 14px;
     color: black;
     margin-bottom: 1em;
+    word-wrap: break-word;
 }
 
 #fuji-heading .glyphicon-certificate {
@@ -16,6 +30,13 @@
 
 #fuji-body {
     min-height: 200px;
+}
+
+#fuji-fair-block,
+.fuji-fair-block {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* evita desbordament horitzontal en flex */
 }
 
 /* Score Circle Animation */
@@ -35,7 +56,9 @@
 }
 
 .fuji-principle-item > div:nth-child(2) {
-    margin: 0 10px;
+    margin: 0 8px;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 
@@ -47,6 +70,8 @@
     font-size: 11px;
     color: #666;
     font-weight: 500;
+    flex-shrink: 0;
+    min-width: 36px;
 }
 
 /* Loading Spinner */
@@ -90,30 +115,143 @@
 }
 
 /* Responsive adjustments */
+.fuji-fair-details-content,
+.fuji-fair-details-content .help-block,
+.fuji-fair-details-content .panel-body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+#fuji-detail-pid,
+.fuji-assessment-json-download,
+.fuji-fair-assessment-download-line,
+.fuji-fair-assessment-download-line a {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+#fuji-detail-pid {
+    word-break: break-all;
+}
+
+.fuji-fair-report-links a.btn {
+    max-width: 100%;
+    white-space: normal;
+    margin-left: 0;
+}
+
+.fuji-fair-report-links a + a {
+    margin-top: 8px;
+}
+
+.fuji-fair-summary-table-wrap {
+    -webkit-overflow-scrolling: touch;
+}
+
+.fuji-fair-summary-table th,
+.fuji-fair-summary-table td {
+    padding: 8px 6px !important;
+    font-size: 13px;
+}
+
+.fuji-fair-summary-total-row td {
+    border-top: 2px solid #ddd;
+    font-weight: 600;
+    background: #f9f9f9;
+}
+
+.fuji-subtests-list {
+    border-top: 1px dashed #e0e0e0;
+    padding-top: 6px;
+}
+
+.fuji-subtest-item {
+    line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+    /* Sobre estructura global: .ui-dialog.ui-widget.ui-widget-content { min-width:600px } */
+    #fujiDetailsDialog.ui-dialog.ui-widget.ui-widget-content,
+    .fuji-fair-details-dialog.ui-dialog,
+    .ui-dialog.fuji-fair-details-dialog,
+    #fujiDetailsDialog {
+        min-width: 0 !important;
+        width: calc(100vw - 20px) !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        left: 10px !important;
+        right: 10px !important;
+        box-sizing: border-box;
+    }
+    .fuji-fair-details-dialog .ui-dialog-content,
+    #fujiDetailsDialog .ui-dialog-content {
+        max-height: 75vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
+    }
+    .fuji-fair-report-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    .fuji-fair-report-links a {
+        display: block;
+        margin-left: 0 !important;
+    }
+    .fuji-principle-section h5 {
+        font-size: 14px;
+        line-height: 1.3;
+    }
+    .fuji-test-item {
+        font-size: 12px;
+    }
+    .fuji-test-item:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+
 @media (max-width: 768px) {
+    .fuji-fair-block-wrapper {
+        margin-top: 16px;
+        margin-bottom: 1em;
+        padding: 0 2px;
+    }
+    
     #fuji-fair-block {
-        margin-top: 20px;
+        margin-top: 0;
+    }
+    
+    #fuji-heading {
+        font-size: 13px;
+    }
+    
+    #fuji-results {
+        padding: 8px 6px;
     }
     
     #fuji-score-circle {
-        width: 60px !important;
-        height: 60px !important;
-    }
-    
-    #fuji-score-circle svg {
-        width: 60px;
-        height: 60px;
-    }
-    
-    #fuji-score-circle-fill,
-    #fuji-score-circle svg circle:first-child {
-        cx: 30;
-        cy: 30;
-        r: 26;
+        transform: scale(0.9);
+        transform-origin: center center;
     }
     
     #fuji-score-text {
-        font-size: 16px !important;
+        font-size: 18px !important;
+    }
+    
+    .fuji-principle-item {
+        margin-bottom: 6px;
+    }
+    .fuji-principle-item > div:nth-child(2) {
+        margin: 0 4px;
+    }
+    .fuji-principle-item > div:last-child {
+        font-size: 10px;
+        min-width: 32px;
     }
 }
 
