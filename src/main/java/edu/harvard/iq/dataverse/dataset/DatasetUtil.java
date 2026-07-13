@@ -49,6 +49,21 @@ public class DatasetUtil {
     public static String datasetLogoThumbnail = "dataset_logo";
     public static String thumbExtension = ".thumb";
 
+    // MADROÑO BEGIN
+    /**
+     * There are tags written in upper case in English that should be written in lower case in Spanish
+     *
+     * @param text
+     * @return
+     */
+    public static String toLowerCaseInSpanish (String text) {
+        if (BundleUtil.getCurrentLocale().getLanguage().equals("es")) {
+            text= text.toLowerCase();
+        }
+        return text;
+    }
+    // MADROÑO END
+
     public static List<DatasetThumbnail> getThumbnailCandidates(Dataset dataset, boolean considerDatasetLogoAsCandidate, int size) {
         List<DatasetThumbnail> thumbnails = new ArrayList<>();
         if (dataset == null) {

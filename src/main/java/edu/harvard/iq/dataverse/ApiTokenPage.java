@@ -61,6 +61,31 @@ public class ApiTokenPage implements java.io.Serializable {
 
     }
 
+    // CSUC / MADROÑO BEGIN
+    public String getApiTokenGenIsNeeded() {
+        if (session.getUser().isAuthenticated()) {
+            AuthenticatedUser au = (AuthenticatedUser) session.getUser();
+            apiToken = authSvc.findApiTokenByUser(au);
+            if (apiToken != null) {
+                return apiToken.getTokenString();
+            } else {
+                apiToken = authSvc.generateApiTokenForUser(au);
+                if (apiToken != null) {
+                    authSvc.save(apiToken);
+                    return apiToken.getTokenString();
+                }
+                else {List<String> arguments = new ArrayList<>();
+                    arguments.add(au.getName());
+                    return BundleUtil.getStringFromBundle("apitoken.notFound", arguments);
+                }
+            }
+        } else {
+            // It should be impossible to get here from the UI.
+            return "Only authenticated users can have API tokens.";
+        }
+    }
+    // CSUC / MADROÑO END
+
     public void generate() {
         if (session.getUser().isAuthenticated()) {
             AuthenticatedUser au = (AuthenticatedUser) session.getUser();

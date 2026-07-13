@@ -117,8 +117,13 @@ public class FieldDTO {
         return value==null? "": value.getAsString();
     }
     
-    String getSingleVocab() {
-        return value==null? "": value.getAsString();
+    String getSingleVocab() { // MADROÑO. Avoid some null pointer exceptions
+        // return value==null? "": value.getAsString();
+        try {
+            return value==null? "": value.getAsString();
+        } catch (IllegalStateException e) {
+            return "";
+        }
     }
     
     public Set<FieldDTO> getSingleCompound() {

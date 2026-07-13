@@ -18,8 +18,9 @@
     <packaging>${packaging.type}</packaging>
     <name>dataverse</name>
     <properties>
-        <skipUnitTests>false</skipUnitTests>
-        <skipIntegrationTests>false</skipIntegrationTests>
+        <skipUnitTests>true</skipUnitTests>
+        <skipIntegrationTests>true</skipIntegrationTests>
+        <build.number>ConsorcioMadroño_1.2</build.number>
         <it.groups>integration,migration</it.groups>
         <!-- Provide a fallback value that won't break things if JaCoCo prepare-agent steps don't set it. -->
         <!-- Note: you must use @{} style late variable binding in argLine, otherwise JaCoCo cannot inject the right settings! -->

@@ -794,7 +794,32 @@ public class SettingsServiceBean {
         // JSON specification of the targets to send announcements to
         COARNotifyRelationshipAnnouncementTargets,
         // Configurable delay between harvesting calls, when required to avoid triggering rate limits
-        HarvestingClientCallRateLimit
+        HarvestingClientCallRateLimit,
+        // CSUC / MADROÑO F-UJI
+        /**
+         * F-UJI FAIR Assessment Service URL.
+         * The endpoint URL for the F-UJI service (e.g., http://localhost:1071/fuji/api/v1/evaluate)
+         */
+        FujiServiceUrl,
+        
+        /**
+         * F-UJI Service Username for Basic Auth (if authentication is enabled).
+         */
+        FujiUsername,
+        
+        /**
+         * F-UJI Service Password for Basic Auth (if authentication is enabled).
+         */
+        FujiPassword,
+        
+        /**
+         * F-UJI Metric Version to use for assessments (e.g., "0.5", "0.7", "0.8").
+         * Default is "0.8" if not configured.
+         */
+        FujiMetricVersion
+       
+        ;
+        // CSUC / MADROÑO F-UJI END
         ;
 
         @Override

@@ -26,6 +26,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+                    <!--MADROÑO BEGIN--><a href="http://www.consorciomadrono.es/investigam">
+                        <img class="navbar-brand custom-logo" style="border-right: 2px solid #ffffff;" src="/resources/images/madronoConsorcioEDatos.png" />
+                    </a><!--MADROÑO END-->
                     <a href="/">
                         <ui:fragment rendered="#{empty settingsWrapper.get(':LogoCustomizationFile')}">
                             <span class="navbar-brand"><span id="icon-dataverse" class="icon-dataverse"></span> #{bundle.dataverse}</span>
@@ -51,6 +54,7 @@
                                 </li>
                             </ul>
                         </li>
+                        <!--MADROÑO BEGIN. Hide search
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{bundle.search} <b class="caret"></b></a>
                             <ul class="dropdown-menu navbar-search">
@@ -69,11 +73,91 @@
                                 </li>
                             </ul>
                         </li>
+                        MADROÑO END. Hide search-->
                         <li jsf:rendered="#{!empty settingsWrapper.get(':NavbarAboutUrl')}">
                             <h:outputLink value="#{settingsWrapper.get(':NavbarAboutUrl')}" target="_blank" rel="noopener">
                                 <h:outputText value="#{bundle['header.about']}"/>
                             </h:outputLink>
                         </li>
+                        <!-- MADROÑO BEGIN Header entries customization -->				
+                        <li>
+                            <h:outputLink value="https://www.google.com/maps/d/viewer?mid=1-G_zeOVt60qdiINFlCxnPsTTWWbvErp-">
+                                #{bundle['madrono.geolocation']}
+                            </h:outputLink>
+                        </li>
+                        <li>
+                            <h:outputLink value="/metrics.xhtml">
+                                #{bundle['madrono.metrics.short']}
+                            </h:outputLink>
+                        </li>
+ <!--
+                        <li>
+                            <h:outputLink value="/survey.xhtml">
+                                #{bundle['madrono.survey.header']}
+                            </h:outputLink>
+                        </li>
+
+                        <li>
+                            <h:outputLink value="/readme.xhtml">
+                                #{bundle['readmeTxt.title']}
+                            </h:outputLink>
+                        </li>
+ -->
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">#{bundle['header.support']} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <h:outputLink value="/resources/txt/guiaEcienciaDatos.pdf" target="_blank">
+                                        <h:outputText value="#{bundle['header.guides.user']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li>
+				    <h:outputLink value="http://www.consorciomadrono.es/investigam/depositar-datos/" target="_blank">
+                                        <h:outputText value="#{bundle['madrono.dataDeposit']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li>
+				    <h:outputLink value="#{bundle['madrono.technicalDescritionURL']}" target="_blank">
+                                        <h:outputText value="#{bundle['madrono.technicalDescription']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li>
+				    <h:outputLink value="#{bundle['madrono.preservationPlanURL']}" target="_blank">
+                                        <h:outputText value="#{bundle['madrono.preservationPlan']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li>
+                                    <h:outputLink value="https://www.consorciomadrono.es/docs/misionEcienciaDatosFirmada.pdf" target="_blank">
+                                        <h:outputText value="#{bundle['madrono.mission']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li>
+                                    <h:outputLink value="https://www.consorciomadrono.es/docs/garantiaPreservacionDatos.pdf" target="_blank">
+                                        <h:outputText value="#{bundle['madrono.accessWarranty']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li jsf:rendered="#{!empty settingsWrapper.get(':NavbarSupportUrl')}">
+                                    <h:outputLink value="#{settingsWrapper.get(':NavbarSupportUrl')}" target="_blank" rel="noopener">
+                                        <h:outputText value="#{bundle['header.support']}"/>
+                                    </h:outputLink>
+                                </li>
+                                <li>
+                                    <ui:fragment rendered="#{empty settingsWrapper.get(':NavbarSupportUrl')}">
+                                        <o:form useRequestURI="true" class="navbar-form navbar-left navbar-form-link">
+                                            <p:commandLink oncomplete="PF('contactForm').show()" update=":contactDialog" actionListener="#{sendFeedbackDialog.initUserInput}" id="headerSupportLink">
+                                                <f:setPropertyActionListener target="#{sendFeedbackDialog.messageSubject}" value=""/>
+                                                <f:setPropertyActionListener target="#{sendFeedbackDialog.recipient}" value="#{null}"/>
+                                                <f:setPropertyActionListener target="#{sendFeedbackDialog.userMessage}" value=""/>
+                                                <f:setPropertyActionListener target="#{sendFeedbackDialog.userEmail}" value=""/>
+                                                <h:outputText value="#{bundle['contact.contact']}"/>
+                                            </p:commandLink>
+                                        </o:form>
+                                    </ui:fragment>
+                                </li>
+                            </ul>
+                        </li>
+<!--
                         <li>
                             <h:outputLink value="#{settingsWrapper.get(':NavbarGuidesUrl', settingsWrapper.guidesBaseUrl.concat('/').concat(settingsWrapper.guidesVersion).concat('/user'))}" target="_blank" rel="noopener">
                                 <h:outputText value="#{bundle['header.guides.user']}"/>
@@ -97,6 +181,7 @@
                                 </o:form>
                             </li>
                         </ui:fragment>
+                        MADROÑO END Header entries customization -->
                         <li class="dropdown" jsf:rendered="#{settingsWrapper.localesConfigured}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{bundle.language}">#{dataverseSession.localeTitle} <b class="caret"></b></a>
                             <ul class="dropdown-menu navbar-language">

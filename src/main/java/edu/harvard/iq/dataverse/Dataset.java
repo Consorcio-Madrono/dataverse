@@ -40,6 +40,11 @@ import edu.harvard.iq.dataverse.settings.JvmSettings;
 import edu.harvard.iq.dataverse.storageuse.StorageUse;
 import edu.harvard.iq.dataverse.util.StringUtil;
 import edu.harvard.iq.dataverse.util.SystemConfig;
+// MADROÑO BEGIN
+import es.consorciomadrono.DatasetMetricsByMonth;
+import es.consorciomadrono.StatisticsByDataset;
+// MADROÑO END
+
 
 /**
  *
@@ -786,6 +791,12 @@ public class Dataset extends DvObjectContainer {
     public List<DatasetMetrics> getDatasetMetrics() {
         return datasetMetrics;
     }
+
+    // MADROÑO BEGIN
+    public DatasetMetricsByMonth getDatasetMetricsByMonth() {
+        return StatisticsByDataset.getDatasetMetricsByMonth(this);
+    }
+    // MADROÑO END
 
     public void setDatasetMetrics(List<DatasetMetrics> datasetMetrics) {
         this.datasetMetrics = datasetMetrics;

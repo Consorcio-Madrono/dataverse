@@ -108,7 +108,7 @@
                     <h:outputText value="#{bundle['file.type.tabularData']}: "/>
                     <h:outputText id="fileNumVars" value="#{dataFile.dataTable.varQuantity} #{bundle['file.metaData.dataFile.dataTab.variables']}, "/>
                     <h:outputText id="fileNumObs" value="#{dataFile.dataTable.caseQuantity} #{bundle['file.metaData.dataFile.dataTab.observations']} "/>
-                    <span jsf:id="fileUNF" class="#{!editDatafilesPage ? 'checksum-truncate checksum-tooltip' : ''}" style="margin-right:3px;"
+                    <!-- MADROÑO. Do not show file UNF <span jsf:id="fileUNF" class="#{!editDatafilesPage ? 'checksum-truncate checksum-tooltip' : ''}" style="margin-right:3px;"
                                   jsf:rendered="#{!(empty unfValue)}"
                                   data-toggle="tooltip" data-placement="top" data-html="true"
                                   data-clipboard-action="copy"
@@ -118,7 +118,7 @@
                                   data-toggle="tooltip" data-placement="top" data-html="true"
                                   data-clipboard-action="copy"
                                   data-clipboard-text="#{unfValue}" 
-                                  title="#{bundle['file.metaData.checksum.copy']}&lt;br/&gt;#{unfValue}"></span>
+                                  title="#{bundle['file.metaData.checksum.copy']}&lt;br/&gt;#{unfValue}"></span>-->
                 </div>
             </div>
             <div class="fileDescription small" jsf:rendered="#{hasDescription}">
