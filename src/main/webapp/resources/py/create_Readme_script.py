@@ -11,6 +11,7 @@
 import os
 import subprocess
 import sys
+from lxml.html import fromstring # CONSORCIO. Remove html code from description
 
 # Function to install required packages
 def install_packages():
@@ -619,8 +620,7 @@ def createreadme(base_url, token, doi,
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'dsDescriptionValue'))
             for i in auxiliar[0]:
-                f.write('\t')
-                f.write(citation_values[i])
+                f.write(fromstring(citation_values[i]).text_content()) # MADROÑO. Remove html tags from description
                 if i != auxiliar[0][-1]:
                     f.write('\n ')
             f.write('\n\n')
@@ -1479,8 +1479,10 @@ def createreadme(base_url, token, doi,
             if 'description' in filemetadata_keys[i]:
                 text = translate (bundleProperties, bundlePropertiesBack, 'file.description.label', False, False);
                 f.write('\t'+ text +': '+filemetadata_values[i][filemetadata_keys[i].index('description')]+'\n')
-            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.fileFormat', False, False);
-            f.write('\t'+ text + ': '+filemetadata_values[i][filemetadata_keys[i].index('contentType')]+'\n\n')
+            # MADROÑO. Remove file format information (3 lines)
+            f.write('\n')
+            # text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.fileFormat', False, False);
+            # f.write('\t'+ text + ': '+filemetadata_values[i][filemetadata_keys[i].index('contentType')]+'\n\n')
         print('The Readme has been created in the directory ' + path +'.')
 
 # Checking if both inputs are provided
