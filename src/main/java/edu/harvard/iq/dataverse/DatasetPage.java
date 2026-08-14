@@ -2599,11 +2599,20 @@ public class DatasetPage implements java.io.Serializable {
 
     private Boolean fileTreeViewRequired = null;
 
+    // MADROÑO: Change the position of FileDisplayTable and create firsetFileTreeView to set the Tree View by default
+    private FileDisplayStyle fileDisplayMode = FileDisplayStyle.TABLE;
+    private Boolean firstFileTreeView= true;
+
     public boolean isFileTreeViewRequired() {
         if (fileTreeViewRequired == null) {
             fileTreeViewRequired = workingVersion.getFileMetadatas().size() > 1
                     && datafileService.isFoldersMetadataPresentInVersion(workingVersion);
         }
+        if (fileTreeViewRequired && firstFileTreeView) { // MADROÑO: Set the Tree View by default
+            fileDisplayMode = FileDisplayStyle.TREE;
+            firstFileTreeView= false;
+        }
+
         return fileTreeViewRequired;
     }
 
@@ -2612,7 +2621,6 @@ public class DatasetPage implements java.io.Serializable {
         TABLE, TREE
     };
 
-    private FileDisplayStyle fileDisplayMode = FileDisplayStyle.TABLE;
 
     public String getFileDisplayMode() {
         return fileDisplayMode.equals(FileDisplayStyle.TABLE) ? "Table" : "Tree";
