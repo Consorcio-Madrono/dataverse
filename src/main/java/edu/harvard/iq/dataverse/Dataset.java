@@ -768,8 +768,9 @@ public class Dataset extends DvObjectContainer {
         this.thumbnailFile = thumbnailFile;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailFile != null ? SystemConfig.getDataverseSiteUrlStatic() + "/api/datasets/" + this.getId() + "/logo" : null;
+    public String getThumbnailUrl() { // MADROÑO. Bug in display dataset thumbnails
+        return !useGenericThumbnail ? SystemConfig.getDataverseSiteUrlStatic() + "/api/datasets/" + this.getId() + "/logo" : null;
+        // return thumbnailFile != null ? SystemConfig.getDataverseSiteUrlStatic() + "/api/datasets/" + this.getId() + "/logo" : null;
     }
 
     public boolean isUseGenericThumbnail() {
