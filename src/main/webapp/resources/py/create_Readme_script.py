@@ -575,16 +575,38 @@ def createreadme(base_url, token, doi,
 
         if 'authorName' in citation_keys or 'authorAffiliation' in citation_keys or 'authorIdentifierScheme' in citation_keys or 'authorIdentifier' in citation_keys:
             cont+=1
-            text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.authorship', False, False);
-            f.write(str(cont)+'.  ' + text  + ':\n')
-            keys=['authorName','authorAffiliation','authorIdentifierScheme','authorIdentifier' ]
-            specified_keys = [element for element in keys if element in citation_keys]
-            extracted_values = find_keys(citation_keys, specified_keys, citation_values)
+            target_keys = ['authorName', 'authorAffiliation', 'authorIdentifierScheme', 'authorIdentifier']
+            # 1. Chunk citation_keys and citation_values by author using 'authorName'
+            author_chunks = []
+            current_keys, current_vals = [], []
+
+            for k, v in zip(citation_keys, citation_values):
+                if k == 'authorName' and current_keys:
+                    author_chunks.append((current_keys, current_vals))
+                    current_keys, current_vals = [], []
+                current_keys.append(k)
+                current_vals.append(v)
+
+            if current_keys:
+                author_chunks.append((current_keys, current_vals))
+
+            # 2. Call find_keys on each author chunk separately
+            extracted_values = []
+            for chunk_keys, chunk_vals in author_chunks:
+                # Only ask find_keys for keys that ACTUALLY exist in this author's chunk
+                specified_keys = [k for k in target_keys if k in chunk_keys]
+
+                # find_keys works without issue because length checks match perfectly
+                chunk_result = find_keys(chunk_keys, specified_keys, chunk_vals)
+                extracted_values.extend(chunk_result)
+
+            # 3. Write output
             for entry in extracted_values:
                 for key, value in entry.items():
-                    formatted_key = translate (citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False);
-                    f.write('\t'+f'{formatted_key}: {value}\n')
+                    formatted_key = translate(citationProperties, citationPropertiesBack, 'datasetfieldtype.' + key + '.title', False, False)
+                    f.write(f'\t{formatted_key}: {value}\n')
                 f.write('\n')
+
         if 'datasetContactName' in citation_keys or 'datasetContactAffiliation' in citation_keys or 'datasetContactEmail' in citation_keys:
             cont+=1
             text = translate (bundleProperties, bundlePropertiesBack, 'createReadme.datasetContact', False, False);
@@ -620,6 +642,7 @@ def createreadme(base_url, token, doi,
             auxiliar=[]
             auxiliar.append(list_duplicates_of(citation_keys, 'dsDescriptionValue'))
             for i in auxiliar[0]:
+                f.write('\t')
                 f.write(fromstring(citation_values[i]).text_content()) # MADROÑO. Remove html tags from description
                 if i != auxiliar[0][-1]:
                     f.write('\n ')
