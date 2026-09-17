@@ -44,6 +44,16 @@
             </div>
         </div>
     </div>
+		<!-- CONSORCIO MADROÑO. Change downloadFiles position to be available in the files tree view -->
+    <script type="text/javascript">
+        function downloadFiles(url, filelist) {
+            filelist = filelist + ','; //Prevents last file from being dropped on server
+            var form = $('<form></form>').attr('action', url).attr('method', 'post').attr('enctype', 'text/plain');
+            form.append($("<input></input>").attr('type', 'hidden').attr('name', 'fileIds').attr('value', filelist));
+            //Submit and then remove form
+            form.appendTo('body').submit().remove();
+        }
+    </script>
 
     <p:remoteCommand name="rebindCommand" process="@this" update="filesTable"/>
 
@@ -406,6 +416,7 @@
 
         <p:column class="col-file-action button-block text-right" style="width:40%;" ariaHeaderText="#{bundle['file.actionsBlock']}">
             <f:facet name="header">
+								<!-- CONSORCIO MADROÑO. Change downloadFiles position to be available in the files tree view
                 <script type="text/javascript">
                     function downloadFiles(url, filelist) {
                         filelist = filelist + ','; //Prevents last file from being dropped on server
@@ -414,7 +425,7 @@
                         //Submit and then remove form
                         form.appendTo('body').submit().remove();
                     }
-                </script>
+                </script>-->
                 <!-- EDIT -->
                 <div style="margin-right:14px;" class="btn-group" jsf:rendered="#{DatasetPage.sessionUserAuthenticated
                                                                                   and DatasetPage.canUpdateDataset() and !widgetWrapper.widgetView and (DatasetPage.fileMetadatasSearch.size() gt 0)}">
